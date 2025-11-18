@@ -10,9 +10,8 @@
  * "Spread types may only be created from object types".
  */
 export type SpreadableObject<O> = {
-  [K in keyof O]: O[K];
+	[K in keyof O]: O[K];
 };
-
 
 export type StringKeyedObject<V = unknown> = Record<string, V>;
 
@@ -42,10 +41,8 @@ export type EmptyObject<K extends PropertyKey = PropertyKey> = {
 	[Member in K]: never;
 };
 
-
-export function isPlainObject(
-	arg: unknown
-): arg is Record<PropertyKey, unknown> {
+export type PlainObject = Record<PropertyKey, unknown>;
+export function isPlainObject(arg: unknown): arg is PlainObject {
 	if (
 		arg !== null &&
 		typeof arg === 'object' &&
@@ -57,8 +54,9 @@ export function isPlainObject(
 	return false;
 }
 
-
-export function getObjectKeysReadOnly<T>(obj: StringKeyedObject<T>): ReadonlyArray<string> {
+export function getObjectKeysReadOnly<T>(
+	obj: StringKeyedObject<T>
+): ReadonlyArray<string> {
 	return Object.keys(obj);
 }
 

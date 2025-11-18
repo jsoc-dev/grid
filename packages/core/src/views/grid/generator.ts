@@ -3,116 +3,143 @@ import { ensureArray } from '../../util/array';
 import { isString, parseString } from '../../util/string';
 import {
 	ArrayOfArraysError,
-	GridDataNotAnArrayError,
 	NoConcreteObjectInArrayError,
 	NoObjectInArrayError,
 } from '../../errors';
+import { JsocData } from '@jsoc/react';
+import {
+	GridNavigatorStack,
+	GridNavigatorStackItem,
+} from 'packages/react/src/views/grid/JsocGridContext';
+import { isConvertibleToDate } from '../../util';
 
 // TYPES
-export type KvmKey = symbol | string;
-export type KvmValue = unknown;
-export type KeyValueMapper = Record<KvmKey, KvmValue[]>;
-export type GridKey = KvmKey;
-export type GridData = unknown[];
-export type RootGridKey = GridKey;
-export type RootGridData = GridData; // should pass validateRootGridData as well
+export type GridKey = string | symbol;
+export type GridData = Record<string, unknown>[];
+export type ColumnKey = string;
+export type ColumnId = ColumnKey;
+export type ColumnType = 'string' | 'date' | 'nested';
+export type ColumnSchema = {
+	id: ColumnId;
+	type: ColumnType;
+};
+export type ColumnGenerator<C> = (id: ColumnKey) => C;
+export type ColumnFactory<C> = Record<ColumnType, ColumnGenerator<C>>;
 
 // VARIABLES
-export function getRootGridKeyAndData(
-	data: unknown
-): [RootGridKey, RootGridData] | never {
-	const { rootGridData, rootGridKey } = preprocessData(data);
-	validateRootGridData(rootGridData);
-
-	return [rootGridKey, rootGridData];
+export const DEFAULT_ROOT_GRID_KEY = 'All Data';
+export function getRootGrid(data: JsocData): GridNavigatorStackItem {
+	const { rootGridKey, rootGridData } = getRootGridSchema(data);
+	return {
+		gridKey: rootGridKey,
+		gridData: rootGridData,
+	};
 }
 
-function preprocessData(data: unknown) {
-	let rootGridKey: RootGridKey = Symbol('rootKey');
-	let rootGridData = data;
+function getRootGridSchema(data: unknown) {
+	let tempKey: GridKey = Symbol(DEFAULT_ROOT_GRID_KEY);
+	let tempData: unknown = data;
 
-	if (isString(rootGridData)) {
-		rootGridData = parseString(rootGridData);
+	if (isString(data)) {
+		tempData = parseString(data);
 	}
 
-	if (isPlainObject(rootGridData)) {
-		const resultKeys = Object.keys(rootGridData);
+	if (isPlainObject(data)) {
+		const resultKeys = Object.keys(data);
 		const resultFirstKey = resultKeys[0];
-		const resultFirstValue = rootGridData[resultFirstKey];
-
+		const resultFirstValue = data[resultFirstKey];
 		if (resultKeys.length === 1 && isPlainObject(resultFirstValue)) {
-			rootGridKey = resultFirstKey;
-			rootGridData = resultFirstValue;
+			tempKey = resultFirstKey;
+			tempData = resultFirstValue;
 		}
-
-		rootGridData = ensureArray(rootGridData);
 	}
+
+	const tempDataArr = ensureArray(tempData);
+	validateRootGridData(tempDataArr);
 
 	return {
-		rootGridData,
-		rootGridKey,
+		rootGridKey: tempKey,
+		rootGridData: tempDataArr,
 	};
 }
 
-function validateRootGridData(
-	rootGridData: unknown
-): asserts rootGridData is RootGridData {
-	if (Array.isArray(rootGridData)) {
-		if (rootGridData.some(Array.isArray)) {
-			throw new ArrayOfArraysError(rootGridData);
-		} else if (rootGridData.every(isPlainObject)) {
-			// all elements in rootData are object
-		} else if (rootGridData.some(isPlainObject)) {
-			// some elements in rootData are object
-			console.warn(
-				'Not all elements in Root Grid data are objects. Non object elements will be ignored'
-			);
-		} else {
-			throw new NoObjectInArrayError(rootGridData);
-		}
-
-		// now, rootData is an array containg atleast one object element
-		if (rootGridData.some((x) => isPlainObject(x) && isConcreteObject(x))) {
-			// now, there is atleast one concrete object element in rootData array
-		} else {
-			throw new NoConcreteObjectInArrayError(rootGridData);
-		}
+function validateRootGridData(data: unknown[]): asserts data is GridData {
+	if (data.some(Array.isArray)) {
+		throw new ArrayOfArraysError(data);
+	} else if (data.every(isPlainObject)) {
+		// all elements in rootData are object
+	} else if (data.some(isPlainObject)) {
+		// some elements in rootData are object
+		console.warn(
+			'Not all elements in Root Grid data are objects. Non object elements are ignored.'
+		);
 	} else {
-		throw new GridDataNotAnArrayError(rootGridData);
+		throw new NoObjectInArrayError(data);
+	}
+
+	// now, rootData is an array containg atleast one object element
+	if (data.some((x) => isPlainObject(x) && isConcreteObject(x))) {
+		// now, there is atleast one concrete object element in rootData array
+	} else {
+		throw new NoConcreteObjectInArrayError(data);
 	}
 }
 
-export function getKeyValueMapper(
-	rootGridKey: KvmKey,
-	rootGridData: RootGridData
-): KeyValueMapper | never {
-	const keyValueMapper = {
-		[rootGridKey]: rootGridData,
-	};
-
-	buildKeyValueMapper(rootGridData, keyValueMapper);
-	return keyValueMapper;
+export function generateColumns<C>(
+	gridData: GridData,
+	columnGeneratorStore: ColumnFactory<C>
+): C[] {
+	return transformColumnSchemas(
+		generateColumnsSchema(gridData),
+		columnGeneratorStore
+	);
 }
 
-function buildKeyValueMapper(
-	node: unknown,
-	keyValueMapper: KeyValueMapper
-): void {
-	if (Array.isArray(node)) {
-		if (node.some(Array.isArray)) {
-			throw new ArrayOfArraysError(node);
-		}
-		for (const element of node) {
-			buildKeyValueMapper(element, keyValueMapper);
-		}
-	} else if (isPlainObject(node)) {
-		const entries = Object.entries(node);
-
-		for (const [key, value] of entries) {
-			keyValueMapper[key] =
-				key in keyValueMapper ? keyValueMapper[key] : [];
-			keyValueMapper[key].push(value);
-			buildKeyValueMapper(value, keyValueMapper);
+export function generateColumnsSchema(gridData: GridData): ColumnSchema[] {
+	const columnList: Array<ColumnKey> = [];
+	for (const row of gridData) {
+		for (const rowColumn of Object.keys(row)) {
+			if (!columnList.includes(rowColumn)) {
+				columnList.push(rowColumn);
+			}
 		}
 	}
+
+	const columnSchemaList: Array<ColumnSchema> = [];
+
+	for (const key of columnList) {
+		// TODO: add helper for boolean values,
+		if (isExpandableData(gridData)) {
+			columnSchemaList.push({
+				id: key,
+				type: 'nested',
+			});
+		} else if (gridData.some(isConvertibleToDate)) {
+			columnSchemaList.push({
+				id: key,
+				type: 'date',
+			});
+		} else {
+			columnSchemaList.push({
+				id: key,
+				type: 'string',
+			});
+		}
+	}
+
+	return columnSchemaList;
+}
+
+export function transformColumnSchemas<C>(
+	columnSchemas: ColumnSchema[],
+	columnGeneratorStore: ColumnFactory<C>
+): C[] {
+	return columnSchemas.map(({ id, type }) => columnGeneratorStore[type](id));
+}
+
+function isExpandableData(data: GridData) {
+	return (
+		data.some((x) => isPlainObject(x)) ||
+		data.some((x) => Array.isArray(x) && x.some((y) => isPlainObject(y)))
+	);
 }

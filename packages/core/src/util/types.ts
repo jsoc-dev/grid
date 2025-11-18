@@ -1,4 +1,3 @@
-import { FC } from 'react';
 
 /**
  * Extracts a subset of keys from a source type.
@@ -15,4 +14,3 @@ import { FC } from 'react';
 export type SubsetKeysOf<S, K extends keyof S> = K;
 
 
-export type PropsOf<C> = C extends FC<infer P> ? P : never;

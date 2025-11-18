@@ -1,5 +1,4 @@
-import { isSymbol } from '@jsoc/core';
-import { KvmKey } from '@jsoc/core';
+import { isSymbol, DEFAULT_ROOT_GRID_KEY, trimSymbol, GridKey } from '@jsoc/core';
 import { JsocGridContext } from '../JsocGridContext';
 import { useContext } from 'react';
 
@@ -41,10 +40,15 @@ export default function JsocGridNavigatorNode({
 	}
 }
 
-function getText(key: KvmKey): string {
+function getText(key: GridKey): string {
 	if (isSymbol(key)) {
-		const symbolStr = String(key).replace(/^Symbol\((.*)\)$/, '$1');
-		return symbolStr == 'rootKey' ? 'Home' : symbolStr;
+		const trimmed = trimSymbol(key);
+		if (trimmed === DEFAULT_ROOT_GRID_KEY) {
+			return trimmed;
+		} else {
+			// this should never happen unless data was object with symbols keys
+			return trimmed;
+		}
 	} else {
 		return key;
 	}

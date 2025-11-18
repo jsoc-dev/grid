@@ -25,9 +25,3 @@ export class NoConcreteObjectInArrayError extends JsocGridDataError {
 		super(`There are 0 concrete object elements in root grid data`, array);
 	}
 }
-
-export class GridDataNotAnArrayError extends JsocGridDataError {
-	constructor(public data: unknown) {
-		super(`Prepared Root Grid Data is not an array.`, data);
-	}
-}

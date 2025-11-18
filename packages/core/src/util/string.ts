@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
-import { JsocParseError } from '../errors/JsocError';
+import { JsocDataParseError } from '../errors';
 
 export function isString(arg: unknown): arg is string {
 	return typeof arg === 'string';
@@ -32,7 +32,7 @@ export function parseString(str: string): unknown {
 			return JSON.parse(str);
 		} catch (error) {
 			console.log(error);
-			throw new JsocParseError('Unable to parse the JSON String.', str);
+			throw new JsocDataParseError('Unable to parse the JSON String.', str);
 		}
 	} else if (isXMLString(str)) {
 		try {
@@ -40,10 +40,10 @@ export function parseString(str: string): unknown {
 			return xmlParser.parse(str);
 		} catch (error) {
 			console.log(error);
-			throw new JsocParseError('Unable to parse the XML String.', str);
+			throw new JsocDataParseError('Unable to parse the XML String.', str);
 		}
 	} else {
-		throw new JsocParseError('Data String is neither JSON nor XML.', str);
+		throw new JsocDataParseError('Data String is neither JSON nor XML.', str);
 	}
 
 	// the structure of parsed result here is not being validated here

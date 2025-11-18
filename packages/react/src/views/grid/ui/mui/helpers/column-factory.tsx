@@ -4,22 +4,22 @@ import {
 	isImageLink,
 	isPlainObject,
 	joinImageOrStringValues,
-	KvmKey,
+	ColumnKey,ColumnFactory
 } from '@jsoc/core';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { JsocGridExpander } from '../../../components/JsocGridExpander';
-import { ColumnGeneratorStore } from '@jsoc/core/src/views/grid/column-mapper';
 
-export const COLUMN_GENERATOR_STORE: ColumnGeneratorStore<GridColDef> = {
-	text: getNewTextColumn,
+
+export const COLUMN_FACTORY: ColumnFactory<GridColDef> = {
+	string: getNewTextColumn,
 	date: getNewDateColumn,
-	expander: getNewExpanderColumn,
+	nested: getNewExpanderColumn,
 };
 
-export function getNewTextColumn(key: KvmKey): GridColDef {
+export function getNewTextColumn(id: ColumnKey): GridColDef {
 	return {
-		field: String(key),
-		headerName: String(key),
+		field: id,
+		headerName: id,
 		renderCell: (params: GridRenderCellParams) => {
 			const { row, value } = params;
 			row;
@@ -35,10 +35,10 @@ export function getNewTextColumn(key: KvmKey): GridColDef {
 	};
 }
 
-export function getNewDateColumn(key: KvmKey): GridColDef {
+export function getNewDateColumn(id: ColumnKey): GridColDef {
 	return {
-		field: String(key),
-		headerName: String(key),
+		field: id,
+		headerName: id,
 		renderCell: (params: GridRenderCellParams) => {
 			params.value;
 
@@ -47,16 +47,16 @@ export function getNewDateColumn(key: KvmKey): GridColDef {
 	};
 }
 
-export function getNewExpanderColumn(key: KvmKey): GridColDef {
+export function getNewExpanderColumn(id: ColumnKey): GridColDef {
 	return {
-		field: String(key),
-		headerName: String(key),
+		field: id,
+		headerName: id,
 		renderCell: (params: GridRenderCellParams) => {
 			const { row, value } = params;
 			row;
 			if (isPlainObject(value) || Array.isArray(value)) {
 				const gridData = ensureArray(value);
-				return <JsocGridExpander gridKey={key} gridData={gridData} />;
+				return <JsocGridExpander gridKey={id} gridData={gridData} />;
 			}
 		},
 	};

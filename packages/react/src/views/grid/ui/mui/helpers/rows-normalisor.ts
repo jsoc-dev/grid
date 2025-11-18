@@ -1,8 +1,7 @@
 import { GridRowsProp } from "@mui/x-data-grid";
-import { GridNavigatorStackItemData } from "../../../JsocGridContext";
-import { isPlainObject } from "@jsoc/core";
+import { GridData, isPlainObject } from "@jsoc/core";
 
-export function normaliseRows(gridData: GridNavigatorStackItemData): GridRowsProp {
+export function normaliseRows(gridData: GridData): GridRowsProp {
 	return gridData.filter(isPlainObject).map(ensureRowHasId);
 }
 

@@ -1,29 +1,21 @@
 import { createContext } from 'react';
-import { KeyValueMapper, KvmKey, RootGridKey, RootGridData } from '@jsoc/core';
-import { GridColumnMapper } from '../../../../core/src/views/grid/column-mapper';
+import { GridKey, GridData } from '@jsoc/core';
 
 //types
-export type GridNavigatorStackItemData = RootGridData;
 export type GridNavigatorStackItem = {
-	gridKey: KvmKey;
-	gridData: GridNavigatorStackItemData;
+	gridKey: GridKey;
+	gridData: GridData;
 };
 export type GridNavigatorStack = GridNavigatorStackItem[];
 
 interface JsocGridContext {
-	rootGridKey: RootGridKey;
-	keyValueMapper: KeyValueMapper;
-	gridColumnMapper: GridColumnMapper;
 	gridNavigatorStack: GridNavigatorStack,
 	setGridNavigatorStack: React.Dispatch<
-		React.SetStateAction<GridNavigatorStack | undefined>
+		React.SetStateAction<GridNavigatorStack>
 	>;
 }
 
 const JsocGridContextFake: JsocGridContext = {
-	rootGridKey: '',
-	keyValueMapper: {},
-	gridColumnMapper: {},
 	gridNavigatorStack: [],
 	setGridNavigatorStack: () => {},
 };

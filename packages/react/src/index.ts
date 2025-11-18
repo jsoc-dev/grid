@@ -1,1 +1,1 @@
-export * from "./Jsoc";
+export * from "./jsoc/Jsoc";

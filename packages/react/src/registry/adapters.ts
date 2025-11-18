@@ -1,10 +1,12 @@
 import { FC } from 'react';
-import { PropsOf, SpreadableObject } from '@jsoc/core';
+import { SpreadableObject } from '@jsoc/core';
 import { View } from './views';
 import { JsocGridMui } from '../views/grid/ui/mui/JsocGridMui';
 import { JsocGridAg } from '../views/grid/ui/ag/JsocGridAg';
 import { JsocFormA } from '../views/form/ui/a/JsocFormA';
 import { JsocFormB } from '../views/form/ui/b/JsocFormB';
+
+export type PropsOf<C> = C extends FC<infer P> ? P : never;
 
 // AdapterComponents, AdapterRegistry types defined below are just for basic typesafety
 // which will assist while adding more values in ADAPTER_REGISTRY
