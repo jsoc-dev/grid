@@ -14,14 +14,9 @@ export class ArrayOfArraysError extends JsocGridDataError {
 	}
 }
 
-export class NoObjectInArrayError extends JsocGridDataError {
-	constructor(public array: unknown[]) {
-		super(`No object elements present in Root Grid Data.`, array);
-	}
-}
 
-export class NoConcreteObjectInArrayError extends JsocGridDataError {
+export class NoRowsInRootGridDataError extends JsocGridDataError {
 	constructor(public array: unknown[]) {
-		super(`There are 0 concrete object elements in root grid data`, array);
+		super(`Found 0 rows in root grid data. Note: An object with atleast one key is referred as a row.`, array);
 	}
 }

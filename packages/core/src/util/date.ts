@@ -1,10 +1,17 @@
-import { parseISO, isValid } from 'date-fns';
-export function isConvertibleToDate(input: unknown): boolean {
-    if (typeof input !== "string") return false;
+import { isString } from './string';
 
-    // Reject numeric-only strings like "01082002"
-    if (!isNaN(Number(input))) return false;
+const ISO_REGEX =
+	/^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/;
 
-    const date = parseISO(input);
-    return isValid(date);
+export function isConvertibleToDate(arg: unknown): boolean {
+	if (
+		!isString(arg) ||
+		!isNaN(Number(arg)) || // Reject numeric-only strings like "01082002"
+		!ISO_REGEX.test(arg) // added guard to prevent values like "Apt. 556" as Date.parse forcefully parse even some invalid strings like "Apt. 556" to timestamps
+	) {
+		return false;
+	}
+
+	const timestamp = Date.parse(arg);
+	return !isNaN(timestamp);
 }

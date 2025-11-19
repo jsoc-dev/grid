@@ -1,6 +1,59 @@
 import './App.css';
-import { Jsoc } from '@jsoc/react';
-import user from '../../../api-responses/users.json';
+import { JsocGrid } from '@jsoc/react';
+// import user from '../../../api-responses/users.json';
+const json = {
+	company: {
+		name: 'Acme Corp',
+		location: 'Springfield',
+		departments: [
+			{
+				name: 'Engineering',
+				head: 'Dr. Smith',
+				employees: [
+					{
+						id: 'E001',
+						name: 'Alice',
+						skills: ['Python', 'Java'],
+					},
+					{
+						id: 'E002',
+						name: 'Bob',
+						skills: ['C++', 'JavaScript'],
+					},
+				],
+			},
+			{
+				name: 'Marketing',
+				head: 'Ms. Jones',
+				employees: [
+					{
+						id: 'M001',
+						name: 'Charlie',
+						skills: ['SEO', 'Content Creation'],
+					},
+				],
+			},
+		],
+	},
+	products: [
+		{
+			id: 'P001',
+			name: 'Product A',
+			features: {
+				color: 'Blue',
+				size: 'Medium',
+			},
+		},
+		{
+			id: 'P002',
+			name: 'Product B',
+			features: {
+				color: 'Red',
+				size: 'Small',
+			},
+		},
+	],
+};
 
 function App() {
 	return (
@@ -20,7 +73,7 @@ function App() {
 		// In this example, we give the grid a 500px height and full width.
 
 		<div style={{ height: '500px', width: '100%' }}>
-			<Jsoc data={user} view='grid' ui='mui' />
+			<JsocGrid data={json} ui='mui' title='Example' />
 		</div>
 	);
 }

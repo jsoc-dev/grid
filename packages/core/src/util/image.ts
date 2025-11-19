@@ -1,4 +1,4 @@
-import { isString } from "./string";
+import { isString } from './string';
 
 export function joinImageOrStringValues(value: unknown[]) {
 	if (value.some((x) => isImageLink(x))) {
@@ -10,7 +10,7 @@ export function joinImageOrStringValues(value: unknown[]) {
 export function isImageLink(url: unknown) {
 	if (
 		!isString(url) ||
-		!['.jpg', '.jpeg', '.png'].some((extn) =>
+		!['.jpg', '.jpeg', '.png', '.webp'].some((extn) =>
 			url.toLowerCase().endsWith(extn)
 		)
 	) {

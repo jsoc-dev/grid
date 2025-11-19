@@ -1,3 +1,5 @@
+export const MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1; 
+
 /**
  * Wraps the given value in an array if it is not an array.
  * Note:
@@ -15,4 +17,13 @@ export function ensureArray<T>(arg: T | T[]): T[] {
 
 export function joinStringArray(arg: readonly string[]) {
 	return arg.map((str) => `"${str}"`).join(', ');
+}
+
+export function isArrayIndex(arg: unknown): arg is number {
+	return (
+		typeof arg === "number" &&
+		Number.isInteger(arg) &&
+		arg >= 0 &&
+		arg < MAX_ARRAY_LENGTH
+	);
 }
