@@ -1,9 +1,9 @@
-# JSOC
-- This document contains the complete context for the JSOC project.  
-- It is intended to guide GitHub Copilot Chat and any future contributors.
+# ABOUT THIS DOCUMENT
+- This document contains the complete context for the JSOC library project.  
+
 
 ## PURPOSE
-- JSOC (JSON Schema Orchestrated Components) is a library that converts any JSON configuration into a fully functional UI component.
+- JSOC is a library that converts any JSON configuration into a fully functional UI component.
 
 ## GOALS
 - UI component driven entirely by JSON

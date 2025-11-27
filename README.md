@@ -1,4 +1,4 @@
-# JSOC — JSON Schema Orchestrated Components
+# JSOC — JavaScript Object -> Component <{}>
 
 JSOC is a framework-agnostic system that converts any JSON configuration into fully functional UI components.  
 It is designed to support React, Vue, Angular, Svelte, and more — all powered by a shared core.

@@ -1,1 +1,2 @@
-export * from "./grid/JsocGrid";
+export * from "./utils";
+export * from "./grid";

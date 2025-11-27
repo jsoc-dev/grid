@@ -1,0 +1,32 @@
+{
+	"compilerOptions": {
+		// language
+		"target": "ES2024",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
+
+		// strict checks
+		"strict": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+
+		// output
+		"sourceMap": true,
+		"skipLibCheck": true,
+
+		// source files
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["*"]
+		}
+	},
+
+	"exclude": [
+		"dist",
+		"build",
+		"**/*.min.js",
+		"node_modules",
+		"**/node_modules/*"
+	]
+}

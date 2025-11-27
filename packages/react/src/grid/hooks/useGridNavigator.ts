@@ -1,16 +1,22 @@
-import { useMemo, useState } from 'react';
-import { GridData, GridKey, init } from '@jsoc/core/grid';
+import { useGridSchemaStore } from '@/grid';
+import { GridSchemaStoreIndex, removeGridSchema, activateGridSchema } from '@jsoc/core/grid';
 
-export function useGridNavigator(
-	gridKey: GridKey,
-	gridData: GridData
-) {
-	const gridSchemaStack = useMemo(
-		function () {
-			return init(gridKey, gridData);
-		},
-		[gridData]
-	);
+export function useGridNavigator(index: GridSchemaStoreIndex) {
+	const { gridSchemaStore, setGridSchemaStore } = useGridSchemaStore();
+	const gridSchema = gridSchemaStore[index];
 
-	return useState(gridSchemaStack);
+	return {
+		gridSchema,
+		gridSchemaStore,
+		activateGrid,
+		removeGrid,
+	};
+
+	function activateGrid() {
+		setGridSchemaStore(activateGridSchema(gridSchemaStore, index));
+	}
+
+	function removeGrid() {
+		setGridSchemaStore(removeGridSchema(gridSchemaStore, index));
+	}
 }

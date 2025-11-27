@@ -5,7 +5,6 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
-		"./grid": "./src/views/grid/index.ts",
-		"./form": "./src/views/form/index.ts"
+		"./grid": "./src/grid/index.ts"
 	}
 }

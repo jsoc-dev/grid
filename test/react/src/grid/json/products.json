@@ -1,0 +1,1340 @@
+[
+	{
+		"id": "P-1001",
+		"name": "UltraSoft Cotton Shirt",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Clothing",
+			"sub": "Men",
+			"tags": ["cotton", "casual", "topwear", "summer", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "john_doe",
+				"rating": 4.5,
+				"comment": "Very comfortable and great fit!"
+			},
+			{
+				"user": "akshay17",
+				"rating": 5,
+				"comment": "Quality is amazing for the price."
+			},
+			{
+				"user": "maria_k",
+				"rating": 4,
+				"comment": "Good fabric but delivery was slow."
+			},
+			{
+				"user": "peter_pan",
+				"rating": 3.5,
+				"comment": "Color faded slightly after wash."
+			}
+		]
+	},
+
+	{
+		"id": "P-1002",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1003",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1004",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1005",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1006",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1007",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1008",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1009",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	},
+
+	{
+		"id": "P-1010",
+		"name": "AirFlex Running Shoes",
+		"variants": [
+			{
+				"SNo": 1,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 2,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 3,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 4,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 5,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 6,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 7,
+
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 8,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			},
+
+			{
+				"SNo": 9,
+				"color": "Red",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-RD-7", "stock": 25 },
+					{ "size": 8, "sku": "P-1002-RD-8", "stock": 40 },
+					{ "size": 9, "sku": "P-1002-RD-9", "stock": 33 }
+				]
+			},
+
+			{
+				"SNo": 10,
+
+				"color": "Grey",
+				"sizes": [
+					{ "size": 7, "sku": "P-1002-GY-7", "stock": 20 },
+					{ "size": 8, "sku": "P-1002-GY-8", "stock": 38 },
+					{ "size": 9, "sku": "P-1002-GY-9", "stock": 29 }
+				]
+			}
+			
+		],
+		"category": {
+			"main": "Footwear",
+			"sub": "Men",
+			"tags": ["running", "sports", "lightweight", "breathable"]
+		},
+
+		"customerReviews": [
+			{
+				"user": "runner99",
+				"rating": 5,
+				"comment": "Excellent cushion & grip!"
+			},
+			{
+				"user": "dev_s",
+				"rating": 4,
+				"comment": "Good for long runs."
+			}
+		]
+	}
+]

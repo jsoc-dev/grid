@@ -1,0 +1,34 @@
+{
+	"compilerOptions": {
+
+		// strict checks
+		"strict": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+
+		// output
+		"sourceMap": true,
+		"skipLibCheck": true,
+
+		// source files
+		"baseUrl": "./src",
+		"paths": {
+			/*
+			 * Monorepo issue: Consumer packages fail to resolve types from this package that depend on
+			 * internal path aliases (e.g., '@/utils'). For example, `GridData` (dependent on `@/utils/PlainObject`)
+			 * resolves to `any` in `@jsoc/react`, while `GridName` (without such dependencies) works correctly.
+			 * This is because the consumer's TypeScript server doesn't inherit this package's `paths` configuration.
+			 * TypeScript project references were considered but did not resolve this issue.
+			 */
+			// "@/*": ["*"]
+		}
+	},
+
+	"exclude": [
+		"dist",
+		"build",
+		"**/*.min.js",
+		"node_modules",
+		"**/node_modules/*"
+	]
+}
