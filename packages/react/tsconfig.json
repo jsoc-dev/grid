@@ -16,10 +16,11 @@
 		"skipLibCheck": true,
 
 		// source files
-		"baseUrl": "./src",
-		"paths": {
-			"@/*": ["*"]
-		}
+		// "baseUrl": "./src",
+		// "paths": {
+		// 	// same issue as core package
+		// 	// "@/*": ["*"]
+		// }
 	},
 
 	"exclude": [

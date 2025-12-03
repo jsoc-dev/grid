@@ -1,4 +1,4 @@
-import { useSubGridToggle } from '@/grid';
+import { useSubGridToggle } from '../../../hooks/useSubGridToggle';
 import { GridSchema } from '@jsoc/core/grid';
 
 type SubGridToggleButtonProps = {

@@ -1,4 +1,4 @@
-import { SubGridToggleButtonAg } from '@/grid';
+import { SubGridToggleButtonAg } from '../ag/components/SubGridToggleButton';
 import { capitalizeFirst, toString } from '@jsoc/core';
 import {
 	buildGridId,
@@ -27,7 +27,7 @@ export const COLUMN_FACTORY_AG: ColumnFactory<ColDef> = {
 export function defaultColumnDefinitionProviderAg(
 	params: ColumnDefinitionProviderParams
 ): ColDef {
-	const { columnKey, columnDataType, primaryColumnKey, gridSchema } = params;
+	const { columnKey, columnDataType } = params;
 	return {
 		field: columnKey,
 		headerName: capitalizeFirst(columnKey),
@@ -38,15 +38,16 @@ export function defaultColumnDefinitionProviderAg(
 }
 
 export type CellRendererAg = ColDef['cellRenderer'];
-export type DefaultCellRendererProviderMapMui = Record<
+export type DefaultCellRendererProviderMapAg = Record<
 	ColumnDataType,
 	(params: ColumnDefinitionProviderParams) => CellRendererAg
 >;
 
-export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderMapMui =
+export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderMapAg =
 	{
 		arrayOfObjects: function (params) {
-			const { columnKey, primaryColumnKey, gridSchema } = params;
+			const { columnKey, gridSchema } = params;
+			const { gridPrimaryColumnKey } = gridSchema;
 
 			return (params: ICellRendererParams) => {
 				const { data, value } = params;
@@ -54,7 +55,7 @@ export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderM
 				if (value) {
 					const subGridSchema = buildSchemaForSubGrid(
 						gridSchema,
-						data[primaryColumnKey],
+						data[gridPrimaryColumnKey],
 						columnKey,
 						value
 					);

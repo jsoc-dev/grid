@@ -1,29 +1,91 @@
-import {
-	JsocGridContext,
-	JsocGridContextValue,
-	COLUMN_FACTORY_MUI,
-	DefaultToolbarMui,
-	useRestoreGridParentFocus,
-} from '@/grid';
+import { JsocGridContext } from '../../wrapper';
+import { useRestoreGridParentFocus } from './hooks';
+import { COLUMN_FACTORY_MUI, DefaultToolbarMui } from './default';
 import { SubsetKeysOf, deleteKeys } from '@jsoc/core';
 import {
 	generateColumns,
-	generateRows,
 	getActiveGridSchema,
 	CustomColumnFactory,
-	GridSchemaStore,
 } from '@jsoc/core/grid';
-import { createContext, RefObject, useContext } from 'react';
+import { createContext, RefObject, useContext, useMemo } from 'react';
 import {
 	DataGrid,
 	DataGridProps,
 	GridColDef,
-	GridValidRowModel,
 	useGridApiRef,
+	type GridRowIdGetter,
 } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 
-//#region props
+/**
+ * Adapter component for MUI DataGrid
+ */
+export function JsocGridMui(props: JsocGridMuiProps) {
+	const apiRef = useGridApiRef();
+	const { gridSchemaStore, showDefaultNavigator } =
+		useContext(JsocGridContext);
+	useRestoreGridParentFocus(apiRef, gridSchemaStore); // TODO: remove this and try to persist grid states (using Activity and rendering all grids as list items)
+
+	const gridSchema = getActiveGridSchema(gridSchemaStore);
+	const { gridId, gridPrimaryColumnKey, gridPlainRows } = gridSchema;
+	/**
+	 * TODO: Memoise col defs (as suggested at https://mui.com/x/react-data-grid/column-definition/#:~:text=The%20columns%20prop%20should,function%20or%20memoize%20it.)
+	 * useMemo didnt solve the issue, grid states are still being reset
+	*/
+	const columns = useMemo(
+		() =>
+			generateColumns(
+				gridSchema,
+				COLUMN_FACTORY_MUI,
+				props.customColumnFactory
+			),
+		[gridSchema, props.customColumnFactory]
+	);
+
+	const getRowId: GridRowIdGetter = (row) => row[gridPrimaryColumnKey];
+	const showToolbar = showDefaultNavigator || props.showToolbar;
+	const slots = {
+		...props.slots,
+		...(showDefaultNavigator && {
+			toolbar: DefaultToolbarMui,
+		}),
+	};
+	const userSuppliedProps = deleteKeys(props, [
+		...JSOC_GRID_MUI_CUSTOM_PROP_NAMES,
+	]);
+
+	return (
+		<JsocGridMuiContext.Provider value={{ apiRef }}>
+			<DataGrid
+				{...userSuppliedProps}
+				/**
+				 * gridId is used as key so that DataGrid is remounted when gridSchemaStore is changed.
+				 * This is necessary as MUI `DataGrid` internal states (like scroll position) does not
+				 * reset across rerenders unless the component is fully remounted, due to which the scroll
+				 * position persists even if the previous grid schema and current grid schemas are different.
+				 * Also, the events like "focus lose" of old grid cells still continue to happen which causes
+				 * code breaks as the previous grid cell won't be rendered in the current grid.
+				 * TODO: Try to achieve this using list items
+				 */
+				key={gridId}
+				apiRef={apiRef}
+				rows={gridPlainRows}
+				getRowId={getRowId}
+				columns={columns}
+				showToolbar={showToolbar}
+				slots={slots}
+			/>
+		</JsocGridMuiContext.Provider>
+	);
+}
+
+export type DataGridCommunityApiRef = RefObject<GridApiCommunity | null>;
+export type JsocGridMuiContextValue = {
+	apiRef: DataGridCommunityApiRef;
+};
+export const JsocGridMuiContext = createContext<JsocGridMuiContextValue>({
+	apiRef: { current: null },
+});
 
 /**
  * Props that customise or disable the `JsocGrid` features
@@ -33,6 +95,12 @@ export type JsocGridMuiCustomProps = {
 	customColumnFactory?: CustomColumnFactory<GridColDef>;
 };
 export type JsocGridMuiCustomPropNames = keyof JsocGridMuiCustomProps;
+/**
+ * List of names of all the Custom Props.
+ * Using this list, custom props will be removed from supplied props before passing to `DataGrid`
+ */
+export const JSOC_GRID_MUI_CUSTOM_PROP_NAMES: Array<JsocGridMuiCustomPropNames> =
+	['customColumnFactory'];
 
 /**
  * Props that are dynamically injected by the adapter `JsocGridMui` into the `DataGrid`
@@ -56,110 +124,3 @@ export type JsocGridMuiProps = Omit<
 	JsocGridMuiInjectedPropNames
 > &
 	JsocGridMuiCustomProps;
-
-//#endregion
-
-//#region component
-
-export function JsocGridMui(props: JsocGridMuiProps) {
-	const jsocGridContextValue = useContext(JsocGridContext);
-	const apiRef = useGridApiRef();
-	const key = getGridKey(jsocGridContextValue.gridSchemaStore);
-	const finalProps = buildFinalProps(props, jsocGridContextValue);
-	useRestoreGridParentFocus(apiRef);
-
-	return (
-		<JsocGridMuiContext.Provider value={{ apiRef }}>
-			<DataGrid {...finalProps} key={key} apiRef={apiRef} />
-		</JsocGridMuiContext.Provider>
-	);
-}
-
-//#endregion
-
-//#region constants
-
-/**
- * List of names of all the Custom Props.
- * Using this list, custom props will be removed from supplied props before passing to `DataGrid`
- */
-export const JSOC_GRID_MUI_CUSTOM_PROP_NAMES: Array<JsocGridMuiCustomPropNames> =
-	['customColumnFactory'];
-
-export type DataGridCommunityApiRef = RefObject<GridApiCommunity | null>;
-export type JsocGridMuiContextValue = {
-	apiRef: DataGridCommunityApiRef;
-};
-
-export const JsocGridMuiContext = createContext<JsocGridMuiContextValue>({
-	apiRef: { current: null },
-});
-//#endregion
-
-//#region helper functions
-
-/**
- * Gets unique key for grid so that if there is any change in gridSchemaStore, 
- * recalculate the key based on the *active grid* in the GridSchemaStore.
- * So that DataGrid is remounted when the gridSchema changes.
- * 
- * This is necessary as MUI `DataGrid` internal states (like scroll position) 
- * does not reset across rerenders unless the component is fully remounted,
- * which causes 2 main issues:
- * 1. if user scrolled to row N in subgrid and closes it, then parent grid also scrolls to row N when rendered
- * 2. sometimes code breaks in firing focus lose event from the parent grid cell which no longer exists.
- *
- * - Issue 1 is resolved with the help of `useRestoreGridParentFocus` hook.
- * - Issue 2 is resolved as the component gets remounted. 
- */
-function getGridKey(gridSchemaStore: GridSchemaStore) {
-	const gridSchema = getActiveGridSchema(gridSchemaStore);
-	const { gridId } = gridSchema;
-
-	return gridId;
-}
-
-/**
- * Builds final props that are passed to the `DataGrid` by combining:
- *   - filtered consumer-supplied `DataGridProps` (removes custom props)
- *   - dynamically generated `JsocGridMuiInjectedProps`
- */
-function buildFinalProps(
-	props: JsocGridMuiProps,
-	jsocGridContextValue: JsocGridContextValue
-): DataGridProps {
-	const { gridSchemaStore, noDefaultNavigator } = jsocGridContextValue;
-	const gridSchema = getActiveGridSchema(gridSchemaStore);
-	const {gridPlainRows, gridPrimaryColumnKey} = gridSchema;
-
-	const showToolbar = props.showToolbar ?? true;
-	const slots = props.slots ?? {};
-
-	if (!slots.toolbar && !noDefaultNavigator) {
-		slots.toolbar = DefaultToolbarMui;
-	}
-
-	const getRowId = (row: GridValidRowModel) => row[gridPrimaryColumnKey];
-
-	const columns = generateColumns(
-		gridPlainRows,
-		gridSchema,
-		gridPrimaryColumnKey,
-		COLUMN_FACTORY_MUI,
-		props.customColumnFactory
-	);
-
-	return {
-		...filterSuppliedProps(props),
-		showToolbar,
-		slots,
-		rows: gridPlainRows,
-		getRowId,
-		columns,
-	};
-}
-
-function filterSuppliedProps(props: JsocGridMuiProps) {
-	return deleteKeys(props, [...JSOC_GRID_MUI_CUSTOM_PROP_NAMES]);
-}
-//#endregion

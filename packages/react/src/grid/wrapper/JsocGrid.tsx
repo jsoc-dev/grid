@@ -1,8 +1,3 @@
-import {
-	GRID_UI_ADAPTERS,
-	GridUiAdapterComponentProps,
-	GridUiAdapterName,
-} from '@/grid';
 import { PlainObject } from '@jsoc/core';
 import {
 	init,
@@ -18,7 +13,14 @@ import {
 	ReactNode,
 	useEffect,
 	useState,
+	type JSX,
+	Activity,
 } from 'react';
+import {
+	GRID_UI_ADAPTERS,
+	type GridUiAdapterComponentProps,
+	type GridUiAdapterName,
+} from './adapter-registry';
 
 export type JsocGridProps<U extends GridUiAdapterName> = {
 	name: GridName;
@@ -27,30 +29,34 @@ export type JsocGridProps<U extends GridUiAdapterName> = {
 	uiAdapterName: U;
 	uiAdapterProps?: GridUiAdapterComponentProps<U>;
 	/**
+	 * Allows consumer to wrap or transform the UiAdapter component by providing a render function
+	 */
+	uiAdapterRenderer?: (adapter: JSX.Element) => JSX.Element;
+	/**
 	 * If `true`, the default navigator won't be rendered
 	 */
-	noDefaultNavigator?: boolean;
+	showDefaultNavigator?: boolean;
 };
 
 export type JsocGridContextValue = {
 	gridSchemaStore: GridSchemaStore;
 	setGridSchemaStore: Dispatch<SetStateAction<GridSchemaStore>>;
-	noDefaultNavigator: boolean | undefined;
+	showDefaultNavigator: boolean;
 };
 
 export const JsocGridContext = createContext<JsocGridContextValue>({
 	gridSchemaStore: [],
 	setGridSchemaStore: () => {},
-	noDefaultNavigator: undefined,
+	showDefaultNavigator: true,
 });
 
 export function JsocGrid<U extends GridUiAdapterName>({
 	name,
 	data,
-	children,
 	uiAdapterName,
 	uiAdapterProps,
-	noDefaultNavigator,
+	uiAdapterRenderer = (adapter) => adapter,
+	showDefaultNavigator = true,
 }: JsocGridProps<U>) {
 	const [gridSchemaStore, setGridSchemaStore] = useState(init(name, data));
 
@@ -64,10 +70,13 @@ export function JsocGrid<U extends GridUiAdapterName>({
 
 	return (
 		<JsocGridContext.Provider
-			value={{ gridSchemaStore, setGridSchemaStore, noDefaultNavigator }}
+			value={{
+				gridSchemaStore,
+				setGridSchemaStore,
+				showDefaultNavigator,
+			}}
 		>
-			{children}
-			<UiAdapter {...uiAdapterProps} />
+			{uiAdapterRenderer(<UiAdapter {...uiAdapterProps} />)}
 		</JsocGridContext.Provider>
 	);
 }

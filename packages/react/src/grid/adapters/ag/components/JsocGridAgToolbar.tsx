@@ -1,4 +1,4 @@
-import { JsocGridAgNavigator } from "@/grid";
+import { JsocGridAgNavigator } from "./JsocGridAgNavigator";
 
 export function JsocGridAgToolbar() {
     return (

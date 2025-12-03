@@ -1,6 +1,6 @@
-import { ExtractProps } from "@/utils";
-import { JsocGridAg, JsocGridMui } from "@/grid";
 import { SpreadableObject } from "@jsoc/core";
+import { JsocGridAg, JsocGridMui } from "../adapters";
+import type { ExtractProps } from "../../utils";
 
 export const GRID_UI_ADAPTERS = {
     mui: JsocGridMui,

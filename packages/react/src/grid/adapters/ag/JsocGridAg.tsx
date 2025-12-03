@@ -1,14 +1,10 @@
-import {
-	COLUMN_FACTORY_AG,
-	JsocGridContext,
-	JsocGridContextValue,
-} from '@/grid';
-import { deleteKeys, PlainObject, SubsetKeysOf } from '@jsoc/core';
+import { JsocGridContext } from '../../wrapper/JsocGrid';
+import { COLUMN_FACTORY_AG } from '../ag/column-factory';
+import { deleteKeys, SubsetKeysOf } from '@jsoc/core';
 import { useContext } from 'react';
 import {
 	type CustomColumnFactory,
 	generateColumns,
-	generateRows,
 	getActiveGridSchema,
 } from '@jsoc/core/grid';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
@@ -16,11 +12,38 @@ import {
 	type ColDef,
 	ModuleRegistry,
 	AllCommunityModule,
+	type GetRowIdFunc,
 } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-//#region props
+/**
+ * Adapter component for AG-Grid
+ */
+export function JsocGridAg(props: JsocGridAgProps) {
+	const { gridSchemaStore, showDefaultNavigator } =
+		useContext(JsocGridContext);
+	const gridSchema = getActiveGridSchema(gridSchemaStore);
+	const { gridPlainRows, gridPrimaryColumnKey } = gridSchema;
+	const getRowId: GetRowIdFunc = ({ data }) => data[gridPrimaryColumnKey];
+	const columnDefs = generateColumns(
+		gridSchema,
+		COLUMN_FACTORY_AG,
+		props.customColumnFactory
+	);
+	const userSuppliedProps = deleteKeys(props, [
+		...JSOC_GRID_AG_CUSTOM_PROP_NAMES,
+	]);
+
+	return (
+		<AgGridReact
+			{...userSuppliedProps}
+			rowData={gridPlainRows}
+			getRowId={getRowId}
+			columnDefs={columnDefs}
+		/>
+	);
+}
 
 /**
  * Props that customise or disable the `JsocGrid` features
@@ -30,6 +53,8 @@ export type JsocGridAgCustomProps = {
 	customColumnFactory?: CustomColumnFactory<ColDef>;
 };
 export type JsocGridAgCustomPropNames = keyof JsocGridAgCustomProps;
+export const JSOC_GRID_AG_CUSTOM_PROP_NAMES: Array<JsocGridAgCustomPropNames> =
+	['customColumnFactory'];
 
 /**
  * Props that are dynamically injected by the adapter `JsocGridAg` into the `AgGridReact`
@@ -53,56 +78,3 @@ export type JsocGridAgProps = Omit<
 	JsocGridAgInjectedPropNames
 > &
 	JsocGridAgCustomProps;
-
-//#endregion
-
-export function JsocGridAg(props: JsocGridAgProps) {
-	const jsocGridContextValue = useContext(JsocGridContext);
-	const finalProps = buildFinalProps(props, jsocGridContextValue);
-
-	return (
-		<>
-			<AgGridReact {...finalProps} />
-		</>
-	);
-}
-
-export const JSOC_GRID_AG_CUSTOM_PROP_NAMES: Array<JsocGridAgCustomPropNames> =
-	['customColumnFactory'];
-
-/**
- * Builds final props that are passed to the `AgGridReact` by combining:
- *   - filtered consumer-supplied `AgGridReactProps` (removes custom props)
- *   - dynamically generated `JsocGridAgInjectedProps`
- */
-function buildFinalProps(
-	props: JsocGridAgProps,
-	jsocGridContextValue: JsocGridContextValue
-): AgGridReactProps {
-	const { gridSchemaStore, noDefaultNavigator } = jsocGridContextValue;
-	const gridSchema = getActiveGridSchema(gridSchemaStore);
-	const {gridPlainRows, gridPrimaryColumnKey} = gridSchema;
-
-
-	const getRowId = ({ data }: { data: PlainObject }) =>
-		String(data[gridPrimaryColumnKey]);
-
-	const columnDefs = generateColumns(
-		gridPlainRows,
-		gridSchema,
-		gridPrimaryColumnKey,
-		COLUMN_FACTORY_AG,
-		props.customColumnFactory
-	);
-
-	return {
-		...filterSuppliedProps(props),
-		rowData: gridPlainRows,
-		getRowId,
-		columnDefs,
-	};
-}
-
-function filterSuppliedProps(props: JsocGridAgProps) {
-	return deleteKeys(props, [...JSOC_GRID_AG_CUSTOM_PROP_NAMES]);
-}

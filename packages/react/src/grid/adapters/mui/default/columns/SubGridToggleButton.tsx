@@ -1,4 +1,4 @@
-import { useSubGridToggle } from '@/grid';
+import { useSubGridToggle } from '../../../../hooks/useSubGridToggle';
 import { type GridSchema } from '@jsoc/core/grid';
 import { IconButton, SvgIconTypeMap, Tooltip } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';

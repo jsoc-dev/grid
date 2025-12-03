@@ -11,8 +11,8 @@
 		"skipLibCheck": true,
 
 		// source files
-		"baseUrl": "./src",
-		"paths": {
+		// "baseUrl": "./src",
+		// "paths": {
 			/*
 			 * Monorepo issue: Consumer packages fail to resolve types from this package that depend on
 			 * internal path aliases (e.g., '@/utils'). For example, `GridData` (dependent on `@/utils/PlainObject`)
@@ -21,7 +21,7 @@
 			 * TypeScript project references were considered but did not resolve this issue.
 			 */
 			// "@/*": ["*"]
-		}
+		// }
 	},
 
 	"exclude": [

@@ -1,8 +1,10 @@
+import { useGridSchemaStore } from '../../../../hooks/useGridSchemaStore';
 import {
-	useGridSchemaStore,
 	DefaultNavigatorItemMui,
+} from '../navigator/components/NavigatorItem';
+import {
 	DefaultNavigatorTitleMui,
-} from '@/grid';
+} from '../navigator/components/NavigatorTitle';
 import { Fragment } from 'react/jsx-runtime';
 import { Stack } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';

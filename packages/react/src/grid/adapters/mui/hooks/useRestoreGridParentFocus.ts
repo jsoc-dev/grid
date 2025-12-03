@@ -1,24 +1,27 @@
-import { useGridSchemaStore, JsocGridMuiContext, type DataGridCommunityApiRef } from '@/grid';
-import { getIndexOfActiveGridSchema, type GridSchemaStore } from '@jsoc/core/grid';
+import {
+	getIndexOfActiveGridSchema,
+	type GridSchemaStore,
+} from '@jsoc/core/grid';
 import type { GridApiCommunity } from '@mui/x-data-grid/internals';
 import { useContext, useEffect } from 'react';
+import type { DataGridCommunityApiRef } from '../JsocGridMui';
+import { useGridSchemaStore } from '../../../hooks';
 
 /**
- * This hook resolves the below issue:
- * - "if user scrolled to row N in subgrid and closes it, then parent grid also scrolls to row N when rendered"
- *
- * To fix this issue, firstly we are forcing `DataGrid`	remount when the gridSchemaStore is changed. (check `getGridKey` method of `JsocGridMui`). 
- *  - Remount causes the virtual scrollar render with the normal position (first row). 
- *  - Now as the scroller is reset, we scroll to the cell from which the subgrid was opened by calling below hook in `JsocGridMui`
+ * This hook reapply the focus to the grid cell from which the subgrid was opened previosly.
  */
-export function useRestoreGridParentFocus(apiRef: DataGridCommunityApiRef) {
-	const { gridSchemaStore } = useGridSchemaStore();
-
-	useEffect(function () {
-		if (apiRef.current) {
-			restoreGridParentFocus(apiRef.current, gridSchemaStore);
-		}
-	}, []);
+export function useRestoreGridParentFocus(
+	apiRef: DataGridCommunityApiRef,
+	gridSchemaStore: GridSchemaStore
+) {
+	useEffect(
+		function () {
+			if (apiRef.current && gridSchemaStore) {
+				restoreGridParentFocus(apiRef.current, gridSchemaStore);
+			}
+		},
+		[gridSchemaStore]
+	);
 }
 
 export function restoreGridParentFocus(

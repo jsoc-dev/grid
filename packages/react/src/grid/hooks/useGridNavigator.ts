@@ -1,4 +1,4 @@
-import { useGridSchemaStore } from '@/grid';
+import { useGridSchemaStore } from './useGridSchemaStore';
 import { GridSchemaStoreIndex, removeGridSchema, activateGridSchema } from '@jsoc/core/grid';
 
 export function useGridNavigator(index: GridSchemaStoreIndex) {

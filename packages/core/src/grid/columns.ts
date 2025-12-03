@@ -76,10 +76,6 @@ export type ColumnDefinitionProviderParams = {
 	 */
 	columnDataType: ColumnDataType;
 	/**
-	 * primaryColumnKey resolved by the `generateRows` method
-	 */
-	primaryColumnKey: ColumnKey;
-	/**
 	 * schema of the grid that will contain the column
 	 */
 	gridSchema: GridSchema;
@@ -150,21 +146,18 @@ export const FALLBACK_PRIMARY_COLUMN_KEY =
 /**
  * Generates column definitions/configurations for the particular Grid UI Component.
  *
- * @param plainRows array of objects built by the `generateRows` method
  * @param gridSchema schema of the grid for which the columns need to be generated
- * @param primaryColumnKey property in `plainRows` which has a unique value in each row
  * @param defaultColumnFactory default `ColumnFactory` for the Grid UI component
  * @param customColumnFactory custom `ColumnFactory` that is provided by the consumer
  * @returns array of Column definitions
  */
 export function generateColumns<C>(
-	plainRows: GridPlainRows,
 	gridSchema: GridSchema,
-	primaryColumnKey: PrimaryColumnKey,
 	defaultColumnFactory: ColumnFactory<C>,
 	customColumnFactory?: CustomColumnFactory<C>
 ): C[] {
-	const columnKeyValueMap = createColumnKeyValueMap(plainRows);
+	const {gridPlainRows, gridPrimaryColumnKey} = gridSchema;
+	const columnKeyValueMap = createColumnKeyValueMap(gridPlainRows);
 	const columnDataTypeMap = createColumnDataTypeMap(columnKeyValueMap);
 	const columnDataTypeEntries = Object.entries(columnDataTypeMap);
 
@@ -180,8 +173,7 @@ export function generateColumns<C>(
 		const colDef = columnDefProvider({
 			columnKey,
 			columnDataType,
-			primaryColumnKey,
-			gridSchema,
+			gridSchema
 		});
 		columnDefinitionList.push(colDef);
 	}
