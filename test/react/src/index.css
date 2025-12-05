@@ -31,6 +31,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  flex-direction: column; /* when MUI stale tooltip issue occurs, it disrupts whole page layout if flex dir is rows */
   min-width: 320px;
   width: 100%;
   min-height: 100vh;

@@ -1,27 +1,42 @@
 import { useGridNavigator } from '../../../../../hooks/useGridNavigator';
 import { capitalizeFirst } from '@jsoc/core';
-import type { GridSchemaStoreIndex } from '@jsoc/core/grid';
+import {
+	extractGridNameFromGridId,
+	type GridSchemaStoreIndex,
+} from '@jsoc/core/grid';
 import { Chip, Tooltip } from '@mui/material';
+import { useHidePopperDom } from '../../../hooks';
 
 type NavigatorItemProps = {
 	index: GridSchemaStoreIndex;
 };
 export function DefaultNavigatorItemMui({ index }: NavigatorItemProps) {
 	const { gridSchema, activateGrid, removeGrid } = useGridNavigator(index);
-	const { gridName, gridData, gridParent, isActiveGrid } = gridSchema;
-	const tooltip = capitalizeFirst(gridName);
+	const { gridId, isActiveGrid } = gridSchema;
+	const gridName = extractGridNameFromGridId(gridId);
+	const tooltip = capitalizeFirst(gridId);
+
+	const { popperHide, popperRef } = useHidePopperDom();
 
 	return (
 		<>
-			<Tooltip title={tooltip}>
+			<Tooltip
+				title={tooltip}
+				slotProps={{
+					popper: { popperRef },
+				}}
+			>
 				<Chip
-					label={capitalizeFirst(gridName)}
+					label={gridName}
 					// size='small'
 					// variant={isActiveGrid ? 'filled' : 'outlined'}
 					color={isActiveGrid ? 'primary' : 'default'}
 					clickable={!isActiveGrid}
 					aria-pressed={isActiveGrid}
-					onClick={activateGrid}
+					onClick={() => {
+						popperHide();
+						activateGrid();
+					}}
 					onDelete={removeGrid}
 					sx={{ maxWidth: 120 }}
 				/>

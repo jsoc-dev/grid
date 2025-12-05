@@ -19,7 +19,7 @@ export function capitalizeFirst (str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function toString(arg: unknown): string {
+export function ensureString(arg: unknown): string {
 	return isNullOrUndefined(arg) ? '' : String(arg);
 }
 

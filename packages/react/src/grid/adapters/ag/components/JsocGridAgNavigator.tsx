@@ -1,4 +1,5 @@
-import type { GridSchemaStoreIndex } from '@jsoc/core/grid';
+import { capitalizeFirst } from '@jsoc/core';
+import { extractGridNameFromGridId, type GridSchemaStoreIndex } from '@jsoc/core/grid';
 import { useGridNavigator, useGridSchemaStore } from '@jsoc/react/grid';
 import { Fragment } from 'react/jsx-runtime';
 
@@ -10,24 +11,25 @@ export function JsocGridAgNavigator() {
 		<div className="my-2">
 			{gridSchemaStore.map((_, index, __) => (
 				<Fragment key={index}>
-					<JsocGridMuiNavigatorItem index={index} />
+					<JsocGridAgNavigatorItem index={index} />
 				</Fragment>
 			))}
 		</div>
 	);
 }
 
-type JsocGridMuiNavigatorItemProps = {
+type JsocGridAgNavigatorItemProps = {
 	index: GridSchemaStoreIndex;
 };
 
-export function JsocGridMuiNavigatorItem({ index }: JsocGridMuiNavigatorItemProps) {
+export function JsocGridAgNavigatorItem({ index }: JsocGridAgNavigatorItemProps) {
 	const {
 		gridSchema,
 		activateGrid,
 		removeGrid,
 	} = useGridNavigator(index);
-	const {gridName, isActiveGrid} = gridSchema;
+	const {gridId, isActiveGrid} = gridSchema;
+	const subGridName = extractGridNameFromGridId(gridId);
 	const isFirstGrid = index === 0;
 	
 	return (
@@ -62,8 +64,7 @@ export function JsocGridMuiNavigatorItem({ index }: JsocGridMuiNavigatorItemProp
 				}}
 				onClick={!isActiveGrid ? activateGrid : undefined}
 			>
-				{gridName}
-
+				{subGridName}
 				{!isFirstGrid && (
 					<span
 						style={{

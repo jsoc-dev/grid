@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		// target
+		"target": "ES2022", // to support newer methods like Array.at
+		"moduleResolution": "bundler",
+		"lib": ["ES2022", "DOM"],
 
 		// strict checks
 		"strict": true,

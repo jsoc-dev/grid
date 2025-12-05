@@ -1,15 +1,10 @@
 import { SubGridToggleButtonAg } from '../ag/components/SubGridToggleButton';
-import { capitalizeFirst, toString } from '@jsoc/core';
+import { capitalizeFirst, ensureString } from '@jsoc/core';
 import {
-	buildGridId,
-	buildSchemaForSubGrid,
+	buildSubGridSchema,
 	ColumnFactory,
-	ColumnKey,
-	GridSchema,
 	type ColumnDataType,
 	type ColumnDefinitionProviderParams,
-	type GridData,
-	type GridName,
 } from '@jsoc/core/grid';
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 
@@ -46,21 +41,24 @@ export type DefaultCellRendererProviderMapAg = Record<
 export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderMapAg =
 	{
 		arrayOfObjects: function (params) {
-			const { columnKey, gridSchema } = params;
-			const { gridPrimaryColumnKey } = gridSchema;
+			const { columnKey, gridSchema, gridSchemaStore } = params;
+			const { gridIdColumnKey } = gridSchema;
 
 			return (params: ICellRendererParams) => {
 				const { data, value } = params;
 
 				if (value) {
-					const subGridSchema = buildSchemaForSubGrid(
+					const { subGridSchema, searchResult } = buildSubGridSchema(
+						gridSchemaStore,
 						gridSchema,
-						data[gridPrimaryColumnKey],
-						columnKey,
+						{ rowId: data[gridIdColumnKey], columnKey },
 						value
 					);
 					return (
-						<SubGridToggleButtonAg subGridSchema={subGridSchema} />
+						<SubGridToggleButtonAg
+							subGridSchema={subGridSchema}
+							searchResult={searchResult}
+						/>
 					);
 				}
 			};
@@ -106,7 +104,7 @@ export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderM
 			return (params: ICellRendererParams) => {
 				const { value } = params;
 
-				return toString(value);
+				return ensureString(value);
 			};
 		},
 

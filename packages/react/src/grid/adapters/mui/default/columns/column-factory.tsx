@@ -1,7 +1,7 @@
 import { SubGridToggleButtonMui } from '../columns/SubGridToggleButton';
-import { toString, capitalizeFirst } from '@jsoc/core';
+import { ensureString, capitalizeFirst } from '@jsoc/core';
 import {
-	buildSchemaForSubGrid,
+	buildSubGridSchema,
 	ColumnFactory,
 	type ColumnDataType,
 	type ColumnDefinitionProviderParams,
@@ -42,21 +42,24 @@ export type DefaultCellRendererProviderMapMui = Record<
 export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_MUI: DefaultCellRendererProviderMapMui =
 	{
 		arrayOfObjects: function (params) {
-			const { columnKey, gridSchema } = params;
-			const { gridPrimaryColumnKey } = gridSchema;
+			const { columnKey, gridSchema, gridSchemaStore } = params;
+			const { gridIdColumnKey } = gridSchema;
 
 			return function (params: GridRenderCellParams) {
 				const { row, value } = params;
 
 				if (value) {
-					const subGridSchema = buildSchemaForSubGrid(
+					const { subGridSchema, searchResult } = buildSubGridSchema(
+						gridSchemaStore,
 						gridSchema,
-						row[gridPrimaryColumnKey],
-						columnKey,
+						{ rowId: row[gridIdColumnKey], columnKey },
 						value
 					);
 					return (
-						<SubGridToggleButtonMui subGridSchema={subGridSchema} />
+						<SubGridToggleButtonMui
+							searchResult={searchResult}
+							subGridSchema={subGridSchema}
+						/>
 					);
 				}
 			};
@@ -104,7 +107,7 @@ export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_MUI: DefaultCellRendererProvider
 			return (params: GridRenderCellParams) => {
 				const { row, value } = params;
 
-				return toString(value);
+				return ensureString(value);
 			};
 		},
 

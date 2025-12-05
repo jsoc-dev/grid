@@ -8,7 +8,7 @@ type GridTitleProps = {
 };
 export function DefaultNavigatorTitleMui({ index }: GridTitleProps) {
 	const { gridSchema, gridSchemaStore, activateGrid } = useGridNavigator(index);
-	const { gridName, gridData, gridParent, isActiveGrid } = gridSchema;
+	const { gridId, isActiveGrid } = gridSchema;
 	const isOnlyItem = gridSchemaStore.length === 1;
 	return (
 		<Typography
@@ -31,7 +31,7 @@ export function DefaultNavigatorTitleMui({ index }: GridTitleProps) {
 				},
 			}}
 		>
-			{capitalizeFirst(gridName)}
+			{capitalizeFirst(gridId)}
 		</Typography>
 	);
 }

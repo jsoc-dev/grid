@@ -1,11 +1,11 @@
 import { JsocGridContext } from '../../wrapper';
-import { useRestoreGridParentFocus } from './hooks';
 import { COLUMN_FACTORY_MUI, DefaultToolbarMui } from './default';
-import { SubsetKeysOf, deleteKeys } from '@jsoc/core';
+import { SubsetKeysOf, deleteKeys, ensureString } from '@jsoc/core';
 import {
 	generateColumns,
-	getActiveGridSchema,
 	CustomColumnFactory,
+	GridId,
+	searchGridSchema,
 } from '@jsoc/core/grid';
 import { createContext, RefObject, useContext, useMemo } from 'react';
 import {
@@ -17,59 +17,81 @@ import {
 } from '@mui/x-data-grid';
 import { GridApiCommunity } from '@mui/x-data-grid/internals';
 
+//#region props
+/**
+ * Props that customise the `JsocGrid` features
+ * These props are not part of DataGridProps as they don't exist in MUI DataGrid
+ */
+export type JsocGridMuiCustomProps = {
+	gridId: GridId;
+	columnFactory?: CustomColumnFactory<GridColDef>;
+};
+
+/**
+ * Props that are dynamically injected by the adapter `JsocGridMui` into the `DataGrid`
+ * These props are subset of `DataGridProps` but not required to be supplied by the consumer.
+ * If provided, will be overridden by the dynamically injected values.
+ */
+export type JsocGridMuiInjectedPropNames = SubsetKeysOf<
+	DataGridProps,
+	'apiRef' | 'rows' | 'columns' | 'getRowId'
+>;
+export type JsocGridMuiInjectedProps = Pick<
+	DataGridProps,
+	JsocGridMuiInjectedPropNames
+>;
+
+/**
+ * The public adapter component props that will be supplied by the consumer.
+ */
+export type JsocGridMuiProps = {
+	native: Omit<DataGridProps, JsocGridMuiInjectedPropNames>;
+	custom: JsocGridMuiCustomProps;
+};
+//#endregion
+
 /**
  * Adapter component for MUI DataGrid
  */
-export function JsocGridMui(props: JsocGridMuiProps) {
-	const apiRef = useGridApiRef();
+export function JsocGridMui({ native = {}, custom }: JsocGridMuiProps) {
 	const { gridSchemaStore, showDefaultNavigator } =
 		useContext(JsocGridContext);
-	useRestoreGridParentFocus(apiRef, gridSchemaStore); // TODO: remove this and try to persist grid states (using Activity and rendering all grids as list items)
+	const apiRef = useGridApiRef();
+	const { gridSchema } = searchGridSchema(gridSchemaStore, custom.gridId);
+	const { gridRows, gridIdColumnKey } = gridSchema;
+	const getRowId: GridRowIdGetter = (row) => row[gridIdColumnKey];
 
-	const gridSchema = getActiveGridSchema(gridSchemaStore);
-	const { gridId, gridPrimaryColumnKey, gridPlainRows } = gridSchema;
 	/**
-	 * TODO: Memoise col defs (as suggested at https://mui.com/x/react-data-grid/column-definition/#:~:text=The%20columns%20prop%20should,function%20or%20memoize%20it.)
-	 * useMemo didnt solve the issue, grid states are still being reset
-	*/
+	 * Memoising col defs to persist column states. Also suggested at official docs:
+	 * https://mui.com/x/react-data-grid/column-definition/#:~:text=The%20columns%20prop%20should,function%20or%20memoize%20it.
+	 */
 	const columns = useMemo(
 		() =>
 			generateColumns(
+				gridSchemaStore,
 				gridSchema,
 				COLUMN_FACTORY_MUI,
-				props.customColumnFactory
+				custom.columnFactory
 			),
-		[gridSchema, props.customColumnFactory]
+		// re-generate only when current gridSchema or columnFactory prop changes
+		[gridSchema, custom.columnFactory]
 	);
 
-	const getRowId: GridRowIdGetter = (row) => row[gridPrimaryColumnKey];
-	const showToolbar = showDefaultNavigator || props.showToolbar;
+	const showToolbar = showDefaultNavigator || native.showToolbar;
 	const slots = {
-		...props.slots,
+		...native.slots,
 		...(showDefaultNavigator && {
 			toolbar: DefaultToolbarMui,
 		}),
 	};
-	const userSuppliedProps = deleteKeys(props, [
-		...JSOC_GRID_MUI_CUSTOM_PROP_NAMES,
-	]);
 
 	return (
 		<JsocGridMuiContext.Provider value={{ apiRef }}>
 			<DataGrid
-				{...userSuppliedProps}
-				/**
-				 * gridId is used as key so that DataGrid is remounted when gridSchemaStore is changed.
-				 * This is necessary as MUI `DataGrid` internal states (like scroll position) does not
-				 * reset across rerenders unless the component is fully remounted, due to which the scroll
-				 * position persists even if the previous grid schema and current grid schemas are different.
-				 * Also, the events like "focus lose" of old grid cells still continue to happen which causes
-				 * code breaks as the previous grid cell won't be rendered in the current grid.
-				 * TODO: Try to achieve this using list items
-				 */
-				key={gridId}
+				{...native}
+				// key={gridId} // not needed now as the purpose is achieved using Activity mode hidden
 				apiRef={apiRef}
-				rows={gridPlainRows}
+				rows={gridRows}
 				getRowId={getRowId}
 				columns={columns}
 				showToolbar={showToolbar}
@@ -86,41 +108,3 @@ export type JsocGridMuiContextValue = {
 export const JsocGridMuiContext = createContext<JsocGridMuiContextValue>({
 	apiRef: { current: null },
 });
-
-/**
- * Props that customise or disable the `JsocGrid` features
- * These props are not part of DataGridProps as they don't exist in MUI DataGrid
- */
-export type JsocGridMuiCustomProps = {
-	customColumnFactory?: CustomColumnFactory<GridColDef>;
-};
-export type JsocGridMuiCustomPropNames = keyof JsocGridMuiCustomProps;
-/**
- * List of names of all the Custom Props.
- * Using this list, custom props will be removed from supplied props before passing to `DataGrid`
- */
-export const JSOC_GRID_MUI_CUSTOM_PROP_NAMES: Array<JsocGridMuiCustomPropNames> =
-	['customColumnFactory'];
-
-/**
- * Props that are dynamically injected by the adapter `JsocGridMui` into the `DataGrid`
- * These props are subset of `DataGridProps` but not required to be supplied by the consumer. If provided, will be ignored.
- */
-export type JsocGridMuiInjectedProps = Pick<
-	DataGridProps,
-	JsocGridMuiInjectedPropNames
->;
-export type JsocGridMuiInjectedPropNames = SubsetKeysOf<
-	DataGridProps,
-	'apiRef' | 'rows' | 'columns' | 'getRowId'
->;
-
-/**
- * The public adapter props that will be supplied by the consumer.
- * Intersection of non-injected `DataGridProps` and `JsocGridMuiCustomProps`
- */
-export type JsocGridMuiProps = Omit<
-	DataGridProps,
-	JsocGridMuiInjectedPropNames
-> &
-	JsocGridMuiCustomProps;

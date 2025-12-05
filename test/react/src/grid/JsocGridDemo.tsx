@@ -4,11 +4,12 @@ import { GridUiChoice } from './components/GridUiChoice';
 import { GridUiOutput } from './components/GridUiOutput';
 import products from './json/products.json'
 import { JsocGridDemoContext } from './JsocGridDemoContext';
-import { useState } from 'react';
 import type { GridData } from '@jsoc/core/grid';
-import type { GridUiAdapterName } from '@jsoc/react/grid';
+import { type GridUiAdapterName } from '@jsoc/react/grid';
+import { useState } from 'react';
 
 export function JsocGridDemo() {
+
 	const [gridName, setGridName] = useState('products')
 	const [gridData, setGridData] = useState<GridData>(products);
 	const [gridDataError, setGridDataError] = useState('');

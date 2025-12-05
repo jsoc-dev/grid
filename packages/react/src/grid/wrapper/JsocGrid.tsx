@@ -1,33 +1,27 @@
-import { PlainObject } from '@jsoc/core';
-import {
-	init,
-	type GridData,
-	type GridName,
-	type GridSchemaStore,
-} from '@jsoc/core/grid';
-import {
-	createContext,
-	Dispatch,
-	SetStateAction,
-	FC,
-	ReactNode,
-	useEffect,
-	useState,
-	type JSX,
-	Activity,
-} from 'react';
 import {
 	GRID_UI_ADAPTERS,
 	type GridUiAdapterComponentProps,
 	type GridUiAdapterName,
 } from './adapter-registry';
+import { PlainObject } from '@jsoc/core';
+import { initGridSchemaStore, type GridData, type GridSchemaStore } from '@jsoc/core/grid';
+import {
+	type FC,
+	type JSX,
+	type ReactNode,
+	type Dispatch,
+	type SetStateAction,
+	useState,
+	useEffect,
+	createContext,
+	Activity,
+} from 'react';
 
 export type JsocGridProps<U extends GridUiAdapterName> = {
-	name: GridName;
 	data: GridData;
 	children?: ReactNode;
 	uiAdapterName: U;
-	uiAdapterProps?: GridUiAdapterComponentProps<U>;
+	uiAdapterProps: GridUiAdapterComponentProps<U>;
 	/**
 	 * Allows consumer to wrap or transform the UiAdapter component by providing a render function
 	 */
@@ -51,18 +45,18 @@ export const JsocGridContext = createContext<JsocGridContextValue>({
 });
 
 export function JsocGrid<U extends GridUiAdapterName>({
-	name,
 	data,
 	uiAdapterName,
 	uiAdapterProps,
-	uiAdapterRenderer = (adapter) => adapter,
+	uiAdapterRenderer = (adapter) => adapter, // default renderer just returns the adapter as it is
 	showDefaultNavigator = true,
 }: JsocGridProps<U>) {
-	const [gridSchemaStore, setGridSchemaStore] = useState(init(name, data));
+	const { gridId } = uiAdapterProps.custom;
+	const [gridSchemaStore, setGridSchemaStore] = useState(initGridSchemaStore(gridId, data));
 
 	useEffect(() => {
-		setGridSchemaStore(init(name, data));
-	}, [name, data]);
+		setGridSchemaStore(initGridSchemaStore(gridId, data));
+	}, [gridId, data]);
 
 	const UiAdapter = GRID_UI_ADAPTERS[uiAdapterName] as FC<
 		GridUiAdapterComponentProps<U> | PlainObject
@@ -76,7 +70,24 @@ export function JsocGrid<U extends GridUiAdapterName>({
 				showDefaultNavigator,
 			}}
 		>
-			{uiAdapterRenderer(<UiAdapter {...uiAdapterProps} />)}
+			{gridSchemaStore.map((gridSchema) => (
+				<Activity
+					key={gridSchema.gridId}
+					mode={gridSchema.isActiveGrid ? 'visible' : 'hidden'}
+				>
+					{uiAdapterRenderer(
+						<UiAdapter
+							{...uiAdapterProps}
+							{...{
+								custom: {
+									...uiAdapterProps.custom,
+									gridId: gridSchema.gridId,
+								},
+							}}
+						/>
+					)}
+				</Activity>
+			))}
 		</JsocGridContext.Provider>
 	);
 }
