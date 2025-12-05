@@ -1,6 +1,6 @@
 import { JsocGridContext } from '../../wrapper';
 import { COLUMN_FACTORY_MUI, DefaultToolbarMui } from './default';
-import { SubsetKeysOf, deleteKeys, ensureString } from '@jsoc/core';
+import { SubsetKeysOf} from '@jsoc/core';
 import {
 	generateColumns,
 	CustomColumnFactory,
@@ -68,7 +68,6 @@ export function JsocGridMui({ native = {}, custom }: JsocGridMuiProps) {
 	const columns = useMemo(
 		() =>
 			generateColumns(
-				gridSchemaStore,
 				gridSchema,
 				COLUMN_FACTORY_MUI,
 				custom.columnFactory
@@ -89,7 +88,6 @@ export function JsocGridMui({ native = {}, custom }: JsocGridMuiProps) {
 		<JsocGridMuiContext.Provider value={{ apiRef }}>
 			<DataGrid
 				{...native}
-				// key={gridId} // not needed now as the purpose is achieved using Activity mode hidden
 				apiRef={apiRef}
 				rows={gridRows}
 				getRowId={getRowId}

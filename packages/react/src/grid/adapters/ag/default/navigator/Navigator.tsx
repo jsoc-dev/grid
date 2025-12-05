@@ -1,14 +1,15 @@
-import { capitalizeFirst } from '@jsoc/core';
-import { extractGridNameFromGridId, type GridSchemaStoreIndex } from '@jsoc/core/grid';
+import {
+	extractGridNameFromGridId,
+	type GridSchemaStoreIndex,
+} from '@jsoc/core/grid';
 import { useGridNavigator, useGridSchemaStore } from '@jsoc/react/grid';
 import { Fragment } from 'react/jsx-runtime';
-
 
 export function JsocGridAgNavigator() {
 	const { gridSchemaStore } = useGridSchemaStore();
 
 	return (
-		<div className="my-2">
+		<div className='my-2'>
 			{gridSchemaStore.map((_, index, __) => (
 				<Fragment key={index}>
 					<JsocGridAgNavigatorItem index={index} />
@@ -22,16 +23,14 @@ type JsocGridAgNavigatorItemProps = {
 	index: GridSchemaStoreIndex;
 };
 
-export function JsocGridAgNavigatorItem({ index }: JsocGridAgNavigatorItemProps) {
-	const {
-		gridSchema,
-		activateGrid,
-		removeGrid,
-	} = useGridNavigator(index);
-	const {gridId, isActiveGrid} = gridSchema;
+export function JsocGridAgNavigatorItem({
+	index,
+}: JsocGridAgNavigatorItemProps) {
+	const { gridSchema, activateGrid, removeGrid } = useGridNavigator(index);
+	const { gridId, isActiveGrid } = gridSchema;
 	const subGridName = extractGridNameFromGridId(gridId);
 	const isFirstGrid = index === 0;
-	
+
 	return (
 		<div
 			style={{
@@ -40,16 +39,18 @@ export function JsocGridAgNavigatorItem({ index }: JsocGridAgNavigatorItemProps)
 				gap: 6,
 			}}
 		>
-			{ // separator
-			!isFirstGrid && (
-				<span
-					style={{
-						color: '#9ca3af',
-					}}
-				>
-					&gt;
-				</span>
-			)}
+			{
+				// separator
+				!isFirstGrid && (
+					<span
+						style={{
+							color: '#9ca3af',
+						}}
+					>
+						&gt;
+					</span>
+				)
+			}
 			<span
 				style={{
 					padding: '4px 8px',

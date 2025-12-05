@@ -4,7 +4,11 @@ import {
 	type GridUiAdapterName,
 } from './adapter-registry';
 import { PlainObject } from '@jsoc/core';
-import { initGridSchemaStore, type GridData, type GridSchemaStore } from '@jsoc/core/grid';
+import {
+	type GridData,
+	type GridSchemaStore,
+	initGridSchemaStore,
+} from '@jsoc/core/grid';
 import {
 	type FC,
 	type JSX,
@@ -52,7 +56,9 @@ export function JsocGrid<U extends GridUiAdapterName>({
 	showDefaultNavigator = true,
 }: JsocGridProps<U>) {
 	const { gridId } = uiAdapterProps.custom;
-	const [gridSchemaStore, setGridSchemaStore] = useState(initGridSchemaStore(gridId, data));
+	const [gridSchemaStore, setGridSchemaStore] = useState(
+		initGridSchemaStore(gridId, data)
+	);
 
 	useEffect(() => {
 		setGridSchemaStore(initGridSchemaStore(gridId, data));

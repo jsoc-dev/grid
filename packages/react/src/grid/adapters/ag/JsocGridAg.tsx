@@ -1,12 +1,11 @@
 import { JsocGridContext } from '../../wrapper/JsocGrid';
-import { COLUMN_FACTORY_AG } from '../ag/column-factory';
-import { deleteKeys, ensureString, SubsetKeysOf } from '@jsoc/core';
-import { useContext } from 'react';
+import { COLUMN_FACTORY_AG, JsocGridAgNavigator } from './default';
+import { SubsetKeysOf } from '@jsoc/core';
+import { useContext, useMemo } from 'react';
 import {
 	type GridId,
 	type CustomColumnFactory,
 	generateColumns,
-	getActiveGridSchema,
 	searchGridSchema,
 } from '@jsoc/core/grid';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
@@ -61,19 +60,26 @@ export function JsocGridAg({ native = {}, custom }: JsocGridAgProps) {
 	const { gridSchema } = searchGridSchema(gridSchemaStore, custom.gridId);
 	const { gridRows, gridIdColumnKey } = gridSchema;
 	const getRowId: GetRowIdFunc = ({ data }) => data[gridIdColumnKey];
-	const columnDefs = generateColumns(
-		gridSchemaStore,
-		gridSchema,
-		COLUMN_FACTORY_AG,
-		custom.columnFactory
+
+	const columnDefs = useMemo(
+		() =>
+			generateColumns(
+				gridSchema,
+				COLUMN_FACTORY_AG,
+				custom.columnFactory
+			),
+		[gridSchema, custom.columnFactory]
 	);
 
 	return (
-		<AgGridReact
-			{...native}
-			rowData={gridRows}
-			getRowId={getRowId}
-			columnDefs={columnDefs}
-		/>
+		<>
+			{showDefaultNavigator && <JsocGridAgNavigator />}
+			<AgGridReact
+				{...native}
+				rowData={gridRows}
+				getRowId={getRowId}
+				columnDefs={columnDefs}
+			/>
+		</>
 	);
 }

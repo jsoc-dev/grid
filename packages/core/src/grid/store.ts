@@ -5,7 +5,7 @@ import {
 	type GridRowId,
 	type GridRows,
 	type IdColumnKey,
-} from '../grid';
+} from '.';
 import {
 	capitalizeFirst,
 	isIndexWithinLength,
@@ -28,13 +28,16 @@ export type GridData = Readonly<PlainObject | Array<PlainObject>>;
  */
 export type ActiveGridFlag = boolean;
 /**
- * object containing details of a grid opened by the user, it is stored in `GridSchemaStore`
- */
-/**
- * ColumnKey of the parent grid which contains the data for subGrid
+ * Object that contains the abstract location of a grid cell.
  */
 export type GridCellLocation = {
+	/**
+	 * Value of `IdColumnKey` column in the row that contains this cell.
+	 */
 	rowId: GridRowId;
+	/**
+	 * `ColumnKey` which this cell corresponds to.
+	 */
 	columnKey: ColumnKey;
 };
 
@@ -62,12 +65,14 @@ export function initGridSchemaStore(
 	gridData: GridData
 ): GridSchemaStore {
 	const { gridRows, gridIdColumnKey } = generateRows(gridData);
-	return [{
-		gridId,
-		gridRows,
-		gridIdColumnKey,
-		isActiveGrid: true,
-	}];
+	return [
+		{
+			gridId,
+			gridRows,
+			gridIdColumnKey,
+			isActiveGrid: true,
+		},
+	];
 }
 
 export type BuildSubGridSchemaResult = {
@@ -76,20 +81,18 @@ export type BuildSubGridSchemaResult = {
 };
 export function buildSubGridSchema(
 	gridSchemaStore: GridSchemaStore,
-	parentGridSchema: GridSchema,
-	parentGridCellLocation: GridCellLocation,
-	subGridData: GridData
+	subGridData: GridData,
+	parentGridId: GridId,
+	parentGridCellLocation: GridCellLocation
 ): BuildSubGridSchemaResult {
-	const subGridId = buildSubGridId(
-		parentGridSchema.gridId,
-		parentGridCellLocation
-	);
+	const subGridId = buildSubGridId(parentGridId, parentGridCellLocation);
 	const searchResult = searchGridSchema(gridSchemaStore, subGridId);
 
 	let subGridSchema: GridSchema;
 	if (searchResult.isPresentInStore) {
-		// reusing old value to improve performance by minimizing repetitive work
-		// TODO: Test whether it is causing any issues as value is reused (can the value be old/not updated somehow?)
+		// Reusing old value as GridRows are usually stable and only changes when user changes the GridData.
+		// As UI Components usually modify the row models (copied values) instead of provided rows.
+		// TODO: Meed to check is there any unnoticed scenario when stale values can occur.
 		subGridSchema = searchResult.gridSchema;
 	} else {
 		const { gridRows, gridIdColumnKey } = generateRows(subGridData);
@@ -154,30 +157,30 @@ export function activateGridSchema(
 }
 
 /**
- * Creates a new `GridSchemaStore` by activating the gridSchema if it already exists
- * in the provided `gridSchemaStore` otherwise by adding and activating the provided gridSchema
+ * Creates a new `GridSchemaStore` by adding a new schema and activating it in the
+ * provided `gridSchemaStore`.
  * @param gridSchemaStore
- * @param gridSchema which needs to added or updated
- * @returns `GridSchemaStore`
+ * @param subGridId - id of the grid which needs to be added
+ * @param subGridData - data of the grid which needs to be added
  */
-export function upsertGridSchema(
+export function addGridSchema(
 	gridSchemaStore: GridSchemaStore,
-	gridSchema: GridSchema,
-	searchResult: SearchGridSchemaResult
+	subGridId: GridId,
+	subGridData: GridData
 ): GridSchemaStore {
-	const { isPresentInStore, gridSchemaStoreIndex } = searchResult;
-	if (isPresentInStore) {
-		return activateGridSchema(gridSchemaStore, gridSchemaStoreIndex);
-	} else {
-		const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-		const slicedUntilActiveIndex = gridSchemaStore.slice(
-			0,
-			activeIndex + 1
-		); // + 1 is added as end param is exclusive but activeIndex should be included in new store
-		const copy = [...slicedUntilActiveIndex, gridSchema]; // add the new item in the last index
+	const { gridRows, gridIdColumnKey } = generateRows(subGridData);
+	const gridSchema: GridSchema = {
+		gridId: subGridId,
+		gridRows,
+		gridIdColumnKey,
+		isActiveGrid: true,
+	};
 
-		return activateGridSchema(copy, copy.length - 1); // activate the added item
-	}
+	const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
+	const slicedUntilActiveIndex = gridSchemaStore.slice(0, activeIndex + 1); // + 1 is added as end param is exclusive but activeIndex should be included in new store
+	const copy = [...slicedUntilActiveIndex, gridSchema]; // add the new item in the last index
+
+	return activateGridSchema(copy, copy.length - 1); // activate the added item
 }
 
 /**

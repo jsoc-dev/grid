@@ -9,7 +9,7 @@ import {
 	isString,
 } from '../utils';
 import type { GridRows } from './rows';
-import { GridSchema, type GridSchemaStore } from './schema';
+import { GridSchema, type GridId } from './store';
 
 /**
  * Property in a `GridRow`
@@ -21,7 +21,7 @@ export type ColumnKey = string;
 export type IdColumnKey = 'id' | typeof FALLBACK_ID_COLUMN_KEY;
 /**
  * Value of a property in a `GridRow`.
- * - Note: As `GridRows` are generated from the `GridData` which is a JSON, the value 
+ * - Note: As `GridRows` are generated from the `GridData` which is a JSON, the value
  * 	can be one of the JSON value types (array, boolean, null, number, object, string)
  */
 export type ColumnValue = unknown;
@@ -44,47 +44,53 @@ export type ColumnDataType =
 	| 'string'
 	| 'unresolved';
 
-export interface ColumnDataTypeResolverEntry {
-	name: ColumnDataType;
-	check: (columnValues: ColumnValue[]) => boolean;
-}
-
+export type ColumnDataTypeResolverMethod = (
+	columnValues: ColumnValue[]
+) => ColumnDataType | false;
 /**
  * Ordered list of column data-type resolvers.
- * Each entry contains the data-type name and its matching check function.
  */
-export const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverEntry[] = [
-	{ name: 'arrayOfObjects', check: (columnValues) => columnValues.every(isArrayOfObjects) },
-	{ name: 'arrayOfStrings', check: (columnValues) => columnValues.every(isArrayOfStrings) },
-	{ name: 'boolean', check: (columnValues) => columnValues.every(isBoolean) },
-	{ name: 'number', check: (columnValues) => columnValues.every(isNumber)  },
-	{ name: 'object', check: (columnValues) => columnValues.every(isPlainObject)  },
-	{ name: 'stringDate', check: (columnValues) => columnValues.every(isConvertibleToDate)  }, // must come before string
-	{ name: 'string', check: (columnValues) => columnValues.every(isString)  },
-	{ name: 'unresolved', check: () => true }, // consider it as unresolved
+export const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverMethod[] = [
+	(colValues) => colValues.every(isArrayOfObjects) && 'arrayOfObjects',
+	(colValues) => colValues.every(isArrayOfStrings) && 'arrayOfStrings',
+	(colValues) => colValues.every(isBoolean) && 'boolean',
+	(colValues) => colValues.every(isNumber) && 'number',
+	(colValues) => colValues.every(isPlainObject) && 'object',
+	(colValues) => colValues.every(isConvertibleToDate) && 'stringDate',
+	(colValues) => colValues.every(isString) && 'string',
 ];
 
 /**
- * ColumnDefinitionProvider method params object
+ * ColumnDefinitionProvider method params object.
+ *
+ * WARNING: Don't provide any value that is not stable in params object.
+ * As it can cause stale values issues if the adapter component only calls
+ * the generateColumns method once or only when needed.
+ * - For example: In React adapters, the generateColumns method is memoised,
+ * 	so if we provide any value here that is not under dependency of useMemo
+ * 	then ColumnDefinitionProvider will reuse the stale value that can cause issues.
  */
 export type ColumnDefinitionProviderParams = {
 	/**
-	 * ColumnKey for which the column definition needs to be generated
+	 * `ColumnKey` of the column for which the column definition needs to be generated
 	 */
 	columnKey: ColumnKey;
 	/**
-	 * ColumnDataType of the column
+	 * `ColumnDataType` of the column
 	 */
 	columnDataType: ColumnDataType;
 	/**
-	 * schema of the grid that will contain the column
+	 * `GridId` of the grid that will contain the column
 	 */
-	gridSchema: GridSchema;
-	gridSchemaStore: GridSchemaStore
+	gridId: GridId;
+	/**
+	 * `IdColumnKey` of the grid that will contain the column
+	 */
+	gridIdColumnKey: IdColumnKey;
 };
 
 /**
- * Factory method that provides column definition for the `columnKey`
+ * Factory method that provides column definition for a column `ColumnKey`.
  */
 export type ColumnDefinitionProvider<C> = (
 	params: ColumnDefinitionProviderParams
@@ -154,12 +160,11 @@ export const FALLBACK_ID_COLUMN_KEY =
  * @returns array of Column definitions
  */
 export function generateColumns<C>(
-	gridSchemaStore: GridSchemaStore,
 	gridSchema: GridSchema,
 	defaultColumnFactory: ColumnFactory<C>,
 	customColumnFactory?: CustomColumnFactory<C>
 ): C[] {
-	const {gridRows} = gridSchema;
+	const { gridId, gridRows, gridIdColumnKey } = gridSchema;
 	const columnKeyValueMap = createColumnKeyValueMap(gridRows);
 	const columnDataTypeMap = createColumnDataTypeMap(columnKeyValueMap);
 	const columnDataTypeEntries = Object.entries(columnDataTypeMap);
@@ -176,8 +181,8 @@ export function generateColumns<C>(
 		const colDef = columnDefProvider({
 			columnKey,
 			columnDataType,
-			gridSchema,
-			gridSchemaStore
+			gridId,
+			gridIdColumnKey,
 		});
 		columnDefinitionList.push(colDef);
 	}
@@ -209,9 +214,10 @@ function createColumnDataTypeMap(
 		}
 
 		let resolvedDataType: ColumnDataType = 'unresolved';
-		for (const { name, check } of COLUMN_DATA_TYPE_RESOLVER_LIST) {
-			if (check(columnValues)) {
-				resolvedDataType = name;
+		for (const method of COLUMN_DATA_TYPE_RESOLVER_LIST) {
+			const returnVal = method(columnValues);
+			if (returnVal) {
+				resolvedDataType = returnVal;
 				break;
 			}
 		}

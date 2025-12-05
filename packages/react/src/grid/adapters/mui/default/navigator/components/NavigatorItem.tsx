@@ -1,11 +1,10 @@
-import { useGridNavigator } from '../../../../../hooks/useGridNavigator';
-import { capitalizeFirst } from '@jsoc/core';
+import { useHidePopperDom } from '../../../hooks';
+import { useGridNavigator } from '../../../../../hooks';
 import {
 	extractGridNameFromGridId,
 	type GridSchemaStoreIndex,
 } from '@jsoc/core/grid';
 import { Chip, Tooltip } from '@mui/material';
-import { useHidePopperDom } from '../../../hooks';
 
 type NavigatorItemProps = {
 	index: GridSchemaStoreIndex;
@@ -14,14 +13,12 @@ export function DefaultNavigatorItemMui({ index }: NavigatorItemProps) {
 	const { gridSchema, activateGrid, removeGrid } = useGridNavigator(index);
 	const { gridId, isActiveGrid } = gridSchema;
 	const gridName = extractGridNameFromGridId(gridId);
-	const tooltip = capitalizeFirst(gridId);
-
 	const { popperHide, popperRef } = useHidePopperDom();
 
 	return (
 		<>
 			<Tooltip
-				title={tooltip}
+				title={gridId} // TODO: use better title as gridId is not user friendly
 				slotProps={{
 					popper: { popperRef },
 				}}

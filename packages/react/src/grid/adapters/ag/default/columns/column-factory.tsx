@@ -1,7 +1,6 @@
-import { SubGridToggleButtonAg } from '../ag/components/SubGridToggleButton';
+import { ToggleSubGridButtonAg } from './ToggleSubGridButton';
 import { capitalizeFirst, ensureString } from '@jsoc/core';
 import {
-	buildSubGridSchema,
 	ColumnFactory,
 	type ColumnDataType,
 	type ColumnDefinitionProviderParams,
@@ -9,20 +8,21 @@ import {
 import type { ColDef, ICellRendererParams } from 'ag-grid-community';
 
 export const COLUMN_FACTORY_AG: ColumnFactory<ColDef> = {
-	arrayOfObjects: defaultColumnDefinitionProviderAg,
-	arrayOfStrings: defaultColumnDefinitionProviderAg,
-	boolean: defaultColumnDefinitionProviderAg,
-	number: defaultColumnDefinitionProviderAg,
-	object: defaultColumnDefinitionProviderAg,
-	stringDate: defaultColumnDefinitionProviderAg,
-	string: defaultColumnDefinitionProviderAg,
-	unresolved: defaultColumnDefinitionProviderAg,
+	arrayOfObjects: colDefProviderAg,
+	arrayOfStrings: colDefProviderAg,
+	boolean: colDefProviderAg,
+	number: colDefProviderAg,
+	object: colDefProviderAg,
+	stringDate: colDefProviderAg,
+	string: colDefProviderAg,
+	unresolved: colDefProviderAg,
 };
 
-export function defaultColumnDefinitionProviderAg(
+export function colDefProviderAg(
 	params: ColumnDefinitionProviderParams
 ): ColDef {
 	const { columnKey, columnDataType } = params;
+
 	return {
 		field: columnKey,
 		headerName: capitalizeFirst(columnKey),
@@ -41,23 +41,20 @@ export type DefaultCellRendererProviderMapAg = Record<
 export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderMapAg =
 	{
 		arrayOfObjects: function (params) {
-			const { columnKey, gridSchema, gridSchemaStore } = params;
-			const { gridIdColumnKey } = gridSchema;
+			const { columnKey, gridId, gridIdColumnKey } = params;
 
 			return (params: ICellRendererParams) => {
 				const { data, value } = params;
 
 				if (value) {
-					const { subGridSchema, searchResult } = buildSubGridSchema(
-						gridSchemaStore,
-						gridSchema,
-						{ rowId: data[gridIdColumnKey], columnKey },
-						value
-					);
 					return (
-						<SubGridToggleButtonAg
-							subGridSchema={subGridSchema}
-							searchResult={searchResult}
+						<ToggleSubGridButtonAg
+							subGridData={value}
+							parentGridId={gridId}
+							parentGridCellLocation={{
+								rowId: data[gridIdColumnKey],
+								columnKey,
+							}}
 						/>
 					);
 				}
@@ -66,7 +63,7 @@ export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderM
 
 		arrayOfStrings: function (params) {
 			return (params: ICellRendererParams) => {
-				const { value } = params;
+				// const { value } = params;
 
 				return 'Array of string column'; // TODO
 			};
@@ -94,7 +91,7 @@ export const DEFAULT_CELL_RENDERER_PROVIDER_MAP_AG: DefaultCellRendererProviderM
 
 		stringDate: function (params) {
 			return (params: ICellRendererParams) => {
-				const { value } = params;
+				// const { value } = params;
 
 				return 'Date Column'; // TODO
 			};
