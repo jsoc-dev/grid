@@ -20,8 +20,13 @@
 		// "paths": {
 			/*
 			 * Monorepo issue: Consumer packages fail to resolve types from this package that depend on
-			 * internal path aliases (e.g., '@/utils'). For example, `GridData` (dependent on `@/utils/PlainObject`)
-			 * resolves to `any` in `@jsoc/react`, while `GridName` (without such dependencies) works correctly.
+			 * internal path aliases (e.g., '@/utils'). 
+			 * Example:
+			 * Define a type in any file of @jsoc/core
+			 * ```type ABC = Array<XYZ>```  // type XYZ in defined in other file of @jsoc/core and imported using type alias, lets say '@/utils'
+			 * Now if we import type ABC `@jsoc/react`, its type will shows as `any`.
+			 * On the other hand if XYZ was imported using relative import like "../../utils" it would show correct type.
+
 			 * This is because the consumer's TypeScript server doesn't inherit this package's `paths` configuration.
 			 * TypeScript project references were considered but did not resolve this issue.
 			 */

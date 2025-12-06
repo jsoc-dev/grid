@@ -3,7 +3,7 @@ import { isString } from '../';
 const ISO_REGEX =
 	/^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/;
 
-export function isConvertibleToDate(arg: unknown): boolean {
+export function isISODateString(arg: unknown): boolean {
 	if (
 		!isString(arg) ||
 		!isNaN(Number(arg)) || // Reject numeric-only strings like "01082002"

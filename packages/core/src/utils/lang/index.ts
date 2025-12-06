@@ -7,3 +7,4 @@ export * from './number';
 export * from './string';
 export * from './symbol';
 export * from './function';
+export * from './json';

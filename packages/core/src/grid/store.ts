@@ -2,27 +2,25 @@ import { JsocGridError } from '../errors';
 import {
 	generateRows,
 	type ColumnKey,
+	type GridDataReadonly,
 	type GridRowId,
 	type GridRows,
 	type IdColumnKey,
 } from '.';
-import {
-	capitalizeFirst,
-	isIndexWithinLength,
-	ensureString,
-	type PlainObject,
-} from '../utils';
+import { capitalizeFirst, isIndexWithinLength, ensureString } from '../utils';
 
 /**
- * - Either gridId of the root grid provided by the consumer or
+ * Id to use if the consumer didn't pass any ID for the the root grid.
+ * It doesn't need to be randomised as ids of subgrids can't conflict with 
+ * this as they are combination of multiple values. (Refer `buildSubGridId`).
+ */
+export const FALLBACK_ROOT_GRID_ID = "Grid";
+/**
+ * - Either gridId of the root grid(default/consumer-provided) or
  * - Unique id build by the `buildSubGridId` method to uniquely identify a `GridSchema`
  * 	inside the `GridSchemaStore`.
  */
-export type GridId = string;
-/**
- * JSON data provided by the consumer
- */
-export type GridData = Readonly<PlainObject | Array<PlainObject>>;
+export type GridId = typeof FALLBACK_ROOT_GRID_ID | string;
 /**
  * flag that indicates which GridSchema from the GridSchemaStore is active(rendered) on the UI
  */
@@ -62,7 +60,7 @@ export type GridSchemaStoreIndex = number;
  */
 export function initGridSchemaStore(
 	gridId: GridId,
-	gridData: GridData
+	gridData: GridDataReadonly
 ): GridSchemaStore {
 	const { gridRows, gridIdColumnKey } = generateRows(gridData);
 	return [
@@ -73,42 +71,6 @@ export function initGridSchemaStore(
 			isActiveGrid: true,
 		},
 	];
-}
-
-export type BuildSubGridSchemaResult = {
-	subGridSchema: GridSchema;
-	searchResult: SearchGridSchemaResult;
-};
-export function buildSubGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	subGridData: GridData,
-	parentGridId: GridId,
-	parentGridCellLocation: GridCellLocation
-): BuildSubGridSchemaResult {
-	const subGridId = buildSubGridId(parentGridId, parentGridCellLocation);
-	const searchResult = searchGridSchema(gridSchemaStore, subGridId);
-
-	let subGridSchema: GridSchema;
-	if (searchResult.isPresentInStore) {
-		// Reusing old value as GridRows are usually stable and only changes when user changes the GridData.
-		// As UI Components usually modify the row models (copied values) instead of provided rows.
-		// TODO: Meed to check is there any unnoticed scenario when stale values can occur.
-		subGridSchema = searchResult.gridSchema;
-	} else {
-		const { gridRows, gridIdColumnKey } = generateRows(subGridData);
-
-		subGridSchema = {
-			gridId: subGridId,
-			gridRows,
-			gridIdColumnKey,
-			isActiveGrid: true,
-		};
-	}
-
-	return {
-		subGridSchema,
-		searchResult,
-	};
 }
 
 /**
@@ -166,7 +128,7 @@ export function activateGridSchema(
 export function addGridSchema(
 	gridSchemaStore: GridSchemaStore,
 	subGridId: GridId,
-	subGridData: GridData
+	subGridData: GridDataReadonly
 ): GridSchemaStore {
 	const { gridRows, gridIdColumnKey } = generateRows(subGridData);
 	const gridSchema: GridSchema = {

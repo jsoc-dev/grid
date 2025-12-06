@@ -3,6 +3,13 @@ import { isNumber, isPlainObject, isString, type PlainObject } from '../';
 export const MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1;
 
 /**
+ * Type-safe version of the native Array.isArray
+ */
+export function isArray(arg: unknown): arg is Array<unknown> {
+	return Array.isArray(arg);
+}
+
+/**
  * Wraps the given value in an array if it is not an array.
  * Note:
  * - Unlike `Array.from()`, this does **not** split strings into characters.
@@ -14,7 +21,7 @@ export const MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1;
  * ensureArray('abc');      // => ['abc']
  */
 export function ensureArray<T>(arg: T | T[]): T[] {
-	return Array.isArray(arg) ? arg : [arg];
+	return isArray(arg) ? arg : [arg];
 }
 
 export function joinStringArray(arg: readonly string[]) {
@@ -42,9 +49,9 @@ export function isIndexWithinLength(
 }
 
 export function isArrayOfObjects(arg: unknown): arg is Array<PlainObject> {
-	return Array.isArray(arg) && arg.every(isPlainObject);
+	return isArray(arg) && arg.every(isPlainObject);
 }
 
 export function isArrayOfStrings(arg: unknown): arg is Array<string> {
-	return Array.isArray(arg) && arg.every(isString);
+	return isArray(arg) && arg.every(isString);
 }
