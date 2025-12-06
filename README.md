@@ -85,14 +85,13 @@ Each package other than @jsoc/core, will contain set of components for a framewo
 
 ## Documentation
   
-To be added in the /docs folder.
+Docsite under development! Check progress under /docsite folder. 
 
 ---
 
 ## Contributing
 
-Contributions are welcome!
-Refer docs/CONTRIBUTING.md
+Contributions are welcome! Refer [Contributing Guide](https://github.com/jsoc-dev/jsoc?tab=contributing-ov-file)
 
 ---
 

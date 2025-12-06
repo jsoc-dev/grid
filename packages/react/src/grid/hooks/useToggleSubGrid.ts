@@ -1,7 +1,7 @@
 import { useGridSchemaStore } from './useGridSchemaStore';
 import {
 	type GridId,
-	type GridData,
+	type GridDataReadonly,
 	type GridCellLocation,
 	addGridSchema,
 	removeGridSchema,
@@ -11,7 +11,7 @@ import {
 } from '@jsoc/core/grid';
 
 export function useToggleSubGrid(
-	subGridData: GridData,
+	subGridData: GridDataReadonly,
 	parentGridId: GridId,
 	parentGridCellLocation: GridCellLocation
 ) {
@@ -28,8 +28,9 @@ export function useToggleSubGrid(
 
 	function getToogleText() {
 		const gridName = extractGridNameFromGridId(subGridId);
-
-		return (isPresentInStore ? 'Close ' : 'Open') + ' ' + gridName;
+		const toggleText = (isPresentInStore ? 'Close' : 'Open') + ' ' + gridName;
+		
+		return toggleText;
 	}
 
 	function toggleSubGrid() {

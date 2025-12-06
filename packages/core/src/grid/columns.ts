@@ -6,6 +6,7 @@ import {
 	isNumber,
 	isPlainObject,
 	isString,
+	randomId,
 } from '../utils';
 import type { GridRows, JSONValueOrUndefined } from './rows';
 import { GridSchema, type GridId } from './store';
@@ -147,7 +148,7 @@ export type CustomColumnFactory<C> = Partial<ColumnFactory<C>>;
  * column even if the data didn't changed.
  */
 export const FALLBACK_ID_COLUMN_KEY =
-	'__FallbackIdColumn__' + crypto.randomUUID();
+	'__FallbackIdColumn__' + randomId();
 
 /**
  * Generates column definitions/configurations for the particular Grid UI Component.

@@ -4,7 +4,8 @@
 	"main": "./src/index.ts",
 	"type": "module",
 	"exports": {
-		".": "./src/index.ts",
-		"./grid": "./src/grid/index.ts"
+		"./errors": "./src/errors/index.ts",
+		"./grid": "./src/grid/index.ts",
+		"./utils": "./src/utils/index.ts"
 	}
 }

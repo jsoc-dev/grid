@@ -1,6 +1,9 @@
 # vite
 .vite/
 
+# next
+.next/
+
 # Logs
 logs
 *.log
@@ -17,8 +20,3 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-
-
-# on hold
-web/
-test/

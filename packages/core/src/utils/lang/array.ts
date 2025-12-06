@@ -55,3 +55,14 @@ export function isArrayOfObjects(arg: unknown): arg is Array<PlainObject> {
 export function isArrayOfStrings(arg: unknown): arg is Array<string> {
 	return isArray(arg) && arg.every(isString);
 }
+
+export function range(start: number, end: number): number[] {
+	if (!Number.isInteger(start) || !Number.isInteger(end)) {
+		throw new Error('start and end must be integers');
+	}
+
+	const step = start <= end ? 1 : -1;
+	const length = Math.abs(end - start) + 1;
+
+	return Array.from({ length }, (_, i) => start + i * step);
+}

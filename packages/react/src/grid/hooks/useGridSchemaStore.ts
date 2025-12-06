@@ -1,4 +1,4 @@
-import { JsocGridContext } from '../wrapper/JsocGrid';
+import { JsocGridContext } from '../JsocGrid';
 import { useContext } from 'react';
 
 export function useGridSchemaStore() {

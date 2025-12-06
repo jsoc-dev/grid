@@ -1,7 +1,7 @@
 packages:
+  - docs
+  - examples/**
   - packages/*
-  - test/*
-  - web
 
 onlyBuiltDependencies:
   - esbuild

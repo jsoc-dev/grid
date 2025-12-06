@@ -1,13 +1,14 @@
-import { JsocGridContext } from '../../wrapper/JsocGrid';
-import { COLUMN_FACTORY_AG, JsocGridAgNavigator } from './default';
-import { SubsetKeysOf } from '@jsoc/core';
-import { useContext, useMemo } from 'react';
+import { JsocGridContext } from '../../JsocGrid';
+import { COLUMN_FACTORY_AG } from './column-factory/';
+import { JsocGridError } from '@jsoc/core/errors';
+import { SubsetKeysOf } from '@jsoc/core/utils';
 import {
 	type GridId,
 	type CustomColumnFactory,
 	generateColumns,
 	searchGridSchema,
 } from '@jsoc/core/grid';
+import { useContext, useMemo } from 'react';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import {
 	type ColDef,
@@ -24,7 +25,17 @@ ModuleRegistry.registerModules([AllCommunityModule]);
  * These props are not part of `AgGridReactProps` as they don't exist in `AgGridReact`
  */
 export type JsocGridAgCustomProps = {
-	gridId: GridId;
+	/**
+	 * Name for the root grid. This is used by the default navigator to indicate whether
+	 * root grid is active or not.
+	 * - Note: This prop is managed by `JsocGrid` and always has a value even if you don't
+	 * 	provide any value.
+	 */
+	gridId?: GridId;
+	/**
+	 * Object containing 0 or more custom `ColumnDefinitionProvider`s to override the
+	 * corresponding default `ColumnDefinitionProvider`s for the `ColumnDataType`.
+	 */
 	columnFactory?: CustomColumnFactory<ColDef>;
 };
 
@@ -45,8 +56,8 @@ export type JsocGridAgInjectedProps = Pick<
  * The public adapter props that will be supplied by the consumer.
  */
 export type JsocGridAgProps = {
-	native: Omit<AgGridReactProps, JsocGridAgInjectedPropNames>;
-	custom: JsocGridAgCustomProps;
+	native?: Omit<AgGridReactProps, JsocGridAgInjectedPropNames>;
+	custom?: JsocGridAgCustomProps;
 };
 
 //#endregion
@@ -54,8 +65,14 @@ export type JsocGridAgProps = {
 /**
  * Adapter component for AG-Grid
  */
-export function JsocGridAg({ native = {}, custom }: JsocGridAgProps) {
-	const { gridSchemaStore, showDefaultNavigator } =
+export function JsocGridAg({ native = {}, custom = {} }: JsocGridAgProps) {
+	if (!custom.gridId) {
+		throw new JsocGridError(
+			"An internal error occured. JsocGrid didn't provide the gridId to the adapter."
+		);
+	}
+
+	const { gridSchemaStore } =
 		useContext(JsocGridContext);
 	const { gridSchema } = searchGridSchema(gridSchemaStore, custom.gridId);
 	const { gridRows, gridIdColumnKey } = gridSchema;
@@ -72,14 +89,11 @@ export function JsocGridAg({ native = {}, custom }: JsocGridAgProps) {
 	);
 
 	return (
-		<>
-			{showDefaultNavigator && <JsocGridAgNavigator />}
-			<AgGridReact
-				{...native}
-				rowData={gridRows}
-				getRowId={getRowId}
-				columnDefs={columnDefs}
-			/>
-		</>
+		<AgGridReact
+			{...native}
+			rowData={gridRows}
+			getRowId={getRowId}
+			columnDefs={columnDefs}
+		/>
 	);
 }

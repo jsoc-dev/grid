@@ -1,2 +1,2 @@
-export * from './frameworks';
 export * from './lang';
+export * from './randomId';

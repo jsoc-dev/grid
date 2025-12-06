@@ -132,7 +132,7 @@ export function ownEntries<V>(
 }
 
 
-export function deleteKeys<T extends PlainObject, K extends keyof T>(
+export function deleteKeys<T extends object, K extends keyof T>(
   obj: T,
   keys: K[]
 ): Omit<T, K> {
