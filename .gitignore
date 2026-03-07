@@ -1,6 +1,9 @@
 # vite
 .vite/
 
+# next
+.next/
+
 # Logs
 logs
 *.log

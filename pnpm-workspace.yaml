@@ -1,6 +1,5 @@
 packages:
   - docs
-  - docsite
   - packages/*
 
 onlyBuiltDependencies:
