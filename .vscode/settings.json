@@ -1,0 +1,9 @@
+{
+  // ignore errors on using @tailwind base
+  "css.lint.unknownAtRules": "ignore",
+
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+
+  "js/ts.preferences.importModuleSpecifier": "non-relative"
+}

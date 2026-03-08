@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke-width="8">
+  <style>
+    svg{
+      stroke:#000
+    }
+    @media(prefers-color-scheme:dark){
+      svg{
+        stroke:#fff
+      }
+    }
+  </style>
+  <path d="M42 18H28V36L18 50L28 64V82H42"/>
+  <path d="M58 18H72V36L82 50L72 64V82H58"/>
+  <path d="M44 70L56 30"/>
+</svg>
