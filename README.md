@@ -82,7 +82,7 @@ Each package other than @jsoc/core, will contain set of components for a framewo
 
 ## Documentation
 
-Docsite under development! Check progress under /docsite folder. 
+Documentation is under progress. Check progress under /docs folder. 
 
 ---
 

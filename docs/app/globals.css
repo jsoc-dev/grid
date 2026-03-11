@@ -1,22 +1,148 @@
 @import "tailwindcss";
 
+:root {
+
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+}
+
 @theme {
   --font-logo: consolas, monospace;
-  --font-mono:
-    "Source Code Pro", "Fira Code", "Menlo", "Monaco", "Consolas",
+  --font-mono: "Source Code Pro", "Fira Code", "Menlo", "Monaco", "Consolas",
     "Liberation Mono", "Courier New", monospace;
   --font-sans: var(--font-geist-sans);
 
   --breakpoint-svrow: 1024px;
 
-  --color-text-muted: #475569;
-  --color-text-primary: blueviolet;
-  --color-surface-muted: #f6f7f9;
-  --color-outline-subtle: #e2e8f0;
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+
+@utility w-controlled {
+  width: 100%;
+  max-width: var(--breakpoint-xl);
+}
+
+@utility px-controlled {
+  padding-left: var(--spacing-6);
+  padding-right: var(--spacing-6);
+
+  @media (min-width: 768px) {
+    padding-left: var(--spacing-8);
+    padding-right: var(--spacing-8);
+  }
+
+  @media (min-width: 1024px) {
+    padding-left: var(--spacing-10);
+    padding-right: var(--spacing-10);
+  }
+
+  @media (min-width: 1536px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@utility blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(120, 120, 120, 0.1) 0%,
+    rgba(120, 120, 120, 0) 70%
+  );
+  filter: blur(100px);
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(20px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@utility animate-float {
+  animation: float 10s ease-in-out infinite;
+}
+
