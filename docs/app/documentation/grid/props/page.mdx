@@ -4,9 +4,6 @@ import { generateDefinition, TSDoc } from "nextra/tsdoc";
 
 <TSDoc
   definition={generateDefinition({
-    code: `
-import type { JsocGridProps } from "@jsoc/react/grid";
-type Props = JsocGridProps<"mui" | "ag">
-export default Props`,
+    code: "export { JsocGridProps as default } from '@jsoc/react/grid'",
   })}
 />

@@ -6,7 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { Head } from "nextra/components";
 import "nextra-theme-docs/style.css";
-import { Footer, Navbar, Layout } from "nextra-theme-docs";
+import { Footer, Navbar, Layout, ThemeSwitch } from "nextra-theme-docs";
 import { getPageMap } from "nextra/page-map";
 
 const geistSans = Geist({
@@ -20,12 +20,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JSOC Documentation",
-  description: "Documentation for JSOC, library for dynamic components.",
+  title: "JSOC",
+  description:
+    "JSOC is a framework-agnostic system that converts any JSON data into fully functional UI components.",
 };
 
 const navbar = (
-  <Navbar logo={<JsocLogo />} projectLink="https://github.com/jsoc-dev/jsoc" />
+  <Navbar
+    align="left"
+    className="[&>a:first-child]:mr-6" // add margin right in home link
+    logo={<JsocLogo />}
+    projectLink="https://github.com/jsoc-dev/jsoc"
+  >
+    <ThemeSwitch
+      lite
+      className="h-6! w-6! px-0! bg-transparent! rounded-[50%]! [&_svg]:h-6 [&_svg]:w-6"
+    />
+  </Navbar>
 );
 
 const footer = <Footer>{`MIT ${new Date().getFullYear()} © JSOC`}</Footer>;

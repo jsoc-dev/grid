@@ -9,7 +9,7 @@ const gridItems: MetaRecord = {
 const documentationItems: MetaRecord = {
   index: { title: "Introduction" },
   grid: {
-    // @ts-ignore
+    // @ts-expect-error - items is supported for all types in _meta.global file
     items: gridItems,
   },
 };
@@ -20,7 +20,7 @@ const meta: MetaRecord = {
   documentation: {
     type: "page",
     title: "Documentation",
-    // @ts-ignore - items is supported for all types in _meta.global file
+    // @ts-expect-error - items is supported for all types in _meta.global file
     // https://nextra.site/docs/file-conventions/meta-file#_metaglobal-file
     items: documentationItems,
   },
@@ -39,7 +39,7 @@ const meta: MetaRecord = {
       toc: false,
     },
 
-    // @ts-ignore
+    // @ts-expect-error - items is supported for all types in _meta.global file
     items: {
       grid: { title: "Grid" },
     },
