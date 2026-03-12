@@ -1,17 +1,21 @@
-import { JsocGridError } from '../errors';
 import {
-	generateRows,
-	type ColumnKey,
-	type GridDataReadonly,
-	type GridRowId,
-	type GridRows,
-	type IdColumnKey,
-} from '.';
-import { capitalizeFirst, isIndexWithinLength, ensureString } from '../utils';
+  generateRows,
+  JsocGridError,
+  type ColumnKey,
+  type GridDataReadonly,
+  type GridRowId,
+  type GridRows,
+  type IdColumnKey,
+} from "#grid/index.ts";
+import {
+  capitalizeFirst,
+  isIndexWithinLength,
+  ensureString,
+} from "#utils/index.ts";
 
 /**
  * Id to use if the consumer didn't pass any ID for the the root grid.
- * It doesn't need to be randomised as ids of subgrids can't conflict with 
+ * It doesn't need to be randomised as ids of subgrids can't conflict with
  * this as they are combination of multiple values. (Refer `buildSubGridId`).
  */
 export const FALLBACK_ROOT_GRID_ID = "Grid";
@@ -29,21 +33,21 @@ export type ActiveGridFlag = boolean;
  * Object that contains the abstract location of a grid cell.
  */
 export type GridCellLocation = {
-	/**
-	 * Value of `IdColumnKey` column in the row that contains this cell.
-	 */
-	rowId: GridRowId;
-	/**
-	 * `ColumnKey` which this cell corresponds to.
-	 */
-	columnKey: ColumnKey;
+  /**
+   * Value of `IdColumnKey` column in the row that contains this cell.
+   */
+  rowId: GridRowId;
+  /**
+   * `ColumnKey` which this cell corresponds to.
+   */
+  columnKey: ColumnKey;
 };
 
 export type GridSchema = {
-	gridId: GridId;
-	gridRows: GridRows;
-	gridIdColumnKey: IdColumnKey;
-	isActiveGrid: ActiveGridFlag;
+  gridId: GridId;
+  gridRows: GridRows;
+  gridIdColumnKey: IdColumnKey;
+  isActiveGrid: ActiveGridFlag;
 };
 /**
  * Array of `GridSchema`s containing details of multiple grids that were opened by the user
@@ -59,24 +63,24 @@ export type GridSchemaStoreIndex = number;
  * @returns newly initialised `GridSchemaStore`
  */
 export function initGridSchemaStore(
-	gridId: GridId,
-	gridData: GridDataReadonly
+  gridId: GridId,
+  gridData: GridDataReadonly,
 ): GridSchemaStore {
-	const { gridRows, gridIdColumnKey } = generateRows(gridData);
-	return [
-		{
-			gridId,
-			gridRows,
-			gridIdColumnKey,
-			isActiveGrid: true,
-		},
-	];
+  const { gridRows, gridIdColumnKey } = generateRows(gridData);
+  return [
+    {
+      gridId,
+      gridRows,
+      gridIdColumnKey,
+      isActiveGrid: true,
+    },
+  ];
 }
 
 /**
  * Separator used by `buildSubGridId` method
  */
-export const BUILD_GRID_ID_SEPARATOR = '.';
+export const BUILD_GRID_ID_SEPARATOR = ".";
 /**
  * Builds a unique id to uniquely identify a `GridSchema` inside the `GridSchemaStore`.
  * It uses combination of parentGridId and parentGridCellLocation to prevent name conflicts
@@ -86,19 +90,19 @@ export const BUILD_GRID_ID_SEPARATOR = '.';
  * @returns `GridId`
  */
 export function buildSubGridId(
-	parentGridId: GridId,
-	parentGridCellLocation: GridCellLocation
+  parentGridId: GridId,
+  parentGridCellLocation: GridCellLocation,
 ): GridId {
-	const { rowId, columnKey } = parentGridCellLocation;
-	const prefix = `${parentGridId}[${rowId}]`;
+  const { rowId, columnKey } = parentGridCellLocation;
+  const prefix = `${parentGridId}[${rowId}]`;
 
-	return [prefix, columnKey].join(BUILD_GRID_ID_SEPARATOR);
+  return [prefix, columnKey].join(BUILD_GRID_ID_SEPARATOR);
 }
 
 export function extractGridNameFromGridId(gridId: GridId) {
-	const gridName = gridId.split(BUILD_GRID_ID_SEPARATOR).at(-1);
+  const gridName = gridId.split(BUILD_GRID_ID_SEPARATOR).at(-1);
 
-	return capitalizeFirst(ensureString(gridName));
+  return capitalizeFirst(ensureString(gridName));
 }
 
 /**
@@ -109,13 +113,13 @@ export function extractGridNameFromGridId(gridId: GridId) {
  * @returns `GridSchemaStore`
  */
 export function activateGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	index: GridSchemaStoreIndex
+  gridSchemaStore: GridSchemaStore,
+  index: GridSchemaStoreIndex,
 ): GridSchemaStore {
-	const copy = [...gridSchemaStore];
-	setActiveGridSchema(copy, index);
+  const copy = [...gridSchemaStore];
+  setActiveGridSchema(copy, index);
 
-	return copy;
+  return copy;
 }
 
 /**
@@ -126,23 +130,23 @@ export function activateGridSchema(
  * @param subGridData - data of the grid which needs to be added
  */
 export function addGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	subGridId: GridId,
-	subGridData: GridDataReadonly
+  gridSchemaStore: GridSchemaStore,
+  subGridId: GridId,
+  subGridData: GridDataReadonly,
 ): GridSchemaStore {
-	const { gridRows, gridIdColumnKey } = generateRows(subGridData);
-	const gridSchema: GridSchema = {
-		gridId: subGridId,
-		gridRows,
-		gridIdColumnKey,
-		isActiveGrid: true,
-	};
+  const { gridRows, gridIdColumnKey } = generateRows(subGridData);
+  const gridSchema: GridSchema = {
+    gridId: subGridId,
+    gridRows,
+    gridIdColumnKey,
+    isActiveGrid: true,
+  };
 
-	const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-	const slicedUntilActiveIndex = gridSchemaStore.slice(0, activeIndex + 1); // + 1 is added as end param is exclusive but activeIndex should be included in new store
-	const copy = [...slicedUntilActiveIndex, gridSchema]; // add the new item in the last index
+  const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
+  const slicedUntilActiveIndex = gridSchemaStore.slice(0, activeIndex + 1); // + 1 is added as end param is exclusive but activeIndex should be included in new store
+  const copy = [...slicedUntilActiveIndex, gridSchema]; // add the new item in the last index
 
-	return activateGridSchema(copy, copy.length - 1); // activate the added item
+  return activateGridSchema(copy, copy.length - 1); // activate the added item
 }
 
 /**
@@ -155,26 +159,26 @@ export function addGridSchema(
  * @returns `GridSchemaStore`
  */
 export function removeGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	removeIndex: GridSchemaStoreIndex
+  gridSchemaStore: GridSchemaStore,
+  removeIndex: GridSchemaStoreIndex,
 ): GridSchemaStore {
-	if (removeIndex < 1) {
-		throw new JsocGridError('Remove Index must be greater than 0');
-	}
+  if (removeIndex < 1) {
+    throw new JsocGridError("Remove Index must be greater than 0");
+  }
 
-	const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
+  const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
 
-	if (removeIndex <= activeIndex) {
-		setActiveGridSchema(gridSchemaStore, removeIndex - 1);
-	}
+  if (removeIndex <= activeIndex) {
+    setActiveGridSchema(gridSchemaStore, removeIndex - 1);
+  }
 
-	return [...gridSchemaStore.slice(0, removeIndex)];
+  return [...gridSchemaStore.slice(0, removeIndex)];
 }
 
 export type SearchGridSchemaResult = {
-	isPresentInStore: boolean;
-	gridSchemaStoreIndex: GridSchemaStoreIndex;
-	gridSchema: GridSchema;
+  isPresentInStore: boolean;
+  gridSchemaStoreIndex: GridSchemaStoreIndex;
+  gridSchema: GridSchema;
 };
 /**
  * Returns whether the provided `gridSchema` is present in the `gridSchemaStore`
@@ -183,19 +187,19 @@ export type SearchGridSchemaResult = {
  * @param gridSchema which needs to be searched
  */
 export function searchGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	gridId: GridId
+  gridSchemaStore: GridSchemaStore,
+  gridId: GridId,
 ): SearchGridSchemaResult {
-	const gridSchemaStoreIndex = gridSchemaStore.findIndex(
-		(item) => item.gridId == gridId
-	);
-	const gridSchema = gridSchemaStore[gridSchemaStoreIndex];
+  const gridSchemaStoreIndex = gridSchemaStore.findIndex(
+    (item) => item.gridId == gridId,
+  );
+  const gridSchema = gridSchemaStore[gridSchemaStoreIndex];
 
-	return {
-		isPresentInStore: gridSchemaStoreIndex > -1,
-		gridSchemaStoreIndex,
-		gridSchema,
-	};
+  return {
+    isPresentInStore: gridSchemaStoreIndex > -1,
+    gridSchemaStoreIndex,
+    gridSchema,
+  };
 }
 
 /**
@@ -203,17 +207,17 @@ export function searchGridSchema(
  * @param gridSchemaStore
  */
 export function getIndexOfActiveGridSchema(
-	gridSchemaStore: GridSchemaStore
+  gridSchemaStore: GridSchemaStore,
 ): GridSchemaStoreIndex {
-	const index = gridSchemaStore.findIndex((item) => item.isActiveGrid);
+  const index = gridSchemaStore.findIndex((item) => item.isActiveGrid);
 
-	if (index != -1) {
-		return index;
-	} else {
-		throw new JsocGridError(
-			'Unable to find active item in the GridSchemaStore.'
-		);
-	}
+  if (index != -1) {
+    return index;
+  } else {
+    throw new JsocGridError(
+      "Unable to find active item in the GridSchemaStore.",
+    );
+  }
 }
 
 /**
@@ -222,9 +226,9 @@ export function getIndexOfActiveGridSchema(
  * @returns `GridSchema`
  */
 export function getActiveGridSchema(
-	gridSchemaStore: GridSchemaStore
+  gridSchemaStore: GridSchemaStore,
 ): GridSchema {
-	return gridSchemaStore[getIndexOfActiveGridSchema(gridSchemaStore)];
+  return gridSchemaStore[getIndexOfActiveGridSchema(gridSchemaStore)];
 }
 
 /**
@@ -232,16 +236,16 @@ export function getActiveGridSchema(
  * @param gridSchemaStore
  */
 export function setActiveGridSchema(
-	gridSchemaStore: GridSchemaStore,
-	newActiveIndex: GridSchemaStoreIndex
+  gridSchemaStore: GridSchemaStore,
+  newActiveIndex: GridSchemaStoreIndex,
 ): undefined {
-	if (isIndexWithinLength(gridSchemaStore, newActiveIndex)) {
-		const oldActiveIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-		gridSchemaStore[oldActiveIndex].isActiveGrid = false;
-		gridSchemaStore[newActiveIndex].isActiveGrid = true;
-	} else {
-		throw new JsocGridError(
-			'New active index is not within the GridSchemaStore length.'
-		);
-	}
+  if (isIndexWithinLength(gridSchemaStore, newActiveIndex)) {
+    const oldActiveIndex = getIndexOfActiveGridSchema(gridSchemaStore);
+    gridSchemaStore[oldActiveIndex].isActiveGrid = false;
+    gridSchemaStore[newActiveIndex].isActiveGrid = true;
+  } else {
+    throw new JsocGridError(
+      "New active index is not within the GridSchemaStore length.",
+    );
+  }
 }

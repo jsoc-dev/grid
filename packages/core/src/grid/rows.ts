@@ -1,26 +1,29 @@
-import { JsocGridError } from '../errors';
 import {
-	areAllUnique,
-	ensureArray,
-	ensureString,
-	isArrayOfObjects,
-	isConcreteObject,
-	isNumber,
-	isPlainObject,
-	isString,
-} from '../utils';
-import { type IdColumnKey, FALLBACK_ID_COLUMN_KEY } from './';
+  JsocGridError,
+  type IdColumnKey,
+  FALLBACK_ID_COLUMN_KEY,
+} from "#grid/index.ts";
+import {
+  areAllUnique,
+  ensureArray,
+  ensureString,
+  isArrayOfObjects,
+  isConcreteObject,
+  isNumber,
+  isPlainObject,
+  isString,
+} from "#utils/index.ts";
 
 /**
  * https://github.com/microsoft/TypeScript/pull/33050
  */
 export type JSONValue =
-	| string
-	| number
-	| boolean
-	| null
-	| JSONValue[]
-	| { [key: string]: JSONValue };
+  | string
+  | number
+  | boolean
+  | null
+  | JSONValue[]
+  | { [key: string]: JSONValue };
 export type JSONValueOrUndefined = JSONValue | undefined;
 export type JSONObject = Record<string, JSONValue>;
 export type JSONObjectWithUndefined = Record<string, JSONValueOrUndefined>;
@@ -47,51 +50,51 @@ export type GridRowId = string | number;
  * @param gridData JSON data received from the consumer
  */
 export function generateRows(gridData: GridDataReadonly): {
-	gridRows: GridRows;
-	gridIdColumnKey: IdColumnKey;
+  gridRows: GridRows;
+  gridIdColumnKey: IdColumnKey;
 } {
-	if (!isValidGridData(gridData)) {
-		throw new JsocGridError('Provided grid data is not valid.');
-	}
-	const gridDataCopy = structuredClone(gridData) as GridData;
-	let gridRows = ensureArray(gridDataCopy).filter(
-		(row) => isPlainObject(row) && isConcreteObject(row),
-	);
-	let gridIdColumnKey: IdColumnKey;
+  if (!isValidGridData(gridData)) {
+    throw new JsocGridError("Provided grid data is not valid.");
+  }
+  const gridDataCopy = structuredClone(gridData) as GridData;
+  let gridRows = ensureArray(gridDataCopy).filter(
+    (row) => isPlainObject(row) && isConcreteObject(row),
+  );
+  let gridIdColumnKey: IdColumnKey;
 
-	if (isExistingIdColumnValid(gridRows)) {
-		gridIdColumnKey = 'id';
-	} else {
-		gridIdColumnKey = FALLBACK_ID_COLUMN_KEY;
-		gridRows = assignFallbackIdColumnValues(gridRows);
-	}
+  if (isExistingIdColumnValid(gridRows)) {
+    gridIdColumnKey = "id";
+  } else {
+    gridIdColumnKey = FALLBACK_ID_COLUMN_KEY;
+    gridRows = assignFallbackIdColumnValues(gridRows);
+  }
 
-	return {
-		gridRows,
-		gridIdColumnKey,
-	};
+  return {
+    gridRows,
+    gridIdColumnKey,
+  };
 }
 
 export function isValidGridData(arg: unknown): arg is GridData {
-	return isPlainObject(arg) || isArrayOfObjects(arg);
+  return isPlainObject(arg) || isArrayOfObjects(arg);
 }
 
 function isValidRowId(arg: unknown): arg is GridRowId {
-	return isString(arg) || isNumber(arg);
+  return isString(arg) || isNumber(arg);
 }
 
 function isExistingIdColumnValid(plainRows: GridRows): boolean {
-	const isIdValidInEachRow = plainRows.every((row) => isValidRowId(row.id));
-	const isIdUniqueInEachRow = areAllUnique(plainRows.map((row) => row.id));
+  const isIdValidInEachRow = plainRows.every((row) => isValidRowId(row.id));
+  const isIdUniqueInEachRow = areAllUnique(plainRows.map((row) => row.id));
 
-	return isIdValidInEachRow && isIdUniqueInEachRow;
+  return isIdValidInEachRow && isIdUniqueInEachRow;
 }
 
 function assignFallbackIdColumnValues(plainRows: GridRows): GridRows {
-	const updatedRows = plainRows.map((row, index) => ({
-		...row,
-		[FALLBACK_ID_COLUMN_KEY]: ensureString(index),
-	}));
+  const updatedRows = plainRows.map((row, index) => ({
+    ...row,
+    [FALLBACK_ID_COLUMN_KEY]: ensureString(index),
+  }));
 
-	return updatedRows;
+  return updatedRows;
 }

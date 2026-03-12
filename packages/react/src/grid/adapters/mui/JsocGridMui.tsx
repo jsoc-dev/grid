@@ -1,6 +1,6 @@
 import { JsocGridContext } from "../../JsocGrid";
 import { COLUMN_FACTORY_MUI } from "./";
-import { JsocGridError } from "@jsoc/core/errors";
+import { JsocGridError } from "@jsoc/core/grid";
 import { SubsetKeysOf } from "@jsoc/core/utils";
 import {
   generateColumns,

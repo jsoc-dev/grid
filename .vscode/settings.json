@@ -5,5 +5,9 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
 
-  "js/ts.preferences.importModuleSpecifier": "non-relative"
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  
+  // for IDEs like Antigravity which uses old config
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
 }

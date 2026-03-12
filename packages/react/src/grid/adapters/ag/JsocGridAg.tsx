@@ -1,6 +1,6 @@
 import { JsocGridContext } from '../../JsocGrid';
 import { COLUMN_FACTORY_AG } from './column-factory/';
-import { JsocGridError } from '@jsoc/core/errors';
+import { JsocGridError } from '@jsoc/core/grid';
 import { SubsetKeysOf } from '@jsoc/core/utils';
 import {
 	type GridId,
