@@ -1,1 +1,1 @@
-export * from './ToggleSubGridButton'
+export * from "./ToggleSubGridButton.tsx";

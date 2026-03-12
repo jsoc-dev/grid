@@ -1,22 +1,26 @@
-import { useGridSchemaStore } from './useGridSchemaStore';
-import { GridSchemaStoreIndex, removeGridSchema, activateGridSchema } from '@jsoc/core/grid';
+import { useGridSchemaStore } from "#grid/hooks/useGridSchemaStore.ts";
+import {
+  GridSchemaStoreIndex,
+  removeGridSchema,
+  activateGridSchema,
+} from "@jsoc/core/grid";
 
 export function useGridNavigator(index: GridSchemaStoreIndex) {
-	const { gridSchemaStore, setGridSchemaStore } = useGridSchemaStore();
-	const gridSchema = gridSchemaStore[index];
+  const { gridSchemaStore, setGridSchemaStore } = useGridSchemaStore();
+  const gridSchema = gridSchemaStore[index];
 
-	return {
-		gridSchema,
-		gridSchemaStore,
-		activateGrid,
-		removeGrid,
-	};
+  return {
+    gridSchema,
+    gridSchemaStore,
+    activateGrid,
+    removeGrid,
+  };
 
-	function activateGrid() {
-		setGridSchemaStore(activateGridSchema(gridSchemaStore, index));
-	}
+  function activateGrid() {
+    setGridSchemaStore(activateGridSchema(gridSchemaStore, index));
+  }
 
-	function removeGrid() {
-		setGridSchemaStore(removeGridSchema(gridSchemaStore, index));
-	}
+  function removeGrid() {
+    setGridSchemaStore(removeGridSchema(gridSchemaStore, index));
+  }
 }

@@ -1,2 +1,2 @@
-export * from './NavigatorItem'
-export * from './NavigatorTitle'
+export * from "./NavigatorItem.tsx";
+export * from "./NavigatorTitle.tsx";

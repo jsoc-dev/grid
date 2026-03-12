@@ -1,21 +1,23 @@
 {
-	"name": "@jsoc/react",
-	"version": "0.0.1",
-	"main": "./src/index.ts",
-	"type": "module",
-	"exports": {
-		".": "./src/index.ts",
-		"./grid": "./src/grid/index.ts"
-	},
-	"peerDependencies": {
-		"react": ">=19",
-		"react-dom": ">=19"
-	},
-	"dependencies": {
-		"@jsoc/core": "workspace:*",
-		"@mui/material": "^7.3.4",
-		"@mui/x-data-grid": "^8.16.0",
-		"@mui/icons-material": "^7.3.4",
-		"ag-grid-react": "^34.3.1"
-	}
+  "name": "@jsoc/react",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    "./grid": "./src/grid/index.ts"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "dependencies": {
+    "@jsoc/core": "workspace:*",
+    "@mui/material": "^7.3.4",
+    "@mui/x-data-grid": "^8.16.0",
+    "@mui/icons-material": "^7.3.4",
+    "ag-grid-react": "^34.3.1"
+  }
 }

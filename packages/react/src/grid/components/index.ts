@@ -1,2 +1,2 @@
-export * from './navigator/';
-export * from './toggle-subgrid/';
+export * from "./navigator/index.ts";
+export * from "./toggle-subgrid/index.ts";

@@ -1,5 +1,5 @@
-import { JsocGridContext } from "../../JsocGrid";
-import { COLUMN_FACTORY_MUI } from "./";
+import { COLUMN_FACTORY_MUI } from "#grid/adapters/mui/column-factory.tsx";
+import { JsocGridContext } from "#grid/JsocGrid.tsx";
 import { JsocGridError } from "@jsoc/core/grid";
 import { SubsetKeysOf } from "@jsoc/core/utils";
 import {
@@ -94,4 +94,3 @@ export function JsocGridMui({ native = {}, custom = {} }: JsocGridMuiProps) {
     />
   );
 }
-

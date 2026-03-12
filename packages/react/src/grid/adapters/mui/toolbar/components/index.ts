@@ -1,1 +1,1 @@
-export * from './InbuiltButtons'
+export * from "./InbuiltButtons.tsx";
