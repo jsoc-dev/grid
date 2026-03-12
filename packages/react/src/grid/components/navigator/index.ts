@@ -1,2 +1,2 @@
-export * from './DefaultNavigator'
-export * from './components'
+export * from "./DefaultNavigator.tsx";
+export * from "./components/index.ts";

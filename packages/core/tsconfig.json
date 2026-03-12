@@ -1,44 +1,35 @@
 {
-	"compilerOptions": {
-		// target
-		"target": "ES2022", // to support newer methods like Array.at
-		"moduleResolution": "bundler",
-		"lib": ["ES2022", "DOM"],
+  "compilerOptions": {
+    // target
+    "target": "ES2022", // to support newer methods like Array.at
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
 
-		// strict checks
-		"strict": true,
-		"strictNullChecks": true,
-		"strictFunctionTypes": true,
-		"noUnusedLocals": true,
+    "allowImportingTsExtensions": true, // subpath imports require file extensions
 
-		// output
-		"sourceMap": true,
-		"skipLibCheck": true,
+    // type checking
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
 
-		// source files
-		// "baseUrl": "./src",
-		// "paths": {
-			/*
-			 * Monorepo issue: Consumer packages fail to resolve types from this package that depend on
-			 * internal path aliases (e.g., '@/utils'). 
-			 * Example:
-			 * Define a type in any file of @jsoc/core
-			 * ```type ABC = Array<XYZ>```  // type XYZ in defined in other file of @jsoc/core and imported using type alias, lets say '@/utils'
-			 * Now if we import type ABC `@jsoc/react`, its type will shows as `any`.
-			 * On the other hand if XYZ was imported using relative import like "../../utils" it would show correct type.
+    // output
+    "noEmit": true, // bundler will be used to emit
 
-			 * This is because the consumer's TypeScript server doesn't inherit this package's `paths` configuration.
-			 * TypeScript project references were considered but did not resolve this issue.
-			 */
-			// "@/*": ["*"]
-		// }
-	},
+    // source files
+    "paths": {
+      // this is for resolving imports which uses "#" subpath defined in package.json
+      // https://turborepo.dev/docs/guides/tools/typescript#use-nodejs-subpath-imports-instead-of-typescript-compiler-paths
+      "#*": ["./src/*"]
+    }
+  },
 
-	"exclude": [
-		"dist",
-		"build",
-		"**/*.min.js",
-		"node_modules",
-		"**/node_modules/*"
-	]
+  "exclude": [
+    "dist",
+    "build",
+    "**/*.min.js",
+    "node_modules",
+    "**/node_modules/*"
+  ]
 }

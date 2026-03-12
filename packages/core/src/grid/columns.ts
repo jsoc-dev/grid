@@ -1,15 +1,18 @@
 import {
-	isArrayOfObjects,
-	isBoolean,
-	isISODateString,
-	isFunction,
-	isNumber,
-	isPlainObject,
-	isString,
-	randomId,
-} from '../utils';
-import type { GridRows, JSONValueOrUndefined } from './rows';
-import { GridSchema, type GridId } from './store';
+  type GridRows,
+  type JSONValueOrUndefined,
+  type GridSchema,
+  type GridId,
+} from "#grid/index.ts";
+import {
+  isArrayOfObjects,
+  isBoolean,
+  isISODateString,
+  isFunction,
+  isNumber,
+  isPlainObject,
+  isString,
+} from "#utils/index.ts";
 
 /**
  * Property in a `GridRow`
@@ -18,7 +21,7 @@ export type ColumnKey = string;
 /**
  * Property that has a unique value for all the `GridRows`
  */
-export type IdColumnKey = 'id' | typeof FALLBACK_ID_COLUMN_KEY;
+export type IdColumnKey = "id" | typeof FALLBACK_ID_COLUMN_KEY;
 /**
  * Value of a property in a `GridRow`.
  * - Note: As `GridRows` are generated from the `GridDataReadOnly`, the column value
@@ -36,27 +39,27 @@ export type ColumnKeyValueMap = Record<ColumnKey, ColumnValue[]>;
  * Data type resolved for a particular `ColumnKey` based on the `GridRows`.
  */
 export type ColumnDataType =
-	| 'arrayOfObjects'
-	| 'boolean'
-	| 'number'
-	| 'object'
-	| 'stringDate'
-	| 'string'
-	| 'unresolved';
+  | "arrayOfObjects"
+  | "boolean"
+  | "number"
+  | "object"
+  | "stringDate"
+  | "string"
+  | "unresolved";
 
 export type ColumnDataTypeResolverMethod = (
-	columnValues: ColumnValue[]
+  columnValues: ColumnValue[],
 ) => ColumnDataType | false;
 /**
  * Ordered list of column data-type resolvers.
  */
 export const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverMethod[] = [
-	(colValues) => colValues.every(isArrayOfObjects) && 'arrayOfObjects',
-	(colValues) => colValues.every(isBoolean) && 'boolean',
-	(colValues) => colValues.every(isNumber) && 'number',
-	(colValues) => colValues.every(isPlainObject) && 'object',
-	(colValues) => colValues.every(isISODateString) && 'stringDate', // DO NOT PLACE THIS BELOW string resolver
-	(colValues) => colValues.every(isString) && 'string'
+  (colValues) => colValues.every(isArrayOfObjects) && "arrayOfObjects",
+  (colValues) => colValues.every(isBoolean) && "boolean",
+  (colValues) => colValues.every(isNumber) && "number",
+  (colValues) => colValues.every(isPlainObject) && "object",
+  (colValues) => colValues.every(isISODateString) && "stringDate", // DO NOT PLACE THIS BELOW string resolver
+  (colValues) => colValues.every(isString) && "string",
 ];
 
 /**
@@ -70,29 +73,29 @@ export const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverMethod[] = [
  * 	then ColumnDefinitionProvider will reuse the stale value that can cause issues.
  */
 export type ColumnDefinitionProviderParams = {
-	/**
-	 * `ColumnKey` of the column for which the column definition needs to be generated
-	 */
-	columnKey: ColumnKey;
-	/**
-	 * `ColumnDataType` of the column
-	 */
-	columnDataType: ColumnDataType;
-	/**
-	 * `GridId` of the grid that will contain the column
-	 */
-	gridId: GridId;
-	/**
-	 * `IdColumnKey` of the grid that will contain the column
-	 */
-	gridIdColumnKey: IdColumnKey;
+  /**
+   * `ColumnKey` of the column for which the column definition needs to be generated
+   */
+  columnKey: ColumnKey;
+  /**
+   * `ColumnDataType` of the column
+   */
+  columnDataType: ColumnDataType;
+  /**
+   * `GridId` of the grid that will contain the column
+   */
+  gridId: GridId;
+  /**
+   * `IdColumnKey` of the grid that will contain the column
+   */
+  gridIdColumnKey: IdColumnKey;
 };
 
 /**
  * Factory method that provides column definition for a column `ColumnKey`.
  */
 export type ColumnDefinitionProvider<C> = (
-	params: ColumnDefinitionProviderParams
+  params: ColumnDefinitionProviderParams,
 ) => C;
 
 /**
@@ -126,8 +129,8 @@ export type ColumnDataTypeMap = Record<ColumnKey, ColumnDataType>;
 	```
  */
 export type ColumnFactory<C> = Record<
-	ColumnDataType,
-	ColumnDefinitionProvider<C>
+  ColumnDataType,
+  ColumnDefinitionProvider<C>
 >;
 /**
  * If provided, `generateColumns` method will use the methods of customColumnFactory to provide the
@@ -147,8 +150,7 @@ export type CustomColumnFactory<C> = Partial<ColumnFactory<C>>;
  * changes on every render, and the renderer might rerender whole column thinking it as different
  * column even if the data didn't changed.
  */
-export const FALLBACK_ID_COLUMN_KEY =
-	'__FallbackIdColumn__' + randomId();
+export const FALLBACK_ID_COLUMN_KEY = "__FallbackIdColumn__" + randomId();
 
 /**
  * Generates column definitions/configurations for the particular Grid UI Component.
@@ -159,99 +161,115 @@ export const FALLBACK_ID_COLUMN_KEY =
  * @returns array of Column definitions
  */
 export function generateColumns<C>(
-	gridSchema: GridSchema,
-	defaultColumnFactory: ColumnFactory<C>,
-	customColumnFactory?: CustomColumnFactory<C>
+  gridSchema: GridSchema,
+  defaultColumnFactory: ColumnFactory<C>,
+  customColumnFactory?: CustomColumnFactory<C>,
 ): C[] {
-	const { gridId, gridRows, gridIdColumnKey } = gridSchema;
-	const columnKeyValueMap = createColumnKeyValueMap(gridRows);
-	const columnDataTypeMap = createColumnDataTypeMap(columnKeyValueMap);
-	const columnDataTypeEntries = Object.entries(columnDataTypeMap);
+  const { gridId, gridRows, gridIdColumnKey } = gridSchema;
+  const columnKeyValueMap = createColumnKeyValueMap(gridRows);
+  const columnDataTypeMap = createColumnDataTypeMap(columnKeyValueMap);
+  const columnDataTypeEntries = Object.entries(columnDataTypeMap);
 
-	const columnDefinitionList: C[] = [];
+  const columnDefinitionList: C[] = [];
 
-	for (const [columnKey, columnDataType] of columnDataTypeEntries) {
-		const columnDefProvider =
-			isPlainObject(customColumnFactory) &&
-			isFunction(customColumnFactory[columnDataType])
-				? customColumnFactory[columnDataType]
-				: defaultColumnFactory[columnDataType];
+  for (const [columnKey, columnDataType] of columnDataTypeEntries) {
+    const columnDefProvider =
+      isPlainObject(customColumnFactory) &&
+      isFunction(customColumnFactory[columnDataType])
+        ? customColumnFactory[columnDataType]
+        : defaultColumnFactory[columnDataType];
 
-		const colDef = columnDefProvider({
-			columnKey,
-			columnDataType,
-			gridId,
-			gridIdColumnKey,
-		});
-		columnDefinitionList.push(colDef);
-	}
+    const colDef = columnDefProvider({
+      columnKey,
+      columnDataType,
+      gridId,
+      gridIdColumnKey,
+    });
+    columnDefinitionList.push(colDef);
+  }
 
-	return columnDefinitionList;
+  return columnDefinitionList;
 }
 
 function createColumnKeyValueMap(plainRows: GridRows): ColumnKeyValueMap {
-	const columnKeyValueMapper: ColumnKeyValueMap = {};
+  const columnKeyValueMapper: ColumnKeyValueMap = {};
 
-	/**
-	 * This approach ensures all ColumnValue[] arrays are have equal length === number of rows
-	 * CAVAETS:
-	 * 1. If there is even one missing value of a ColumnKey in rows, then the column data type
-	 * 	will become unresolved, this is due to implementation of `ColumnDataTypeResolverMethod`
-	 * 	as to resolve only if all values are of same type.
-	 * 2. First Row decides the order of column keys. Remaining rows only adds the column keys
-	 * 	that were not present in the previous rows.
-	 */
-	const allColumnKeys = new Set<string>();
-	for (const row of plainRows) {
-		for (const key in row) {
-			allColumnKeys.add(key);
-		}
-	}
+  /**
+   * This approach ensures all ColumnValue[] arrays are have equal length === number of rows
+   * CAVAETS:
+   * 1. If there is even one missing value of a ColumnKey in rows, then the column data type
+   * 	will become unresolved, this is due to implementation of `ColumnDataTypeResolverMethod`
+   * 	as to resolve only if all values are of same type.
+   * 2. First Row decides the order of column keys. Remaining rows only adds the column keys
+   * 	that were not present in the previous rows.
+   */
+  const allColumnKeys = new Set<string>();
+  for (const row of plainRows) {
+    for (const key in row) {
+      allColumnKeys.add(key);
+    }
+  }
 
-	for (const row of plainRows) {
-		for (const key of allColumnKeys) {
-			columnKeyValueMapper[key] = columnKeyValueMapper[key] ?? [];
-			columnKeyValueMapper[key].push(row[key]);
-		}
-	}
+  for (const row of plainRows) {
+    for (const key of allColumnKeys) {
+      columnKeyValueMapper[key] = columnKeyValueMapper[key] ?? [];
+      columnKeyValueMapper[key].push(row[key]);
+    }
+  }
 
-	// old method, doesn't include a undefined value if the key doesn't have value in a row but other row has
-	// for (const row of plainRows) {
-	// 	for (const [columnKey, columnValue] of Object.entries(row)) {
-	// 		columnKeyValueMapper[columnKey] =
-	// 			columnKeyValueMapper[columnKey] ?? [];
-	// 		columnKeyValueMapper[columnKey].push(columnValue);
-	// 	}
-	// }
+  // old method, doesn't include a undefined value if the key doesn't have value in a row but other row has
+  // for (const row of plainRows) {
+  // 	for (const [columnKey, columnValue] of Object.entries(row)) {
+  // 		columnKeyValueMapper[columnKey] =
+  // 			columnKeyValueMapper[columnKey] ?? [];
+  // 		columnKeyValueMapper[columnKey].push(columnValue);
+  // 	}
+  // }
 
-	return columnKeyValueMapper;
+  return columnKeyValueMapper;
 }
 
 function createColumnDataTypeMap(
-	columnKeyValueMap: ColumnKeyValueMap
+  columnKeyValueMap: ColumnKeyValueMap,
 ): ColumnDataTypeMap {
-	const columnSchemaMap: ColumnDataTypeMap = {};
+  const columnSchemaMap: ColumnDataTypeMap = {};
 
-	for (const [columnKey, columnValues] of Object.entries(columnKeyValueMap)) {
-		if (isFallbackIdColumn(columnKey)) {
-			continue; // skip this column as data of this column is not part of actual GridDataReadonly
-		}
+  for (const [columnKey, columnValues] of Object.entries(columnKeyValueMap)) {
+    if (isFallbackIdColumn(columnKey)) {
+      continue; // skip this column as data of this column is not part of actual GridDataReadonly
+    }
 
-		let resolvedDataType: ColumnDataType = 'unresolved';
-		for (const method of COLUMN_DATA_TYPE_RESOLVER_LIST) {
-			const returnVal = method(columnValues);
-			if (returnVal) {
-				resolvedDataType = returnVal;
-				break;
-			}
-		}
+    let resolvedDataType: ColumnDataType = "unresolved";
+    for (const method of COLUMN_DATA_TYPE_RESOLVER_LIST) {
+      const returnVal = method(columnValues);
+      if (returnVal) {
+        resolvedDataType = returnVal;
+        break;
+      }
+    }
 
-		columnSchemaMap[columnKey] = resolvedDataType;
-	}
+    columnSchemaMap[columnKey] = resolvedDataType;
+  }
 
-	return columnSchemaMap;
+  return columnSchemaMap;
 }
 
 export function isFallbackIdColumn(columnKey: ColumnKey) {
-	return columnKey === FALLBACK_ID_COLUMN_KEY;
+  return columnKey === FALLBACK_ID_COLUMN_KEY;
+}
+
+export function randomId(): string {
+  // `crypto.randomUUID` requires a secure context like https://example.com or http://localhost
+  // It is not available in http://example.com  or http://192.168.x.x
+  if (isFunction(crypto.randomUUID)) {
+    return crypto.randomUUID();
+  }
+
+  // temporary workaround
+  return ("" + [1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      Number(c) ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4)))
+    ).toString(16),
+  );
 }

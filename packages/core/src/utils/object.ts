@@ -18,8 +18,6 @@ export type SubsetKeysOf<S, K extends keyof S> = K;
  */
 export type KeysNotIn<S, K extends PropertyKey> = K extends keyof S ? never : K;
 
-
-
 /**
  * Normalizes any complex type (union, overload, conditional, function-like)
  * into a guaranteed plain object type that can be safely spread in JSX:
@@ -32,7 +30,7 @@ export type KeysNotIn<S, K extends PropertyKey> = K extends keyof S ? never : K;
  * "Spread types may only be created from object types".
  */
 export type SpreadableObject<O> = {
-	[K in keyof O]: O[K];
+  [K in keyof O]: O[K];
 };
 
 export type StringKeyedObject<V = unknown> = Record<string, V>;
@@ -60,30 +58,30 @@ export type StringKeyedObject<V = unknown> = Record<string, V>;
  * const err3: EmptyObject = { [sym]: true };  // ❌ symbol key
  */
 export type EmptyObject<K extends PropertyKey = PropertyKey> = {
-	[Member in K]: never;
+  [Member in K]: never;
 };
 
 export type PlainObject = Record<PropertyKey, unknown>;
 export function isPlainObject(arg: unknown): arg is PlainObject {
-	if (
-		arg !== null &&
-		typeof arg === 'object' &&
-		[null, Object.prototype].includes(Object.getPrototypeOf(arg))
-	) {
-		return true;
-	}
+  if (
+    arg !== null &&
+    typeof arg === "object" &&
+    [null, Object.prototype].includes(Object.getPrototypeOf(arg))
+  ) {
+    return true;
+  }
 
-	return false;
+  return false;
 }
 
 export function getObjectKeysReadOnly<T>(
-	obj: StringKeyedObject<T>
+  obj: StringKeyedObject<T>,
 ): ReadonlyArray<string> {
-	return Object.keys(obj);
+  return Object.keys(obj);
 }
 
 export function countObjectKeys(obj: StringKeyedObject): number {
-	return Object.keys(obj).length;
+  return Object.keys(obj).length;
 }
 
 /**
@@ -101,22 +99,22 @@ export function countObjectKeys(obj: StringKeyedObject): number {
  * @returns `true` if the object has no enumerable keys, otherwise `false`.
  */
 export function isEmptyObject(
-	obj: StringKeyedObject
+  obj: StringKeyedObject,
 ): obj is EmptyObject<string> {
-	if (isPlainObject(obj)) {
-		return countObjectKeys(obj) === 0;
-	}
+  if (isPlainObject(obj)) {
+    return countObjectKeys(obj) === 0;
+  }
 
-	throw TypeError('isEmptyObject expects only object values');
+  throw TypeError("isEmptyObject expects only object values");
 }
 
 export function isConcreteObject(
-	obj: StringKeyedObject
+  obj: StringKeyedObject,
 ): obj is StringKeyedObject {
-	if (isPlainObject(obj)) {
-		return countObjectKeys(obj) > 0;
-	}
-	throw TypeError('isConcreteObject expects only object values');
+  if (isPlainObject(obj)) {
+    return countObjectKeys(obj) > 0;
+  }
+  throw TypeError("isConcreteObject expects only object values");
 }
 
 /**
@@ -124,17 +122,16 @@ export function isConcreteObject(
  * @param obj Object that contains the properties and methods.
  */
 export function ownEntries<V>(
-	obj: Record<PropertyKey, V>
+  obj: Record<PropertyKey, V>,
 ): [string | symbol, V][] {
-	return Reflect.ownKeys(obj)
-		.filter((k) => Object.prototype.propertyIsEnumerable.call(obj, k))
-		.map((k) => [k, obj[k]]);
+  return Reflect.ownKeys(obj)
+    .filter((k) => Object.prototype.propertyIsEnumerable.call(obj, k))
+    .map((k) => [k, obj[k]]);
 }
-
 
 export function deleteKeys<T extends object, K extends keyof T>(
   obj: T,
-  keys: K[]
+  keys: K[],
 ): Omit<T, K> {
   const clone = { ...obj };
   keys.forEach((key) => delete clone[key]);

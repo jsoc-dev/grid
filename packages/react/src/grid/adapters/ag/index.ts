@@ -1,2 +1,2 @@
-export * from './column-factory/'
-export * from './JsocGridAg'
+export * from "./column-factory.tsx";
+export * from "./JsocGridAg.tsx";

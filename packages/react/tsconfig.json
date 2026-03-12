@@ -1,34 +1,35 @@
 {
-	"compilerOptions": {
-		// language
-		"target": "ES2024",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"jsx": "react-jsx",
+  "compilerOptions": {
+    // language
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
 
-		// strict checks
-		"strict": true,
-		"strictNullChecks": true,
-		"strictFunctionTypes": true,
-		"noUnusedLocals": true,
+    "allowImportingTsExtensions": true, // subpath imports require file extensions
 
-		// output
-		"sourceMap": true,
-		"skipLibCheck": true,
+    // type checking
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
 
-		// source files
-		// "baseUrl": "./src",
-		// "paths": {
-		// 	// same issue as core package
-		// 	// "@/*": ["*"]
-		// }
-	},
+    // output
+    "noEmit": true // bundler will be used to emit
 
-	"exclude": [
-		"dist",
-		"build",
-		"**/*.min.js",
-		"node_modules",
-		"**/node_modules/*"
-	]
+    // source files
+    // "paths": {
+    // 	// same issue as core package
+    // 	// "@/*": ["*"]
+    // }
+  },
+
+  "exclude": [
+    "dist",
+    "build",
+    "**/*.min.js",
+    "node_modules",
+    "**/node_modules/*"
+  ]
 }

@@ -1,4 +1,9 @@
-import { isNumber, isPlainObject, isString, type PlainObject } from '../';
+import {
+  isNumber,
+  isString,
+  isPlainObject,
+  type PlainObject,
+} from "#utils/index.ts";
 
 export const MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1;
 
@@ -6,7 +11,7 @@ export const MAX_ARRAY_LENGTH = Math.pow(2, 32) - 1;
  * Type-safe version of the native Array.isArray
  */
 export function isArray(arg: unknown): arg is Array<unknown> {
-	return Array.isArray(arg);
+  return Array.isArray(arg);
 }
 
 /**
@@ -21,48 +26,45 @@ export function isArray(arg: unknown): arg is Array<unknown> {
  * ensureArray('abc');      // => ['abc']
  */
 export function ensureArray<T>(arg: T | T[]): T[] {
-	return isArray(arg) ? arg : [arg];
+  return isArray(arg) ? arg : [arg];
 }
 
 export function joinStringArray(arg: readonly string[]) {
-	return arg.map((str) => `"${str}"`).join(', ');
+  return arg.map((str) => `"${str}"`).join(", ");
 }
 
 export function isArrayIndex(arg: unknown): arg is number {
-	return (
-		isNumber(arg) &&
-		Number.isInteger(arg) &&
-		arg >= 0 &&
-		arg < MAX_ARRAY_LENGTH
-	);
+  return (
+    isNumber(arg) && Number.isInteger(arg) && arg >= 0 && arg < MAX_ARRAY_LENGTH
+  );
 }
 
 export function areAllUnique(arr: unknown[]) {
-	return arr.length === new Set(arr).size;
+  return arr.length === new Set(arr).size;
 }
 
 export function isIndexWithinLength(
-	arr: Array<unknown>,
-	index: unknown
+  arr: Array<unknown>,
+  index: unknown,
 ): boolean {
-	return isArrayIndex(index) && index < arr.length;
+  return isArrayIndex(index) && index < arr.length;
 }
 
 export function isArrayOfObjects(arg: unknown): arg is Array<PlainObject> {
-	return isArray(arg) && arg.every(isPlainObject);
+  return isArray(arg) && arg.every(isPlainObject);
 }
 
 export function isArrayOfStrings(arg: unknown): arg is Array<string> {
-	return isArray(arg) && arg.every(isString);
+  return isArray(arg) && arg.every(isString);
 }
 
 export function range(start: number, end: number): number[] {
-	if (!Number.isInteger(start) || !Number.isInteger(end)) {
-		throw new Error('start and end must be integers');
-	}
+  if (!Number.isInteger(start) || !Number.isInteger(end)) {
+    throw new Error("start and end must be integers");
+  }
 
-	const step = start <= end ? 1 : -1;
-	const length = Math.abs(end - start) + 1;
+  const step = start <= end ? 1 : -1;
+  const length = Math.abs(end - start) + 1;
 
-	return Array.from({ length }, (_, i) => start + i * step);
+  return Array.from({ length }, (_, i) => start + i * step);
 }

@@ -1,3 +1,3 @@
-export * from './adapter-registry';
-export * from './ag/';
-export * from './mui/';
+export * from "./adapter-registry.ts";
+export * from "./ag/index.ts";
+export * from "./mui/index.ts";

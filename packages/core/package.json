@@ -1,11 +1,13 @@
 {
-	"name": "@jsoc/core",
-	"version": "0.0.1",
-	"main": "./src/index.ts",
-	"type": "module",
-	"exports": {
-		"./errors": "./src/errors/index.ts",
-		"./grid": "./src/grid/index.ts",
-		"./utils": "./src/utils/index.ts"
-	}
+  "name": "@jsoc/core",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    "./grid": "./src/grid/index.ts",
+    "./utils": "./src/utils/index.ts"
+  }
 }
