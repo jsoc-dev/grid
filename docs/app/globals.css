@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
   --card: 0 0% 100%;
   --card-foreground: 240 10% 3.9%;
@@ -24,7 +23,6 @@
 }
 
 .dark {
-  --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;
   --card: 240 10% 3.9%;
   --card-foreground: 0 0% 98%;
@@ -54,7 +52,7 @@
 
   --breakpoint-svrow: 1024px;
 
-  --color-background: hsl(var(--background));
+  --color-background: var(--x-color-nextra-bg); /* match with nextra bg otherwise sidebar background will be different */
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
