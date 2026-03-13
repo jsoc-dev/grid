@@ -92,9 +92,22 @@ export type ColumnDefinitionProviderParams = {
 };
 
 /**
- * Factory method that provides column definition for a column `ColumnKey`.
+ * Default method that will be used to generate column definition of type `C` for a column `ColumnKey`.
+ * @typeParam C - Type of the Columns / Column Definitions prop of the Grid UI Component
  */
 export type ColumnDefinitionProvider<C> = (
+  params: ColumnDefinitionProviderParams,
+  /**
+   * Definition overrides received from the corresponding `CustomColumnDefinitionProvider` of the `CustomColumnFactory`
+   */
+  definitionOverrides?: Partial<C>,
+) => C;
+
+/**
+ * Custom method received from consumer that will be used to generate column definition of type `C` for a column `ColumnKey`.
+ * @typeParam C - Type of the Columns / Column Definitions prop of the Grid UI Component
+ */
+export type CustomColumnDefinitionProvider<C> = (
   params: ColumnDefinitionProviderParams,
 ) => C;
 
@@ -138,7 +151,9 @@ export type ColumnFactory<C> = Record<
  * - It is an object containing 0 or more custom `ColumnDefinitionProvider`s to override the
  * 	corresponding default `ColumnDefinitionProvider`s for the `ColumnDataType`
  */
-export type CustomColumnFactory<C> = Partial<ColumnFactory<C>>;
+export type CustomColumnFactory<C> = Partial<
+  Record<ColumnDataType, CustomColumnDefinitionProvider<C>>
+>;
 
 /**
  * Dynamic key for the fallback id column (column with unique values) that is mandatory to supply

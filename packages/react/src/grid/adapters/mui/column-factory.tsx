@@ -37,39 +37,62 @@ export function commonColDefMui(
   };
 }
 
-function string(params: ColumnDefinitionProviderParams): GridColDef {
+function string(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   return {
     ...commonColDefMui(params),
     type: "string",
+
+    ...definitionOverrides,
   };
 }
 
-function boolean(params: ColumnDefinitionProviderParams): GridColDef {
+function boolean(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   return {
     ...commonColDefMui(params),
     type: "boolean",
+
+    ...definitionOverrides,
   };
 }
 
-function number(params: ColumnDefinitionProviderParams): GridColDef {
+function number(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   return {
     ...commonColDefMui(params),
     type: "number",
+
+    ...definitionOverrides,
   };
 }
 
-function stringDate(params: ColumnDefinitionProviderParams): GridColDef {
+function stringDate(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   return {
     ...commonColDefMui(params),
     type: "dateTime",
     valueGetter: (value) => value && new Date(value),
+
+    ...definitionOverrides,
   };
 }
 
 /**
  * Provides column definitions for column having values as arrayOfObjects
  */
-function arrayOfObjects(params: ColumnDefinitionProviderParams): GridColDef {
+function arrayOfObjects(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   const { columnKey, gridId, gridIdColumnKey } = params;
 
   return {
@@ -111,14 +134,22 @@ function arrayOfObjects(params: ColumnDefinitionProviderParams): GridColDef {
         />
       );
     },
+
+    ...definitionOverrides,
   };
 }
 
-function object(params: ColumnDefinitionProviderParams): GridColDef {
-  return arrayOfObjects(params);
+function object(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
+  return arrayOfObjects(params, definitionOverrides);
 }
 
-function unresolved(params: ColumnDefinitionProviderParams): GridColDef {
+function unresolved(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<GridColDef>,
+): GridColDef {
   return {
     ...commonColDefMui(params),
     sortable: false,
@@ -137,5 +168,7 @@ function unresolved(params: ColumnDefinitionProviderParams): GridColDef {
 
       return ensureString(value);
     },
+
+    ...definitionOverrides,
   };
 }

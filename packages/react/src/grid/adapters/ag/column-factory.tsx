@@ -40,38 +40,61 @@ export type DefaultCellRendererProviderMapAg = Record<
   (params: ColumnDefinitionProviderParams) => CellRendererAg
 >;
 
-function string(params: ColumnDefinitionProviderParams): ColDef {
+function string(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   return {
     ...commonColDefAg(params),
     cellDataType: "text",
+
+    ...definitionOverrides,
   };
 }
 
-function boolean(params: ColumnDefinitionProviderParams): ColDef {
+function boolean(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   return {
     ...commonColDefAg(params),
     cellDataType: "boolean",
+
+    ...definitionOverrides,
   };
 }
 
-function number(params: ColumnDefinitionProviderParams): ColDef {
+function number(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   return {
     ...commonColDefAg(params),
     cellDataType: "number",
+
+    ...definitionOverrides,
   };
 }
 
-function stringDate(params: ColumnDefinitionProviderParams): ColDef {
+function stringDate(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   return {
     ...commonColDefAg(params),
     cellDataType: "dateTimeString",
+
+    ...definitionOverrides,
   };
 }
 
 /**
  * Provides column definitions for column having values as arrayOfObjects
  */
-function arrayOfObjects(params: ColumnDefinitionProviderParams): ColDef {
+function arrayOfObjects(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   const { columnKey, gridId, gridIdColumnKey } = params;
 
   return {
@@ -101,14 +124,22 @@ function arrayOfObjects(params: ColumnDefinitionProviderParams): ColDef {
         />
       );
     },
+
+    ...definitionOverrides,
   };
 }
 
-function object(params: ColumnDefinitionProviderParams): ColDef {
-  return arrayOfObjects(params);
+function object(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
+  return arrayOfObjects(params, definitionOverrides);
 }
 
-function unresolved(params: ColumnDefinitionProviderParams): ColDef {
+function unresolved(
+  params: ColumnDefinitionProviderParams,
+  definitionOverrides?: Partial<ColDef>,
+): ColDef {
   return {
     ...commonColDefAg(params),
     sortable: false,
@@ -129,5 +160,7 @@ function unresolved(params: ColumnDefinitionProviderParams): ColDef {
 
       return ensureString(value);
     },
+
+    ...definitionOverrides,
   };
 }
