@@ -12,4 +12,3 @@
 ## Code style
 
 - Use canonical tailwind classes.
-- Perform prettier formatting at end of task completion.
