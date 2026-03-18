@@ -1,6 +1,9 @@
-export class JsocGridError extends Error {
-  constructor(public message: string) {
-    super(message);
-    this.name = "JsocGridError";
+export class GridError extends Error {
+  constructor(
+    public message: string,
+    public cause?: unknown,
+  ) {
+    super(message, { cause });
+    this.name = "GridError";
   }
 }

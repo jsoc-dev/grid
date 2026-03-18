@@ -9,5 +9,8 @@
   "exports": {
     "./grid": "./src/grid/index.ts",
     "./utils": "./src/utils/index.ts"
+  },
+  "scripts": {
+    "type": "tsc --noEmit"
   }
 }

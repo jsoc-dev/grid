@@ -1,251 +1,153 @@
 import {
-  generateRows,
-  JsocGridError,
-  type ColumnKey,
-  type GridDataReadonly,
-  type GridRowId,
-  type GridRows,
-  type IdColumnKey,
+  type GridCellLocation,
+  type PluginConfig,
+  type GridId,
+  type GridIndex,
+  type GridOptions,
+  type GridOptionsWithId,
+  type GridSchemaWithConfig,
+  DEFAULT_ROOT_GRID_NAME,
+  GridError,
+  newGridSchema,
+  type PluginConfigGenerator,
+  type PluginConfigGeneratorOptions,
 } from "#grid/index.ts";
-import {
-  capitalizeFirst,
-  isIndexWithinLength,
-  ensureString,
-} from "#utils/index.ts";
+import { assertIsValidIndex } from "#utils/index.ts";
 
-/**
- * Id to use if the consumer didn't pass any ID for the the root grid.
- * It doesn't need to be randomised as ids of subgrids can't conflict with
- * this as they are combination of multiple values. (Refer `buildSubGridId`).
- */
-export const FALLBACK_ROOT_GRID_ID = "Grid";
-/**
- * - Either gridId of the root grid(default/consumer-provided) or
- * - Unique id build by the `buildSubGridId` method to uniquely identify a `GridSchema`
- * 	inside the `GridSchemaStore`.
- */
-export type GridId = typeof FALLBACK_ROOT_GRID_ID | string;
-/**
- * flag that indicates which GridSchema from the GridSchemaStore is active(rendered) on the UI
- */
-export type ActiveGridFlag = boolean;
-/**
- * Object that contains the abstract location of a grid cell.
- */
-export type GridCellLocation = {
-  /**
-   * Value of `IdColumnKey` column in the row that contains this cell.
-   */
-  rowId: GridRowId;
-  /**
-   * `ColumnKey` which this cell corresponds to.
-   */
-  columnKey: ColumnKey;
+export type GridStoreInternals<C extends PluginConfig = PluginConfig> = {
+  activeIndex: GridIndex;
+  configGenerator: PluginConfigGenerator<C>;
 };
 
-export type GridSchema = {
-  gridId: GridId;
-  gridRows: GridRows;
-  gridIdColumnKey: IdColumnKey;
-  isActiveGrid: ActiveGridFlag;
+export type GridStoreMethods<C extends PluginConfig = PluginConfig> = {
+  addSchema(this: GridStore<C>, options: GridOptionsWithId): void;
+  clone(this: GridStore<C>): GridStore<C>;
+  getActiveIndex(this: GridStore<C>): GridIndex;
+  getActiveSchema(this: GridStore<C>): GridSchemaWithConfig<C>;
+  isActiveGrid(
+    this: GridStore<C>,
+    gridSchema: GridSchemaWithConfig<C>,
+  ): boolean;
+  removeSchema(this: GridStore<C>, index: GridIndex): void;
+  setActiveIndex(this: GridStore<C>, index: GridIndex): void;
+  search(
+    this: GridStore<C>,
+    id: GridId,
+  ): {
+    index: GridIndex;
+    schema: GridSchemaWithConfig<C> | undefined;
+  };
 };
-/**
- * Array of `GridSchema`s containing details of multiple grids that were opened by the user
- * previously and currently.
- */
-export type GridSchemaStore = Array<GridSchema>;
-export type GridSchemaStoreIndex = number;
+
+export type GridStore<C extends PluginConfig = PluginConfig> = Array<
+  GridSchemaWithConfig<C>
+> &
+  GridStoreInternals<C> &
+  GridStoreMethods<C>;
 
 /**
- * Creates a new `GridSchemaStore` based on the provided grid name and data
- * @param gridId id of the root grid
- * @param gridData JSON data of the root grid
- * @returns newly initialised `GridSchemaStore`
+ * TODO: Add docs
  */
-export function initGridSchemaStore(
-  gridId: GridId,
-  gridData: GridDataReadonly,
-): GridSchemaStore {
-  const { gridRows, gridIdColumnKey } = generateRows(gridData);
-  return [
+export function newGridStore<C extends PluginConfig = PluginConfig>(
+  gridOptions: GridOptions,
+  configGenerator: PluginConfigGenerator<C>,
+  configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
+): GridStore<C> {
+  const rootGridSchema = newGridSchema<C>(
     {
-      gridId,
-      gridRows,
-      gridIdColumnKey,
-      isActiveGrid: true,
+      ...gridOptions,
+      id: gridOptions.name || DEFAULT_ROOT_GRID_NAME,
     },
-  ];
+    configGenerator,
+    configGeneratorOptions,
+  );
+  const schemas = [rootGridSchema];
+
+  const internals: GridStoreInternals<C> = {
+    activeIndex: 0,
+    configGenerator,
+  };
+
+  const methods: GridStoreMethods<C> = {
+    addSchema(options) {
+      const gridSchema = newGridSchema(
+        options,
+        this.configGenerator,
+        configGeneratorOptions,
+      );
+      this.splice(this.activeIndex + 1, this.length, gridSchema);
+      this.setActiveIndex(this.length - 1);
+    },
+    clone() {
+      return Object.assign([], this);
+    },
+    getActiveIndex() {
+      return this.activeIndex;
+    },
+    getActiveSchema() {
+      return this[this.activeIndex];
+    },
+    isActiveGrid(gridSchema) {
+      const index = this.findIndex(
+        (schema) => schema.options.id === gridSchema.options.id,
+      );
+      return this.activeIndex === index;
+    },
+    removeSchema(removeIndex) {
+      assertIsValidIndex(
+        this,
+        removeIndex,
+        new GridError(
+          "Something went wrong while rendering the grid.",
+          `removeIndex is invalid - ${removeIndex}`,
+        ),
+      );
+
+      this.splice(removeIndex);
+
+      if (removeIndex <= this.activeIndex) {
+        this.setActiveIndex(removeIndex - 1);
+      }
+    },
+    setActiveIndex(newActiveIndex) {
+      assertIsValidIndex(
+        this,
+        newActiveIndex,
+        new GridError(
+          "Something went wrong while rendering the grid.",
+          `newActiveIndex is invalid - ${newActiveIndex}`,
+        ),
+      );
+      this.activeIndex = newActiveIndex;
+    },
+    search(id) {
+      const index = this.findIndex((schema) => schema.options.id === id);
+      const schema = this.at(index);
+
+      return {
+        isPresentInStore: index > -1,
+        index,
+        schema,
+      };
+    },
+  };
+
+  return Object.assign(schemas, { ...internals, ...methods });
 }
 
 /**
- * Separator used by `buildSubGridId` method
- */
-export const BUILD_GRID_ID_SEPARATOR = ".";
-/**
- * Builds a unique id to uniquely identify a `GridSchema` inside the `GridSchemaStore`.
- * It uses combination of parentGridId and parentGridCellLocation to prevent name conflicts
- * @param gridName name of the subgrid
+ * Creates a unique id to uniquely identify a `GridSchema` inside the `GridStore`.
+ * It uses combination of parentGridId and parentGridCellLocation to prevent name conflicts.
  * @param parentGridId id of the parent grid
- * @param parentGridRowId row id from which the sub grid is created
- * @returns `GridId`
+ * @param parentGridCellLocation row id and column key from which the sub grid is created
+ * @returns `SubGridId`
  */
-export function buildSubGridId(
+export function createSubGridId(
   parentGridId: GridId,
   parentGridCellLocation: GridCellLocation,
-): GridId {
+) {
   const { rowId, columnKey } = parentGridCellLocation;
   const prefix = `${parentGridId}[${rowId}]`;
 
-  return [prefix, columnKey].join(BUILD_GRID_ID_SEPARATOR);
-}
-
-export function extractGridNameFromGridId(gridId: GridId) {
-  const gridName = gridId.split(BUILD_GRID_ID_SEPARATOR).at(-1);
-
-  return capitalizeFirst(ensureString(gridName));
-}
-
-/**
- * Creates a new `GridSchemaStore` by making the `GridSchema` active on the provided
- * `index` of the given `gridSchemaStore`
- * @param gridSchemaStore
- * @param index
- * @returns `GridSchemaStore`
- */
-export function activateGridSchema(
-  gridSchemaStore: GridSchemaStore,
-  index: GridSchemaStoreIndex,
-): GridSchemaStore {
-  const copy = [...gridSchemaStore];
-  setActiveGridSchema(copy, index);
-
-  return copy;
-}
-
-/**
- * Creates a new `GridSchemaStore` by adding a new schema and activating it in the
- * provided `gridSchemaStore`.
- * @param gridSchemaStore
- * @param subGridId - id of the grid which needs to be added
- * @param subGridData - data of the grid which needs to be added
- */
-export function addGridSchema(
-  gridSchemaStore: GridSchemaStore,
-  subGridId: GridId,
-  subGridData: GridDataReadonly,
-): GridSchemaStore {
-  const { gridRows, gridIdColumnKey } = generateRows(subGridData);
-  const gridSchema: GridSchema = {
-    gridId: subGridId,
-    gridRows,
-    gridIdColumnKey,
-    isActiveGrid: true,
-  };
-
-  const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-  const slicedUntilActiveIndex = gridSchemaStore.slice(0, activeIndex + 1); // + 1 is added as end param is exclusive but activeIndex should be included in new store
-  const copy = [...slicedUntilActiveIndex, gridSchema]; // add the new item in the last index
-
-  return activateGridSchema(copy, copy.length - 1); // activate the added item
-}
-
-/**
- * Creates a new `GridSchemaStore` by removing the gridSchema at the provided `removeIndex`
- * All the sub grids of the grid at removeIndex also get removed, so in case the active grid
- * is one of the sub grids, then new active grid will be set which will be the parent of the
- * grid at removeIndex
- * @param gridSchemaStore
- * @param removeIndex index of the `GridSchema` which needs to removed
- * @returns `GridSchemaStore`
- */
-export function removeGridSchema(
-  gridSchemaStore: GridSchemaStore,
-  removeIndex: GridSchemaStoreIndex,
-): GridSchemaStore {
-  if (removeIndex < 1) {
-    throw new JsocGridError("Remove Index must be greater than 0");
-  }
-
-  const activeIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-
-  if (removeIndex <= activeIndex) {
-    setActiveGridSchema(gridSchemaStore, removeIndex - 1);
-  }
-
-  return [...gridSchemaStore.slice(0, removeIndex)];
-}
-
-export type SearchGridSchemaResult = {
-  isPresentInStore: boolean;
-  gridSchemaStoreIndex: GridSchemaStoreIndex;
-  gridSchema: GridSchema;
-};
-/**
- * Returns whether the provided `gridSchema` is present in the `gridSchemaStore`
- * and at what index
- * @param gridSchemaStore
- * @param gridSchema which needs to be searched
- */
-export function searchGridSchema(
-  gridSchemaStore: GridSchemaStore,
-  gridId: GridId,
-): SearchGridSchemaResult {
-  const gridSchemaStoreIndex = gridSchemaStore.findIndex(
-    (item) => item.gridId == gridId,
-  );
-  const gridSchema = gridSchemaStore[gridSchemaStoreIndex];
-
-  return {
-    isPresentInStore: gridSchemaStoreIndex > -1,
-    gridSchemaStoreIndex,
-    gridSchema,
-  };
-}
-
-/**
- * Returns index of the active `gridSchema` in the `gridSchemaStore`
- * @param gridSchemaStore
- */
-export function getIndexOfActiveGridSchema(
-  gridSchemaStore: GridSchemaStore,
-): GridSchemaStoreIndex {
-  const index = gridSchemaStore.findIndex((item) => item.isActiveGrid);
-
-  if (index != -1) {
-    return index;
-  } else {
-    throw new JsocGridError(
-      "Unable to find active item in the GridSchemaStore.",
-    );
-  }
-}
-
-/**
- * Returns the `gridSchema` which is currently active in the `gridSchemaStore`
- * @param gridSchemaStore
- * @returns `GridSchema`
- */
-export function getActiveGridSchema(
-  gridSchemaStore: GridSchemaStore,
-): GridSchema {
-  return gridSchemaStore[getIndexOfActiveGridSchema(gridSchemaStore)];
-}
-
-/**
- * Sets the `gridSchema` as active at the provided `newActiveIndex` of the `gridSchemaStore`
- * @param gridSchemaStore
- */
-export function setActiveGridSchema(
-  gridSchemaStore: GridSchemaStore,
-  newActiveIndex: GridSchemaStoreIndex,
-): undefined {
-  if (isIndexWithinLength(gridSchemaStore, newActiveIndex)) {
-    const oldActiveIndex = getIndexOfActiveGridSchema(gridSchemaStore);
-    gridSchemaStore[oldActiveIndex].isActiveGrid = false;
-    gridSchemaStore[newActiveIndex].isActiveGrid = true;
-  } else {
-    throw new JsocGridError(
-      "New active index is not within the GridSchemaStore length.",
-    );
-  }
+  return [prefix, columnKey].join(".");
 }

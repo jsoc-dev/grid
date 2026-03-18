@@ -43,11 +43,14 @@ export function areAllUnique(arr: unknown[]) {
   return arr.length === new Set(arr).size;
 }
 
-export function isIndexWithinLength(
+export function assertIsValidIndex(
   arr: Array<unknown>,
   index: unknown,
-): boolean {
-  return isArrayIndex(index) && index < arr.length;
+  error: Error,
+): void {
+  if (!isArrayIndex(index) || index >= arr.length) {
+    throw error;
+  }
 }
 
 export function isArrayOfObjects(arg: unknown): arg is Array<PlainObject> {

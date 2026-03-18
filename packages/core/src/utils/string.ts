@@ -29,6 +29,10 @@ export function toStringSafe(arg: unknown): string {
   }
 }
 
+export function toPascalCase(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export function equalsIgnoreCase(str1: string, str2: string): boolean {
   return str1.trim().toLowerCase() === str2.trim().toLowerCase();
 }
