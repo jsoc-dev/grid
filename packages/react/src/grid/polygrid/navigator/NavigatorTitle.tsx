@@ -1,15 +1,19 @@
-import { useGridNavigator } from "#grid/hooks/useGridNavigator.ts";
-import { capitalizeFirst } from "@jsoc/core/utils";
-import type { GridSchemaStoreIndex } from "@jsoc/core/grid";
+import { useNavigation } from "#grid/hooks/useNavigation.ts";
+import type { GridIndex } from "@jsoc/core/grid";
+import { toPascalCase } from "@jsoc/core/utils";
 import { Typography } from "@mui/material";
 
-type GridTitleProps = {
-  index: GridSchemaStoreIndex;
+export type NavigatorTitleProps = {
+  index: GridIndex;
 };
-export function DefaultNavigatorTitleMui({ index }: GridTitleProps) {
-  const { gridSchema, gridSchemaStore, activateGrid } = useGridNavigator(index);
-  const { gridId, isActiveGrid } = gridSchema;
-  const isOnlyItem = gridSchemaStore.length === 1;
+
+export function NavigatorTitle({ index }: NavigatorTitleProps) {
+  const { gridSchema, gridStore, activateGrid } = useNavigation(index);
+  const { options } = gridSchema;
+  const { id, name } = options;
+  const isActiveGrid = gridStore.isActiveGrid(gridSchema);
+  const isOnlyItem = gridStore.length === 1;
+
   return (
     <Typography
       variant="subtitle1"
@@ -28,7 +32,7 @@ export function DefaultNavigatorTitleMui({ index }: GridTitleProps) {
         },
       }}
     >
-      {capitalizeFirst(gridId)}
+      {toPascalCase(name || id)}
     </Typography>
   );
 }

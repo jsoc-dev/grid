@@ -1,0 +1,58 @@
+import {
+  type ConfigByPlugin,
+  CONFIG_GENERATOR_BY_PLUGIN,
+} from "#grid/config-generators/configGenerator.registry.ts";
+import { type StoreContextValue } from "#grid/index.ts";
+import {
+  type PluginConfigGenerator,
+  type GridOptions,
+  type PluginConfigGeneratorOptions,
+  newGridStore,
+  type PluginConfig,
+} from "@jsoc/core/grid";
+import { useEffect, useState } from "react";
+
+export type PluginSpecificUseStore<C extends PluginConfig> = (
+  options: GridOptions,
+  configGeneratorOptions: PluginConfigGeneratorOptions<C>,
+) => StoreContextValue<C>;
+
+/**
+ * Hook to create and use store specifically for GridPlugin "ag".
+ */
+export const useStoreAg: PluginSpecificUseStore<ConfigByPlugin["ag"]> = (
+  options,
+  configGeneratorOptions,
+) => useStore(options, CONFIG_GENERATOR_BY_PLUGIN.ag, configGeneratorOptions);
+
+/**
+ * Hook to create and use store specifically for GridPlugin "mui".
+ */
+export const useStoreMui: PluginSpecificUseStore<ConfigByPlugin["mui"]> = (
+  options,
+  configGeneratorOptions,
+) => useStore(options, CONFIG_GENERATOR_BY_PLUGIN.mui, configGeneratorOptions);
+
+/**
+ * Generic hook to create and use a grid store.
+ */
+export function useStore<C extends PluginConfig>(
+  gridOptions: GridOptions,
+  configGenerator: PluginConfigGenerator<C>,
+  configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
+) {
+  // lazy initilizor to prevent unnecessary computations on useState
+  const initializor = () =>
+    newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions);
+
+  const [gridStore, setGridStore] = useState(initializor);
+
+  useEffect(() => {
+    setGridStore(initializor());
+  }, [configGenerator, configGeneratorOptions, gridOptions]);
+
+  return {
+    gridStore,
+    setGridStore,
+  };
+}

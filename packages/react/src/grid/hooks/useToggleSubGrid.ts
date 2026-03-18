@@ -1,13 +1,9 @@
-import { useGridSchemaStore } from "#grid/hooks/useGridSchemaStore.ts";
+import { useStoreContext } from "#grid/hooks/index.ts";
 import {
   type GridId,
   type GridDataReadonly,
   type GridCellLocation,
-  addGridSchema,
-  removeGridSchema,
-  extractGridNameFromGridId,
-  buildSubGridId,
-  searchGridSchema,
+  createSubGridId,
 } from "@jsoc/core/grid";
 
 export function useToggleSubGrid(
@@ -15,29 +11,30 @@ export function useToggleSubGrid(
   parentGridId: GridId,
   parentGridCellLocation: GridCellLocation,
 ) {
-  const { gridSchemaStore, setGridSchemaStore } = useGridSchemaStore();
-  const subGridId = buildSubGridId(parentGridId, parentGridCellLocation);
-  const searchResult = searchGridSchema(gridSchemaStore, subGridId);
-  const { isPresentInStore, gridSchemaStoreIndex } = searchResult;
+  const { gridStore, setGridStore } = useStoreContext();
+
+  const subGridId = createSubGridId(parentGridId, parentGridCellLocation);
+  const subGridName = parentGridCellLocation.columnKey;
+  const { index } = gridStore.search(subGridId);
+
+  const isPresentInStore = index > -1;
+  const toggleText = (isPresentInStore ? "Close" : "View") + " " + subGridName;
+  const toggleSubGrid = () => {
+    const storeClone = gridStore.clone();
+    isPresentInStore
+      ? storeClone.removeSchema(index)
+      : storeClone.addSchema({
+          id: subGridId,
+          name: subGridName,
+          data: subGridData,
+        });
+
+    setGridStore(storeClone);
+  };
 
   return {
     isPresentInStore,
     toggleSubGrid,
-    toggleText: getToogleText(),
+    toggleText,
   };
-
-  function getToogleText() {
-    const gridName = extractGridNameFromGridId(subGridId);
-    const toggleText = (isPresentInStore ? "Close" : "Open") + " " + gridName;
-
-    return toggleText;
-  }
-
-  function toggleSubGrid() {
-    const newGridSchemaStore = isPresentInStore
-      ? removeGridSchema(gridSchemaStore, gridSchemaStoreIndex)
-      : addGridSchema(gridSchemaStore, subGridId, subGridData);
-
-    setGridSchemaStore(newGridSchemaStore);
-  }
 }

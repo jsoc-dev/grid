@@ -1,0 +1,36 @@
+import {
+  type ConfigByPlugin,
+  type GridPlugin,
+} from "#grid/config-generators/index.ts";
+import {
+  type StoreContextValue,
+  StoreContext,
+  StoreContextAg,
+  StoreContextMui,
+} from "#grid/contexts/StoreContext.tsx";
+import { type Context, useContext } from "react";
+
+export type UseStoreContext<P extends GridPlugin> = () => StoreContextValue<
+  ConfigByPlugin[P]
+>;
+
+export const useStoreContext = createUseStoreContext(StoreContext);
+export const useStoreContextAg = createUseStoreContext(StoreContextAg, "ag");
+export const useStoreContextMui = createUseStoreContext(StoreContextMui, "mui");
+
+function createUseStoreContext<P extends GridPlugin>(
+  StoreContext: Context<StoreContextValue<ConfigByPlugin[P]> | undefined>,
+  plugin?: P,
+): UseStoreContext<P> {
+  return function useStoreContext() {
+    const ctx = useContext(StoreContext);
+
+    if (!ctx) {
+      throw new Error(
+        `Missing provider for useStoreContext${plugin ? `(${plugin})` : ""}.`,
+      );
+    }
+
+    return ctx;
+  };
+}

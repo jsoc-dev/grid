@@ -1,4 +1,5 @@
-import { ToggleSubGridButton } from "#grid/components/toggle-subgrid/ToggleSubGridButton.tsx";
+import { SubGridToggle } from "#grid/components/index.ts";
+import type { PluginConfigMui } from "#grid/config-generators/mui/configGeneratorMui.ts";
 import {
   ensureString,
   ensureArray,
@@ -8,95 +9,85 @@ import {
   toReadableString,
 } from "@jsoc/core/utils";
 import {
-  ColumnFactory,
-  type ColumnDefinitionProviderParams,
+  ColumnGeneratorByType,
+  type ColumnGenerator,
   type GridData,
   type GridDataReadonly,
   type GridRows,
 } from "@jsoc/core/grid";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridRenderCellParams } from "@mui/x-data-grid";
 
-export const COLUMN_FACTORY_MUI: ColumnFactory<GridColDef> = {
-  arrayOfObjects,
-  boolean,
-  number,
-  object,
-  stringDate,
-  string,
-  unresolved,
-};
-
-export function commonColDefMui(
-  params: ColumnDefinitionProviderParams,
-): GridColDef {
+export const baseColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+) => {
   const { columnKey } = params;
 
   return {
     field: columnKey,
     headerName: toReadableString(columnKey),
+    filter: true,
   };
-}
+};
 
-function string(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
+export const stringColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     type: "string",
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
 
-function boolean(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
+export const booleanColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     type: "boolean",
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
 
-function number(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
+export const numberColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     type: "number",
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
 
-function stringDate(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
+export const stringDateColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     type: "dateTime",
     valueGetter: (value) => value && new Date(value),
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
 
 /**
  * Provides column definitions for column having values as arrayOfObjects
  */
-function arrayOfObjects(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
-  const { columnKey, gridId, gridIdColumnKey } = params;
+export const arrayOfObjectsColumnGeneratorMui: ColumnGenerator<
+  PluginConfigMui
+> = (params, overrides) => {
+  const { columnKey, gridSchema } = params;
 
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     type: "actions",
     sortable: false,
     filterable: false,
@@ -124,34 +115,34 @@ function arrayOfObjects(
       const { row, value } = params;
 
       return (
-        <ToggleSubGridButton
+        <SubGridToggle
           subGridData={value}
-          parentGridId={gridId}
+          parentGridId={gridSchema.options.id}
           parentGridCellLocation={{
-            rowId: row[gridIdColumnKey],
+            rowId: row[gridSchema.meta.primaryColumnKey],
             columnKey,
           }}
         />
       );
     },
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
 
-function object(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
-  return arrayOfObjects(params, definitionOverrides);
-}
+export const objectColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
+  return arrayOfObjectsColumnGeneratorMui(params, overrides);
+};
 
-function unresolved(
-  params: ColumnDefinitionProviderParams,
-  definitionOverrides?: Partial<GridColDef>,
-): GridColDef {
+export const unresolvedColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
+  params,
+  overrides,
+) => {
   return {
-    ...commonColDefMui(params),
+    ...baseColumnGeneratorMui(params),
     sortable: false,
     filterable: false,
     /**
@@ -169,6 +160,17 @@ function unresolved(
       return ensureString(value);
     },
 
-    ...definitionOverrides,
+    ...overrides,
   };
-}
+};
+
+export const COLUMN_GENERATOR_BY_TYPE_MUI: ColumnGeneratorByType<PluginConfigMui> =
+  {
+    arrayOfObjects: arrayOfObjectsColumnGeneratorMui,
+    boolean: booleanColumnGeneratorMui,
+    number: numberColumnGeneratorMui,
+    object: objectColumnGeneratorMui,
+    stringDate: stringDateColumnGeneratorMui,
+    string: stringColumnGeneratorMui,
+    unresolved: unresolvedColumnGeneratorMui,
+  };
