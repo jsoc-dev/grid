@@ -1,11 +1,10 @@
 import { useToggleSubGrid } from "#grid/hooks/useToggleSubGrid.ts";
-import {
-  type GridId,
-  type GridCellLocation,
-  type GridDataReadonly,
+
+import type {
+  GridCellLocation,
+  GridDataReadonly,
+  GridId,
 } from "@jsoc/core/grid";
-import { GridOn, GridOff } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
 
 export type SubGridToggleProps = {
   /**
@@ -27,28 +26,11 @@ export function SubGridToggle({
   parentGridId,
   parentGridCellLocation,
 }: SubGridToggleProps) {
-  const { isPresentInStore, toggleText, toggleSubGrid } = useToggleSubGrid(
+  const { toggleText, toggleSubGrid } = useToggleSubGrid(
     subGridData,
     parentGridId,
     parentGridCellLocation,
   );
 
-  return (
-    <IconButton
-      title={toggleText}
-      size="small"
-      onClick={toggleSubGrid}
-      sx={{
-        "&:focus": {
-          outline: "none",
-        },
-      }}
-    >
-      {isPresentInStore ? (
-        <GridOff fontSize="small" />
-      ) : (
-        <GridOn fontSize="small" />
-      )}
-    </IconButton>
-  );
+  return <button onClick={toggleSubGrid}>{toggleText}</button>;
 }

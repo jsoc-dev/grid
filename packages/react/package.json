@@ -1,7 +1,6 @@
 {
   "name": "@jsoc/react",
   "version": "0.0.1",
-  "main": "./src/index.ts",
   "type": "module",
   "imports": {
     "#*": "./src/*"
@@ -13,15 +12,24 @@
     "type": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@mui/x-data-grid": "^8.16.0",
+    "ag-grid-react": "^34.3.1",
+    "ag-grid-community": "^34.3.1",
     "react": ">=19",
     "react-dom": ">=19"
   },
+  "peerDependenciesMeta": {
+    "@mui/x-data-grid": {
+      "optional": true
+    },
+    "ag-grid-react": {
+      "optional": true
+    },
+    "ag-grid-community": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "@jsoc/core": "workspace:*",
-    "@mui/material": "^7.3.4",
-    "@mui/x-data-grid": "^8.16.0",
-    "@mui/icons-material": "^7.3.4",
-    "ag-grid-react": "^34.3.1",
-    "ag-grid-community": "^34.3.1"
+    "@jsoc/core": "workspace:*"
   }
 }
