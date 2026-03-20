@@ -3,7 +3,7 @@ import {
   type GridId,
   type GridCellLocation,
   type GridDataReadonly,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 
 export type SubGridToggleProps = {
   /**

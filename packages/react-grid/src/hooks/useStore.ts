@@ -9,7 +9,7 @@ import {
   type PluginConfigGeneratorOptions,
   newGridStore,
   type PluginConfig,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 import { useEffect, useState } from "react";
 
 export type PluginSpecificUseStore<C extends PluginConfig> = (

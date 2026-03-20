@@ -1,8 +1,12 @@
-import type { ColumnKey } from "#grid/index.ts";
-import type { GridRows } from "#grid/schema.ts";
-import { areAllUnique, isFunction } from "#utils/index.ts";
-import { isNumber } from "#utils/number.ts";
-import { isString, toStringSafe } from "#utils/string.ts";
+import type { ColumnKey } from "#column.ts";
+import type { GridRows } from "#schema.ts";
+import {
+  isNumber,
+  areAllUnique,
+  isFunction,
+  isString,
+  toStringSafe,
+} from "@jsoc/utils";
 
 /**
  * Property that has a unique value for all the `GridRows`.

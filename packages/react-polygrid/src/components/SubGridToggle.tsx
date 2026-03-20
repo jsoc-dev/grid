@@ -3,7 +3,7 @@ import {
   type GridId,
   type GridCellLocation,
   type GridDataReadonly,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 import { GridOn, GridOff } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 

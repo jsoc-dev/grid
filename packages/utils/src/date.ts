@@ -1,4 +1,4 @@
-import { isString } from "#utils/index.ts";
+import { isString } from "#string.ts";
 
 const ISO_REGEX =
   /^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$/;

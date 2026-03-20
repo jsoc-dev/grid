@@ -4,7 +4,7 @@ import {
   type GridDataReadonly,
   type GridCellLocation,
   createSubGridId,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 
 export function useToggleSubGrid(
   subGridData: GridDataReadonly,

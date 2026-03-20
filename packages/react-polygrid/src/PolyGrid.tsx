@@ -12,7 +12,7 @@ import {
 import {
   type PluginConfigGeneratorOptions,
   type GridOptions,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 import { DataGrid } from "@mui/x-data-grid";
 import { AgGridReact } from "ag-grid-react";
 import { type ReactNode, Activity, type ElementType } from "react";

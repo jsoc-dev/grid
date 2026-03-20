@@ -1,0 +1,14 @@
+{
+  "name": "@jsoc/utils",
+  "version": "0.0.1",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type": "tsc --noEmit"
+  }
+}

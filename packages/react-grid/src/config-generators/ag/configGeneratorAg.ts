@@ -3,8 +3,8 @@ import {
   type PluginConfig,
   type PluginConfigGenerator,
   generateColumns,
-} from "@jsoc/core/grid";
-import { SubsetKeysOf } from "@jsoc/core/utils";
+} from "@jsoc/grid-core";
+import { SubsetKeysOf } from "@jsoc/utils";
 import { type AgGridReactProps } from "ag-grid-react";
 import type { ColDef } from "ag-grid-community";
 

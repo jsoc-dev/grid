@@ -6,8 +6,8 @@ import {
   isPlainObject,
   encodePretty,
   toReadableString,
-} from "@jsoc/core/utils";
-import { ColumnGeneratorByType, type ColumnGenerator } from "@jsoc/core/grid";
+} from "@jsoc/utils";
+import { ColumnGeneratorByType, type ColumnGenerator } from "@jsoc/grid-core";
 import type { ICellRendererParams } from "ag-grid-community";
 
 export const baseColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (

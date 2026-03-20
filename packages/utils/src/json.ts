@@ -1,4 +1,4 @@
-import { toStringSafe } from "#utils/index.ts";
+import { toStringSafe } from "#string.ts";
 
 /**
  * https://github.com/microsoft/TypeScript/pull/33050

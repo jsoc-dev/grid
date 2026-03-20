@@ -11,6 +11,10 @@
   "scripts": {
     "type": "tsc --noEmit"
   },
+  "dependencies": {
+    "@jsoc/utils": "workspace:*",
+    "@jsoc/grid-core": "workspace:*"
+  },
   "peerDependencies": {
     "@mui/x-data-grid": "^8.16.0",
     "ag-grid-react": "^34.3.1",
@@ -28,8 +32,5 @@
     "ag-grid-community": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "@jsoc/core": "workspace:*"
   }
 }

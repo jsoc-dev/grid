@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "#utils/index.ts";
+import { isNullOrUndefined } from "#null.ts";
 
 export function isString(arg: unknown): arg is string {
   return typeof arg === "string";
@@ -13,7 +13,7 @@ export function ensureString(arg: unknown): string {
  * Native String() can throw in very rare scenarios like below:
  * ```
  * const obj = {
- * 	toString() {
+ * 	toString() { // override prototype method
  * 		throw new Error("fail");
  * 	}
  * };

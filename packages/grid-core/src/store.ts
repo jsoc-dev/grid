@@ -1,3 +1,4 @@
+import { GridError } from "#errors.ts";
 import {
   type GridCellLocation,
   type PluginConfig,
@@ -7,12 +8,11 @@ import {
   type GridOptionsWithId,
   type GridSchemaWithConfig,
   DEFAULT_ROOT_GRID_NAME,
-  GridError,
   newGridSchema,
   type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
-} from "#grid/index.ts";
-import { assertIsValidIndex } from "#utils/index.ts";
+} from "#schema.ts";
+import { assertIsValidIndex } from "@jsoc/utils";
 
 export type GridStoreInternals<C extends PluginConfig = PluginConfig> = {
   activeIndex: GridIndex;

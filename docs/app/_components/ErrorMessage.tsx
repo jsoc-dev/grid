@@ -1,4 +1,4 @@
-import { isError } from "@jsoc/core/utils";
+import { isError } from "@jsoc/utils";
 
 export function ErrorMessage({ error }: { error: unknown }) {
   const err = isError(error)

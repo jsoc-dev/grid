@@ -1,16 +1,17 @@
 {
-  "name": "@jsoc/core",
+  "name": "@jsoc/grid-core",
   "version": "0.0.1",
-  "main": "./src/index.ts",
   "type": "module",
   "imports": {
     "#*": "./src/*"
   },
   "exports": {
-    "./grid": "./src/grid/index.ts",
-    "./utils": "./src/utils/index.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "type": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/utils": "workspace:*"
   }
 }

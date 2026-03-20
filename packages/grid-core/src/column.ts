@@ -1,10 +1,11 @@
+import { isFallbackPrimaryColumn } from "#primary-column.ts";
 import {
   type GridRows,
   type GridSchema,
   type InferColumnType,
   type PluginConfig,
-} from "#grid/index.ts";
-import { isFallbackPrimaryColumn } from "#grid/primary-column.ts";
+} from "#schema.ts";
+
 import {
   type JSONValueOrUndefined,
   isArrayOfObjects,
@@ -14,7 +15,7 @@ import {
   isNumber,
   isPlainObject,
   isString,
-} from "#utils/index.ts";
+} from "@jsoc/utils";
 
 /**
  * Property in a `GridRow`

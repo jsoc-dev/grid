@@ -4,7 +4,7 @@ import {
   configGeneratorAg,
   configGeneratorMui,
 } from "#config-generators/index.ts";
-import { type PluginConfig, type PluginConfigGenerator } from "@jsoc/core/grid";
+import { type PluginConfig, type PluginConfigGenerator } from "@jsoc/grid-core";
 
 export type GridPlugin = "ag" | "mui";
 

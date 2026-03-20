@@ -1,6 +1,6 @@
 import { useNavigation } from "@jsoc/react-grid";
-import { type GridIndex } from "@jsoc/core/grid";
-import { toPascalCase } from "@jsoc/core/utils";
+import { type GridIndex } from "@jsoc/grid-core";
+import { toPascalCase } from "@jsoc/utils";
 import { Chip, Tooltip } from "@mui/material";
 
 export type NavigatorItemProps = {

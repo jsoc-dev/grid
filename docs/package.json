@@ -10,9 +10,10 @@
     "type": "tsc --noEmit"
   },
   "dependencies": {
-    "@jsoc/core": "workspace:*",
+    "@jsoc/grid-core": "workspace:*",
     "@jsoc/react-grid": "workspace:*",
     "@jsoc/react-polygrid": "workspace:*",
+    "@jsoc/utils": "workspace:*",
     "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",

@@ -1,4 +1,4 @@
-import { toStringSafe } from "#utils/index.ts";
+import { toStringSafe } from "#string.ts";
 
 export function isSymbol(arg: unknown): arg is symbol {
   return typeof arg === "symbol";

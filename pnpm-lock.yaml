@@ -20,15 +20,18 @@ importers:
 
   docs:
     dependencies:
-      '@jsoc/core':
+      '@jsoc/grid-core':
         specifier: workspace:*
-        version: link:../packages/core
+        version: link:../packages/grid-core
       '@jsoc/react-grid':
         specifier: workspace:*
         version: link:../packages/react-grid
       '@jsoc/react-polygrid':
         specifier: workspace:*
         version: link:../packages/react-polygrid
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../packages/utils
       '@monaco-editor/react':
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -97,13 +100,20 @@ importers:
         specifier: ^5
         version: 5.9.3
 
-  packages/core: {}
+  packages/grid-core:
+    dependencies:
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../utils
 
   packages/react-grid:
     dependencies:
-      '@jsoc/core':
+      '@jsoc/grid-core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../grid-core
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@mui/x-data-grid':
         specifier: ^8.16.0
         version: 8.18.0(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react@19.2.3))(@mui/material@7.3.5(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(@mui/system@7.3.5(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -122,12 +132,15 @@ importers:
 
   packages/react-polygrid:
     dependencies:
-      '@jsoc/core':
+      '@jsoc/grid-core':
         specifier: workspace:*
-        version: link:../core
+        version: link:../grid-core
       '@jsoc/react-grid':
         specifier: workspace:*
         version: link:../react-grid
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@mui/icons-material':
         specifier: ^7.3.4
         version: 7.3.5(@mui/material@7.3.5(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react@19.2.3))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(@types/react@19.2.7)(react@19.2.3)
@@ -149,6 +162,8 @@ importers:
       react-dom:
         specifier: '>=19'
         version: 19.2.3(react@19.2.3)
+
+  packages/utils: {}
 
 packages:
 

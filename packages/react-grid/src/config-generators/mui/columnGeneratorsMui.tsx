@@ -6,7 +6,7 @@ import {
   type GridData,
   type GridDataReadonly,
   type GridRows,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 import {
   ensureString,
   ensureArray,
@@ -14,7 +14,7 @@ import {
   isPlainObject,
   encodePretty,
   toReadableString,
-} from "@jsoc/core/utils";
+} from "@jsoc/utils";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 
 export const baseColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
