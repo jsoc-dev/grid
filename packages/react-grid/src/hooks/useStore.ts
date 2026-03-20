@@ -41,14 +41,14 @@ export function useStore<C extends PluginConfig>(
   configGenerator: PluginConfigGenerator<C>,
   configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
 ) {
-  // lazy initilizor to prevent unnecessary computations on useState
-  const initializor = () =>
-    newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions);
-
-  const [gridStore, setGridStore] = useState(initializor);
+  const [gridStore, setGridStore] = useState(() =>
+    newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions),
+  );
 
   useEffect(() => {
-    setGridStore(initializor());
+    setGridStore(
+      newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions),
+    );
   }, [configGenerator, configGeneratorOptions, gridOptions]);
 
   return {

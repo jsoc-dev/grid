@@ -18,23 +18,16 @@ export type JSONObjectWithUndefined = Record<string, JSONValueOrUndefined>;
  * Replica of native JSON.stringify, but this version fallbacks to casted string
  * instead of throwing error if the value is invalid.
  */
-export function encode(
-  value: unknown,
-  replacer?:
-    | ((this: any, key: string, value: any) => any)
-    | (string | number)[]
-    | null,
-  space?: string | number,
-): string {
+export function encode(value: unknown, space?: string | number): string {
   try {
-    return JSON.stringify(value, replacer as any, space);
+    return JSON.stringify(value, null, space);
   } catch {
     return toStringSafe(value);
   }
 }
 
 export function encodePretty(json: unknown) {
-  return encode(json, null, 2);
+  return encode(json, 2);
 }
 
 export type DecodeResult = { value?: object; error?: SyntaxError };

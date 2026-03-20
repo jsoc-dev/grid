@@ -21,7 +21,7 @@ import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 // TODO: Remove this. Add in docs that users need to import the required modules themselves if they use ag-grid.
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface PropsByPlugin extends Record<GridPlugin, {}> {
+interface PropsByPlugin extends Record<GridPlugin, unknown> {
   ag: PluginPropsAg;
   mui: PluginPropsMui;
 }
@@ -75,6 +75,7 @@ function PolyGridInner<P extends GridPlugin>({
   const activeSchema = gridStore.getActiveSchema();
   const PluginComponent = GridComponentByPlugin[plugin];
 
+  // Dispatch<SetStateAction<GridStore<PluginConfig<unknown>>>>
   return (
     <StoreContext.Provider
       value={{

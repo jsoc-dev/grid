@@ -68,8 +68,12 @@ export const getConfigGeneratorOptions = <P extends GridPlugin>(
   switch (plugin) {
     case "mui":
       options = defaultConfigGeneratorOptionsMui;
+      break;
     case "ag":
       options = defaultConfigGeneratorOptionsAg;
+      break;
+    default:
+      options = {};
   }
 
   return options;
