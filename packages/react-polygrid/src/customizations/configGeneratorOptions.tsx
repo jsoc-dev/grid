@@ -1,65 +1,7 @@
-import { SubGridToggle } from "#components/SubGridToggle.tsx";
+import { customArrayOfObjectsColumnGeneratorAg } from "#customizations/custom-column-generators/customColumnGeneratorsAg.tsx";
+import { customArrayOfObjectsColumnGeneratorMui } from "#customizations/custom-column-generators/customColumnGeneratorsMui.tsx";
 import type { PluginConfigGeneratorOptions } from "@jsoc/grid-core";
-import {
-  arrayOfObjectsColumnGeneratorAg,
-  arrayOfObjectsColumnGeneratorMui,
-  type ConfigByPlugin,
-  type GridPlugin,
-} from "@jsoc/react-grid";
-import { GridRenderCellParams } from "@mui/x-data-grid";
-import type { ICellRendererParams } from "ag-grid-community";
-
-const defaultConfigGeneratorOptionsMui: PluginConfigGeneratorOptions<
-  ConfigByPlugin["mui"]
-> = {
-  customColumnGeneratorByType: {
-    arrayOfObjects: (params) => {
-      const { gridSchema, columnKey } = params;
-      return arrayOfObjectsColumnGeneratorMui(params, {
-        renderCell: (params: GridRenderCellParams) => {
-          const { row, value } = params;
-
-          return (
-            <SubGridToggle
-              subGridData={value}
-              parentGridId={gridSchema.options.id}
-              parentGridCellLocation={{
-                rowId: row[gridSchema.meta.primaryColumnKey],
-                columnKey,
-              }}
-            />
-          );
-        },
-      });
-    },
-  },
-};
-
-const defaultConfigGeneratorOptionsAg: PluginConfigGeneratorOptions<
-  ConfigByPlugin["ag"]
-> = {
-  customColumnGeneratorByType: {
-    arrayOfObjects: (params) => {
-      const { gridSchema, columnKey } = params;
-      return arrayOfObjectsColumnGeneratorAg(params, {
-        cellRenderer: (params: ICellRendererParams) => {
-          const { data, value } = params;
-
-          return (
-            <SubGridToggle
-              subGridData={value}
-              parentGridId={gridSchema.options.id}
-              parentGridCellLocation={{
-                rowId: data[gridSchema.meta.primaryColumnKey],
-                columnKey,
-              }}
-            />
-          );
-        },
-      });
-    },
-  },
-};
+import { type ConfigByPlugin, type GridPlugin } from "@jsoc/react-grid";
 
 export const getConfigGeneratorOptions = <P extends GridPlugin>(
   plugin: P,
@@ -67,10 +9,20 @@ export const getConfigGeneratorOptions = <P extends GridPlugin>(
   let options: PluginConfigGeneratorOptions;
   switch (plugin) {
     case "mui":
-      options = defaultConfigGeneratorOptionsMui;
+      options = {
+        customColumnGeneratorByType: {
+          arrayOfObjects: customArrayOfObjectsColumnGeneratorMui,
+          object: customArrayOfObjectsColumnGeneratorMui,
+        },
+      };
       break;
     case "ag":
-      options = defaultConfigGeneratorOptionsAg;
+      options = {
+        customColumnGeneratorByType: {
+          arrayOfObjects: customArrayOfObjectsColumnGeneratorAg,
+          object: customArrayOfObjectsColumnGeneratorAg,
+        },
+      };
       break;
     default:
       options = {};
