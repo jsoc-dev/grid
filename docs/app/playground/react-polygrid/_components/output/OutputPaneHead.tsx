@@ -1,5 +1,5 @@
 import { HeadLayout } from "@/app/playground/react-polygrid/_components/shared";
-import type { GridPlugin } from "@jsoc/react/grid";
+import type { GridPlugin } from "@jsoc/react-grid";
 import type { Dispatch, SetStateAction } from "react";
 
 const pluginOptions: [GridPlugin, string][] = [

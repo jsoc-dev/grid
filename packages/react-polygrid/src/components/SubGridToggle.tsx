@@ -1,4 +1,4 @@
-import { useToggleSubGrid } from "@jsoc/react/grid";
+import { useToggleSubGrid } from "@jsoc/react-grid";
 import {
   type GridId,
   type GridCellLocation,

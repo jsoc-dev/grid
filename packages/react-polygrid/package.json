@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@jsoc/core": "workspace:*",
-    "@jsoc/react": "workspace:*",
+    "@jsoc/react-grid": "workspace:*",
     "@mui/material": "^7.3.4",
     "@mui/x-data-grid": "^8.16.0",
     "@mui/icons-material": "^7.3.4",

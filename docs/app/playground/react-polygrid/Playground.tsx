@@ -10,7 +10,7 @@ import {
   OutputPaneHead,
 } from "@/app/playground/react-polygrid/_components/output";
 import { SAMPLE_JSON_STRINGS } from "@/app/playground/react-polygrid/_components/input/json";
-import type { GridPlugin } from "@jsoc/react/grid";
+import type { GridPlugin } from "@jsoc/react-grid";
 import type { GridOptions } from "@jsoc/core/grid";
 
 import { useState, type Dispatch, type SetStateAction } from "react";

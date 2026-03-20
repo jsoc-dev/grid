@@ -1,13 +1,13 @@
 import {
   type ConfigByPlugin,
   type GridPlugin,
-} from "#grid/config-generators/index.ts";
+} from "#config-generators/index.ts";
 import {
   type StoreContextValue,
   StoreContext,
   StoreContextAg,
   StoreContextMui,
-} from "#grid/contexts/StoreContext.tsx";
+} from "#contexts/StoreContext.tsx";
 import { type Context, useContext } from "react";
 
 export type UseStoreContext<P extends GridPlugin> = () => StoreContextValue<

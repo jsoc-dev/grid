@@ -8,7 +8,7 @@ import {
   CONFIG_GENERATOR_BY_PLUGIN,
   StoreContext,
   useStore,
-} from "@jsoc/react/grid";
+} from "@jsoc/react-grid";
 import {
   type PluginConfigGeneratorOptions,
   type GridOptions,

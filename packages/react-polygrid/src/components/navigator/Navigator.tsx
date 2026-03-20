@@ -1,6 +1,6 @@
 import { NavigatorItem } from "#components/navigator/NavigatorItem.tsx";
 import { NavigatorTitle } from "#components/navigator/NavigatorTitle.tsx";
-import { useStoreContext } from "@jsoc/react/grid";
+import { useStoreContext } from "@jsoc/react-grid";
 import { Stack } from "@mui/material";
 import { NavigateNext } from "@mui/icons-material";
 import { Fragment } from "react/jsx-runtime";

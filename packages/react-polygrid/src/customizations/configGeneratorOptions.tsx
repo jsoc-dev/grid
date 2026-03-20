@@ -5,7 +5,7 @@ import {
   arrayOfObjectsColumnGeneratorMui,
   type ConfigByPlugin,
   type GridPlugin,
-} from "@jsoc/react/grid";
+} from "@jsoc/react-grid";
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import type { ICellRendererParams } from "ag-grid-community";
 

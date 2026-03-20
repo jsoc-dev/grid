@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@jsoc/core": "workspace:*",
-    "@jsoc/react": "workspace:*",
+    "@jsoc/react-grid": "workspace:*",
     "@jsoc/react-polygrid": "workspace:*",
     "@monaco-editor/react": "^4.7.0",
     "@mui/icons-material": "^7.3.4",

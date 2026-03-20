@@ -1,7 +1,7 @@
 import {
   type GridPlugin,
   type ConfigByPlugin,
-} from "#grid/config-generators/index.ts";
+} from "#config-generators/index.ts";
 import { type GridStore, type PluginConfig } from "@jsoc/core/grid";
 import { type Dispatch, type SetStateAction, createContext } from "react";
 

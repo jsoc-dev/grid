@@ -1,4 +1,4 @@
-import { useToggleSubGrid } from "#grid/hooks/useToggleSubGrid.ts";
+import { useToggleSubGrid } from "#hooks/useToggleSubGrid.ts";
 import {
   type GridId,
   type GridCellLocation,

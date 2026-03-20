@@ -1,4 +1,4 @@
-import { useStoreContext } from "#grid/hooks/index.ts";
+import { useStoreContext } from "#hooks/index.ts";
 import {
   type GridId,
   type GridDataReadonly,
