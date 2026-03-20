@@ -1,4 +1,4 @@
-import { COLUMN_GENERATOR_BY_TYPE_MUI } from "#config-generators/mui/columnGeneratorsMui.tsx";
+import { COLUMN_GENERATOR_BY_TYPE_MUI } from "#config-generators/column-generators/index.ts";
 
 import {
   generateColumns,

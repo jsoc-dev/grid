@@ -1,9 +1,11 @@
 import {
   configGeneratorAg,
-  configGeneratorMui,
   type PluginConfigAg,
+} from "#config-generators/configGeneratorAg.ts";
+import {
+  configGeneratorMui,
   type PluginConfigMui,
-} from "#config-generators/index.ts";
+} from "#config-generators/configGeneratorMui.ts";
 
 import type { PluginConfig, PluginConfigGenerator } from "@jsoc/grid-core";
 

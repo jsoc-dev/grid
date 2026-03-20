@@ -1,4 +1,4 @@
-import { COLUMN_GENERATOR_BY_TYPE_AG } from "#config-generators/ag/columnGeneratorsAg.tsx";
+import { COLUMN_GENERATOR_BY_TYPE_AG } from "#config-generators/column-generators/index.ts";
 
 import {
   generateColumns,

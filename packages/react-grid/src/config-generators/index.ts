@@ -1,3 +1,3 @@
-export * from "./ag/index.ts";
 export * from "./configGenerator.registry.ts";
-export * from "./mui/index.ts";
+export * from "./configGeneratorAg.ts";
+export * from "./configGeneratorMui.ts";

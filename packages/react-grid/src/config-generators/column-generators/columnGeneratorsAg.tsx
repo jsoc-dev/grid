@@ -1,5 +1,5 @@
 import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigAg } from "#config-generators/ag/configGeneratorAg.ts";
+import type { PluginConfigAg } from "#config-generators/configGeneratorAg.ts";
 
 import type { ColumnGenerator, ColumnGeneratorByType } from "@jsoc/grid-core";
 import {

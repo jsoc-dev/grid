@@ -1,5 +1,5 @@
 import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigMui } from "#config-generators/mui/configGeneratorMui.ts";
+import type { PluginConfigMui } from "#config-generators/configGeneratorMui.ts";
 
 import type {
   ColumnGenerator,
