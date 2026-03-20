@@ -1,12 +1,12 @@
 {
-  "name": "@jsoc/react",
+  "name": "@jsoc/react-grid",
   "version": "0.0.1",
   "type": "module",
   "imports": {
     "#*": "./src/*"
   },
   "exports": {
-    "./grid": "./src/grid/index.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "type": "tsc --noEmit"

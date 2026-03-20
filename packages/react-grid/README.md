@@ -1,11 +1,11 @@
-# @jsoc/react
+# @jsoc/react-grid
 
 Package for generating runtime props for a React Grid Component such as AG-Grid, MUI DataGrid, etc. directly from a response data (JSON).
 
 ## Installation
 
 ```bash
-npm install @jsoc/react
+npm install @jsoc/react-grid
 ```
 
 ## Peer Dependencies
@@ -32,7 +32,7 @@ If you're rendering a grid plugin → you will have the required package install
 ## Example
 
 ```ts
-import { useStore } from "@jsoc/react/grid";
+import { useStore } from "@jsoc/react-grid";
 ```
 
 ## Notes

@@ -102,7 +102,7 @@ importers:
         specifier: workspace:*
         version: link:../utils
 
-  packages/react:
+  packages/react-grid:
     dependencies:
       '@jsoc/grid-core':
         specifier: workspace:*

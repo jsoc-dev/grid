@@ -1,14 +1,15 @@
-import { SubGridToggle } from "#grid/components/index.ts";
+import { SubGridToggle } from "#components/index.ts";
+import type { PluginConfigAg } from "#config-generators/ag/configGeneratorAg.ts";
+
+import type { ColumnGenerator, ColumnGeneratorByType } from "@jsoc/grid-core";
 import {
+  encodePretty,
   ensureString,
   isArray,
   isPlainObject,
-  encodePretty,
   toReadableString,
-} from "@jsoc/core/utils";
-import { ColumnGeneratorByType, type ColumnGenerator } from "@jsoc/core/grid";
+} from "@jsoc/utils";
 import type { ICellRendererParams } from "ag-grid-community";
-import type { PluginConfigAg } from "#grid/config-generators/ag/configGeneratorAg.ts";
 
 export const baseColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
   params,

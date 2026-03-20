@@ -1,10 +1,10 @@
-import { useToggleSubGrid } from "#grid/hooks/useToggleSubGrid.ts";
+import { useToggleSubGrid } from "#hooks/useToggleSubGrid.ts";
 
 import type {
   GridCellLocation,
   GridDataReadonly,
   GridId,
-} from "@jsoc/core/grid";
+} from "@jsoc/grid-core";
 
 export type SubGridToggleProps = {
   /**

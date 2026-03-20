@@ -1,10 +1,11 @@
-import { useStoreContext } from "#grid/hooks/index.ts";
+import { useStoreContext } from "#hooks/index.ts";
+
 import {
-  type GridId,
-  type GridDataReadonly,
-  type GridCellLocation,
   createSubGridId,
-} from "@jsoc/core/grid";
+  type GridCellLocation,
+  type GridDataReadonly,
+  type GridId,
+} from "@jsoc/grid-core";
 
 export function useToggleSubGrid(
   subGridData: GridDataReadonly,
@@ -21,14 +22,15 @@ export function useToggleSubGrid(
   const toggleText = (isPresentInStore ? "Close" : "View") + " " + subGridName;
   const toggleSubGrid = () => {
     const storeClone = gridStore.clone();
-    isPresentInStore
-      ? storeClone.removeSchema(index)
-      : storeClone.addSchema({
-          id: subGridId,
-          name: subGridName,
-          data: subGridData,
-        });
-
+    if (isPresentInStore) {
+      storeClone.removeSchema(index);
+    } else {
+      storeClone.addSchema({
+        id: subGridId,
+        name: subGridName,
+        data: subGridData,
+      });
+    }
     setGridStore(storeClone);
   };
 
