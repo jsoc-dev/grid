@@ -1,20 +1,21 @@
+import { isFallbackPrimaryColumn } from "#primary-column.ts";
+import type {
+  GridRows,
+  GridSchema,
+  InferColumnType,
+  PluginConfig,
+} from "#schema.ts";
+
 import {
-  type GridRows,
-  type GridSchema,
-  type InferColumnType,
-  type PluginConfig,
-} from "#grid/index.ts";
-import { isFallbackPrimaryColumn } from "#grid/primary-column.ts";
-import {
-  type JSONValueOrUndefined,
   isArrayOfObjects,
   isBoolean,
-  isISODateString,
   isFunction,
+  isISODateString,
   isNumber,
   isPlainObject,
   isString,
-} from "#utils/index.ts";
+  type JSONValueOrUndefined,
+} from "@jsoc/utils";
 
 /**
  * Property in a `GridRow`

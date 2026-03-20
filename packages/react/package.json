@@ -30,6 +30,7 @@
     }
   },
   "dependencies": {
-    "@jsoc/core": "workspace:*"
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*"
   }
 }

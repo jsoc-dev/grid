@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "#utils/index.ts";
+import { isNullOrUndefined } from "#null.ts";
 
 export function isString(arg: unknown): arg is string {
   return typeof arg === "string";
@@ -13,7 +13,7 @@ export function ensureString(arg: unknown): string {
  * Native String() can throw in very rare scenarios like below:
  * ```
  * const obj = {
- * 	toString() {
+ * 	toString() { // override prototype method
  * 		throw new Error("fail");
  * 	}
  * };
@@ -24,6 +24,7 @@ export function ensureString(arg: unknown): string {
 export function toStringSafe(arg: unknown): string {
   try {
     return String(arg);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return "";
   }
@@ -63,6 +64,7 @@ export function isImageLink(url: unknown) {
   try {
     new URL(url); // Attempt to construct a URL object
     return true;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return false;
   }

@@ -1,13 +1,15 @@
+import type { ColumnKey, CustomColumnGeneratorByType } from "#column.ts";
+import { GridError } from "#errors.ts";
+import { getPrimaryColumnKey, type PrimaryColumnKey } from "#primary-column.ts";
+
 import {
-  type ColumnKey,
-  type PrimaryColumnKey,
-  GridError,
-  getPrimaryColumnKey,
-  type CustomColumnGeneratorByType,
-} from "#grid/index.ts";
-import { ensureArray, isArrayOfObjects } from "#utils/array.ts";
-import { isConcreteObject, isPlainObject } from "#utils/object.ts";
-import { isString, type JSONObjectWithUndefined } from "#utils/index.ts";
+  ensureArray,
+  isArrayOfObjects,
+  isConcreteObject,
+  isPlainObject,
+  isString,
+  type JSONObjectWithUndefined,
+} from "@jsoc/utils";
 
 /**
  * Unique id of a `GridSchema` inside the `GridStore`
