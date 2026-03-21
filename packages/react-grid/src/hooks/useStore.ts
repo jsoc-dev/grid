@@ -8,8 +8,8 @@ import {
   type GridOptions,
   newGridStore,
   type PluginConfig,
-  type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
+  type PluginOptions,
 } from "@jsoc/grid-core";
 import { useEffect, useState } from "react";
 
@@ -24,7 +24,11 @@ export type PluginSpecificUseStore<C extends PluginConfig> = (
 export const useStoreAg: PluginSpecificUseStore<ConfigByPlugin["ag"]> = (
   options,
   configGeneratorOptions,
-) => useStore(options, CONFIG_GENERATOR_BY_PLUGIN.ag, configGeneratorOptions);
+) =>
+  useStore(options, {
+    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.ag,
+    configGeneratorOptions,
+  });
 
 /**
  * Hook to create and use store specifically for GridPlugin "mui".
@@ -32,25 +36,26 @@ export const useStoreAg: PluginSpecificUseStore<ConfigByPlugin["ag"]> = (
 export const useStoreMui: PluginSpecificUseStore<ConfigByPlugin["mui"]> = (
   options,
   configGeneratorOptions,
-) => useStore(options, CONFIG_GENERATOR_BY_PLUGIN.mui, configGeneratorOptions);
+) =>
+  useStore(options, {
+    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.mui,
+    configGeneratorOptions,
+  });
 
 /**
  * Generic hook to create and use a grid store.
  */
 export function useStore<C extends PluginConfig>(
   gridOptions: GridOptions,
-  configGenerator: PluginConfigGenerator<C>,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
+  pluginOptions: PluginOptions<C>,
 ) {
   const [gridStore, setGridStore] = useState(() =>
-    newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions),
+    newGridStore<C>(gridOptions, pluginOptions),
   );
 
   useEffect(() => {
-    setGridStore(
-      newGridStore<C>(gridOptions, configGenerator, configGeneratorOptions),
-    );
-  }, [configGenerator, configGeneratorOptions, gridOptions]);
+    setGridStore(newGridStore<C>(gridOptions, pluginOptions));
+  }, [gridOptions, pluginOptions]);
 
   return {
     gridStore,

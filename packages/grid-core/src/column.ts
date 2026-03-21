@@ -127,6 +127,7 @@ export function generateColumns<C extends PluginConfig>(
   const columns = [];
 
   for (const [columnKey, columnDataType] of columnDataTypeEntries) {
+    // TODO: merge customColumnGeneratorByType with defaultColumnGeneratorByType
     const columnGenerator =
       isPlainObject(customColumnGeneratorByType) &&
       isFunction(customColumnGeneratorByType[columnDataType])
