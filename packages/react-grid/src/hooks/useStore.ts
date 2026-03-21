@@ -43,6 +43,17 @@ export const useStoreMui: PluginSpecificUseStore<ConfigByPlugin["mui"]> = (
   });
 
 /**
+ * Hook to create and use store specifically for GridPlugin "tanstack".
+ */
+export const useStoreTanstack: PluginSpecificUseStore<
+  ConfigByPlugin["tanstack"]
+> = (options, configGeneratorOptions) =>
+  useStore(options, {
+    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.tanstack,
+    configGeneratorOptions,
+  });
+
+/**
  * Generic hook to create and use a grid store.
  */
 export function useStore<C extends PluginConfig>(

@@ -3,6 +3,7 @@ import {
   StoreContext,
   StoreContextAg,
   StoreContextMui,
+  StoreContextTanstack,
   type StoreContextValue,
 } from "#contexts/StoreContext.tsx";
 
@@ -15,6 +16,10 @@ export type UseStoreContext<P extends GridPlugin> = () => StoreContextValue<
 export const useStoreContext = createUseStoreContext(StoreContext);
 export const useStoreContextAg = createUseStoreContext(StoreContextAg, "ag");
 export const useStoreContextMui = createUseStoreContext(StoreContextMui, "mui");
+export const useStoreContextTanstack = createUseStoreContext(
+  StoreContextTanstack,
+  "tanstack",
+);
 
 function createUseStoreContext<P extends GridPlugin>(
   StoreContext: Context<StoreContextValue<ConfigByPlugin[P]> | undefined>,
