@@ -5,9 +5,9 @@ import {
   type PluginConfig,
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
-import { type SubsetKeysOf } from "@jsoc/utils";
+import type { SubsetKeysOf } from "@jsoc/utils";
 import type { ColDef } from "ag-grid-community";
-import { type AgGridReactProps } from "ag-grid-react";
+import type { AgGridReactProps } from "ag-grid-react";
 
 export type PluginConfigNamesAg = SubsetKeysOf<
   AgGridReactProps,

@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@/_components";
-import { type GridOptionsState } from "@/playground/react-polygrid/Playground";
+import type { GridOptionsState } from "@/playground/react-polygrid/Playground";
 
-import { type GridPlugin } from "@jsoc/react-grid";
+import type { GridPlugin } from "@jsoc/react-grid";
 import { PolyGrid } from "@jsoc/react-polygrid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { colorSchemeDark, themeQuartz } from "ag-grid-community";

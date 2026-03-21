@@ -1,4 +1,4 @@
-import { type ColumnKey, type CustomColumnGeneratorByType } from "#column.ts";
+import type { ColumnKey, CustomColumnGeneratorByType } from "#column.ts";
 import { GridError } from "#errors.ts";
 import { getPrimaryColumnKey, type PrimaryColumnKey } from "#primary-column.ts";
 

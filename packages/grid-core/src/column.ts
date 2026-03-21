@@ -1,9 +1,9 @@
 import { isFallbackPrimaryColumn } from "#primary-column.ts";
-import {
-  type GridRows,
-  type GridSchema,
-  type InferColumnType,
-  type PluginConfig,
+import type {
+  GridRows,
+  GridSchema,
+  InferColumnType,
+  PluginConfig,
 } from "#schema.ts";
 
 import {

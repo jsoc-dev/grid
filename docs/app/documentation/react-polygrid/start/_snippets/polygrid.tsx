@@ -1,6 +1,6 @@
 "use client";
 
-import { type GridPlugin } from "@jsoc/react-grid";
+import type { GridPlugin } from "@jsoc/react-grid";
 import { PolyGrid } from "@jsoc/react-polygrid";
 import { useEffect, useState } from "react";
 

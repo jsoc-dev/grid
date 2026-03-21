@@ -1,6 +1,6 @@
 import { useStoreContext } from "#hooks/index.ts";
 
-import { type GridIndex } from "@jsoc/grid-core";
+import type { GridIndex } from "@jsoc/grid-core";
 
 export function useNavigation(index: GridIndex) {
   const { gridStore, setGridStore } = useStoreContext();

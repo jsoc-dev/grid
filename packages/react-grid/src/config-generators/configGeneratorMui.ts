@@ -7,7 +7,7 @@ import {
 } from "@jsoc/grid-core";
 import type { SubsetKeysOf } from "@jsoc/utils";
 import type { GridColDef } from "@mui/x-data-grid";
-import { type DataGridProps } from "@mui/x-data-grid";
+import type { DataGridProps } from "@mui/x-data-grid";
 
 export type PluginConfigNamesMui = SubsetKeysOf<
   DataGridProps,

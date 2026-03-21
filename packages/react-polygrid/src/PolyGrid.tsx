@@ -1,9 +1,9 @@
 import { DefaultLayout } from "#components/DefaultLayout.tsx";
 import { getConfigGeneratorOptions } from "#customizations/configGeneratorOptions.tsx";
 
-import {
-  type GridOptions,
-  type PluginConfigGeneratorOptions,
+import type {
+  GridOptions,
+  PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
 import {
   CONFIG_GENERATOR_BY_PLUGIN,

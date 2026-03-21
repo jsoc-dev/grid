@@ -1,4 +1,4 @@
-import { type GridIndex } from "@jsoc/grid-core";
+import type { GridIndex } from "@jsoc/grid-core";
 import { useNavigation } from "@jsoc/react-grid";
 import { toPascalCase } from "@jsoc/utils";
 import { Typography } from "@mui/material";

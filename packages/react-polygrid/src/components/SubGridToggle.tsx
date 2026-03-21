@@ -1,7 +1,7 @@
-import {
-  type GridCellLocation,
-  type GridDataReadonly,
-  type GridId,
+import type {
+  GridCellLocation,
+  GridDataReadonly,
+  GridId,
 } from "@jsoc/grid-core";
 import { useToggleSubGrid } from "@jsoc/react-grid";
 import { GridOff, GridOn } from "@mui/icons-material";

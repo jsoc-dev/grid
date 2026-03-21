@@ -1,17 +1,16 @@
 import { GridError } from "#errors.ts";
-import {
-  DEFAULT_ROOT_GRID_NAME,
-  type GridCellLocation,
-  type GridId,
-  type GridIndex,
-  type GridOptions,
-  type GridOptionsWithId,
-  type GridSchemaWithConfig,
-  newGridSchema,
-  type PluginConfig,
-  type PluginConfigGenerator,
-  type PluginConfigGeneratorOptions,
+import type {
+  GridCellLocation,
+  GridId,
+  GridIndex,
+  GridOptions,
+  GridOptionsWithId,
+  GridSchemaWithConfig,
+  PluginConfig,
+  PluginConfigGenerator,
+  PluginConfigGeneratorOptions,
 } from "#schema.ts";
+import { DEFAULT_ROOT_GRID_NAME, newGridSchema } from "#schema.ts";
 
 import { assertIsValidIndex } from "@jsoc/utils";
 

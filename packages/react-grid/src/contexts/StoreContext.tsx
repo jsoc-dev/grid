@@ -1,9 +1,6 @@
-import {
-  type ConfigByPlugin,
-  type GridPlugin,
-} from "#config-generators/index.ts";
+import type { ConfigByPlugin, GridPlugin } from "#config-generators/index.ts";
 
-import { type GridStore, type PluginConfig } from "@jsoc/grid-core";
+import type { GridStore, PluginConfig } from "@jsoc/grid-core";
 import { createContext, type Dispatch, type SetStateAction } from "react";
 
 export type StoreContextValue<C extends PluginConfig> = {

@@ -13,8 +13,8 @@
     "type": "tsc --noEmit"
   },
   "dependencies": {
-    "@jsoc/utils": "workspace:*",
-    "@jsoc/grid-core": "workspace:*"
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*"
   },
   "peerDependencies": {
     "@mui/x-data-grid": "^8.16.0",

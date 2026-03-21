@@ -7,7 +7,7 @@ import {
   type PluginConfigMui,
 } from "#config-generators/configGeneratorMui.ts";
 
-import { type PluginConfig, type PluginConfigGenerator } from "@jsoc/grid-core";
+import type { PluginConfig, PluginConfigGenerator } from "@jsoc/grid-core";
 
 export type GridPlugin = "ag" | "mui";
 

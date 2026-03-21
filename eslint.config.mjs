@@ -20,11 +20,17 @@ export const commonConfig = {
         fixStyle: "separate-type-imports",
       },
     ],
+    "@typescript-eslint/no-import-type-side-effects": "error",
     "import/order": "off",
+    // https://github.com/lydell/eslint-plugin-simple-import-sort
     "simple-import-sort/imports": [
       "error",
       {
         groups: [
+          // Type imports
+          // ["\\u0000$"], // commented since not matching imports like: import type { A } from "x"
+          // Side effect imports (rare, usually CSS etc)
+          ["^\\u0000"],
           // Relative imports
           ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
           ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
@@ -34,10 +40,6 @@ export const commonConfig = {
           ["^node:"],
           // External packages
           ["^@?\\w"],
-          // Side Effect imports
-          ["^\\u0000"],
-          // Type imports
-          ["^\\u0000$"],
         ],
       },
     ],

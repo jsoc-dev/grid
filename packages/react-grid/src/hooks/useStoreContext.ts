@@ -1,7 +1,4 @@
-import {
-  type ConfigByPlugin,
-  type GridPlugin,
-} from "#config-generators/index.ts";
+import type { ConfigByPlugin, GridPlugin } from "#config-generators/index.ts";
 import {
   StoreContext,
   StoreContextAg,
