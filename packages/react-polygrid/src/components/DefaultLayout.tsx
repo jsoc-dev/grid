@@ -26,7 +26,8 @@ export function DefaultLayout({ children, options }: DefaultLayoutProps) {
   const { gridStore } = useStoreContext();
   const hideNavWhenSingleSchema =
     options?.navigator?.hideNavWhenSingleSchema ?? true;
-  const showNav = gridStore.length > 1 ? true : !hideNavWhenSingleSchema;
+  const showNav =
+    gridStore.getSchemas().length > 1 ? true : !hideNavWhenSingleSchema;
   const navHeight = showNav ? "48px" : "0px";
 
   return (

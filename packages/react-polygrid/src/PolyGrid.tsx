@@ -71,9 +71,13 @@ function PolyGridInner<P extends GridPlugin>({
   plugin,
   pluginProps,
 }: PolyGridProps<P>) {
-  const cg = CONFIG_GENERATOR_BY_PLUGIN[plugin];
-  const cgOptions = configGeneratorOptions ?? getConfigGeneratorOptions(plugin);
-  const { gridStore, setGridStore } = useStore(gridOptions, cg, cgOptions);
+  const pluginOptions = {
+    configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
+    configGeneratorOptions:
+      configGeneratorOptions ?? getConfigGeneratorOptions(plugin),
+  };
+  const { gridStore, setGridStore } = useStore(gridOptions, pluginOptions);
+
   const activeSchema = gridStore.getActiveSchema();
   const PluginComponent = GridComponentByPlugin[plugin];
 
@@ -85,7 +89,7 @@ function PolyGridInner<P extends GridPlugin>({
       }}
     >
       <Layout>
-        {gridStore.map((schema) => (
+        {gridStore.getSchemas().map((schema) => (
           <Activity
             key={schema.options.id}
             mode={

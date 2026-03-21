@@ -41,7 +41,7 @@ export function areAllUnique(arr: unknown[]) {
 }
 
 export function assertIsValidIndex(
-  arr: Array<unknown>,
+  arr: Array<unknown> | ReadonlyArray<unknown>,
   index: unknown,
   error: Error,
 ): void {

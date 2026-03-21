@@ -11,7 +11,7 @@ export function Navigator() {
 
   return (
     <Stack direction="row" spacing={1} alignItems="center" overflow="auto">
-      {gridStore.map((_, index) => {
+      {gridStore.getSchemas().map((_, index) => {
         const isFirstItem = index === 0;
 
         return (

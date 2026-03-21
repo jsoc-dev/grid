@@ -4,7 +4,7 @@ import type { GridIndex } from "@jsoc/grid-core";
 
 export function useNavigation(index: GridIndex) {
   const { gridStore, setGridStore } = useStoreContext();
-  const gridSchema = gridStore[index];
+  const gridSchema = gridStore.getSchema(index);
 
   return {
     gridSchema,

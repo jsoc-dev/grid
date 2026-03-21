@@ -12,7 +12,7 @@ export function NavigatorItem({ index }: NavigatorItemProps) {
     useNavigation(index);
   const { options } = gridSchema;
   const { id, name } = options;
-  const isActiveGrid = gridStore.isActiveGrid(gridSchema);
+  const isActiveGrid = gridStore.isActiveSchema(gridSchema);
   const label = toPascalCase(name || id);
 
   return (

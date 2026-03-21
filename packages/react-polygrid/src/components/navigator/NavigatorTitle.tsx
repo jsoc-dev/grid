@@ -11,8 +11,8 @@ export function NavigatorTitle({ index }: NavigatorTitleProps) {
   const { gridSchema, gridStore, activateGrid } = useNavigation(index);
   const { options } = gridSchema;
   const { id, name } = options;
-  const isActiveGrid = gridStore.isActiveGrid(gridSchema);
-  const isOnlyItem = gridStore.length === 1;
+  const isActiveGrid = gridStore.isActiveSchema(gridSchema);
+  const isOnlyItem = gridStore.getSchemas().length === 1;
 
   return (
     <Typography

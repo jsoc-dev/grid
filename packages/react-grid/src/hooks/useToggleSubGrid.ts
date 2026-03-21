@@ -16,7 +16,7 @@ export function useToggleSubGrid(
 
   const subGridId = createSubGridId(parentGridId, parentGridCellLocation);
   const subGridName = parentGridCellLocation.columnKey;
-  const { index } = gridStore.search(subGridId);
+  const index = gridStore.findIndex(subGridId);
 
   const isPresentInStore = index > -1;
   const toggleText = (isPresentInStore ? "Close" : "View") + " " + subGridName;

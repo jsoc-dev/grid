@@ -7,95 +7,119 @@ import type {
   GridOptionsWithId,
   GridSchemaWithConfig,
   PluginConfig,
-  PluginConfigGenerator,
-  PluginConfigGeneratorOptions,
+  PluginOptions,
 } from "#schema.ts";
 import { DEFAULT_ROOT_GRID_NAME, newGridSchema } from "#schema.ts";
 
 import { assertIsValidIndex } from "@jsoc/utils";
 
-export type GridStoreInternals<C extends PluginConfig = PluginConfig> = {
+export type GridStoreInternals<C extends PluginConfig> = {
   activeIndex: GridIndex;
-  configGenerator: PluginConfigGenerator<C>;
+  schemas: Array<GridSchemaWithConfig<C>>;
+  pluginOptions: PluginOptions<C>;
 };
 
-export type GridStoreMethods<C extends PluginConfig = PluginConfig> = {
-  addSchema(this: GridStore<C>, options: GridOptionsWithId): void;
-  clone(this: GridStore<C>): GridStore<C>;
-  getActiveIndex(this: GridStore<C>): GridIndex;
-  getActiveSchema(this: GridStore<C>): GridSchemaWithConfig<C>;
-  isActiveGrid(
-    this: GridStore<C>,
-    gridSchema: GridSchemaWithConfig<C>,
-  ): boolean;
-  removeSchema(this: GridStore<C>, index: GridIndex): void;
-  setActiveIndex(this: GridStore<C>, index: GridIndex): void;
-  search(
-    this: GridStore<C>,
-    id: GridId,
-  ): {
-    index: GridIndex;
-    schema: GridSchemaWithConfig<C> | undefined;
-  };
-};
+export type GridStore<C extends PluginConfig> = {
+  get activeIndex(): GridIndex;
+  get schemas(): ReadonlyArray<GridSchemaWithConfig<C>>;
+  get pluginOptions(): PluginOptions<C>;
 
-export type GridStore<C extends PluginConfig = PluginConfig> = Array<
-  GridSchemaWithConfig<C>
-> &
-  GridStoreInternals<C> &
-  GridStoreMethods<C>;
+  addSchema(options: GridOptionsWithId): void;
+  clone(): GridStore<C>;
+  findIndex(id: GridId): GridIndex;
+  getActiveIndex(): GridIndex;
+  getActiveSchema(): GridSchemaWithConfig<C>;
+  getSchema(index: GridIndex): GridSchemaWithConfig<C>;
+  getSchemas(): ReadonlyArray<GridSchemaWithConfig<C>>;
+  isActiveSchema(gridSchema: GridSchemaWithConfig<C>): boolean;
+  removeSchema(index: GridIndex): void;
+  setActiveIndex(index: GridIndex): void;
+};
 
 /**
  * TODO: Add docs
  */
 export function newGridStore<C extends PluginConfig = PluginConfig>(
   gridOptions: GridOptions,
-  configGenerator: PluginConfigGenerator<C>,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
+  pluginOptions: PluginOptions<C>,
 ): GridStore<C> {
   const rootGridSchema = newGridSchema<C>(
-    {
-      ...gridOptions,
-      id: gridOptions.name || DEFAULT_ROOT_GRID_NAME,
-    },
-    configGenerator,
-    configGeneratorOptions,
+    { id: gridOptions.name || DEFAULT_ROOT_GRID_NAME, ...gridOptions },
+    pluginOptions,
   );
-  const schemas = [rootGridSchema];
 
-  const internals: GridStoreInternals<C> = {
+  return createStoreWithInternals({
     activeIndex: 0,
-    configGenerator,
-  };
+    pluginOptions,
+    schemas: [rootGridSchema],
+  });
+}
 
-  const methods: GridStoreMethods<C> = {
+function createStoreWithInternals<C extends PluginConfig>(
+  internals: GridStoreInternals<C>,
+): GridStore<C> {
+  const localSchemas = internals.schemas;
+  let localActiveIndex = internals.activeIndex;
+  const localPluginOptions = Object.freeze(internals.pluginOptions);
+
+  const store: GridStore<C> = {
+    get activeIndex() {
+      return localActiveIndex;
+    },
+
+    get schemas() {
+      return [...localSchemas];
+    },
+
+    get pluginOptions() {
+      return localPluginOptions;
+    },
+
     addSchema(options) {
-      const gridSchema = newGridSchema(
-        options,
-        this.configGenerator,
-        configGeneratorOptions,
-      );
-      this.splice(this.activeIndex + 1, this.length, gridSchema);
-      this.setActiveIndex(this.length - 1);
+      const schema = newGridSchema(options, localPluginOptions);
+      // using the local schemas which is mutable
+      localSchemas.splice(localActiveIndex + 1, localSchemas.length, schema);
+      localActiveIndex++;
     },
+
     clone() {
-      return Object.assign([], this);
+      return createStoreWithInternals({
+        activeIndex: localActiveIndex,
+        schemas: [...localSchemas],
+        pluginOptions: localPluginOptions,
+      });
     },
+
+    findIndex(id) {
+      return localSchemas.findIndex((s) => s.options.id === id);
+    },
+
     getActiveIndex() {
-      return this.activeIndex;
+      return localActiveIndex;
     },
+
     getActiveSchema() {
-      return this[this.activeIndex];
+      return localSchemas[localActiveIndex];
     },
-    isActiveGrid(gridSchema) {
-      const index = this.findIndex(
-        (schema) => schema.options.id === gridSchema.options.id,
+
+    getSchema(index) {
+      return localSchemas[index];
+    },
+
+    getSchemas() {
+      return [...localSchemas];
+    },
+
+    isActiveSchema(schema) {
+      const index = localSchemas.findIndex(
+        (s) => s.options.id === schema.options.id,
       );
-      return this.activeIndex === index;
+      return localActiveIndex === index;
     },
+
     removeSchema(removeIndex) {
       assertIsValidIndex(
-        this,
+        localSchemas,
         removeIndex,
         new GridError(
           "Something went wrong while rendering the grid.",
@@ -103,36 +127,30 @@ export function newGridStore<C extends PluginConfig = PluginConfig>(
         ),
       );
 
-      this.splice(removeIndex);
+      localSchemas.splice(removeIndex);
 
-      if (removeIndex <= this.activeIndex) {
-        this.setActiveIndex(removeIndex - 1);
+      if (removeIndex <= localActiveIndex) {
+        const nextIndex = removeIndex - 1;
+        const newActiveIndex = nextIndex >= 0 ? nextIndex : 0;
+        localActiveIndex = newActiveIndex;
       }
     },
+
     setActiveIndex(newActiveIndex) {
       assertIsValidIndex(
-        this,
+        localSchemas,
         newActiveIndex,
         new GridError(
           "Something went wrong while rendering the grid.",
           `newActiveIndex is invalid - ${newActiveIndex}`,
         ),
       );
-      this.activeIndex = newActiveIndex;
-    },
-    search(id) {
-      const index = this.findIndex((schema) => schema.options.id === id);
-      const schema = this.at(index);
 
-      return {
-        isPresentInStore: index > -1,
-        index,
-        schema,
-      };
+      localActiveIndex = newActiveIndex;
     },
   };
 
-  return Object.assign(schemas, { ...internals, ...methods });
+  return store;
 }
 
 /**
