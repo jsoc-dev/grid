@@ -1,6 +1,6 @@
-export class GridError extends Error {
+export class ReactGridError extends Error {
   constructor(message: string, cause?: unknown) {
     super(message, { cause });
-    this.name = "GridError";
+    this.name = "ReactGridError";
   }
 }
