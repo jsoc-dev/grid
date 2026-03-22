@@ -1,7 +1,12 @@
 import type { ConfigByPlugin, GridPlugin } from "#config-generators/index.ts";
 
 import type { GridStore, PluginConfig } from "@jsoc/grid-core";
-import { createContext, type Dispatch, type SetStateAction } from "react";
+import {
+  type Context,
+  createContext,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 export type StoreContextValue<C extends PluginConfig> = {
   gridStore: GridStore<C>;
@@ -14,6 +19,8 @@ export const StoreContextAg = createStoreContext<ConfigByPlugin["ag"]>("ag");
 export const StoreContextMui = createStoreContext<ConfigByPlugin["mui"]>("mui");
 export const StoreContextTanstack =
   createStoreContext<ConfigByPlugin["tanstack"]>("tanstack");
+export const StoreContextMantine =
+  createStoreContext<ConfigByPlugin["mantine"]>("mantine");
 
 function createStoreContext<C extends PluginConfig>(plugin?: GridPlugin) {
   const StoreContext = createContext<StoreContextValue<C> | undefined>(
@@ -24,3 +31,12 @@ function createStoreContext<C extends PluginConfig>(plugin?: GridPlugin) {
 
   return StoreContext;
 }
+
+export const StoreContextByPlugin: {
+  [P in GridPlugin]: Context<StoreContextValue<ConfigByPlugin[P]> | undefined>;
+} = {
+  ag: StoreContextAg,
+  mui: StoreContextMui,
+  tanstack: StoreContextTanstack,
+  mantine: StoreContextMantine,
+} as const;

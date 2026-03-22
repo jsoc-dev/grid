@@ -54,6 +54,17 @@ export const useStoreTanstack: PluginSpecificUseStore<
   });
 
 /**
+ * Hook to create and use store specifically for GridPlugin "mantine".
+ */
+export const useStoreMantine: PluginSpecificUseStore<
+  ConfigByPlugin["mantine"]
+> = (options, configGeneratorOptions) =>
+  useStore(options, {
+    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.mantine,
+    configGeneratorOptions,
+  });
+
+/**
  * Generic hook to create and use a grid store.
  */
 export function useStore<C extends PluginConfig>(
