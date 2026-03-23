@@ -33,7 +33,12 @@ export type GridStore<C extends PluginConfig> = {
   getSchema(index: GridIndex): GridSchemaWithConfig<C>;
   getSchemas(): ReadonlyArray<GridSchemaWithConfig<C>>;
   isActiveSchema(gridSchema: GridSchemaWithConfig<C>): boolean;
-  removeSchema(index: GridIndex): void;
+  /**
+   * Removes the schema at the given index.
+   * @param index index of the schema to remove. Defaults to the active index.
+   * @throws `GridError` if the index is invalid or if the store only has one schema.
+   */
+  removeSchema(index?: GridIndex): void;
   setActiveIndex(index: GridIndex): void;
 };
 
@@ -118,20 +123,27 @@ function createStoreWithInternals<C extends PluginConfig>(
       return localActiveIndex === index;
     },
 
-    removeSchema(removeIndex) {
+    removeSchema(index = localActiveIndex) {
+      if (localSchemas.length === 1) {
+        throw new GridError(
+          "Invalid Grid Action",
+          `Root grid schema is not allowed to remove.`,
+        );
+      }
+
       assertIsValidIndex(
         localSchemas,
-        removeIndex,
+        index,
         new GridError(
-          "Something went wrong while rendering the grid.",
-          `removeIndex is invalid - ${removeIndex}`,
+          "Invalid Grid Action",
+          `Invalid index ${index} for removing schema`,
         ),
       );
 
-      localSchemas.splice(removeIndex);
+      localSchemas.splice(index);
 
-      if (removeIndex <= localActiveIndex) {
-        const nextIndex = removeIndex - 1;
+      if (index <= localActiveIndex) {
+        const nextIndex = index - 1;
         const newActiveIndex = nextIndex >= 0 ? nextIndex : 0;
         localActiveIndex = newActiveIndex;
       }
@@ -142,7 +154,7 @@ function createStoreWithInternals<C extends PluginConfig>(
         localSchemas,
         newActiveIndex,
         new GridError(
-          "Something went wrong while rendering the grid.",
+          "Invalid Grid Action",
           `newActiveIndex is invalid - ${newActiveIndex}`,
         ),
       );
