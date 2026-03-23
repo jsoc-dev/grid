@@ -16,6 +16,7 @@
     "typescript-eslint": "^8.57.1"
   },
   "scripts": {
+    "build:examples": "pnpm --filter \"./examples/**\" build",
     "lint-all": "pnpm -r --parallel run lint",
     "lint:fix-all": "pnpm -r --parallel run lint --fix",
     "type-all": "pnpm -r --parallel run type",

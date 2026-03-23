@@ -9,13 +9,14 @@ catalog:
   "@mui/x-data-grid": "^8.16.0"
   "@tabler/icons-react": "^3.40.0"
   "@tanstack/react-table": "^8.21.3"
-  "ag-grid-community": "^34.3.1"
-  "ag-grid-react": "^34.3.1"
+  "ag-grid-community": "^35.1.0"
+  "ag-grid-react": "^35.1.0"
   "dayjs": "^1.11"
   "mantine-react-table": "^1.3.4"
 
 packages:
   - docs
+  - examples/react/*
   - packages/*
 
 onlyBuiltDependencies:

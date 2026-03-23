@@ -5,7 +5,7 @@ import {
   type PluginConfig,
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
-import type { SubsetKeysOf } from "@jsoc/utils";
+import { ensureString, type SubsetKeysOf } from "@jsoc/utils";
 import type { ColDef } from "ag-grid-community";
 import type { AgGridReactProps } from "ag-grid-react";
 
@@ -30,7 +30,8 @@ export const configGeneratorAg: PluginConfigGenerator<PluginConfigAg> = (
 
   return {
     columnDefs,
-    getRowId: ({ data }) => data[gridSchema.meta.primaryColumnKey],
+    getRowId: ({ data }) =>
+      ensureString(data[gridSchema.meta.primaryColumnKey]),
     rowData: gridSchema.meta.rows,
   };
 };
