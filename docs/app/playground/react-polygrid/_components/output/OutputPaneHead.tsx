@@ -1,27 +1,35 @@
 import { HeadLayout } from "@/playground/react-polygrid/_components/shared";
+import type { NonHeadlessPlugins } from "@/playground/react-polygrid/Playground";
 
-import type { GridPlugin } from "@jsoc/react-grid";
 import type { Dispatch, SetStateAction } from "react";
 
-const pluginOptions: [GridPlugin, string][] = [
-  ["ag", "AG-Grid"],
-  ["mui", "MUI X"],
-];
-
-type Props = {
-  plugin: GridPlugin;
-  setPlugin: Dispatch<SetStateAction<GridPlugin>>;
+const AVAILABLE_PLUGINS: {
+  [P in NonHeadlessPlugins]: string;
+} = {
+  ag: "AG-Grid",
+  mantine: "Mantine",
+  mui: "MUI X",
 };
 
-export function OutputPaneHead({ plugin, setPlugin }: Props) {
+const AVAILABLE_PLUGINS_LIST = Object.entries(AVAILABLE_PLUGINS) as [
+  NonHeadlessPlugins,
+  string,
+][];
+
+type Props = {
+  plugin: NonHeadlessPlugins;
+  setPlugin: Dispatch<SetStateAction<NonHeadlessPlugins>>;
+};
+
+export function OutputPaneHead({ plugin: currentPlugin, setPlugin }: Props) {
   return (
     <HeadLayout heading="PLUGIN">
       <div className="flex gap-3">
-        {pluginOptions.map(([pluginKey, pluginName]) => (
+        {AVAILABLE_PLUGINS_LIST.map(([plugin, pluginName]) => (
           <button
-            className={`${getSelectedCls(pluginKey)} `}
-            key={pluginKey}
-            onClick={() => onPluginOptionClick(pluginKey)}
+            className={getSelectedCls(plugin)}
+            key={plugin}
+            onClick={() => onPluginOptionClick(plugin)}
           >
             {/* TODO: Show library icon also */}
             <span className="inline-block w-max">{pluginName}</span>
@@ -31,12 +39,12 @@ export function OutputPaneHead({ plugin, setPlugin }: Props) {
     </HeadLayout>
   );
 
-  function onPluginOptionClick(selectedPluginOption: GridPlugin) {
-    setPlugin(selectedPluginOption);
+  function onPluginOptionClick(plugin: NonHeadlessPlugins) {
+    setPlugin(plugin);
   }
 
-  function getSelectedCls(pluginOption: GridPlugin): string {
-    return pluginOption === plugin
+  function getSelectedCls(plugin: NonHeadlessPlugins): string {
+    return plugin === currentPlugin
       ? "text-primary font-medium"
       : "text-muted-foreground hover:text-foreground transition-colors";
   }

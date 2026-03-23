@@ -1,6 +1,3 @@
-import { DefaultLayout } from "#components/DefaultLayout.tsx";
-import { getConfigGeneratorOptions } from "#customizations/configGeneratorOptions.tsx";
-
 import type {
   GridOptions,
   PluginConfigGeneratorOptions,
@@ -9,30 +6,11 @@ import {
   CONFIG_GENERATOR_BY_PLUGIN,
   type ConfigByPlugin,
   type GridPlugin,
-  type PluginPropsAg,
-  type PluginPropsMui,
   StoreContext,
   useStore,
 } from "@jsoc/react-grid";
-import { DataGrid } from "@mui/x-data-grid";
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
-import { AgGridReact } from "ag-grid-react";
-import { Activity, type ElementType, type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
-// TODO: Remove this. Add in docs that users need to import the required modules themselves if they use ag-grid.
-ModuleRegistry.registerModules([AllCommunityModule]);
-
-interface PropsByPlugin extends Record<GridPlugin, unknown> {
-  ag: PluginPropsAg;
-  mui: PluginPropsMui;
-}
-
-const GridComponentByPlugin: {
-  [P in GridPlugin]: ElementType;
-} = {
-  ag: AgGridReact,
-  mui: DataGrid,
-};
 
 export type GridLayoutProps = {
   children: ReactNode;
@@ -40,15 +18,12 @@ export type GridLayoutProps = {
 export type GridLayout = React.ComponentType<GridLayoutProps>;
 
 export type PolyGridProps<P extends GridPlugin> = {
-  configGeneratorOptions?: PluginConfigGeneratorOptions<ConfigByPlugin[P]>;
+  children: ReactNode;
   gridOptions: GridOptions;
   plugin: P;
-  pluginProps?: PropsByPlugin[P];
-  /**
-   * Layout component.
-   * @default DefaultLayout
-   */
-  Layout?: GridLayout;
+  pluginConfigGeneratorOptions?: PluginConfigGeneratorOptions<
+    ConfigByPlugin[P]
+  >;
 };
 
 /**
@@ -65,21 +40,16 @@ export function PolyGrid<P extends GridPlugin>(props: PolyGridProps<P>) {
 }
 
 function PolyGridInner<P extends GridPlugin>({
-  configGeneratorOptions,
+  children,
   gridOptions,
-  Layout = DefaultLayout,
   plugin,
-  pluginProps,
+  pluginConfigGeneratorOptions,
 }: PolyGridProps<P>) {
   const pluginOptions = {
     configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
-    configGeneratorOptions:
-      configGeneratorOptions ?? getConfigGeneratorOptions(plugin),
+    configGeneratorOptions: pluginConfigGeneratorOptions,
   };
   const { gridStore, setGridStore } = useStore(gridOptions, pluginOptions);
-
-  const activeSchema = gridStore.getActiveSchema();
-  const PluginComponent = GridComponentByPlugin[plugin];
 
   return (
     <StoreContext.Provider
@@ -88,21 +58,7 @@ function PolyGridInner<P extends GridPlugin>({
         setGridStore,
       }}
     >
-      <Layout>
-        {gridStore.getSchemas().map((schema) => (
-          <Activity
-            key={schema.options.id}
-            mode={
-              schema.options.id === activeSchema.options.id
-                ? "visible"
-                : "hidden"
-            }
-          >
-            {/* @ts-expect-error - FIXME */}
-            <PluginComponent {...{ ...pluginProps, ...schema.config }} />
-          </Activity>
-        ))}
-      </Layout>
+      {children}
     </StoreContext.Provider>
   );
 }

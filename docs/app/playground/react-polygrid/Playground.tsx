@@ -15,6 +15,8 @@ import type { GridOptions } from "@jsoc/grid-core";
 import type { GridPlugin } from "@jsoc/react-grid";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
+export type NonHeadlessPlugins = Exclude<GridPlugin, "tanstack">;
+
 interface PlaygroundGridOptions extends GridOptions {
   name: keyof typeof SAMPLE_JSON_STRINGS;
   data: string;
@@ -40,10 +42,10 @@ export function Playground() {
     createPlaygroundGridOptions("shoe"),
   );
 
-  const [plugin, setPlugin] = useState<GridPlugin>("ag");
+  const [plugin, setPlugin] = useState<NonHeadlessPlugins>("ag");
 
   return (
-    <SplitView className="flex-1 svrow:max-h-[700px] mt-6 min-h-96">
+    <SplitView className="flex-1 svrow:h-[700px] mt-6 min-h-96">
       <SplitView.Pane>
         <SplitView.Pane.Head>
           <InputPaneHead
