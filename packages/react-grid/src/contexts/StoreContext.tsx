@@ -1,6 +1,9 @@
-import type { ConfigByPlugin, GridPlugin } from "#config-generators/index.ts";
+import type {
+  ConfigByPlugin,
+  GridPlugin,
+} from "#config-generators/configGenerator.registry.ts";
 
-import type { GridStore, PluginConfig } from "@jsoc/grid-core";
+import type { GridStore } from "@jsoc/grid-core";
 import {
   type Context,
   createContext,
@@ -8,32 +11,31 @@ import {
   type SetStateAction,
 } from "react";
 
-export type StoreContextValue<C extends PluginConfig> = {
-  gridStore: GridStore<C>;
-  setGridStore: Dispatch<SetStateAction<GridStore<C>>>;
+export type StoreContextValue<P extends GridPlugin> = {
+  gridStore: GridStore<ConfigByPlugin[P]>;
+  plugin: P;
+  setGridStore: Dispatch<SetStateAction<GridStore<ConfigByPlugin[P]>>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const StoreContext = createStoreContext<any>();
-export const StoreContextAg = createStoreContext<ConfigByPlugin["ag"]>("ag");
-export const StoreContextMui = createStoreContext<ConfigByPlugin["mui"]>("mui");
-export const StoreContextTanstack =
-  createStoreContext<ConfigByPlugin["tanstack"]>("tanstack");
-export const StoreContextMantine =
-  createStoreContext<ConfigByPlugin["mantine"]>("mantine");
+export const StoreContextAg = createContext<
+  StoreContextValue<"ag"> | undefined
+>(undefined);
 
-function createStoreContext<C extends PluginConfig>(plugin?: GridPlugin) {
-  const StoreContext = createContext<StoreContextValue<C> | undefined>(
-    undefined,
-  );
+export const StoreContextMui = createContext<
+  StoreContextValue<"mui"> | undefined
+>(undefined);
 
-  StoreContext.displayName = `StoreContext${plugin ? `(${plugin})` : ""}`;
+export const StoreContextTanstack = createContext<
+  StoreContextValue<"tanstack"> | undefined
+>(undefined);
 
-  return StoreContext;
-}
+export const StoreContextMantine = createContext<
+  StoreContextValue<"mantine"> | undefined
+>(undefined);
 
-export const StoreContextByPlugin: {
-  [P in GridPlugin]: Context<StoreContextValue<ConfigByPlugin[P]> | undefined>;
+// https://chatgpt.com/share/69c2542a-d4a4-800c-8566-8dd49ca6623f
+export const STORE_CONTEXT_BY_PLUGIN: {
+  [P in GridPlugin]: Context<StoreContextValue<P> | undefined>;
 } = {
   ag: StoreContextAg,
   mui: StoreContextMui,

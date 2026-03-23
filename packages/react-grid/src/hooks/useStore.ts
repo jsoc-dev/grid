@@ -1,86 +1,66 @@
 import {
   CONFIG_GENERATOR_BY_PLUGIN,
   type ConfigByPlugin,
+  type GridPlugin,
 } from "#config-generators/configGenerator.registry.ts";
 import type { StoreContextValue } from "#contexts/StoreContext.tsx";
 
 import {
-  type GridOptions,
+  type GridData,
   newGridStore,
-  type PluginConfig,
   type PluginConfigGeneratorOptions,
-  type PluginOptions,
 } from "@jsoc/grid-core";
-import { useEffect, useState } from "react";
-
-export type PluginSpecificUseStore<C extends PluginConfig> = (
-  options: GridOptions,
-  configGeneratorOptions: PluginConfigGeneratorOptions<C>,
-) => StoreContextValue<C>;
+import { useEffect, useMemo, useState } from "react";
 
 /**
- * Hook to create and use store specifically for GridPlugin "ag".
+ * Hook to create and use a grid store.
+ * - Make sure the arguments are stable, otherwise it will lead to infinite renders.
+ * - Provide the result of this hook to the `StoreContextProvider` component in your app.
+ * - To avoid unnecessary re-renders, provide the hook result without destructuring and recreating.
  */
-export const useStoreAg: PluginSpecificUseStore<ConfigByPlugin["ag"]> = (
-  options,
-  configGeneratorOptions,
-) =>
-  useStore(options, {
-    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.ag,
-    configGeneratorOptions,
-  });
-
-/**
- * Hook to create and use store specifically for GridPlugin "mui".
- */
-export const useStoreMui: PluginSpecificUseStore<ConfigByPlugin["mui"]> = (
-  options,
-  configGeneratorOptions,
-) =>
-  useStore(options, {
-    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.mui,
-    configGeneratorOptions,
-  });
-
-/**
- * Hook to create and use store specifically for GridPlugin "tanstack".
- */
-export const useStoreTanstack: PluginSpecificUseStore<
-  ConfigByPlugin["tanstack"]
-> = (options, configGeneratorOptions) =>
-  useStore(options, {
-    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.tanstack,
-    configGeneratorOptions,
-  });
-
-/**
- * Hook to create and use store specifically for GridPlugin "mantine".
- */
-export const useStoreMantine: PluginSpecificUseStore<
-  ConfigByPlugin["mantine"]
-> = (options, configGeneratorOptions) =>
-  useStore(options, {
-    configGenerator: CONFIG_GENERATOR_BY_PLUGIN.mantine,
-    configGeneratorOptions,
-  });
-
-/**
- * Generic hook to create and use a grid store.
- */
-export function useStore<C extends PluginConfig>(
-  gridOptions: GridOptions,
-  pluginOptions: PluginOptions<C>,
-) {
-  const [gridStore, setGridStore] = useState(() =>
-    newGridStore<C>(gridOptions, pluginOptions),
+export function useStore<P extends GridPlugin>(
+  data: GridData,
+  plugin: P,
+  pluginConfigGeneratorOptions?: PluginConfigGeneratorOptions<
+    ConfigByPlugin[P]
+  >,
+  name?: string,
+): StoreContextValue<P> {
+  const gridOptions = useMemo(
+    () => ({
+      data,
+      name,
+    }),
+    [data, name],
   );
 
+  const pluginOptions = useMemo(
+    () => ({
+      configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
+      configGeneratorOptions: pluginConfigGeneratorOptions,
+    }),
+    [plugin, pluginConfigGeneratorOptions],
+  );
+
+  // create grid store
+  const [gridStore, setGridStore] = useState(() =>
+    newGridStore(gridOptions, pluginOptions),
+  );
+
+  // update grid store when grid options or plugin options change
   useEffect(() => {
-    setGridStore(newGridStore<C>(gridOptions, pluginOptions));
+    setGridStore(newGridStore(gridOptions, pluginOptions));
   }, [gridOptions, pluginOptions]);
 
-  return {
-    gridStore,
-    setGridStore,
-  };
+  // prepare the store context value
+  const storeContextValue = useMemo(
+    () => ({
+      gridStore,
+      setGridStore,
+      plugin,
+    }),
+    [gridStore, setGridStore, plugin],
+  );
+
+  return storeContextValue;
 }
