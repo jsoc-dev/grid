@@ -93,7 +93,7 @@ export type PluginOptions<C extends PluginConfig> = {
 };
 /**
  * Column type inferred from the `PluginConfig`
- * @see https://chatgpt.com/share/69bd22d8-d75c-800c-8b2f-2f4708cd06a7
+ * @see {@link https://chatgpt.com/share/69bd22d8-d75c-800c-8b2f-2f4708cd06a7 Design Discussion}
  */
 export type InferColumnType<C extends PluginConfig> =
   C["__columnType"] extends infer T ? NonNullable<T> : never;

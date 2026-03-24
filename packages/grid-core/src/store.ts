@@ -60,6 +60,10 @@ export function newGridStore<C extends PluginConfig = PluginConfig>(
   });
 }
 
+/**
+ * Creates a store with the given internals.
+ * @see {@link https://chatgpt.com/share/69c25775-a7d0-800c-817e-4aae4314b5fb Design Discussion}
+ */
 function createStoreWithInternals<C extends PluginConfig>(
   internals: GridStoreInternals<C>,
 ): GridStore<C> {
