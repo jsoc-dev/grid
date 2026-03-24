@@ -9,7 +9,6 @@ import type {
 import {
   isArrayOfObjects,
   isBoolean,
-  isFunction,
   isISODateString,
   isNumber,
   isPlainObject,
@@ -130,7 +129,7 @@ export function generateColumns<C extends PluginConfig>(
     // TODO: merge customColumnGeneratorByType with defaultColumnGeneratorByType
     const columnGenerator =
       isPlainObject(customColumnGeneratorByType) &&
-      isFunction(customColumnGeneratorByType[columnDataType])
+      typeof customColumnGeneratorByType[columnDataType] === "function"
         ? customColumnGeneratorByType[columnDataType]
         : defaultColumnGeneratorByType[columnDataType];
 
