@@ -1,31 +1,30 @@
-import type { GridOptions } from "@jsoc/grid-core";
-import { GridClose, StoreContext, useStore } from "@jsoc/react-grid";
+import { GridClose, StoreContextProvider, useStore } from "@jsoc/react-grid";
 import { AllCommunityModule } from "ag-grid-community";
-import { AgGridProvider, AgGridReact } from "ag-grid-react"; // React Data Grid Component
+import { AgGridProvider, AgGridReact } from "ag-grid-react";
 import { useEffect, useState } from "react";
 
 const modules = [AllCommunityModule];
 
 export default function App() {
-  const [gridOptions, setGridOptions] = useState<GridOptions>({ data: [] });
-  const { gridStore, setGridStore } = useStore(gridOptions, "ag");
+  const [users, setUsers] = useState([]);
+  const storeContext = useStore(users, "ag");
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((res) => res.json())
-      .then((data) => setGridOptions({ data }));
+      .then((data) => setUsers(data));
   }, []);
 
-  const { config } = gridStore.getActiveSchema();
+  const { config } = storeContext.gridStore.getActiveSchema();
 
   return (
-    <StoreContext.Provider value={{ gridStore, setGridStore }}>
+    <StoreContextProvider value={storeContext}>
       <AgGridProvider modules={modules}>
         <GridClose>Back</GridClose>
         <div style={{ height: 600 }}>
           <AgGridReact {...config} />
         </div>
       </AgGridProvider>
-    </StoreContext.Provider>
+    </StoreContextProvider>
   );
 }
