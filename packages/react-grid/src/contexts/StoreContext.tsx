@@ -1,6 +1,9 @@
-import type { ConfigByPlugin, GridPlugin } from "#config-generators/index.ts";
+import type {
+  ConfigByPlugin,
+  GridPlugin,
+} from "#config-generators/configGenerator.registry.ts";
 
-import type { GridStore, PluginConfig } from "@jsoc/grid-core";
+import type { GridStore } from "@jsoc/grid-core";
 import {
   type Context,
   createContext,
@@ -8,37 +11,33 @@ import {
   type SetStateAction,
 } from "react";
 
-export type StoreContextValue<C extends PluginConfig> = {
-  gridStore: GridStore<C>;
-  setGridStore: Dispatch<SetStateAction<GridStore<C>>>;
+export type StoreContextValue<P extends GridPlugin> = {
+  gridStore: GridStore<ConfigByPlugin[P]>;
+  plugin: P;
+  setGridStore: Dispatch<SetStateAction<GridStore<ConfigByPlugin[P]>>>;
 };
 
-// any is used to make this context loosely typed so that it can be used to provide context for any plugin.
-// This context is not recommended to use as it bypasses the type safety.
-// This is currently used as escape hatch for StoreContext.Provider errors in PolyGrid component (@jsoc/poly-grid-react)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const StoreContext = createStoreContext<any>();
-export const StoreContextAg = createStoreContext<ConfigByPlugin["ag"]>("ag");
-export const StoreContextMui = createStoreContext<ConfigByPlugin["mui"]>("mui");
-export const StoreContextTanstack =
-  createStoreContext<ConfigByPlugin["tanstack"]>("tanstack");
-export const StoreContextMantine =
-  createStoreContext<ConfigByPlugin["mantine"]>("mantine");
-
-function createStoreContext<C extends PluginConfig = PluginConfig>(
-  plugin?: GridPlugin,
-) {
-  const StoreContext = createContext<StoreContextValue<C> | undefined>(
+/**
+ * Creates a store context for a specific plugin.
+ * @see {@link https://chatgpt.com/share/69c2542a-d4a4-800c-8566-8dd49ca6623f Design Discussion}
+ */
+const createStoreContext = <P extends GridPlugin = GridPlugin>(plugin?: P) => {
+  const StoreContext = createContext<StoreContextValue<P> | undefined>(
     undefined,
   );
-
-  StoreContext.displayName = `StoreContext${plugin ? `(${plugin})` : ""}`;
+  StoreContext.displayName = `StoreContext(${plugin})`;
 
   return StoreContext;
-}
+};
 
-export const StoreContextByPlugin: {
-  [P in GridPlugin]: Context<StoreContextValue<ConfigByPlugin[P]> | undefined>;
+export const StoreContext = createStoreContext();
+export const StoreContextAg = createStoreContext("ag");
+export const StoreContextMui = createStoreContext("mui");
+export const StoreContextTanstack = createStoreContext("tanstack");
+export const StoreContextMantine = createStoreContext("mantine");
+
+export const STORE_CONTEXT_BY_PLUGIN: {
+  [P in GridPlugin]: Context<StoreContextValue<P> | undefined>;
 } = {
   ag: StoreContextAg,
   mui: StoreContextMui,
