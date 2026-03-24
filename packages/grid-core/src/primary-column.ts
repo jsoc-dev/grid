@@ -1,13 +1,7 @@
 import type { ColumnKey } from "#column.ts";
 import type { GridRows } from "#schema.ts";
 
-import {
-  areAllUnique,
-  isFunction,
-  isNumber,
-  isString,
-  toStringSafe,
-} from "@jsoc/utils";
+import { areAllUnique, isNumber, isString, toStringSafe } from "@jsoc/utils";
 
 /**
  * Property that has a unique value for all the `GridRows`.
@@ -62,7 +56,7 @@ export function isFallbackPrimaryColumn(columnKey: ColumnKey) {
 export function randomId(): string {
   // `crypto.randomUUID` requires a secure context like https://example.com or http://localhost
   // It is not available in http://example.com  or http://192.168.x.x
-  if (isFunction(crypto.randomUUID)) {
+  if (typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
   }
 
