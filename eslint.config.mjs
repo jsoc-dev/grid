@@ -93,7 +93,13 @@ export const reactConfig = tseslint.config({
 });
 
 /** Global fallback configuration */
-export default tseslint.config(...baseConfig, {
-  files: ["**/*.tsx"],
-  ...reactConfig[0],
-});
+export default tseslint.config(
+  ...baseConfig,
+  {
+    files: ["**/*.tsx"],
+    ...reactConfig[0],
+  },
+  {
+    ignores: ["./examples/**/*"],
+  },
+);
