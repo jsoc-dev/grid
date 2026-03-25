@@ -18,48 +18,38 @@ import {
 } from "@jsoc/utils";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 
-function mergeColumnDef(
+export type ColumnGeneratorTanstack = ColumnGenerator<PluginConfigTanstack>;
+
+function extendBaseColumn(
   params: ColumnGeneratorParams,
   overrides?: Partial<ColumnDef<GridRow>>,
-  defaults: Partial<ColumnDef<GridRow>> = {},
-) {
+): ColumnDef<GridRow> {
   const { columnKey } = params;
 
   return {
     id: columnKey,
     accessorKey: columnKey,
     header: toReadableString(columnKey),
-    ...defaults,
     ...overrides,
   };
 }
 
-export const baseColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params) => mergeColumnDef(params);
+const stringColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return extendBaseColumn(params);
+};
 
-export const stringColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => mergeColumnDef(params, overrides);
-
-export const booleanColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
-  return mergeColumnDef(params, overrides, {
+const booleanColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return extendBaseColumn(params, {
     cell: (info) => (info.getValue() != null ? String(info.getValue()) : ""),
   });
 };
 
-export const numberColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
-  return mergeColumnDef(params, overrides);
+const numberColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return extendBaseColumn(params);
 };
 
-export const stringDateColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
-  return mergeColumnDef(params, overrides, {
+const stringDateColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return extendBaseColumn(params, {
     cell: (info) => {
       const value = info.getValue();
       return new Date(value as string).toLocaleString();
@@ -67,12 +57,10 @@ export const stringDateColumnGeneratorTanstack: ColumnGenerator<
   });
 };
 
-export const arrayOfObjectsColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
+const arrayOfObjectsColumnGenerator: ColumnGeneratorTanstack = (params) => {
   const { columnKey, gridSchema } = params;
 
-  return mergeColumnDef(params, overrides, {
+  return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
     cell: (info) => {
@@ -93,16 +81,12 @@ export const arrayOfObjectsColumnGeneratorTanstack: ColumnGenerator<
   });
 };
 
-export const objectColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
-  return arrayOfObjectsColumnGeneratorTanstack(params, overrides);
+const objectColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return arrayOfObjectsColumnGenerator(params);
 };
 
-export const unresolvedColumnGeneratorTanstack: ColumnGenerator<
-  PluginConfigTanstack
-> = (params, overrides) => {
-  return mergeColumnDef(params, overrides, {
+const unresolvedColumnGenerator: ColumnGeneratorTanstack = (params) => {
+  return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
     cell: (info: CellContext<GridRow, unknown>) => {
@@ -123,11 +107,11 @@ export const unresolvedColumnGeneratorTanstack: ColumnGenerator<
 
 export const COLUMN_GENERATOR_BY_TYPE_TANSTACK: ColumnGeneratorByType<PluginConfigTanstack> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGeneratorTanstack,
-    boolean: booleanColumnGeneratorTanstack,
-    number: numberColumnGeneratorTanstack,
-    object: objectColumnGeneratorTanstack,
-    stringDate: stringDateColumnGeneratorTanstack,
-    string: stringColumnGeneratorTanstack,
-    unresolved: unresolvedColumnGeneratorTanstack,
+    arrayOfObjects: arrayOfObjectsColumnGenerator,
+    boolean: booleanColumnGenerator,
+    number: numberColumnGenerator,
+    object: objectColumnGenerator,
+    stringDate: stringDateColumnGenerator,
+    string: stringColumnGenerator,
+    unresolved: unresolvedColumnGenerator,
   };

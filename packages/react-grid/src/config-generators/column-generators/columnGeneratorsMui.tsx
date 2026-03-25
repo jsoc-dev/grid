@@ -4,8 +4,10 @@ import type { PluginConfigMui } from "#config-generators/configGeneratorMui.ts";
 import type {
   ColumnGenerator,
   ColumnGeneratorByType,
+  ColumnGeneratorParams,
   GridData,
   GridDataReadonly,
+  GridRow,
   GridRows,
 } from "@jsoc/grid-core";
 import {
@@ -16,79 +18,57 @@ import {
   isPlainObject,
   toReadableString,
 } from "@jsoc/utils";
+import type { GridColDef } from "@mui/x-data-grid";
 import type { GridRenderCellParams } from "@mui/x-data-grid";
 
-export const baseColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-) => {
+export type ColumnGeneratorMui = ColumnGenerator<PluginConfigMui>;
+
+function extendBaseColumn(
+  params: ColumnGeneratorParams,
+  overrides?: Partial<GridColDef<GridRow>>,
+): GridColDef<GridRow> {
   const { columnKey } = params;
 
   return {
     field: columnKey,
     headerName: toReadableString(columnKey),
-    filter: true,
+    filterable: true,
+    ...overrides,
   };
-};
+}
 
-export const stringColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorMui(params),
+const stringColumnGenerator: ColumnGeneratorMui = (params) => {
+  return extendBaseColumn(params, {
     type: "string",
-
-    ...overrides,
-  };
+  });
 };
 
-export const booleanColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorMui(params),
+const booleanColumnGenerator: ColumnGeneratorMui = (params) => {
+  return extendBaseColumn(params, {
     type: "boolean",
-
-    ...overrides,
-  };
+  });
 };
 
-export const numberColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorMui(params),
+const numberColumnGenerator: ColumnGeneratorMui = (params) => {
+  return extendBaseColumn(params, {
     type: "number",
-
-    ...overrides,
-  };
+  });
 };
 
-export const stringDateColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorMui(params),
+const stringDateColumnGenerator: ColumnGeneratorMui = (params) => {
+  return extendBaseColumn(params, {
     type: "dateTime",
     valueGetter: (value) => value && new Date(value),
-
-    ...overrides,
-  };
+  });
 };
 
 /**
  * Provides column definitions for column having values as arrayOfObjects
  */
-export const arrayOfObjectsColumnGeneratorMui: ColumnGenerator<
-  PluginConfigMui
-> = (params, overrides) => {
+const arrayOfObjectsColumnGenerator: ColumnGeneratorMui = (params) => {
   const { columnKey, gridSchema } = params;
 
-  return {
-    ...baseColumnGeneratorMui(params),
+  return extendBaseColumn(params, {
     type: "actions",
     sortable: false,
     filterable: false,
@@ -126,24 +106,15 @@ export const arrayOfObjectsColumnGeneratorMui: ColumnGenerator<
         />
       );
     },
-
-    ...overrides,
-  };
+  });
 };
 
-export const objectColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return arrayOfObjectsColumnGeneratorMui(params, overrides);
+const objectColumnGenerator: ColumnGeneratorMui = (params) => {
+  return arrayOfObjectsColumnGenerator(params);
 };
 
-export const unresolvedColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorMui(params),
+const unresolvedColumnGenerator: ColumnGeneratorMui = (params) => {
+  return extendBaseColumn(params, {
     sortable: false,
     filterable: false,
     /**
@@ -160,18 +131,16 @@ export const unresolvedColumnGeneratorMui: ColumnGenerator<PluginConfigMui> = (
 
       return ensureString(value);
     },
-
-    ...overrides,
-  };
+  });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_MUI: ColumnGeneratorByType<PluginConfigMui> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGeneratorMui,
-    boolean: booleanColumnGeneratorMui,
-    number: numberColumnGeneratorMui,
-    object: objectColumnGeneratorMui,
-    stringDate: stringDateColumnGeneratorMui,
-    string: stringColumnGeneratorMui,
-    unresolved: unresolvedColumnGeneratorMui,
+    arrayOfObjects: arrayOfObjectsColumnGenerator,
+    boolean: booleanColumnGenerator,
+    number: numberColumnGenerator,
+    object: objectColumnGenerator,
+    stringDate: stringDateColumnGenerator,
+    string: stringColumnGenerator,
+    unresolved: unresolvedColumnGenerator,
   };

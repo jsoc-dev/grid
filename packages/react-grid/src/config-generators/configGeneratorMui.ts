@@ -6,8 +6,7 @@ import {
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
 import type { SubsetKeysOf } from "@jsoc/utils";
-import type { GridColDef } from "@mui/x-data-grid";
-import type { DataGridProps } from "@mui/x-data-grid";
+import type { DataGridProps, GridColDef } from "@mui/x-data-grid";
 
 export type PluginConfigNamesMui = SubsetKeysOf<
   DataGridProps,
@@ -15,8 +14,6 @@ export type PluginConfigNamesMui = SubsetKeysOf<
 >;
 export type PluginConfigMui = Pick<DataGridProps, PluginConfigNamesMui> &
   PluginConfig<GridColDef>;
-
-export type PluginPropsMui = Omit<DataGridProps, PluginConfigNamesMui>;
 
 export const configGeneratorMui: PluginConfigGenerator<PluginConfigMui> = (
   gridSchema,

@@ -20,11 +20,6 @@ export type PluginConfigTanstack = Pick<
 > &
   PluginConfig<ColumnDef<GridRow>>;
 
-export type PluginPropsTanstack = Omit<
-  TableOptions<GridRow>,
-  PluginConfigNamesTanstack
->;
-
 export const configGeneratorTanstack: PluginConfigGenerator<
   PluginConfigTanstack
 > = (gridSchema, options) => {

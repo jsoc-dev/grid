@@ -1,7 +1,12 @@
 import { SubGridToggle } from "#components/index.ts";
 import type { PluginConfigAg } from "#config-generators/configGeneratorAg.ts";
 
-import type { ColumnGenerator, ColumnGeneratorByType } from "@jsoc/grid-core";
+import type {
+  ColumnGenerator,
+  ColumnGeneratorByType,
+  ColumnGeneratorParams,
+  GridRow,
+} from "@jsoc/grid-core";
 import {
   encodePretty,
   ensureString,
@@ -9,75 +14,52 @@ import {
   isPlainObject,
   toReadableString,
 } from "@jsoc/utils";
-import type { ICellRendererParams } from "ag-grid-community";
+import type { ColDef, ICellRendererParams } from "ag-grid-community";
 
-export const baseColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-) => {
+export type ColumnGeneratorAg = ColumnGenerator<PluginConfigAg>;
+
+function extendBaseColumn(
+  params: ColumnGeneratorParams,
+  overrides?: Partial<ColDef<GridRow>>,
+): ColDef<GridRow> {
   const { columnKey } = params;
 
   return {
     field: columnKey,
     headerName: toReadableString(columnKey),
     filter: true,
+    ...overrides,
   };
-};
+}
 
-export const stringColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorAg(params),
+const stringColumnGenerator: ColumnGeneratorAg = (params) => {
+  return extendBaseColumn(params, {
     cellDataType: "text",
-
-    ...overrides,
-  };
+  });
 };
 
-export const booleanColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorAg(params),
+const booleanColumnGenerator: ColumnGeneratorAg = (params) => {
+  return extendBaseColumn(params, {
     cellDataType: "boolean",
-
-    ...overrides,
-  };
+  });
 };
 
-export const numberColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorAg(params),
+const numberColumnGenerator: ColumnGeneratorAg = (params) => {
+  return extendBaseColumn(params, {
     cellDataType: "number",
-
-    ...overrides,
-  };
+  });
 };
 
-export const stringDateColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorAg(params),
+const stringDateColumnGenerator: ColumnGeneratorAg = (params) => {
+  return extendBaseColumn(params, {
     cellDataType: "dateTimeString",
-
-    ...overrides,
-  };
+  });
 };
 
-export const arrayOfObjectsColumnGeneratorAg: ColumnGenerator<
-  PluginConfigAg
-> = (params, overrides) => {
+const arrayOfObjectsColumnGenerator: ColumnGeneratorAg = (params) => {
   const { columnKey, gridSchema } = params;
 
-  return {
-    ...baseColumnGeneratorAg(params),
+  return extendBaseColumn(params, {
     cellDataType: "object",
     sortable: false,
     filter: false,
@@ -103,24 +85,15 @@ export const arrayOfObjectsColumnGeneratorAg: ColumnGenerator<
         />
       );
     },
-
-    ...overrides,
-  };
+  });
 };
 
-export const objectColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return arrayOfObjectsColumnGeneratorAg(params, overrides);
+const objectColumnGenerator: ColumnGeneratorAg = (params) => {
+  return arrayOfObjectsColumnGenerator(params);
 };
 
-export const unresolvedColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
-  params,
-  overrides,
-) => {
-  return {
-    ...baseColumnGeneratorAg(params),
+const unresolvedColumnGenerator: ColumnGeneratorAg = (params) => {
+  return extendBaseColumn(params, {
     sortable: false,
     filter: false,
     /**
@@ -139,18 +112,16 @@ export const unresolvedColumnGeneratorAg: ColumnGenerator<PluginConfigAg> = (
 
       return ensureString(value);
     },
-
-    ...overrides,
-  };
+  });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_AG: ColumnGeneratorByType<PluginConfigAg> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGeneratorAg,
-    boolean: booleanColumnGeneratorAg,
-    number: numberColumnGeneratorAg,
-    object: objectColumnGeneratorAg,
-    stringDate: stringDateColumnGeneratorAg,
-    string: stringColumnGeneratorAg,
-    unresolved: unresolvedColumnGeneratorAg,
+    arrayOfObjects: arrayOfObjectsColumnGenerator,
+    boolean: booleanColumnGenerator,
+    number: numberColumnGenerator,
+    object: objectColumnGenerator,
+    stringDate: stringDateColumnGenerator,
+    string: stringColumnGenerator,
+    unresolved: unresolvedColumnGenerator,
   };

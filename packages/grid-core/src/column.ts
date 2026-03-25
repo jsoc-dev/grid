@@ -62,22 +62,18 @@ export type ColumnGeneratorParams = {
   gridSchema: GridSchema;
 };
 /**
- * Default {@link ColumnGenerator} implementation. Implementations receive {@link ColumnGeneratorParams}
- * and can optionally merge `overrides`.
+ * Generates a column definition for a particular {@link ColumnDataType}.
  */
 export type ColumnGenerator<C extends PluginConfig> = (
   params: ColumnGeneratorParams,
-  /**
-   * Definition overrides received from the corresponding `CustomColumnGenerator` of the `CustomColumnGeneratorByType`
-   */
-  overrides?: Partial<InferColumnType<C>>,
 ) => InferColumnType<C>;
 /**
- * Consumer-provided {@link CustomColumnGenerator} to override the defaults for a specific {@link ColumnDataType}.
+ * Consumer-provided column generator to override the defaults for a specific {@link ColumnDataType}.
+ * NOTE: It doesn't require to return the full column definition, only the properties that need to be overridden.
  */
 export type CustomColumnGenerator<C extends PluginConfig> = (
   params: ColumnGeneratorParams,
-) => InferColumnType<C>;
+) => Partial<InferColumnType<C>>;
 /**
  * Mapping of `ColumnKey` and the resolved {@link ColumnDataType} for the `ColumnKey` generated
  * by {@link createColumnDataTypeMap}.
@@ -100,9 +96,12 @@ export type CustomColumnGeneratorByType<C extends PluginConfig> = Partial<
 >;
 
 /**
- * Generates column definitions/configurations for the particular Grid UI Component.
- * It uses the resolved {@link ColumnDataTypeMap} to invoke the default {@link ColumnGeneratorByType}
- * or any overrides provided via {@link CustomColumnGeneratorByType}.
+ * Generates column definitions/configurations for the particular Grid plugin.
+ * @template C - Type of the Grid plugin configuration
+ * @param gridSchema - Base schema of the grid
+ * @param defaultColumnGeneratorByType - Mapping of {@link ColumnDataType} to {@link ColumnGenerator}
+ * @param customColumnGeneratorByType - Mapping of {@link ColumnDataType} to {@link CustomColumnGenerator}
+ * @returns Array of column definitions/configurations
  */
 export function generateColumns<C extends PluginConfig>(
   gridSchema: GridSchema,
@@ -116,18 +115,20 @@ export function generateColumns<C extends PluginConfig>(
   const columns = [];
 
   for (const [columnKey, columnDataType] of columnDataTypeEntries) {
-    // TODO: merge customColumnGeneratorByType with defaultColumnGeneratorByType
-    const columnGenerator =
-      isPlainObject(customColumnGeneratorByType) &&
-      typeof customColumnGeneratorByType[columnDataType] === "function"
-        ? customColumnGeneratorByType[columnDataType]
-        : defaultColumnGeneratorByType[columnDataType];
-
-    const generatedColumn = columnGenerator({
+    const params = {
       columnKey,
       columnDataType,
       gridSchema,
-    });
+    };
+
+    const defaultColGenerator = defaultColumnGeneratorByType[columnDataType];
+    const customColGenerator = customColumnGeneratorByType?.[columnDataType];
+
+    // merge default and custom column definitions
+    const generatedColumn = {
+      ...defaultColGenerator(params),
+      ...customColGenerator?.(params),
+    };
 
     columns.push(generatedColumn);
   }
