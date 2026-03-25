@@ -17,7 +17,7 @@
     "@jsoc/utils": "workspace:*"
   },
   "peerDependencies": {
-    "@mui/x-data-grid": "^8.16.0",
+    "@mui/x-data-grid": "^8.0.0",
     "@tanstack/react-table": "^8.21.3",
     "ag-grid-community": "^35.1.0",
     "ag-grid-react": "^35.1.0",
