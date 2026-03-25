@@ -1,7 +1,8 @@
 import { toStringSafe } from "#string.ts";
 
 /**
- * https://github.com/microsoft/TypeScript/pull/33050
+ * Type representing a valid JSON value.
+ * @see {@link https://github.com/microsoft/TypeScript/pull/33050 Learn more}
  */
 export type JSONValue =
   | string
