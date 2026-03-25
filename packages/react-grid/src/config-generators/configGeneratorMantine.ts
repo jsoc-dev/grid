@@ -20,11 +20,6 @@ export type PluginConfigMantine = Pick<
 > &
   PluginConfig<MRT_ColumnDef<GridRow>>;
 
-export type PluginPropsMantine = Omit<
-  MRT_TableOptions<GridRow>,
-  PluginConfigNamesMantine
->;
-
 export const configGeneratorMantine: PluginConfigGenerator<
   PluginConfigMantine
 > = (gridSchema, options) => {

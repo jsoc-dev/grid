@@ -16,8 +16,6 @@ export type PluginConfigNamesAg = SubsetKeysOf<
 export type PluginConfigAg = Pick<AgGridReactProps, PluginConfigNamesAg> &
   PluginConfig<ColDef>;
 
-export type PluginPropsAg = Omit<AgGridReactProps, PluginConfigNamesAg>;
-
 export const configGeneratorAg: PluginConfigGenerator<PluginConfigAg> = (
   gridSchema,
   options,

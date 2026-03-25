@@ -17,32 +17,16 @@
     "@jsoc/utils": "workspace:*"
   },
   "peerDependencies": {
-    "@mantine/core": "catalog:",
-    "@mantine/dates": "catalog:",
-    "@mantine/hooks": "catalog:",
-    "@mui/x-data-grid": "catalog:",
-    "@tabler/icons-react": "catalog:",
-    "@tanstack/react-table": "catalog:",
-    "ag-grid-community": "catalog:",
-    "ag-grid-react": "catalog:",
-    "mantine-react-table": "catalog:",
+    "@mui/x-data-grid": "^8.16.0",
+    "@tanstack/react-table": "^8.21.3",
+    "ag-grid-community": "^35.1.0",
+    "ag-grid-react": "^35.1.0",
+    "mantine-react-table": "^1.3.4",
     "react": ">=18",
     "react-dom": ">=18"
   },
   "peerDependenciesMeta": {
-    "@mantine/core": {
-      "optional": true
-    },
-    "@mantine/dates": {
-      "optional": true
-    },
-    "@mantine/hooks": {
-      "optional": true
-    },
     "@mui/x-data-grid": {
-      "optional": true
-    },
-    "@tabler/icons-react": {
       "optional": true
     },
     "@tanstack/react-table": {
