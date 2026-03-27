@@ -1,21 +1,16 @@
 import { SubGridToggle } from "#components/index.ts";
 import type { PluginConfigMantine } from "#config-generators/configGeneratorMantine.ts";
 
-import type {
-  ColumnGenerator,
-  ColumnGeneratorByType,
-  ColumnGeneratorParams,
-  GridData,
-  GridRow,
-  GridRowId,
-} from "@jsoc/grid-core";
 import {
-  encodePretty,
-  ensureString,
-  isArray,
-  isPlainObject,
-  toReadableString,
-} from "@jsoc/utils";
+  COLUMN_DATA_TYPES,
+  type ColumnGenerator,
+  type ColumnGeneratorByType,
+  type ColumnGeneratorParams,
+  type GridData,
+  type GridRow,
+  type GridRowId,
+} from "@jsoc/grid-core";
+import { encodePretty, toReadableString } from "@jsoc/utils";
 import type { MRT_Cell, MRT_ColumnDef, MRT_Row } from "mantine-react-table";
 
 export type ColumnGeneratorMantine = ColumnGenerator<PluginConfigMantine>;
@@ -39,10 +34,7 @@ const stringColumnGenerator: ColumnGeneratorMantine = (params) => {
 };
 
 const booleanColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params, {
-    Cell: ({ cell }: { cell: MRT_Cell<GridRow> }) =>
-      cell.getValue() != null ? String(cell.getValue()) : "",
-  });
+  return extendBaseColumn(params);
 };
 
 const numberColumnGenerator: ColumnGeneratorMantine = (params) => {
@@ -50,16 +42,12 @@ const numberColumnGenerator: ColumnGeneratorMantine = (params) => {
 };
 
 const stringDateColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params, {
-    Cell: ({ cell }: { cell: MRT_Cell<GridRow> }) => {
-      const value = cell.getValue();
-      return new Date(value as string).toLocaleString();
-    },
-  });
+  return extendBaseColumn(params);
 };
 
 const arrayOfObjectsColumnGenerator: ColumnGeneratorMantine = (params) => {
   const { columnKey, gridSchema } = params;
+  const { primaryColumnKey } = gridSchema.meta;
 
   return extendBaseColumn(params, {
     enableSorting: false,
@@ -71,14 +59,14 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorMantine = (params) => {
       cell: MRT_Cell<GridRow>;
       row: MRT_Row<GridRow>;
     }) => {
-      const value = cell.getValue();
+      const value = cell.getValue<GridData>();
 
       return (
         <SubGridToggle
-          subGridData={value as GridData}
+          subGridData={value}
           parentGridId={gridSchema.options.id}
           parentGridCellLocation={{
-            rowId: row.original[gridSchema.meta.primaryColumnKey] as GridRowId,
+            rowId: row.original[primaryColumnKey] as GridRowId,
             columnKey,
           }}
         />
@@ -97,27 +85,18 @@ const unresolvedColumnGenerator: ColumnGeneratorMantine = (params) => {
     enableColumnFilter: false,
     Cell: ({ cell }: { cell: MRT_Cell<GridRow> }) => {
       const value = cell.getValue();
-
-      if (isArray(value)) {
-        if (value.some((x) => isPlainObject(x) || isArray(x))) {
-          return encodePretty(value);
-        } else {
-          return value.join(", ");
-        }
-      }
-
-      return ensureString(value);
+      return encodePretty(value);
     },
   });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_MANTINE: ColumnGeneratorByType<PluginConfigMantine> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGenerator,
-    boolean: booleanColumnGenerator,
-    number: numberColumnGenerator,
-    object: objectColumnGenerator,
-    stringDate: stringDateColumnGenerator,
-    string: stringColumnGenerator,
-    unresolved: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
+    [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
+    [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
+    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
+    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
   };

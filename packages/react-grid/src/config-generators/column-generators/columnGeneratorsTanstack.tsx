@@ -1,35 +1,32 @@
 import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigTanstack } from "#config-generators/configGeneratorTanstack.ts";
-
 import type {
-  ColumnGenerator,
-  ColumnGeneratorByType,
-  ColumnGeneratorParams,
-  GridData,
-  GridRow,
-  GridRowId,
-} from "@jsoc/grid-core";
+  ColDefTanstack,
+  PluginConfigTanstack,
+} from "#config-generators/configGeneratorTanstack.ts";
+
 import {
-  encodePretty,
-  ensureString,
-  isArray,
-  isPlainObject,
-  toReadableString,
-} from "@jsoc/utils";
-import type { CellContext, ColumnDef } from "@tanstack/react-table";
+  COLUMN_DATA_TYPES,
+  type ColumnGenerator,
+  type ColumnGeneratorByType,
+  type ColumnGeneratorParams,
+  type GridData,
+  type GridRowId,
+} from "@jsoc/grid-core";
+import { encodePretty, toReadableString } from "@jsoc/utils";
 
 export type ColumnGeneratorTanstack = ColumnGenerator<PluginConfigTanstack>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,
-  overrides?: Partial<ColumnDef<GridRow>>,
-): ColumnDef<GridRow> {
-  const { columnKey } = params;
+  overrides?: Partial<ColDefTanstack>,
+): ColDefTanstack {
+  const { columnKey, columnDataType } = params;
 
   return {
     id: columnKey,
     accessorKey: columnKey,
     header: toReadableString(columnKey),
+    meta: { type: columnDataType }, // this is just for reference, it has no bearing on the column definition
     ...overrides,
   };
 }
@@ -39,9 +36,7 @@ const stringColumnGenerator: ColumnGeneratorTanstack = (params) => {
 };
 
 const booleanColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params, {
-    cell: (info) => (info.getValue() != null ? String(info.getValue()) : ""),
-  });
+  return extendBaseColumn(params);
 };
 
 const numberColumnGenerator: ColumnGeneratorTanstack = (params) => {
@@ -49,30 +44,26 @@ const numberColumnGenerator: ColumnGeneratorTanstack = (params) => {
 };
 
 const stringDateColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params, {
-    cell: (info) => {
-      const value = info.getValue();
-      return new Date(value as string).toLocaleString();
-    },
-  });
+  return extendBaseColumn(params);
 };
 
 const arrayOfObjectsColumnGenerator: ColumnGeneratorTanstack = (params) => {
   const { columnKey, gridSchema } = params;
+  const { primaryColumnKey } = gridSchema.meta;
 
   return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
-    cell: (info) => {
-      const value = info.getValue();
-      const row = info.row.original;
+    cell: (cellContext) => {
+      const value = cellContext.getValue<GridData>();
+      const row = cellContext.row.original;
 
       return (
         <SubGridToggle
-          subGridData={value as GridData}
+          subGridData={value}
           parentGridId={gridSchema.options.id}
           parentGridCellLocation={{
-            rowId: row[gridSchema.meta.primaryColumnKey] as GridRowId,
+            rowId: row[primaryColumnKey] as GridRowId,
             columnKey,
           }}
         />
@@ -89,29 +80,20 @@ const unresolvedColumnGenerator: ColumnGeneratorTanstack = (params) => {
   return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
-    cell: (info: CellContext<GridRow, unknown>) => {
-      const value = info.getValue();
-
-      if (isArray(value)) {
-        if (value.some((x) => isPlainObject(x) || isArray(x))) {
-          return encodePretty(value);
-        } else {
-          return value.join(", ");
-        }
-      }
-
-      return ensureString(value);
+    cell: (cellContext) => {
+      const value = cellContext.getValue();
+      return encodePretty(value);
     },
   });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_TANSTACK: ColumnGeneratorByType<PluginConfigTanstack> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGenerator,
-    boolean: booleanColumnGenerator,
-    number: numberColumnGenerator,
-    object: objectColumnGenerator,
-    stringDate: stringDateColumnGenerator,
-    string: stringColumnGenerator,
-    unresolved: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
+    [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
+    [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
+    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
+    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
   };

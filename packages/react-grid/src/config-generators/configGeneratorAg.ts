@@ -2,24 +2,27 @@ import { COLUMN_GENERATOR_BY_TYPE_AG } from "#config-generators/column-generator
 
 import {
   generateColumns,
+  type GridRow,
+  type GridRowId,
   type PluginConfig,
   type PluginConfigGenerator,
+  type RowPropertyValue,
 } from "@jsoc/grid-core";
-import { ensureString, type SubsetKeysOf } from "@jsoc/utils";
 import type { ColDef } from "ag-grid-community";
 import type { AgGridReactProps } from "ag-grid-react";
 
-export type PluginConfigNamesAg = SubsetKeysOf<
-  AgGridReactProps,
+export type ColDefAg = ColDef<GridRow, RowPropertyValue>;
+export type PluginConfigAg = Pick<
+  AgGridReactProps<GridRow>,
   "rowData" | "columnDefs" | "getRowId"
->;
-export type PluginConfigAg = Pick<AgGridReactProps, PluginConfigNamesAg> &
-  PluginConfig<ColDef>;
+> &
+  PluginConfig<ColDefAg>;
 
 export const configGeneratorAg: PluginConfigGenerator<PluginConfigAg> = (
   gridSchema,
   options,
 ) => {
+  const { rows, primaryColumnKey } = gridSchema.meta;
   const columnDefs = generateColumns<PluginConfigAg>(
     gridSchema,
     COLUMN_GENERATOR_BY_TYPE_AG,
@@ -28,8 +31,7 @@ export const configGeneratorAg: PluginConfigGenerator<PluginConfigAg> = (
 
   return {
     columnDefs,
-    getRowId: ({ data }) =>
-      ensureString(data[gridSchema.meta.primaryColumnKey]),
-    rowData: gridSchema.meta.rows,
+    getRowId: ({ data }) => String(data[primaryColumnKey] as GridRowId),
+    rowData: rows,
   };
 };

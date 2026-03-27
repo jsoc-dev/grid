@@ -3,22 +3,18 @@ import { COLUMN_GENERATOR_BY_TYPE_MANTINE } from "#config-generators/column-gene
 import {
   generateColumns,
   type GridRow,
+  type GridRowId,
   type PluginConfig,
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
-import type { SubsetKeysOf } from "@jsoc/utils";
 import type { MRT_ColumnDef, MRT_TableOptions } from "mantine-react-table";
 
-export type PluginConfigNamesMantine = SubsetKeysOf<
-  MRT_TableOptions<GridRow>,
-  "columns" | "data" | "getRowId"
->;
-
+export type ColDefMantine = MRT_ColumnDef<GridRow>;
 export type PluginConfigMantine = Pick<
   MRT_TableOptions<GridRow>,
-  PluginConfigNamesMantine
+  "columns" | "data" | "getRowId"
 > &
-  PluginConfig<MRT_ColumnDef<GridRow>>;
+  PluginConfig<ColDefMantine>;
 
 export const configGeneratorMantine: PluginConfigGenerator<
   PluginConfigMantine
@@ -33,6 +29,6 @@ export const configGeneratorMantine: PluginConfigGenerator<
   return {
     columns,
     data: rows,
-    getRowId: (row) => String(row[primaryColumnKey]),
+    getRowId: (row) => String(row[primaryColumnKey] as GridRowId),
   };
 };

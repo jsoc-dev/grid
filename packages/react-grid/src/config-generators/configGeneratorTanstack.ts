@@ -3,22 +3,19 @@ import { COLUMN_GENERATOR_BY_TYPE_TANSTACK } from "#config-generators/column-gen
 import {
   generateColumns,
   type GridRow,
+  type GridRowId,
   type PluginConfig,
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
-import type { SubsetKeysOf } from "@jsoc/utils";
 import type { ColumnDef, TableOptions } from "@tanstack/react-table";
 
-export type PluginConfigNamesTanstack = SubsetKeysOf<
-  TableOptions<GridRow>,
-  "columns" | "data" | "getRowId"
->;
+export type ColDefTanstack = ColumnDef<GridRow>;
 
 export type PluginConfigTanstack = Pick<
   TableOptions<GridRow>,
-  PluginConfigNamesTanstack
+  "columns" | "data" | "getRowId"
 > &
-  PluginConfig<ColumnDef<GridRow>>;
+  PluginConfig<ColDefTanstack>;
 
 export const configGeneratorTanstack: PluginConfigGenerator<
   PluginConfigTanstack
@@ -33,6 +30,6 @@ export const configGeneratorTanstack: PluginConfigGenerator<
   return {
     columns,
     data: rows,
-    getRowId: (row) => String(row[primaryColumnKey]),
+    getRowId: (row) => String(row[primaryColumnKey] as GridRowId),
   };
 };

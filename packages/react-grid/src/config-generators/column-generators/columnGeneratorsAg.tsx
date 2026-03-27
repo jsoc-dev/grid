@@ -1,27 +1,27 @@
 import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigAg } from "#config-generators/configGeneratorAg.ts";
-
 import type {
-  ColumnGenerator,
-  ColumnGeneratorByType,
-  ColumnGeneratorParams,
-  GridRow,
-} from "@jsoc/grid-core";
+  ColDefAg,
+  PluginConfigAg,
+} from "#config-generators/configGeneratorAg.ts";
+
 import {
-  encodePretty,
-  ensureString,
-  isArray,
-  isPlainObject,
-  toReadableString,
-} from "@jsoc/utils";
-import type { ColDef, ICellRendererParams } from "ag-grid-community";
+  COLUMN_DATA_TYPES,
+  type ColumnGenerator,
+  type ColumnGeneratorByType,
+  type ColumnGeneratorParams,
+  type GridData,
+  type GridRow,
+  type GridRowId,
+} from "@jsoc/grid-core";
+import { encodePretty, toReadableString } from "@jsoc/utils";
+import type { ICellRendererParams } from "ag-grid-community";
 
 export type ColumnGeneratorAg = ColumnGenerator<PluginConfigAg>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,
-  overrides?: Partial<ColDef<GridRow>>,
-): ColDef<GridRow> {
+  overrides?: Partial<ColDefAg>,
+): ColDefAg {
   const { columnKey } = params;
 
   return {
@@ -58,6 +58,7 @@ const stringDateColumnGenerator: ColumnGeneratorAg = (params) => {
 
 const arrayOfObjectsColumnGenerator: ColumnGeneratorAg = (params) => {
   const { columnKey, gridSchema } = params;
+  const { primaryColumnKey } = gridSchema.meta;
 
   return extendBaseColumn(params, {
     cellDataType: "object",
@@ -65,21 +66,24 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorAg = (params) => {
     filter: false,
     valueFormatter: (params) => {
       const { value } = params;
-
       return encodePretty(value);
     },
     /**
      * Returns a button that allows toggling SubGrid which represents the data for this column.
      */
-    cellRenderer: (params: ICellRendererParams) => {
+    cellRenderer: (params: ICellRendererParams<GridRow, GridData>) => {
       const { data, value } = params;
+
+      if (!data || !value) {
+        return;
+      }
 
       return (
         <SubGridToggle
           subGridData={value}
           parentGridId={gridSchema.options.id}
           parentGridCellLocation={{
-            rowId: data[gridSchema.meta.primaryColumnKey],
+            rowId: data[primaryColumnKey] as GridRowId,
             columnKey,
           }}
         />
@@ -96,32 +100,20 @@ const unresolvedColumnGenerator: ColumnGeneratorAg = (params) => {
   return extendBaseColumn(params, {
     sortable: false,
     filter: false,
-    /**
-     * Converting the value to a string.
-     */
     valueFormatter: (params) => {
       const { value } = params;
-
-      if (isArray(value)) {
-        if (value.some((x) => isPlainObject(x) || isArray(x))) {
-          return encodePretty(value);
-        } else {
-          return value.join(", ");
-        }
-      }
-
-      return ensureString(value);
+      return encodePretty(value);
     },
   });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_AG: ColumnGeneratorByType<PluginConfigAg> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGenerator,
-    boolean: booleanColumnGenerator,
-    number: numberColumnGenerator,
-    object: objectColumnGenerator,
-    stringDate: stringDateColumnGenerator,
-    string: stringColumnGenerator,
-    unresolved: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
+    [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
+    [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
+    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
+    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
   };

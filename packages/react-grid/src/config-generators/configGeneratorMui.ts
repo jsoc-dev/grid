@@ -2,18 +2,19 @@ import { COLUMN_GENERATOR_BY_TYPE_MUI } from "#config-generators/column-generato
 
 import {
   generateColumns,
+  type GridRow,
+  type GridRowId,
   type PluginConfig,
   type PluginConfigGenerator,
 } from "@jsoc/grid-core";
-import type { SubsetKeysOf } from "@jsoc/utils";
 import type { DataGridProps, GridColDef } from "@mui/x-data-grid";
 
-export type PluginConfigNamesMui = SubsetKeysOf<
-  DataGridProps,
+export type ColDefMui = GridColDef<GridRow>;
+export type PluginConfigMui = Pick<
+  DataGridProps<GridRow>,
   "rows" | "columns" | "getRowId"
->;
-export type PluginConfigMui = Pick<DataGridProps, PluginConfigNamesMui> &
-  PluginConfig<GridColDef>;
+> &
+  PluginConfig<ColDefMui>;
 
 export const configGeneratorMui: PluginConfigGenerator<PluginConfigMui> = (
   gridSchema,
@@ -28,7 +29,7 @@ export const configGeneratorMui: PluginConfigGenerator<PluginConfigMui> = (
 
   return {
     columns,
-    getRowId: (row) => row[primaryColumnKey],
+    getRowId: (row) => String(row[primaryColumnKey] as GridRowId),
     rows,
   };
 };

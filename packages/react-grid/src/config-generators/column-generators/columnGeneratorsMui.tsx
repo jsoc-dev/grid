@@ -1,32 +1,29 @@
 import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigMui } from "#config-generators/configGeneratorMui.ts";
-
 import type {
-  ColumnGenerator,
-  ColumnGeneratorByType,
-  ColumnGeneratorParams,
-  GridData,
-  GridDataReadonly,
-  GridRow,
-  GridRows,
-} from "@jsoc/grid-core";
+  ColDefMui,
+  PluginConfigMui,
+} from "#config-generators/configGeneratorMui.ts";
+
 import {
-  encodePretty,
-  ensureArray,
-  ensureString,
-  isArray,
-  isPlainObject,
-  toReadableString,
-} from "@jsoc/utils";
-import type { GridColDef } from "@mui/x-data-grid";
+  COLUMN_DATA_TYPES,
+  type ColumnGenerator,
+  type ColumnGeneratorByType,
+  type ColumnGeneratorParams,
+  type GridData,
+  type GridDataReadonly,
+  type GridRow,
+  type GridRowId,
+  type GridRows,
+} from "@jsoc/grid-core";
+import { encodePretty, ensureArray, toReadableString } from "@jsoc/utils";
 import type { GridRenderCellParams } from "@mui/x-data-grid";
 
 export type ColumnGeneratorMui = ColumnGenerator<PluginConfigMui>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,
-  overrides?: Partial<GridColDef<GridRow>>,
-): GridColDef<GridRow> {
+  overrides?: Partial<ColDefMui>,
+): ColDefMui {
   const { columnKey } = params;
 
   return {
@@ -58,7 +55,10 @@ const numberColumnGenerator: ColumnGeneratorMui = (params) => {
 const stringDateColumnGenerator: ColumnGeneratorMui = (params) => {
   return extendBaseColumn(params, {
     type: "dateTime",
-    valueGetter: (value) => value && new Date(value),
+    /**
+     * For dateTime type, value is expected to be Date() object.
+     */
+    valueGetter: (value: string) => new Date(value),
   });
 };
 
@@ -67,9 +67,10 @@ const stringDateColumnGenerator: ColumnGeneratorMui = (params) => {
  */
 const arrayOfObjectsColumnGenerator: ColumnGeneratorMui = (params) => {
   const { columnKey, gridSchema } = params;
+  const { primaryColumnKey } = gridSchema.meta;
 
   return extendBaseColumn(params, {
-    type: "actions",
+    // type: "actions",
     sortable: false,
     filterable: false,
     /**
@@ -92,15 +93,19 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorMui = (params) => {
      *
      * CANDO: Is there any benefit if we wrap <ToggleSubGridButtonMui> inside <GridActionsCell> ?
      */
-    renderCell: (params: GridRenderCellParams) => {
+    renderCell: (params: GridRenderCellParams<GridRow, GridData>) => {
       const { row, value } = params;
+
+      if (!value) {
+        return;
+      }
 
       return (
         <SubGridToggle
           subGridData={value}
           parentGridId={gridSchema.options.id}
           parentGridCellLocation={{
-            rowId: row[gridSchema.meta.primaryColumnKey],
+            rowId: row[primaryColumnKey] as GridRowId,
             columnKey,
           }}
         />
@@ -117,30 +122,19 @@ const unresolvedColumnGenerator: ColumnGeneratorMui = (params) => {
   return extendBaseColumn(params, {
     sortable: false,
     filterable: false,
-    /**
-     * Converting the value to a string.
-     */
     valueGetter: (value: unknown) => {
-      if (isArray(value)) {
-        if (value.some((x) => isPlainObject(x) || isArray(x))) {
-          return encodePretty(value);
-        } else {
-          return value.join(", ");
-        }
-      }
-
-      return ensureString(value);
+      return encodePretty(value);
     },
   });
 };
 
 export const COLUMN_GENERATOR_BY_TYPE_MUI: ColumnGeneratorByType<PluginConfigMui> =
   {
-    arrayOfObjects: arrayOfObjectsColumnGenerator,
-    boolean: booleanColumnGenerator,
-    number: numberColumnGenerator,
-    object: objectColumnGenerator,
-    stringDate: stringDateColumnGenerator,
-    string: stringColumnGenerator,
-    unresolved: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
+    [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
+    [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
+    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
+    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
   };
