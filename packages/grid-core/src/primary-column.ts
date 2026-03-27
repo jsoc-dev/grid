@@ -58,10 +58,13 @@ export function randomId(): string {
   }
 
   // temporary workaround
-  return ("" + [1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-    (
-      Number(c) ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (Number(c) / 4)))
-    ).toString(16),
-  );
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+
+  // RFC4122 v4 adjustments
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+  const hex = [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }

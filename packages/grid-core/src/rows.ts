@@ -42,9 +42,6 @@ export type GridRowId = Extract<RowPropertyValue, string | number>;
  */
 export function generateRows(data: GridDataReadonly): GridRows {
   const dataNormalized = normalizeGridData(data);
-
-  assertIsValidGridData(dataNormalized);
-
   const rows = ensureArray(dataNormalized).filter(isGridRow);
 
   return rows;
@@ -61,7 +58,7 @@ function normalizeGridData(
 
   if (isString(data)) {
     try {
-      normalizedData = JSON.parse(data);
+      normalizedData = JSON.parse(data) as unknown;
     } catch (e) {
       throw new GridError("Provided JSON is not valid.", e);
     }
@@ -76,6 +73,8 @@ function normalizeGridData(
       throw new GridError("Provided grid data is not valid.", e);
     }
   }
+
+  assertIsValidGridData(normalizedData);
 
   return normalizedData;
 }

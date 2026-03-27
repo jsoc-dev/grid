@@ -178,17 +178,31 @@ function createColumnKeyValueMap(plainRows: GridRows): ColumnKeyValueMap {
   return columnKeyValueMapper;
 }
 
+export const COLUMN_DATA_TYPES: {
+  [K in ColumnDataType]: K;
+} = {
+  arrayOfObjects: "arrayOfObjects",
+  boolean: "boolean",
+  number: "number",
+  object: "object",
+  stringDate: "stringDate",
+  string: "string",
+  unresolved: "unresolved",
+} as const;
+
 /**
  * Ordered list of {@link ColumnDataTypeResolverMethod}s used to determine each
  * {@link ColumnDataType}.
  */
 const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverMethod[] = [
-  (colValues) => colValues.every(isArrayOfObjects) && "arrayOfObjects",
-  (colValues) => colValues.every(isBoolean) && "boolean",
-  (colValues) => colValues.every(isNumber) && "number",
-  (colValues) => colValues.every(isPlainObject) && "object",
-  (colValues) => colValues.every(isISODateString) && "stringDate", // DO NOT PLACE THIS BELOW string resolver
-  (colValues) => colValues.every(isString) && "string",
+  (colValues) =>
+    colValues.every(isArrayOfObjects) && COLUMN_DATA_TYPES.arrayOfObjects,
+  (colValues) => colValues.every(isBoolean) && COLUMN_DATA_TYPES.boolean,
+  (colValues) => colValues.every(isNumber) && COLUMN_DATA_TYPES.number,
+  (colValues) => colValues.every(isPlainObject) && COLUMN_DATA_TYPES.object,
+  (colValues) =>
+    colValues.every(isISODateString) && COLUMN_DATA_TYPES.stringDate, // DO NOT PLACE THIS BELOW string resolver
+  (colValues) => colValues.every(isString) && COLUMN_DATA_TYPES.string,
 ];
 
 /**
@@ -204,7 +218,7 @@ function createColumnDataTypeMap(
       continue; // skip this column as data of this column is not part of actual GridDataReadonly
     }
 
-    let resolvedDataType: ColumnDataType = "unresolved";
+    let resolvedDataType: ColumnDataType = COLUMN_DATA_TYPES.unresolved;
     for (const method of COLUMN_DATA_TYPE_RESOLVER_LIST) {
       const returnVal = method(columnValues);
       if (returnVal) {
