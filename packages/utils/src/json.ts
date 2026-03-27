@@ -31,14 +31,14 @@ export function encodePretty(json: unknown) {
   return encode(json, 2);
 }
 
-export type DecodeResult = { value?: object; error?: SyntaxError };
+export type DecodeResult = { value?: unknown; error?: SyntaxError };
 /*
  * Converts a JSON string into an object.
  * If provided `json` is invalid, returns null.
  */
 export function decode(json: string): DecodeResult {
   try {
-    const value = JSON.parse(json);
+    const value = JSON.parse(json) as unknown;
     return { value };
   } catch (e) {
     return { error: e as SyntaxError };

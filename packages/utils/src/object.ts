@@ -63,15 +63,14 @@ export type EmptyObject<K extends PropertyKey = PropertyKey> = {
 
 export type PlainObject = Record<PropertyKey, unknown>;
 export function isPlainObject(arg: unknown): arg is PlainObject {
-  if (
-    arg !== null &&
-    typeof arg === "object" &&
-    [null, Object.prototype].includes(Object.getPrototypeOf(arg))
-  ) {
-    return true;
+  if (arg === null || typeof arg !== "object") {
+    return false;
   }
 
-  return false;
+  return (
+    Object.getPrototypeOf(arg) === null ||
+    Object.getPrototypeOf(arg) === Object.prototype
+  );
 }
 
 export function getObjectKeysReadOnly<T>(
