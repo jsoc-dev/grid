@@ -7,6 +7,7 @@ import {
   type GridId,
   type GridName,
 } from "@jsoc/grid-core";
+import { toReadableString } from "@jsoc/utils";
 
 export type SubGridToggleRendererParams = {
   isPresent: boolean;
@@ -74,8 +75,20 @@ export function SubGridToggle({
 
 function DefaultSubGridToggleRenderer(params: SubGridToggleRendererParams) {
   const { name, isPresent, toggle } = params;
-
-  const buttonText = isPresent ? "Close " : "View " + name;
-
-  return <button onClick={toggle}>{buttonText}</button>;
+  const buttonText = isPresent ? "Close " : "View " + toReadableString(name);
+  return (
+    <button
+      onClick={toggle}
+      style={{
+        background: "none",
+        border: "none",
+        color: "#007bff",
+        textDecoration: "underline",
+        cursor: "pointer",
+        padding: 0,
+      }}
+    >
+      {buttonText}
+    </button>
+  );
 }

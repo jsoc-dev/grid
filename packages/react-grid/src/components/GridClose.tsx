@@ -38,5 +38,21 @@ function DefaultGridCloseRenderer(
   children: string,
   params: GridCloseRendererParams,
 ) {
-  return <button onClick={params.close}>{children}</button>;
+  return (
+    <button
+      onClick={params.close}
+      style={{
+        padding: "4px 12px",
+        border: "1px solid #ddd",
+        borderRadius: "4px",
+        background: "white",
+        color: "black",
+        cursor: "pointer",
+        fontSize: "14px",
+        marginBottom: "8px",
+      }}
+    >
+      {children}
+    </button>
+  );
 }
