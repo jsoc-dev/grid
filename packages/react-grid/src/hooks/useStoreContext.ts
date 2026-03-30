@@ -1,4 +1,4 @@
-import type { GridPlugin } from "#config-generators/index.ts";
+import type { GridPlugin } from "#constants/plugins.ts";
 import {
   STORE_CONTEXT_BY_PLUGIN,
   type StoreContextValue,

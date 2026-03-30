@@ -1,4 +1,4 @@
-import type { GridPlugin } from "#config-generators/configGenerator.registry.ts";
+import type { GridPlugin } from "#constants/plugins.ts";
 import { PluginContext } from "#contexts/PluginContext.tsx";
 import {
   STORE_CONTEXT_BY_PLUGIN,

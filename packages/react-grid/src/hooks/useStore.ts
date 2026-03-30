@@ -1,8 +1,8 @@
 import {
   CONFIG_GENERATOR_BY_PLUGIN,
   type ConfigByPlugin,
-  type GridPlugin,
 } from "#config-generators/configGenerator.registry.ts";
+import type { GridPlugin } from "#constants/plugins.ts";
 import type { StoreContextValue } from "#contexts/StoreContext.tsx";
 
 import {

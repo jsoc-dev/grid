@@ -1,4 +1,4 @@
-import type { GridPlugin } from "#config-generators/configGenerator.registry.ts";
+import type { GridPlugin } from "#constants/plugins.ts";
 
 import { createContext } from "react";
 

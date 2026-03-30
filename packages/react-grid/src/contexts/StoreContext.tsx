@@ -1,7 +1,5 @@
-import type {
-  ConfigByPlugin,
-  GridPlugin,
-} from "#config-generators/configGenerator.registry.ts";
+import type { ConfigByPlugin } from "#config-generators/configGenerator.registry.ts";
+import { GRID_PLUGIN_LIST, type GridPlugin } from "#constants/plugins.ts";
 
 import type { GridStore } from "@jsoc/grid-core";
 import {
@@ -17,28 +15,19 @@ export type StoreContextValue<P extends GridPlugin> = {
   setGridStore: Dispatch<SetStateAction<GridStore<ConfigByPlugin[P]>>>;
 };
 
-export const StoreContextAg = createContext<
-  StoreContextValue<"ag"> | undefined
->(undefined);
-
-export const StoreContextMui = createContext<
-  StoreContextValue<"mui"> | undefined
->(undefined);
-
-export const StoreContextTanstack = createContext<
-  StoreContextValue<"tanstack"> | undefined
->(undefined);
-
-export const StoreContextMantine = createContext<
-  StoreContextValue<"mantine"> | undefined
->(undefined);
-
+// https://chatgpt.com/share/69ca7cff-42cc-8320-b820-a7dc40525e94
 // https://chatgpt.com/share/69c2542a-d4a4-800c-8566-8dd49ca6623f
-export const STORE_CONTEXT_BY_PLUGIN: {
-  [P in GridPlugin]: Context<StoreContextValue<P> | undefined>;
-} = {
-  ag: StoreContextAg,
-  mui: StoreContextMui,
-  tanstack: StoreContextTanstack,
-  mantine: StoreContextMantine,
-} as const;
+function createStoreContexts<const P extends readonly GridPlugin[]>(
+  plugins: P,
+) {
+  return Object.fromEntries(
+    plugins.map((p) => [
+      p,
+      createContext<StoreContextValue<typeof p> | undefined>(undefined),
+    ]),
+  ) as {
+    [K in P[number]]: Context<StoreContextValue<K> | undefined>;
+  };
+}
+
+export const STORE_CONTEXT_BY_PLUGIN = createStoreContexts(GRID_PLUGIN_LIST);
