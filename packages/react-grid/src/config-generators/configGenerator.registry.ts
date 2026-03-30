@@ -11,6 +11,10 @@ import {
   type PluginConfigMui,
 } from "#config-generators/configGeneratorMui.ts";
 import {
+  configGeneratorPrime,
+  type PluginConfigPrime,
+} from "#config-generators/configGeneratorPrime.ts";
+import {
   configGeneratorTanstack,
   type PluginConfigTanstack,
 } from "#config-generators/configGeneratorTanstack.ts";
@@ -22,6 +26,7 @@ export interface ConfigByPlugin extends Record<GridPlugin, PluginConfig> {
   ag: PluginConfigAg;
   mantine: PluginConfigMantine;
   mui: PluginConfigMui;
+  prime: PluginConfigPrime;
   tanstack: PluginConfigTanstack;
 }
 
@@ -32,4 +37,5 @@ export const CONFIG_GENERATOR_BY_PLUGIN: {
   mantine: configGeneratorMantine,
   mui: configGeneratorMui,
   tanstack: configGeneratorTanstack,
+  prime: configGeneratorPrime,
 };
