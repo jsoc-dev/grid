@@ -11,14 +11,22 @@
   "scripts": {
     "type": "tsc --noEmit"
   },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0 || ^19.0.0",
+    "@types/react-dom": "^18.0.0 || ^19.0.0"
+  },
   "peerDependencies": {
     "@mui/x-data-grid": "^8.16.0",
     "@tanstack/react-table": "^8.21.3",
-    "ag-grid-community": "^34.3.1",
-    "ag-grid-react": "^34.3.1",
+    "ag-grid-community": "^34.0.0 || ^35.0.0",
+    "ag-grid-react": "^34.0.0 || ^35.0.0",
     "mantine-react-table": "^1.3.4",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
     "@mui/x-data-grid": {
@@ -36,9 +44,5 @@
     "mantine-react-table": {
       "optional": true
     }
-  },
-  "dependencies": {
-    "@jsoc/grid-core": "workspace:*",
-    "@jsoc/utils": "workspace:*"
   }
 }
