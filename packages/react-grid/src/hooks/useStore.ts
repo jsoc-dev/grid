@@ -7,60 +7,76 @@ import type { StoreContextValue } from "#contexts/StoreContext.tsx";
 
 import {
   type GridData,
+  type GridStore,
   newGridStore,
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
-import { useEffect, useMemo, useState } from "react";
+import { shallowEqual } from "@jsoc/utils";
+import { type RefObject, useEffect, useMemo, useRef, useState } from "react";
+
+export type StoreOptions<P extends GridPlugin> = {
+  data: GridData;
+  plugin: P;
+  pluginConfigGeneratorOptions?: PluginConfigGeneratorOptions<
+    ConfigByPlugin[P]
+  >;
+  name?: string;
+};
 
 /**
  * Hook to create and use a grid store.
- * - Make sure the arguments are stable, otherwise it will lead to infinite renders.
  * - Provide the result of this hook to the `StoreContextProvider` component in your app.
  * - To avoid unnecessary re-renders, provide the hook result without destructuring and recreating.
  */
 export function useStore<P extends GridPlugin>(
-  data: GridData,
-  plugin: P,
-  pluginConfigGeneratorOptions?: PluginConfigGeneratorOptions<
-    ConfigByPlugin[P]
-  >,
-  name?: string,
+  options: StoreOptions<P>,
 ): StoreContextValue<P> {
-  const gridOptions = useMemo(
-    () => ({
-      data,
-      name,
-    }),
-    [data, name],
-  );
+  const lastUpdateOptionsRef = useRef<StoreOptions<P> | null>(null);
 
-  const pluginOptions = useMemo(
-    () => ({
-      configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
-      configGeneratorOptions: pluginConfigGeneratorOptions,
-    }),
-    [plugin, pluginConfigGeneratorOptions],
-  );
-
-  // create grid store
   const [gridStore, setGridStore] = useState(() =>
-    newGridStore(gridOptions, pluginOptions),
+    updateStore(lastUpdateOptionsRef, options),
   );
 
-  // update grid store when grid options or plugin options change
+  // update grid store when options fields shallowly change.
   useEffect(() => {
-    setGridStore(newGridStore(gridOptions, pluginOptions));
-  }, [gridOptions, pluginOptions]);
+    const shouldUpdate =
+      !lastUpdateOptionsRef.current ||
+      !shallowEqual(options, lastUpdateOptionsRef.current);
+    if (shouldUpdate) {
+      const store = updateStore(lastUpdateOptionsRef, options);
+      setGridStore(store);
+    }
+  }, [options]);
 
   // prepare the store context value
   const storeContextValue = useMemo(
     () => ({
       gridStore,
       setGridStore,
-      plugin,
+      plugin: options.plugin,
     }),
-    [gridStore, setGridStore, plugin],
+    [gridStore, setGridStore, options.plugin],
   );
 
   return storeContextValue;
+}
+
+function updateStore<P extends GridPlugin>(
+  commitRef: RefObject<StoreOptions<P> | null>,
+  options: StoreOptions<P>,
+): GridStore<ConfigByPlugin[P]> {
+  const { plugin, pluginConfigGeneratorOptions, ...gridOptions } = options;
+
+  const params = {
+    gridOptions,
+    pluginOptions: {
+      configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
+      configGeneratorOptions: pluginConfigGeneratorOptions,
+    },
+  };
+
+  const gridStore = newGridStore(params.gridOptions, params.pluginOptions);
+  commitRef.current = options;
+
+  return gridStore;
 }
