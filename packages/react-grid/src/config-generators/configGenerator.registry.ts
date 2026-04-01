@@ -3,6 +3,10 @@ import {
   type PluginConfigAg,
 } from "#config-generators/configGeneratorAg.ts";
 import {
+  configGeneratorAnt,
+  type PluginConfigAnt,
+} from "#config-generators/configGeneratorAnt.ts";
+import {
   configGeneratorMantine,
   type PluginConfigMantine,
 } from "#config-generators/configGeneratorMantine.ts";
@@ -24,6 +28,7 @@ import type { PluginConfig, PluginConfigGenerator } from "@jsoc/grid-core";
 
 export interface ConfigByPlugin extends Record<GridPlugin, PluginConfig> {
   ag: PluginConfigAg;
+  ant: PluginConfigAnt;
   mantine: PluginConfigMantine;
   mui: PluginConfigMui;
   prime: PluginConfigPrime;
@@ -34,6 +39,7 @@ export const CONFIG_GENERATOR_BY_PLUGIN: {
   [P in GridPlugin]: PluginConfigGenerator<ConfigByPlugin[P]>;
 } = {
   ag: configGeneratorAg,
+  ant: configGeneratorAnt,
   mantine: configGeneratorMantine,
   mui: configGeneratorMui,
   tanstack: configGeneratorTanstack,
