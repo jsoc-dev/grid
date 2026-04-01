@@ -1,5 +1,6 @@
 export * from "./array.ts";
 export * from "./boolean.ts";
+export * from "./comparators.ts";
 export * from "./date.ts";
 export * from "./error.ts";
 export * from "./function.ts";
