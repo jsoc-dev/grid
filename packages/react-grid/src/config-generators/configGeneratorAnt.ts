@@ -1,28 +1,11 @@
 import { COLUMN_GENERATOR_BY_TYPE_ANT } from "#config-generators/column-generators/columnGeneratorsAnt.tsx";
+import type { ConfigGeneratorAnt } from "#types/index.ts";
 
-import {
-  generateColumns,
-  type GridRow,
-  type GridRowId,
-  type PluginConfig,
-  type PluginConfigGenerator,
-} from "@jsoc/grid-core";
-import type { TableColumnProps, TableProps } from "antd";
+import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 
-export type ColDefAnt = TableColumnProps<GridRow>;
-
-export type PluginConfigAnt = Pick<
-  TableProps<GridRow>,
-  "columns" | "dataSource" | "rowKey"
-> &
-  PluginConfig<ColDefAnt>;
-
-export const configGeneratorAnt: PluginConfigGenerator<PluginConfigAnt> = (
-  gridSchema,
-  options,
-) => {
+export const configGeneratorAnt: ConfigGeneratorAnt = (gridSchema, options) => {
   const { rows, primaryColumnKey } = gridSchema.meta;
-  const columns = generateColumns<PluginConfigAnt>(
+  const columns = generateColumns(
     gridSchema,
     COLUMN_GENERATOR_BY_TYPE_ANT,
     options?.customColumnGeneratorByType,

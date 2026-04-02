@@ -1,26 +1,14 @@
 import { COLUMN_GENERATOR_BY_TYPE_PRIME } from "#config-generators/column-generators/columnGeneratorsPrime.tsx";
+import type { ConfigGeneratorPrime } from "#types/index.ts";
 
-import {
-  generateColumns,
-  type GridRows,
-  type PluginConfig,
-  type PluginConfigGenerator,
-} from "@jsoc/grid-core";
-import type { ColumnProps } from "primereact/column";
-import type { DataTableProps } from "primereact/datatable";
+import { generateColumns } from "@jsoc/grid-core";
 
-export type ColDefPrime = ColumnProps;
-export type PluginConfigPrime = {
-  columns: ColDefPrime[];
-} & Pick<DataTableProps<GridRows>, "value"> &
-  PluginConfig<ColDefPrime>;
-
-export const configGeneratorPrime: PluginConfigGenerator<PluginConfigPrime> = (
+export const configGeneratorPrime: ConfigGeneratorPrime = (
   gridSchema,
   options,
 ) => {
   const { rows } = gridSchema.meta;
-  const columns = generateColumns<PluginConfigPrime>(
+  const columns = generateColumns(
     gridSchema,
     COLUMN_GENERATOR_BY_TYPE_PRIME,
     options?.customColumnGeneratorByType,

@@ -5,12 +5,12 @@ import {
 } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefMui,
+  ColumnGeneratorMui,
   PluginConfigMui,
-} from "#config-generators/configGeneratorMui.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
   type GridRow,
@@ -23,8 +23,6 @@ import {
   type UJSONValue,
 } from "@jsoc/utils";
 import type { GridRenderCellParams } from "@mui/x-data-grid";
-
-export type ColumnGeneratorMui = ColumnGenerator<PluginConfigMui>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,

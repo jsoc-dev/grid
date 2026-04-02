@@ -5,12 +5,12 @@ import {
 import { ujsonValueToString } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefAg,
+  ColumnGeneratorAg,
   PluginConfigAg,
-} from "#config-generators/configGeneratorAg.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
   type GridRow,
@@ -27,8 +27,6 @@ import type {
   ValueFormatterParams,
   ValueGetterParams,
 } from "ag-grid-community";
-
-export type ColumnGeneratorAg = ColumnGenerator<PluginConfigAg>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,

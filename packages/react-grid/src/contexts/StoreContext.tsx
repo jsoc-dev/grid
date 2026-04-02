@@ -1,5 +1,5 @@
-import type { ConfigByPlugin } from "#config-generators/configGenerator.registry.ts";
 import { GRID_PLUGIN_LIST, type GridPlugin } from "#constants/plugins.ts";
+import type { ConfigByPlugin } from "#types/plugin-config.ts";
 
 import type { GridStore } from "@jsoc/grid-core";
 import {

@@ -9,12 +9,12 @@ import {
 } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefTanstack,
+  ColumnGeneratorTanstack,
   PluginConfigTanstack,
-} from "#config-generators/configGeneratorTanstack.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
 } from "@jsoc/grid-core";
@@ -24,8 +24,6 @@ import {
   type UJSONObjectArray,
   type UJSONValue,
 } from "@jsoc/utils";
-
-export type ColumnGeneratorTanstack = ColumnGenerator<PluginConfigTanstack>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,

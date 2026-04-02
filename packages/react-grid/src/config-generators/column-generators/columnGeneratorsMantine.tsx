@@ -9,12 +9,12 @@ import {
 } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefMantine,
+  ColumnGeneratorMantine,
   PluginConfigMantine,
-} from "#config-generators/configGeneratorMantine.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
 } from "@jsoc/grid-core";
@@ -24,8 +24,6 @@ import {
   type UJSONObjectArray,
   type UJSONValue,
 } from "@jsoc/utils";
-
-export type ColumnGeneratorMantine = ColumnGenerator<PluginConfigMantine>;
 
 // NOTE: This helper and column generators below are very much similar to the corresponding tanstack column generators.
 // But this code duplication is done intentionally because mantine plugin's internal tanstack dependency version can be

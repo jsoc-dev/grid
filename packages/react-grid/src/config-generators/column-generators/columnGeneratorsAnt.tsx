@@ -6,12 +6,12 @@ import {
 } from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
 import type {
   ColDefAnt,
+  ColumnGeneratorAnt,
   PluginConfigAnt,
-} from "#config-generators/configGeneratorAnt.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
 } from "@jsoc/grid-core";
@@ -25,8 +25,6 @@ import {
   type UJSONObjectArray,
   type UJSONValue,
 } from "@jsoc/utils";
-
-export type ColumnGeneratorAnt = ColumnGenerator<PluginConfigAnt>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,

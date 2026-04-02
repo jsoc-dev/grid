@@ -2,12 +2,12 @@ import { ujsonObjectCellRenderer } from "#config-generators/column-generators/co
 import { ujsonValueToString } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefPrime,
+  ColumnGeneratorPrime,
   PluginConfigPrime,
-} from "#config-generators/configGeneratorPrime.ts";
+} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,
-  type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
   type GridRow,
@@ -17,8 +17,6 @@ import {
   type UJSONObject,
   type UJSONObjectArray,
 } from "@jsoc/utils";
-
-export type ColumnGeneratorPrime = ColumnGenerator<PluginConfigPrime>;
 
 function extendBaseColumn(
   params: ColumnGeneratorParams,
