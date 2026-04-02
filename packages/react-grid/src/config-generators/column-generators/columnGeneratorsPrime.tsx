@@ -1,4 +1,5 @@
-import { SubGridToggle } from "#components/index.ts";
+import { ujsonObjectCellRenderer } from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
+import { ujsonValueToString } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefPrime,
   PluginConfigPrime,
@@ -9,11 +10,13 @@ import {
   type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
-  type GridData,
   type GridRow,
-  type GridRowId,
 } from "@jsoc/grid-core";
-import { encodePretty, toReadableString } from "@jsoc/utils";
+import {
+  toReadableString,
+  type UJSONObject,
+  type UJSONObjectArray,
+} from "@jsoc/utils";
 
 export type ColumnGeneratorPrime = ColumnGenerator<PluginConfigPrime>;
 
@@ -60,29 +63,27 @@ const stringDateColumnGenerator: ColumnGeneratorPrime = (params) => {
 };
 
 const ujsonObjectColumnGenerator: ColumnGeneratorPrime = (params) => {
-  const { columnKey, gridSchema } = params;
-  const primaryColumnKey = gridSchema.meta.primaryColumnKey;
-
+  const { columnKey } = params;
   return extendBaseColumn(params, {
     sortable: false,
     filter: false,
     body: (data: GridRow) => {
-      return (
-        <SubGridToggle
-          subGridData={data[columnKey] as GridData}
-          parentGridId={gridSchema.options.id}
-          parentGridCellLocation={{
-            rowId: data[primaryColumnKey] as GridRowId,
-            columnKey,
-          }}
-        />
-      );
+      const value = data[columnKey] as UJSONObject;
+      return ujsonObjectCellRenderer(params, value, data);
     },
   });
 };
 
 const ujsonObjectArrayColumnGenerator: ColumnGeneratorPrime = (params) => {
-  return ujsonObjectColumnGenerator(params);
+  const { columnKey } = params;
+  return extendBaseColumn(params, {
+    sortable: false,
+    filter: false,
+    body: (data: GridRow) => {
+      const value = data[columnKey] as UJSONObjectArray;
+      return ujsonObjectCellRenderer(params, value, data);
+    },
+  });
 };
 
 const ujsonValueColumnGenerator: ColumnGeneratorPrime = (params) => {
@@ -92,7 +93,8 @@ const ujsonValueColumnGenerator: ColumnGeneratorPrime = (params) => {
     sortable: false,
     filter: false,
     body: (data: GridRow) => {
-      return encodePretty(data[columnKey]);
+      const value = data[columnKey];
+      return ujsonValueToString(value);
     },
   });
 };

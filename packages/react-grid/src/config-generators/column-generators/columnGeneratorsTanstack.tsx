@@ -1,4 +1,12 @@
-import { SubGridToggle } from "#components/index.ts";
+import {
+  dateCellRenderer,
+  ujsonObjectCellRenderer,
+  ujsonValueCellRenderer,
+} from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
+import {
+  booleanToString,
+  stringDateToDate,
+} from "#config-generators/column-generators/column-utils/valueTransformers.ts";
 import type {
   ColDefTanstack,
   PluginConfigTanstack,
@@ -9,10 +17,13 @@ import {
   type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
-  type GridData,
-  type GridRowId,
 } from "@jsoc/grid-core";
-import { encodePretty, toReadableString } from "@jsoc/utils";
+import {
+  toReadableString,
+  type UJSONObject,
+  type UJSONObjectArray,
+  type UJSONValue,
+} from "@jsoc/utils";
 
 export type ColumnGeneratorTanstack = ColumnGenerator<PluginConfigTanstack>;
 
@@ -32,58 +43,81 @@ function extendBaseColumn(
 }
 
 const stringColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params);
+  return extendBaseColumn(params, {
+    enableSorting: true,
+    enableColumnFilter: true,
+    // https://tanstack.com/table/v8/docs/api/features/sorting#sorting-functions
+    sortingFn: "text",
+  });
 };
 
 const booleanColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params);
+  const { columnKey } = params;
+
+  return extendBaseColumn(params, {
+    accessorFn: (originalRow) => {
+      const value = originalRow[columnKey] as boolean;
+      return booleanToString(value);
+    },
+    enableSorting: true,
+    enableColumnFilter: true,
+    sortingFn: "text",
+  });
 };
 
 const numberColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params);
+  return extendBaseColumn(params, {
+    enableSorting: true,
+    enableColumnFilter: true,
+    sortingFn: "alphanumeric",
+  });
 };
 
 const stringDateColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return extendBaseColumn(params);
+  const { columnKey } = params;
+
+  return extendBaseColumn(params, {
+    accessorFn: (originalRow) => {
+      const value = originalRow[columnKey] as string;
+      return stringDateToDate(value);
+    },
+    cell: ({ cell }) => dateCellRenderer(cell.getValue<Date>()),
+    enableSorting: true,
+    enableColumnFilter: true,
+    sortingFn: "datetime",
+  });
 };
 
 const ujsonObjectColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  const { columnKey, gridSchema } = params;
-  const { primaryColumnKey } = gridSchema.meta;
-
   return extendBaseColumn(params, {
+    cell: ({ cell, row }) => {
+      const value = cell.getValue<UJSONObject>();
+      return ujsonObjectCellRenderer(params, value, row.original);
+    },
     enableSorting: false,
     enableColumnFilter: false,
-    cell: (cellContext) => {
-      const value = cellContext.getValue<GridData>();
-      const row = cellContext.row.original;
-
-      return (
-        <SubGridToggle
-          subGridData={value}
-          parentGridId={gridSchema.options.id}
-          parentGridCellLocation={{
-            rowId: row[primaryColumnKey] as GridRowId,
-            columnKey,
-          }}
-        />
-      );
-    },
   });
 };
 
 const ujsonObjectArrayColumnGenerator: ColumnGeneratorTanstack = (params) => {
-  return ujsonObjectColumnGenerator(params);
+  return extendBaseColumn(params, {
+    cell: ({ cell, row }) => {
+      const value = cell.getValue<UJSONObjectArray>();
+      return ujsonObjectCellRenderer(params, value, row.original);
+    },
+    enableSorting: false,
+    enableColumnFilter: false,
+  });
 };
 
 const ujsonValueColumnGenerator: ColumnGeneratorTanstack = (params) => {
   return extendBaseColumn(params, {
+    cell: ({ cell }) => {
+      const value = cell.getValue<UJSONValue>();
+      return ujsonValueCellRenderer(value);
+    },
     enableSorting: false,
     enableColumnFilter: false,
-    cell: (cellContext) => {
-      const value = cellContext.getValue();
-      return encodePretty(value);
-    },
   });
 };
 

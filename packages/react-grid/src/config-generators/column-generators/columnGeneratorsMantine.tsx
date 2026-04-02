@@ -1,24 +1,41 @@
-import { SubGridToggle } from "#components/index.ts";
-import type { PluginConfigMantine } from "#config-generators/configGeneratorMantine.ts";
+import {
+  dateCellRenderer,
+  ujsonObjectCellRenderer,
+  ujsonValueCellRenderer,
+} from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
+import {
+  booleanToString,
+  stringDateToDate,
+} from "#config-generators/column-generators/column-utils/valueTransformers.ts";
+import type {
+  ColDefMantine,
+  PluginConfigMantine,
+} from "#config-generators/configGeneratorMantine.ts";
 
 import {
   COLUMN_DATA_TYPES,
   type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
-  type GridData,
-  type GridRow,
-  type GridRowId,
 } from "@jsoc/grid-core";
-import { encodePretty, toReadableString } from "@jsoc/utils";
-import type { MRT_Cell, MRT_ColumnDef, MRT_Row } from "mantine-react-table";
+import {
+  toReadableString,
+  type UJSONObject,
+  type UJSONObjectArray,
+  type UJSONValue,
+} from "@jsoc/utils";
 
 export type ColumnGeneratorMantine = ColumnGenerator<PluginConfigMantine>;
 
+// NOTE: This helper and column generators below are very much similar to the corresponding tanstack column generators.
+// But this code duplication is done intentionally because mantine plugin's internal tanstack dependency version can be
+// different from the version used in this library's tanstack plugin, so there is chances of type mismatches.
+// Also, we can't limit this library's tanstack version to match mantine's internal tanstack version as then it would be
+// not possible to develop the tanstack plugin independently.
 function extendBaseColumn(
   params: ColumnGeneratorParams,
-  overrides?: Partial<MRT_ColumnDef<GridRow>>,
-): MRT_ColumnDef<GridRow> {
+  overrides?: Partial<ColDefMantine>,
+): ColDefMantine {
   const { columnKey } = params;
 
   return {
@@ -30,63 +47,86 @@ function extendBaseColumn(
 }
 
 const stringColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params);
+  return extendBaseColumn(params, {
+    enableColumnFilter: true,
+    enableSorting: true,
+    // https://www.mantine-react-table.com/docs/guides/column-filtering#filter-variants
+    filterVariant: "text",
+    // https://tanstack.com/table/v8/docs/api/features/sorting#sorting-functions
+    sortingFn: "text",
+  });
 };
 
 const booleanColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params);
+  const { columnKey } = params;
+
+  return extendBaseColumn(params, {
+    accessorFn: (originalRow) => {
+      const value = originalRow[columnKey] as boolean;
+      return booleanToString(value);
+    },
+    enableColumnFilter: true,
+    enableSorting: true,
+    filterVariant: "checkbox",
+    sortingFn: "text",
+  });
 };
 
 const numberColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params);
+  return extendBaseColumn(params, {
+    enableColumnFilter: true,
+    enableSorting: true,
+    filterVariant: "range",
+    sortingFn: "alphanumeric",
+  });
 };
 
 const stringDateColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return extendBaseColumn(params);
+  const { columnKey } = params;
+
+  return extendBaseColumn(params, {
+    accessorFn: (originalRow) => {
+      const value = originalRow[columnKey] as string;
+      return stringDateToDate(value);
+    },
+    Cell: ({ cell }) => dateCellRenderer(cell.getValue<Date>()),
+    enableColumnFilter: true,
+    enableSorting: true,
+    filterVariant: "date",
+    sortingFn: "datetime",
+  });
 };
 
 const ujsonObjectColumnGenerator: ColumnGeneratorMantine = (params) => {
-  const { columnKey, gridSchema } = params;
-  const { primaryColumnKey } = gridSchema.meta;
-
   return extendBaseColumn(params, {
-    enableSorting: false,
-    enableColumnFilter: false,
-    Cell: ({
-      cell,
-      row,
-    }: {
-      cell: MRT_Cell<GridRow>;
-      row: MRT_Row<GridRow>;
-    }) => {
-      const value = cell.getValue<GridData>();
-
-      return (
-        <SubGridToggle
-          subGridData={value}
-          parentGridId={gridSchema.options.id}
-          parentGridCellLocation={{
-            rowId: row.original[primaryColumnKey] as GridRowId,
-            columnKey,
-          }}
-        />
-      );
+    Cell: ({ cell, row }) => {
+      const value = cell.getValue<UJSONObject>();
+      return ujsonObjectCellRenderer(params, value, row.original);
     },
+    enableColumnFilter: false,
+    enableSorting: false,
   });
 };
 
 const ujsonObjectArrayColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return ujsonObjectColumnGenerator(params);
+  return extendBaseColumn(params, {
+    Cell: ({ cell, row }) => {
+      const value = cell.getValue<UJSONObjectArray>();
+      return ujsonObjectCellRenderer(params, value, row.original);
+    },
+    enableColumnFilter: false,
+    enableSorting: false,
+  });
 };
 
 const ujsonValueColumnGenerator: ColumnGeneratorMantine = (params) => {
   return extendBaseColumn(params, {
-    enableSorting: false,
-    enableColumnFilter: false,
-    Cell: ({ cell }: { cell: MRT_Cell<GridRow> }) => {
-      const value = cell.getValue();
-      return encodePretty(value);
+    Cell: ({ cell }) => {
+      const value = cell.getValue<UJSONValue>();
+      return ujsonValueCellRenderer(value);
     },
+    enableColumnFilter: false,
+    enableSorting: false,
   });
 };
 

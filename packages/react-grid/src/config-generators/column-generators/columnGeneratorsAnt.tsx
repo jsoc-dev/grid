@@ -1,4 +1,9 @@
-import { SubGridToggle } from "#components/index.ts";
+import {
+  booleanCellRenderer,
+  stringDateCellRenderer,
+  ujsonObjectCellRenderer,
+  ujsonValueCellRenderer,
+} from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
 import type {
   ColDefAnt,
   PluginConfigAnt,
@@ -9,17 +14,16 @@ import {
   type ColumnGenerator,
   type ColumnGeneratorByType,
   type ColumnGeneratorParams,
-  type GridData,
-  type GridRow,
-  type GridRowId,
 } from "@jsoc/grid-core";
 import {
   compareBooleans,
   compareNumbers,
   compareStringDates,
   compareStrings,
-  encodePretty,
   toReadableString,
+  type UJSONObject,
+  type UJSONObjectArray,
+  type UJSONValue,
 } from "@jsoc/utils";
 
 export type ColumnGeneratorAnt = ColumnGenerator<PluginConfigAnt>;
@@ -41,7 +45,7 @@ const stringColumnGenerator: ColumnGeneratorAnt = (params) => {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
-    sorter: (a: GridRow, b: GridRow) => {
+    sorter: (a, b) => {
       return compareStrings(a[columnKey] as string, b[columnKey] as string);
     },
     // filters: [{text: ..., value: ...}] // skipping as it requires static value filters which can vary based on data
@@ -52,12 +56,11 @@ const booleanColumnGenerator: ColumnGeneratorAnt = (params) => {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
-    sorter: (a: GridRow, b: GridRow) => {
-      return compareBooleans(a[columnKey] as boolean, b[columnKey] as boolean);
-    },
-    // TODO create a generic helper for rendering boolean column data for all grid plugins
     render: (value: boolean) => {
-      return value.toString();
+      return booleanCellRenderer(value);
+    },
+    sorter: (a, b) => {
+      return compareBooleans(a[columnKey] as boolean, b[columnKey] as boolean);
     },
   });
 };
@@ -66,7 +69,7 @@ const numberColumnGenerator: ColumnGeneratorAnt = (params) => {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
-    sorter: (a: GridRow, b: GridRow) => {
+    sorter: (a, b) => {
       return compareNumbers(a[columnKey] as number, b[columnKey] as number);
     },
   });
@@ -76,47 +79,35 @@ const stringDateColumnGenerator: ColumnGeneratorAnt = (params) => {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
-    // TODO create a generic helper for rendering date for all grid plugins
     render: (value: string) => {
-      return new Date(value).toLocaleString();
+      return stringDateCellRenderer(value);
     },
-
-    sorter: (a: GridRow, b: GridRow) => {
+    sorter: (a, b) => {
       return compareStringDates(a[columnKey] as string, b[columnKey] as string);
     },
   });
 };
 
 const ujsonObjectColumnGenerator: ColumnGeneratorAnt = (params) => {
-  const { columnKey, gridSchema } = params;
-  const { primaryColumnKey } = gridSchema.meta;
-
   return extendBaseColumn(params, {
-    // TODO create a generic helper for rendering subgrid toggle for all grid plugins
-    render: (value: GridData, record) => {
-      return (
-        <SubGridToggle
-          subGridData={value}
-          parentGridId={gridSchema.options.id}
-          parentGridCellLocation={{
-            rowId: record[primaryColumnKey] as GridRowId,
-            columnKey,
-          }}
-        />
-      );
+    render: (value: UJSONObject, record) => {
+      return ujsonObjectCellRenderer(params, value, record);
     },
   });
 };
 
 const ujsonObjectArrayColumnGenerator: ColumnGeneratorAnt = (params) => {
-  return ujsonObjectColumnGenerator(params);
+  return extendBaseColumn(params, {
+    render: (value: UJSONObjectArray, record) => {
+      return ujsonObjectCellRenderer(params, value, record);
+    },
+  });
 };
 
 const ujsonValueColumnGenerator: ColumnGeneratorAnt = (params) => {
   return extendBaseColumn(params, {
-    // TODO create a generic helper for rendering unresolved column data for all grid plugins
-    render: (value: unknown) => {
-      return encodePretty(value);
+    render: (value: UJSONValue) => {
+      return ujsonValueCellRenderer(value);
     },
   });
 };

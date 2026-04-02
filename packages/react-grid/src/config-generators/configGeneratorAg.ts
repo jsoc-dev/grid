@@ -6,12 +6,11 @@ import {
   type GridRowId,
   type PluginConfig,
   type PluginConfigGenerator,
-  type RowPropertyValue,
 } from "@jsoc/grid-core";
 import type { ColDef } from "ag-grid-community";
 import type { AgGridReactProps } from "ag-grid-react";
 
-export type ColDefAg = ColDef<GridRow, RowPropertyValue>;
+export type ColDefAg = ColDef<GridRow>;
 export type PluginConfigAg = Pick<
   AgGridReactProps<GridRow>,
   "rowData" | "columnDefs" | "getRowId"
