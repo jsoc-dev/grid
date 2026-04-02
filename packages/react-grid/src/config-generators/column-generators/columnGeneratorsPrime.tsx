@@ -59,7 +59,7 @@ const stringDateColumnGenerator: ColumnGeneratorPrime = (params) => {
   });
 };
 
-const arrayOfObjectsColumnGenerator: ColumnGeneratorPrime = (params) => {
+const ujsonObjectColumnGenerator: ColumnGeneratorPrime = (params) => {
   const { columnKey, gridSchema } = params;
   const primaryColumnKey = gridSchema.meta.primaryColumnKey;
 
@@ -81,11 +81,11 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorPrime = (params) => {
   });
 };
 
-const objectColumnGenerator: ColumnGeneratorPrime = (params) => {
-  return arrayOfObjectsColumnGenerator(params);
+const ujsonObjectArrayColumnGenerator: ColumnGeneratorPrime = (params) => {
+  return ujsonObjectColumnGenerator(params);
 };
 
-const unresolvedColumnGenerator: ColumnGeneratorPrime = (params) => {
+const ujsonValueColumnGenerator: ColumnGeneratorPrime = (params) => {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
@@ -99,11 +99,11 @@ const unresolvedColumnGenerator: ColumnGeneratorPrime = (params) => {
 
 export const COLUMN_GENERATOR_BY_TYPE_PRIME: ColumnGeneratorByType<PluginConfigPrime> =
   {
-    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
     [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
     [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
-    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
-    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
     [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
-    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObject]: ujsonObjectColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObjectArray]: ujsonObjectArrayColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonValue]: ujsonValueColumnGenerator,
   };

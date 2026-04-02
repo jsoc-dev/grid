@@ -3,12 +3,12 @@ import type { GridRows, RowProperty, RowPropertyValue } from "#rows.ts";
 import type { GridSchema, InferColumnType, PluginConfig } from "#schema.ts";
 
 import {
-  isArrayOfObjects,
   isBoolean,
   isISODateString,
   isNumber,
-  isPlainObject,
   isString,
+  isUJSONObject,
+  isUJSONObjectArray,
 } from "@jsoc/utils";
 
 /**
@@ -29,13 +29,13 @@ export type ColumnKeyValueMap = Record<ColumnKey, ColumnValue[]>;
  * contain that column.
  */
 export type ColumnDataType =
-  | "arrayOfObjects"
   | "boolean"
   | "number"
-  | "object"
-  | "stringDate"
   | "string"
-  | "unresolved";
+  | "stringDate"
+  | "ujsonObject"
+  | "ujsonObjectArray"
+  | "ujsonValue";
 /**
  * Method that will be used to resolve the {@link ColumnDataType} for a particular {@link ColumnKey}.
  * It receives the recorded list of {@link ColumnValue}s, and it should return `false` if the
@@ -181,29 +181,27 @@ function createColumnKeyValueMap(plainRows: GridRows): ColumnKeyValueMap {
 export const COLUMN_DATA_TYPES: {
   [K in ColumnDataType]: K;
 } = {
-  arrayOfObjects: "arrayOfObjects",
   boolean: "boolean",
   number: "number",
-  object: "object",
-  stringDate: "stringDate",
   string: "string",
-  unresolved: "unresolved",
+  stringDate: "stringDate",
+  ujsonObject: "ujsonObject",
+  ujsonObjectArray: "ujsonObjectArray",
+  ujsonValue: "ujsonValue",
 } as const;
 
 /**
- * Ordered list of {@link ColumnDataTypeResolverMethod}s used to determine each
+ * Sequential list of {@link ColumnDataTypeResolverMethod}s used to determine each
  * {@link ColumnDataType}.
  */
-const COLUMN_DATA_TYPE_RESOLVER_LIST: ColumnDataTypeResolverMethod[] = [
-  (colValues) =>
-    colValues.every(isArrayOfObjects) && COLUMN_DATA_TYPES.arrayOfObjects,
-  (colValues) => colValues.every(isBoolean) && COLUMN_DATA_TYPES.boolean,
-  (colValues) => colValues.every(isNumber) && COLUMN_DATA_TYPES.number,
-  (colValues) => colValues.every(isPlainObject) && COLUMN_DATA_TYPES.object,
-  (colValues) =>
-    colValues.every(isISODateString) && COLUMN_DATA_TYPES.stringDate, // DO NOT PLACE THIS BELOW string resolver
-  (colValues) => colValues.every(isString) && COLUMN_DATA_TYPES.string,
-];
+const COLUMN_DATA_TYPE_SEQUENTIAL_RESOLVERS: ColumnDataTypeResolverMethod[] = [
+  (cv) => cv.every(isBoolean) && COLUMN_DATA_TYPES.boolean,
+  (cv) => cv.every(isNumber) && COLUMN_DATA_TYPES.number,
+  (cv) => cv.every(isUJSONObject) && COLUMN_DATA_TYPES.ujsonObject,
+  (cv) => cv.every(isUJSONObjectArray) && COLUMN_DATA_TYPES.ujsonObjectArray,
+  (cv) => cv.every(isISODateString) && COLUMN_DATA_TYPES.stringDate, // DO NOT PLACE THIS BELOW string resolver as it will resolve all date strings as string
+  (cv) => cv.every(isString) && COLUMN_DATA_TYPES.string,
+] as const;
 
 /**
  * Builds the {@link ColumnDataTypeMap} for the given {@link ColumnKeyValueMap}.
@@ -218,17 +216,23 @@ function createColumnDataTypeMap(
       continue; // skip this column as data of this column is not part of actual GridDataReadonly
     }
 
-    let resolvedDataType: ColumnDataType = COLUMN_DATA_TYPES.unresolved;
-    for (const method of COLUMN_DATA_TYPE_RESOLVER_LIST) {
-      const returnVal = method(columnValues);
-      if (returnVal) {
-        resolvedDataType = returnVal;
-        break;
-      }
-    }
-
-    columnSchemaMap[columnKey] = resolvedDataType;
+    columnSchemaMap[columnKey] = resolveColumnDataType(columnValues);
   }
 
   return columnSchemaMap;
+}
+
+/**
+ * Resolves the {@link ColumnDataType} for a particular {@link ColumnKey} based on its
+ * {@link ColumnValue}s.
+ */
+function resolveColumnDataType(columnValues: ColumnValue[]): ColumnDataType {
+  for (const resolver of COLUMN_DATA_TYPE_SEQUENTIAL_RESOLVERS) {
+    const resolved = resolver(columnValues);
+    if (resolved) {
+      return resolved;
+    }
+  }
+
+  return COLUMN_DATA_TYPES.ujsonValue;
 }

@@ -87,7 +87,7 @@ const stringDateColumnGenerator: ColumnGeneratorAnt = (params) => {
   });
 };
 
-const arrayOfObjectsColumnGenerator: ColumnGeneratorAnt = (params) => {
+const ujsonObjectColumnGenerator: ColumnGeneratorAnt = (params) => {
   const { columnKey, gridSchema } = params;
   const { primaryColumnKey } = gridSchema.meta;
 
@@ -108,11 +108,11 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorAnt = (params) => {
   });
 };
 
-const objectColumnGenerator: ColumnGeneratorAnt = (params) => {
-  return arrayOfObjectsColumnGenerator(params);
+const ujsonObjectArrayColumnGenerator: ColumnGeneratorAnt = (params) => {
+  return ujsonObjectColumnGenerator(params);
 };
 
-const unresolvedColumnGenerator: ColumnGeneratorAnt = (params) => {
+const ujsonValueColumnGenerator: ColumnGeneratorAnt = (params) => {
   return extendBaseColumn(params, {
     // TODO create a generic helper for rendering unresolved column data for all grid plugins
     render: (value: unknown) => {
@@ -123,11 +123,11 @@ const unresolvedColumnGenerator: ColumnGeneratorAnt = (params) => {
 
 export const COLUMN_GENERATOR_BY_TYPE_ANT: ColumnGeneratorByType<PluginConfigAnt> =
   {
-    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
     [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
     [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
-    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
-    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
     [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
-    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObject]: ujsonObjectColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObjectArray]: ujsonObjectArrayColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonValue]: ujsonValueColumnGenerator,
   };

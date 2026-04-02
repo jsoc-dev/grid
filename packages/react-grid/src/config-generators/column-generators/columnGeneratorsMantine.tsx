@@ -45,7 +45,7 @@ const stringDateColumnGenerator: ColumnGeneratorMantine = (params) => {
   return extendBaseColumn(params);
 };
 
-const arrayOfObjectsColumnGenerator: ColumnGeneratorMantine = (params) => {
+const ujsonObjectColumnGenerator: ColumnGeneratorMantine = (params) => {
   const { columnKey, gridSchema } = params;
   const { primaryColumnKey } = gridSchema.meta;
 
@@ -75,11 +75,11 @@ const arrayOfObjectsColumnGenerator: ColumnGeneratorMantine = (params) => {
   });
 };
 
-const objectColumnGenerator: ColumnGeneratorMantine = (params) => {
-  return arrayOfObjectsColumnGenerator(params);
+const ujsonObjectArrayColumnGenerator: ColumnGeneratorMantine = (params) => {
+  return ujsonObjectColumnGenerator(params);
 };
 
-const unresolvedColumnGenerator: ColumnGeneratorMantine = (params) => {
+const ujsonValueColumnGenerator: ColumnGeneratorMantine = (params) => {
   return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
@@ -92,11 +92,11 @@ const unresolvedColumnGenerator: ColumnGeneratorMantine = (params) => {
 
 export const COLUMN_GENERATOR_BY_TYPE_MANTINE: ColumnGeneratorByType<PluginConfigMantine> =
   {
-    [COLUMN_DATA_TYPES.arrayOfObjects]: arrayOfObjectsColumnGenerator,
     [COLUMN_DATA_TYPES.boolean]: booleanColumnGenerator,
     [COLUMN_DATA_TYPES.number]: numberColumnGenerator,
-    [COLUMN_DATA_TYPES.object]: objectColumnGenerator,
-    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
     [COLUMN_DATA_TYPES.string]: stringColumnGenerator,
-    [COLUMN_DATA_TYPES.unresolved]: unresolvedColumnGenerator,
+    [COLUMN_DATA_TYPES.stringDate]: stringDateColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObject]: ujsonObjectColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonObjectArray]: ujsonObjectArrayColumnGenerator,
+    [COLUMN_DATA_TYPES.ujsonValue]: ujsonValueColumnGenerator,
   };
