@@ -10,3 +10,4 @@ export * from "./number.ts";
 export * from "./object.ts";
 export * from "./string.ts";
 export * from "./symbol.ts";
+export * from "./ujson.ts";

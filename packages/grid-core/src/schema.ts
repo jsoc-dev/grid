@@ -2,7 +2,7 @@ import type { ColumnKey, CustomColumnGeneratorByType } from "#column.ts";
 import { getPrimaryColumnKey, type PrimaryColumnKey } from "#primary-column.ts";
 import { generateRows, type GridRowId, type GridRows } from "#rows.ts";
 
-import type { JSONObjectWithUndefined } from "@jsoc/utils";
+import type { UJSONObject, UJSONObjectArray } from "@jsoc/utils";
 
 /**
  * Unique id of a `GridSchema` inside the `GridStore`
@@ -19,10 +19,7 @@ export type GridIndex = number;
 /**
  * Type of the data that can be used to generate a grid
  */
-export type GridData =
-  | string
-  | JSONObjectWithUndefined
-  | Array<JSONObjectWithUndefined>;
+export type GridData = string | UJSONObject | UJSONObjectArray;
 /**
  * This type is used to prevent modification of the grid data.
  */

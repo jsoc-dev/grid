@@ -17,10 +17,8 @@ export type JSONValue =
   | null
   | JSONArray
   | JSONObject;
-export type JSONValueOrUndefined = JSONValue | undefined;
 export type JSONArray = JSONValue[];
 export type JSONObject = { [key: string]: JSONValue };
-export type JSONObjectWithUndefined = Record<string, JSONValueOrUndefined>;
 
 /**
  * Recursively validates a value against {@link JSONValue}.
