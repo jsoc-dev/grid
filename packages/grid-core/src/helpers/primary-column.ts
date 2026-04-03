@@ -1,29 +1,15 @@
-import type { ColumnKey } from "#column.ts";
-import type { GridRows } from "#rows.ts";
+import { FALLBACK_PRIMARY_COLUMN_KEY } from "#constants.ts";
+import type { ColumnKey, PrimaryColumnKey } from "#types/column.ts";
+import type { GridRows } from "#types/rows.ts";
 
 import { areAllUnique, isNumber, isString, toStringSafe } from "@jsoc/utils";
-
-/**
- * Property that has a unique value for all the {@link GridRows}.
- * Derived from {@link getPrimaryColumnKey}.
- */
-export type PrimaryColumnKey = ReturnType<typeof getPrimaryColumnKey>;
-
-/**
- * Key used as a fallback {@link PrimaryColumnKey} when no natural primary column exists on the
- * {@link GridRows}.
- * - It consists of a constant prefix and a random suffix (so that it doesn't collide with any property in gridData JSON).
- * - Though, it is highly unlikely that any JSON will have a property like the prefix itself, but still it is possible, so we generate a random suffix to be safe.
- */
-export const FALLBACK_PRIMARY_COLUMN_KEY =
-  "__AUTO-GENERATED-PRIMARY-COLUMN__" + randomId();
 
 /**
  * Resolves the {@link PrimaryColumnKey} for the supplied {@link GridRows}. When an `id` column is
  * already unique it is reused; otherwise, the method mutates `plainRows` to append
  * {@link FALLBACK_PRIMARY_COLUMN_KEY} identifiers.
  */
-export function getPrimaryColumnKey(plainRows: GridRows) {
+export function getPrimaryColumnKey(plainRows: GridRows): PrimaryColumnKey {
   // Check if 'id' is a valid primary column key
   if (
     plainRows.every((row) => isString(row.id) || isNumber(row.id)) &&
