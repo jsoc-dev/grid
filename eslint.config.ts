@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import js from "@eslint/js";
 import type { ESLint } from "eslint";
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import pluginImport from "eslint-plugin-import";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -14,6 +14,8 @@ import tseslint from "typescript-eslint";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig([
+  globalIgnores(["**/dist/**", "**/node_modules/**"]),
+
   // Base JS config
   js.configs.recommended,
 
