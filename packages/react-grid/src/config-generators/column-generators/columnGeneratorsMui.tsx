@@ -7,7 +7,7 @@ import type {
   ColDefMui,
   ColumnGeneratorMui,
   PluginConfigMui,
-} from "#types/index.ts";
+} from "#mui/types.ts";
 
 import {
   COLUMN_DATA_TYPES,

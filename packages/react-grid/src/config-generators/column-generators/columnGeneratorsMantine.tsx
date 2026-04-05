@@ -11,7 +11,7 @@ import type {
   ColDefMantine,
   ColumnGeneratorMantine,
   PluginConfigMantine,
-} from "#types/index.ts";
+} from "#mantine/types.ts";
 
 import {
   COLUMN_DATA_TYPES,

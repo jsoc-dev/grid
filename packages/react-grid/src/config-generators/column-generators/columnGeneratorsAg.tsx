@@ -1,13 +1,9 @@
+import type { ColDefAg, ColumnGeneratorAg, PluginConfigAg } from "#ag/types.ts";
 import {
   stringDateCellRenderer,
   ujsonObjectCellRenderer,
 } from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
 import { ujsonValueToString } from "#config-generators/column-generators/column-utils/valueTransformers.ts";
-import type {
-  ColDefAg,
-  ColumnGeneratorAg,
-  PluginConfigAg,
-} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,

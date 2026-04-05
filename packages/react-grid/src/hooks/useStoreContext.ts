@@ -1,20 +1,20 @@
-import type { GridPlugin } from "#constants/plugins.ts";
 import {
-  STORE_CONTEXT_BY_PLUGIN,
+  StoreContext,
   type StoreContextValue,
 } from "#contexts/StoreContext.tsx";
 import { ReactGridError } from "#errors/ReactGridError.ts";
-import { usePluginContext } from "#hooks/usePluginContext.ts";
 
+import type { PluginConfig } from "@jsoc/grid-core";
 import { useContext } from "react";
 
-export function useStoreContext<P extends GridPlugin>(): StoreContextValue<P> {
-  const plugin = usePluginContext();
-  const ctx = useContext(STORE_CONTEXT_BY_PLUGIN[plugin as P]);
+export function useStoreContext<
+  TConfig extends PluginConfig,
+>(): StoreContextValue<TConfig> {
+  const ctx = useContext(StoreContext);
 
   if (!ctx) {
-    throw new ReactGridError(`Missing provider for useStoreContext(${plugin})`);
+    throw new ReactGridError(`Missing provider for useStoreContext`);
   }
 
-  return ctx;
+  return ctx as StoreContextValue<TConfig>;
 }

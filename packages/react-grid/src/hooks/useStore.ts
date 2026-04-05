@@ -1,23 +1,21 @@
-import { CONFIG_GENERATOR_BY_PLUGIN } from "#config-generators/configGenerator.registry.ts";
-import type { GridPlugin } from "#constants/plugins.ts";
 import type { StoreContextValue } from "#contexts/StoreContext.tsx";
-import type { ConfigByPlugin } from "#types/plugin-config.ts";
 
 import {
   type GridData,
   type GridStore,
   newGridStore,
+  type PluginConfig,
+  type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
 import { shallowEqual } from "@jsoc/utils";
 import { type RefObject, useEffect, useMemo, useRef, useState } from "react";
 
-export type StoreOptions<P extends GridPlugin> = {
+export type StoreOptions<TConfig extends PluginConfig> = {
   data: GridData;
-  plugin: P;
-  pluginConfigGeneratorOptions?: PluginConfigGeneratorOptions<
-    ConfigByPlugin[P]
-  >;
+  pluginId: string;
+  generator: PluginConfigGenerator<TConfig>;
+  generatorOptions?: PluginConfigGeneratorOptions<TConfig>;
   name?: string;
 };
 
@@ -26,13 +24,13 @@ export type StoreOptions<P extends GridPlugin> = {
  * - Provide the result of this hook to the `StoreContextProvider` component in your app.
  * - To avoid unnecessary re-renders, provide the hook result without destructuring and recreating.
  */
-export function useStore<P extends GridPlugin>(
-  options: StoreOptions<P>,
-): StoreContextValue<P> {
-  const lastUpdateOptionsRef = useRef<StoreOptions<P> | null>(null);
+export function useStore<TConfig extends PluginConfig>(
+  options: StoreOptions<TConfig>,
+): StoreContextValue<TConfig> {
+  const lastUpdateOptionsRef = useRef<StoreOptions<TConfig> | null>(null);
 
   const [gridStore, setGridStore] = useState(() =>
-    updateStore(lastUpdateOptionsRef, options),
+    createStore(lastUpdateOptionsRef, options),
   );
 
   // update grid store when options fields shallowly change.
@@ -41,7 +39,7 @@ export function useStore<P extends GridPlugin>(
       !lastUpdateOptionsRef.current ||
       !shallowEqual(options, lastUpdateOptionsRef.current);
     if (shouldUpdate) {
-      const store = updateStore(lastUpdateOptionsRef, options);
+      const store = createStore(lastUpdateOptionsRef, options);
       setGridStore(store);
     }
   }, [options]);
@@ -51,29 +49,32 @@ export function useStore<P extends GridPlugin>(
     () => ({
       gridStore,
       setGridStore,
-      plugin: options.plugin,
+      pluginId: options.pluginId,
     }),
-    [gridStore, setGridStore, options.plugin],
+    [gridStore, setGridStore, options.pluginId],
   );
 
   return storeContextValue;
 }
 
-function updateStore<P extends GridPlugin>(
-  commitRef: RefObject<StoreOptions<P> | null>,
-  options: StoreOptions<P>,
-): GridStore<ConfigByPlugin[P]> {
-  const { plugin, pluginConfigGeneratorOptions, ...gridOptions } = options;
+function createStore<TConfig extends PluginConfig>(
+  commitRef: RefObject<StoreOptions<TConfig> | null>,
+  options: StoreOptions<TConfig>,
+): GridStore<TConfig> {
+  const { generator, generatorOptions, ...gridOptions } = options;
 
   const params = {
     gridOptions,
     pluginOptions: {
-      configGenerator: CONFIG_GENERATOR_BY_PLUGIN[plugin],
-      configGeneratorOptions: pluginConfigGeneratorOptions,
+      configGenerator: generator as PluginConfigGenerator<unknown>,
+      configGeneratorOptions: generatorOptions,
     },
   };
 
-  const gridStore = newGridStore(params.gridOptions, params.pluginOptions);
+  const gridStore = newGridStore(
+    params.gridOptions,
+    params.pluginOptions,
+  ) as GridStore<TConfig>;
   commitRef.current = options;
 
   return gridStore;

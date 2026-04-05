@@ -1,5 +1,5 @@
 import { COLUMN_GENERATOR_BY_TYPE_MANTINE } from "#config-generators/column-generators/index.ts";
-import type { ConfigGeneratorMantine } from "#types/index.ts";
+import type { ConfigGeneratorMantine } from "#mantine/types.ts";
 
 import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 

@@ -1,5 +1,5 @@
 import { COLUMN_GENERATOR_BY_TYPE_MUI } from "#config-generators/column-generators/index.ts";
-import type { ConfigGeneratorMui } from "#types/index.ts";
+import type { ConfigGeneratorMui } from "#mui/types.ts";
 
 import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 

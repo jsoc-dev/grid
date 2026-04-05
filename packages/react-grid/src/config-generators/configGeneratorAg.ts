@@ -1,5 +1,5 @@
+import type { ConfigGeneratorAg } from "#ag/types.ts";
 import { COLUMN_GENERATOR_BY_TYPE_AG } from "#config-generators/column-generators/index.ts";
-import type { ConfigGeneratorAg } from "#types/index.ts";
 
 import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 

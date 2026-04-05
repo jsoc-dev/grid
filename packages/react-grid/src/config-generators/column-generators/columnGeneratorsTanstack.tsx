@@ -11,7 +11,7 @@ import type {
   ColDefTanstack,
   ColumnGeneratorTanstack,
   PluginConfigTanstack,
-} from "#types/index.ts";
+} from "#tanstack/types.ts";
 
 import {
   COLUMN_DATA_TYPES,

@@ -1,27 +1,22 @@
-import type { GridPlugin } from "#constants/plugins.ts";
-import { PluginContext } from "#contexts/PluginContext.tsx";
 import {
-  STORE_CONTEXT_BY_PLUGIN,
+  StoreContext,
   type StoreContextValue,
 } from "#contexts/StoreContext.tsx";
 
+import type { PluginConfig } from "@jsoc/grid-core";
 import type { ReactNode } from "react";
 
-export type StoreContextProviderProps<P extends GridPlugin> = {
-  value: StoreContextValue<P>;
+export type StoreContextProviderProps<
+  TConfig extends PluginConfig = PluginConfig,
+> = {
+  value: StoreContextValue<TConfig>;
   children: ReactNode;
 };
 
-export function StoreContextProvider<P extends GridPlugin>({
-  value,
-  children,
-}: StoreContextProviderProps<P>) {
-  const { plugin } = value;
-  const StoreContext = STORE_CONTEXT_BY_PLUGIN[plugin];
-
+export function StoreContextProvider<
+  TConfig extends PluginConfig = PluginConfig,
+>({ value, children }: StoreContextProviderProps<TConfig>) {
   return (
-    <StoreContext.Provider value={value}>
-      <PluginContext.Provider value={plugin}>{children}</PluginContext.Provider>
-    </StoreContext.Provider>
+    <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
   );
 }

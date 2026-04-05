@@ -1,14 +1,14 @@
+import type {
+  ColDefAnt,
+  ColumnGeneratorAnt,
+  PluginConfigAnt,
+} from "#ant/types.ts";
 import {
   booleanCellRenderer,
   stringDateCellRenderer,
   ujsonObjectCellRenderer,
   ujsonValueCellRenderer,
 } from "#config-generators/column-generators/column-utils/cellRenderers.tsx";
-import type {
-  ColDefAnt,
-  ColumnGeneratorAnt,
-  PluginConfigAnt,
-} from "#types/index.ts";
 
 import {
   COLUMN_DATA_TYPES,

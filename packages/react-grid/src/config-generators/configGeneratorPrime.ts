@@ -1,5 +1,5 @@
 import { COLUMN_GENERATOR_BY_TYPE_PRIME } from "#config-generators/column-generators/columnGeneratorsPrime.tsx";
-import type { ConfigGeneratorPrime } from "#types/index.ts";
+import type { ConfigGeneratorPrime } from "#prime/types.ts";
 
 import { generateColumns } from "@jsoc/grid-core";
 

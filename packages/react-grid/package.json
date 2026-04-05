@@ -5,19 +5,60 @@
   "imports": {
     "#*": "./src/*"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./mui": {
+      "types": "./dist/mui/index.d.ts",
+      "import": "./dist/mui/index.js"
+    },
+    "./ag": {
+      "types": "./dist/ag/index.d.ts",
+      "import": "./dist/ag/index.js"
+    },
+    "./ant": {
+      "types": "./dist/ant/index.d.ts",
+      "import": "./dist/ant/index.js"
+    },
+    "./mantine": {
+      "types": "./dist/mantine/index.d.ts",
+      "import": "./dist/mantine/index.js"
+    },
+    "./prime": {
+      "types": "./dist/prime/index.d.ts",
+      "import": "./dist/prime/index.js"
+    },
+    "./tanstack": {
+      "types": "./dist/tanstack/index.d.ts",
+      "import": "./dist/tanstack/index.js"
+    }
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "type": "tsc --noEmit"
+    "build": "tsup",
+    "type": "tsc --noEmit",
+    "test": "tsx --test \"tests/**/*.test.ts\"",
+    "prepublishOnly": "pnpm run build && pnpm run test && pnpm run type"
   },
   "dependencies": {
     "@jsoc/grid-core": "workspace:*",
     "@jsoc/utils": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "@types/react": "^18.0.0 || ^19.0.0",
-    "@types/react-dom": "^18.0.0 || ^19.0.0"
+    "@types/react-dom": "^18.0.0 || ^19.0.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "@mui/x-data-grid": "^8.16.0",

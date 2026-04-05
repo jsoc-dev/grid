@@ -4,7 +4,7 @@ import type {
   ColDefPrime,
   ColumnGeneratorPrime,
   PluginConfigPrime,
-} from "#types/index.ts";
+} from "#prime/types.ts";
 
 import {
   COLUMN_DATA_TYPES,

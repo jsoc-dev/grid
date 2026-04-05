@@ -1,5 +1,5 @@
+import type { ConfigGeneratorAnt } from "#ant/types.ts";
 import { COLUMN_GENERATOR_BY_TYPE_ANT } from "#config-generators/column-generators/columnGeneratorsAnt.tsx";
-import type { ConfigGeneratorAnt } from "#types/index.ts";
 
 import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 

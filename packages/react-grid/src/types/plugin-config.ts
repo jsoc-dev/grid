@@ -1,4 +1,3 @@
-import type { GridPlugin } from "#constants/plugins.ts";
 import type {
   ColDefAg,
   ColDefAnt,
@@ -33,12 +32,3 @@ export type PluginConfigPrime = PluginConfig<ColDefPrime> &
 
 export type PluginConfigTanstack = PluginConfig<ColDefTanstack> &
   Pick<TableOptions<GridRow>, "columns" | "data" | "getRowId">;
-
-export interface ConfigByPlugin extends Record<GridPlugin, PluginConfig> {
-  ag: PluginConfigAg;
-  ant: PluginConfigAnt;
-  mantine: PluginConfigMantine;
-  mui: PluginConfigMui;
-  prime: PluginConfigPrime;
-  tanstack: PluginConfigTanstack;
-}

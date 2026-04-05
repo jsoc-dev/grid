@@ -1,5 +1,5 @@
 import { COLUMN_GENERATOR_BY_TYPE_TANSTACK } from "#config-generators/column-generators/index.ts";
-import type { ConfigGeneratorTanstack } from "#types/index.ts";
+import type { ConfigGeneratorTanstack } from "#tanstack/types.ts";
 
 import { generateColumns, type GridRowId } from "@jsoc/grid-core";
 
