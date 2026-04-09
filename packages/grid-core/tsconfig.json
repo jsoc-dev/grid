@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    // language
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2024", "DOM"],
+
+    "allowImportingTsExtensions": true, // subpath imports require file extensions
+
+    // type checking
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
+
+    // output
+    "noEmit": true, // bundler will be used to emit
+
+    // source files
+    "paths": {
+      // this is for resolving imports which uses "#" subpath defined in package.json
+      // https://turborepo.dev/docs/guides/tools/typescript#use-nodejs-subpath-imports-instead-of-typescript-compiler-paths
+      "#*": ["./src/*"]
+    }
+  },
+
+  "exclude": [
+    "dist",
+    "build",
+    "**/*.min.js",
+    "node_modules",
+    "**/node_modules/*"
+  ]
+}

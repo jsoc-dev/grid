@@ -1,0 +1,51 @@
+{
+  "name": "@jsoc/grid-core",
+  "version": "0.0.0",
+  "description": "Framework agnostic config generator for grid components.",
+  "keywords": [
+    "grid",
+    "table"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "packages/grid-core"
+  },
+  "bugs": {
+    "url": "https://github.com/jsoc-dev/grid/issues"
+  },
+  "homepage": "https://github.com/jsoc-dev/grid/tree/main/packages/grid-core#readme",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}
