@@ -1,0 +1,9 @@
+packages:
+  - packages/**
+
+onlyBuiltDependencies:
+  - esbuild
+
+catalog:
+  tsdown: "^0.x"
+  typescript: "^5.9.3"

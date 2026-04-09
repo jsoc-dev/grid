@@ -1,0 +1,47 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ---------------DEPS---------------
+node_modules
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ---------------ENV---------------
+.env*
+
+# ---------------LOGS---------------
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ---------------MISC---------------
+.DS_Store
+*.pem
+
+# ---------------NEXT---------------
+.next
+.vercel
+next-env.d.ts
+
+# ---------------PROD---------------
+build
+dist
+dist-ssr
+out
+
+# ---------------TEST---------------
+/coverage
+
+# ---------------TSC---------------
+*.tsbuildinfo
+
+# ---------------VSC---------------
+!.vscode/extensions.json
