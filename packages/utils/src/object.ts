@@ -18,6 +18,11 @@ export type SubsetKeysOf<S, K extends keyof S> = K;
  */
 export type KeysNotIn<S, K extends PropertyKey> = K extends keyof S ? never : K;
 
+export type StringKeysOf<R extends Record<PropertyKey, unknown>> = Extract<
+  keyof R,
+  string
+>;
+
 export type StringKeyedObject<V = unknown> = Record<string, V>;
 
 /**
