@@ -37,11 +37,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "pnpm -w build-packages",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "tsdown": "catalog:",
     "typescript": "catalog:"
   }
 }

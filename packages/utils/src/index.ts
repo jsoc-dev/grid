@@ -12,3 +12,4 @@ export * from "./object.ts";
 export * from "./string.ts";
 export * from "./symbol.ts";
 export * from "./ujson.ts";
+export * from "./uuid.ts";
