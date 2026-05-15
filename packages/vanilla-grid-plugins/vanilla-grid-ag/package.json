@@ -1,0 +1,46 @@
+{
+  "name": "@jsoc/vanilla-grid-ag",
+  "version": "0.0.0",
+  "description": "Dynamic columns/rows generator for ag Vanilla(JS/TS) grid component",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "@jsoc/vanilla-grid": "workspace:*",
+    "lit-html": "^3.3.3",
+    "@jsoc/grid-ag-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ag-grid-community": "^35.0.0",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "ag-grid-community": "^35.0.0"
+  }
+}
