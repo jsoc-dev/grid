@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/grid-examples-shared": "workspace:*",
+    "@jsoc/vanilla-grid": "workspace:*",
+    "@jsoc/vanilla-grid-examples": "workspace:*",
+    "@jsoc/vanilla-grid-tanstack": "workspace:*",
+    "@tanstack/table-core": "^8.21.3"
+  },
+  "devDependencies": {
+    "vite": "^8.0.10"
+  }
+}
