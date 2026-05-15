@@ -1,0 +1,33 @@
+{
+  "name": "@jsoc/vanilla-grid-examples",
+  "version": "0.0.1",
+  "description": "Shared utilities for JSOC Grid vanilla documentation examples.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "packages/vanilla-grid-examples"
+  },
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-docs": "workspace:*",
+    "@jsoc/grid-examples-shared": "workspace:*",
+    "@jsoc/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}
