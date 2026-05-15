@@ -1,0 +1,65 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+:root {
+  color-scheme: light dark;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+.table-container {
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: canvas;
+  color: canvastext;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+thead tr th,
+tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .table-container {
+    border: 1px solid #444;
+  }
+
+  thead tr th,
+  tbody tr:not(:last-child) td {
+    border-bottom: 1px solid #444;
+  }
+
+  tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
