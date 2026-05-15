@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent-50: var(--color-emerald-50);
+  --color-accent-100: var(--color-emerald-100);
+  --color-accent-200: var(--color-emerald-200);
+  --color-accent-300: var(--color-emerald-300);
+  --color-accent-400: var(--color-emerald-400);
+  --color-accent-500: var(--color-emerald-500);
+  --color-accent-600: var(--color-emerald-600);
+  --color-accent-700: var(--color-emerald-700);
+  --color-accent-800: var(--color-emerald-800);
+  --color-accent-900: var(--color-emerald-900);
+  --color-accent-950: var(--color-emerald-950);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  .grid-pattern {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, currentColor, transparent 62%) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, currentColor, transparent 62%) 1px,
+        transparent 1px
+      );
+    background-size: 40px 40px;
+  }
+
+  .dot-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='11' y='11' width='2' height='2' fill='%23000' fill-opacity='0.15'/%3E%3C/svg%3E");
+    background-size: 24px 24px;
+  }
+
+  :where(.dark) .dot-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='11' y='11' width='2' height='2' fill='%23fff' fill-opacity='0.15'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-accent-500 to-cyan-500;
+  }
+
+  .checkerboard {
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0px;
+    background-image:
+      linear-gradient(
+        45deg,
+        color-mix(in srgb, currentColor, transparent 95%) 25%,
+        transparent 25%
+      ),
+      linear-gradient(
+        -45deg,
+        color-mix(in srgb, currentColor, transparent 95%) 25%,
+        transparent 25%
+      ),
+      linear-gradient(
+        45deg,
+        transparent 75%,
+        color-mix(in srgb, currentColor, transparent 95%) 75%
+      ),
+      linear-gradient(
+        -45deg,
+        transparent 75%,
+        color-mix(in srgb, currentColor, transparent 95%) 75%
+      );
+  }
+}

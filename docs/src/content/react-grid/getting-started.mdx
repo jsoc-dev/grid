@@ -1,0 +1,73 @@
+import { If } from "../../components/docs/If";
+import { CodeExample } from "../../components/docs/CodeExample";
+import { SelectedPlugin } from "../../components/docs/SelectedPlugin";
+import { PluginDropdown } from "../../components/docs/PluginDropdown";
+import { Steps } from "nextra/components";
+
+# Getting Started
+
+JSOC Grid is currently available for React only. In the future we are planning to add plugins for grid components built using Vanilla JS, Angular, Vue, etc.
+
+## Basic Example
+
+Select your desired grid component that you want to use: <PluginDropdown />
+
+<Steps>
+
+### Installation
+
+- Install the [@jsoc/react-grid](https://www.npmjs.com/package/@jsoc/react-grid) package.
+
+  ```sh npm2yarn
+  npm install @jsoc/react-grid
+  ```
+
+- Install the peer dependencies:
+  - `react`
+  - `react-dom`
+  - <code><SelectedPlugin peerDeps/></code>
+
+> [!TIP]
+>
+> Refer to [package.json](https://github.com/jsoc-dev/grid/blob/main/packages/react-grid/package.json) for exact version ranges.
+
+#### Import necessary features
+
+- `StoreContextProvider`
+- `useStore` hook
+
+
+
+````typescript
+import { StoreContextProvider } from "@jsoc/react-grid";
+import { useStore } from "${plugin.importPath}";
+```` 
+
+> [!TIP]
+>
+> You can refer to the [Plugins](/react-grid/plugins) page to know the dedicated import paths for other grid components.
+
+#### Create the store
+
+```typescript
+const storeContext = useStore({ data: shoeJSON });
+const { config } = storeContext.gridStore.getActiveSchema();
+```
+
+#### Wrap with `StoreContextProvider`
+
+- Make sure to wrap your grid component with `StoreContextProvider` and pass the store context.
+
+```tsx
+<StoreContextProvider value={storeContext}>
+  {/* grid component */}
+</StoreContextProvider>
+```
+
+#### That's all!
+
+- Your grid component is ready to use! Here's how it would look like
+
+<CodeExample exampleId="basic" />
+
+</Steps>
