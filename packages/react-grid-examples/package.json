@@ -1,0 +1,55 @@
+{
+  "name": "@jsoc/react-grid-examples",
+  "version": "0.0.1",
+  "description": "Shared utilities for JSOC Grid React documentation examples.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "packages/react-grid-examples"
+  },
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-docs": "workspace:*",
+    "@jsoc/grid-examples-shared": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "react-error-boundary": "^6.1.1",
+    "react-router": "7.14.1",
+    "react-router-dom": "7.14.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}
