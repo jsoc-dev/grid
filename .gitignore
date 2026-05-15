@@ -36,6 +36,7 @@ build
 dist
 dist-ssr
 out
+docs/public/examples/**
 
 # ---------------TEST---------------
 /coverage
