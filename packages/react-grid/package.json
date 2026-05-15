@@ -25,13 +25,7 @@
     "#*": "./src/*"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./ag": "./src/plugins/ag/index.ts",
-    "./ant": "./src/plugins/ant/index.ts",
-    "./mantine": "./src/plugins/mantine/index.ts",
-    "./mui": "./src/plugins/mui/index.ts",
-    "./prime": "./src/plugins/prime/index.ts",
-    "./tanstack": "./src/plugins/tanstack/index.ts"
+    ".": "./src/index.ts"
   },
   "publishConfig": {
     "main": "./dist/index.mjs",
@@ -41,30 +35,6 @@
       ".": {
         "import": "./dist/index.mjs",
         "types": "./dist/index.d.mts"
-      },
-      "./ag": {
-        "import": "./dist/plugins/ag.mjs",
-        "types": "./dist/plugins/ag.d.mts"
-      },
-      "./ant": {
-        "import": "./dist/plugins/ant.mjs",
-        "types": "./dist/plugins/ant.d.mts"
-      },
-      "./mantine": {
-        "import": "./dist/plugins/mantine.mjs",
-        "types": "./dist/plugins/mantine.d.mts"
-      },
-      "./mui": {
-        "import": "./dist/plugins/mui.mjs",
-        "types": "./dist/plugins/mui.d.mts"
-      },
-      "./prime": {
-        "import": "./dist/plugins/prime.mjs",
-        "types": "./dist/plugins/prime.d.mts"
-      },
-      "./tanstack": {
-        "import": "./dist/plugins/tanstack.mjs",
-        "types": "./dist/plugins/tanstack.d.mts"
       }
     }
   },
@@ -72,7 +42,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "pnpm -w build-packages",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -80,53 +50,15 @@
     "@jsoc/utils": "workspace:*"
   },
   "devDependencies": {
-    "@mui/x-data-grid": "^8.16.0",
-    "@tanstack/react-table": "^8.21.3",
     "@types/node": "^25.5.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "ag-grid-community": "^35.0.0",
-    "ag-grid-react": "^35.0.0",
-    "antd": "^6.3.5",
-    "mantine-react-table": "^1.3.4",
-    "primereact": "^10.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tsdown": "catalog:",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@mui/x-data-grid": "^8.16.0",
-    "@tanstack/react-table": "^8.21.3",
-    "ag-grid-community": "^35.0.0",
-    "ag-grid-react": "^35.0.0",
-    "antd": "^6.3.5",
-    "mantine-react-table": "^1.3.4",
-    "primereact": "^10.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@mui/x-data-grid": {
-      "optional": true
-    },
-    "@tanstack/react-table": {
-      "optional": true
-    },
-    "antd": {
-      "optional": true
-    },
-    "ag-grid-react": {
-      "optional": true
-    },
-    "ag-grid-community": {
-      "optional": true
-    },
-    "mantine-react-table": {
-      "optional": true
-    },
-    "primereact": {
-      "optional": true
-    }
   }
 }
