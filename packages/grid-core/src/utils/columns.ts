@@ -1,19 +1,52 @@
-import {
-  COLUMN_DATA_TYPE_SEQUENTIAL_RESOLVERS,
-  COLUMN_DATA_TYPES,
-} from "#constants.ts";
-import { isFallbackPrimaryColumn } from "#helpers/primary-column.ts";
 import type {
   ColumnDataType,
   ColumnDataTypeMap,
+  ColumnDataTypeResolverMethod,
+  ColumnGenerator,
   ColumnGeneratorByType,
   ColumnKeyValueMap,
   ColumnValue,
+  CustomColumnGenerator,
   CustomColumnGeneratorByType,
 } from "#types/column.ts";
 import type { InferColumnType, PluginConfig } from "#types/plugin.ts";
 import type { GridRows } from "#types/rows.ts";
 import type { GridSchema } from "#types/schema.ts";
+import { isFallbackPrimaryColumn } from "#utils/primary-column.ts";
+
+import {
+  isBoolean,
+  isISODateString,
+  isNumber,
+  isString,
+  isUJSONObject,
+  isUJSONObjectArray,
+} from "@jsoc/utils";
+
+export const COLUMN_DATA_TYPES: {
+  [K in ColumnDataType]: K;
+} = {
+  boolean: "boolean",
+  number: "number",
+  string: "string",
+  stringDate: "stringDate",
+  ujsonObject: "ujsonObject",
+  ujsonObjectArray: "ujsonObjectArray",
+  ujsonValue: "ujsonValue",
+} as const;
+
+/**
+ * Sequential list of {@link ColumnDataTypeResolverMethod}s used to determine each
+ * {@link ColumnDataType}.
+ */
+const COLUMN_DATA_TYPE_SEQUENTIAL_RESOLVERS: ColumnDataTypeResolverMethod[] = [
+  (cv) => cv.every(isBoolean) && COLUMN_DATA_TYPES.boolean,
+  (cv) => cv.every(isNumber) && COLUMN_DATA_TYPES.number,
+  (cv) => cv.every(isUJSONObject) && COLUMN_DATA_TYPES.ujsonObject,
+  (cv) => cv.every(isUJSONObjectArray) && COLUMN_DATA_TYPES.ujsonObjectArray,
+  (cv) => cv.every(isISODateString) && COLUMN_DATA_TYPES.stringDate, // DO NOT PLACE THIS BELOW string resolver as it will resolve all date strings as string
+  (cv) => cv.every(isString) && COLUMN_DATA_TYPES.string,
+] as const;
 
 /**
  * Generates column definitions/configurations for the particular Grid plugin.
@@ -28,7 +61,7 @@ export function generateColumns<C extends PluginConfig>(
   defaultColumnGeneratorByType: ColumnGeneratorByType<C>,
   customColumnGeneratorByType?: CustomColumnGeneratorByType<C>,
 ): InferColumnType<C>[] {
-  const columnKeyValueMap = createColumnKeyValueMap(gridSchema.meta.rows);
+  const columnKeyValueMap = createColumnKeyValueMap(gridSchema.rows);
   const columnDataTypeMap = createColumnDataTypeMap(columnKeyValueMap);
   const columnDataTypeEntries = Object.entries(columnDataTypeMap);
 
@@ -41,8 +74,12 @@ export function generateColumns<C extends PluginConfig>(
       gridSchema,
     };
 
-    const defaultColGenerator = defaultColumnGeneratorByType[columnDataType];
-    const customColGenerator = customColumnGeneratorByType?.[columnDataType];
+    const defaultColGenerator = defaultColumnGeneratorByType[
+      columnDataType
+    ] as ColumnGenerator<C, ColumnDataType>;
+    const customColGenerator = customColumnGeneratorByType?.[columnDataType] as
+      | CustomColumnGenerator<C, ColumnDataType>
+      | undefined;
 
     // merge default and custom column definitions
     const generatedColumn = {
@@ -108,7 +145,7 @@ function createColumnDataTypeMap(
 
   for (const [columnKey, columnValues] of Object.entries(columnKeyValueMap)) {
     if (isFallbackPrimaryColumn(columnKey)) {
-      continue; // skip this column as data of this column is not part of actual GridDataReadonly
+      continue; // skip this column as data of this column is not part of actual GridData
     }
 
     columnSchemaMap[columnKey] = resolveColumnDataType(columnValues);

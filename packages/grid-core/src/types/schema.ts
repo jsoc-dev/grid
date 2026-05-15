@@ -1,8 +1,38 @@
-import type { ColumnKey, PrimaryColumnKey } from "#types/column.ts";
+import type {
+  ColumnDataType,
+  ColumnKey,
+  ColumnValueByDataType,
+  PrimaryColumnKey,
+} from "#types/column.ts";
 import type { PluginConfig } from "#types/plugin.ts";
 import type { GridRowId, GridRows } from "#types/rows.ts";
+import type { GridStore } from "#types/store.ts";
 
 import type { UJSONObject, UJSONObjectArray } from "@jsoc/utils";
+
+/**
+ * `GridSchema` with the bound {@link GridStore} and {@link PluginConfig}.
+ */
+export type GridSchemaNative<C extends PluginConfig> = GridSchema & {
+  readonly store: GridStore<C>;
+  readonly config: C;
+};
+
+/**
+ * Schema definition exposed to grid plugins.
+ */
+export interface GridSchema {
+  id: GridId;
+  rows: GridRows;
+  primaryColumnKey: PrimaryColumnKey;
+  origin?: GridSchemaOrigin;
+  /**
+   * Gets the cell value for the given {@link GridCellLocation}.
+   */
+  getCellValue<D extends ColumnDataType>(
+    cell: GridCellLocation,
+  ): ColumnValueByDataType[D];
+}
 
 /**
  * Unique id of a `GridSchema` inside the `GridStore`
@@ -10,24 +40,14 @@ import type { UJSONObject, UJSONObjectArray } from "@jsoc/utils";
 export type GridId = string;
 
 /**
- * Name of a `GridSchema`. Multiple `GridSchema` can have same name.
- */
-export type GridName = string;
-
-/**
  * Index of a `GridSchema` inside the `GridStore`
  */
-export type GridIndex = number;
+export type GridSchemaIndex = number;
 
 /**
  * Type of the data that can be used to generate a grid
  */
-export type GridData = string | UJSONObject | UJSONObjectArray;
-
-/**
- * This type is used to prevent modification of the grid data.
- */
-export type GridDataReadonly = Readonly<GridData>;
+export type GridData = Readonly<string | UJSONObject | UJSONObjectArray>;
 
 /**
  * Object representing the abstract location of a grid cell.
@@ -47,44 +67,10 @@ export type GridCellLocation = {
 };
 
 /**
- * Required inputs for constructing a grid schema.
+ * Describes where a child {@link GridSchema} was opened from.
  */
-export type GridOptions = {
-  /**
-   * Readonly grid payload that {@link generateRows} will normalize.
-   */
-  data: GridDataReadonly;
-  /** Optional human-friendly grid name. */
-  name?: GridName;
+export type GridSchemaOrigin = {
+  parent: GridSchema;
+  cell: GridCellLocation;
 };
 
-/**
- * Grid options that include the assigned {@link GridId} that uniquely identifies the schema.
- */
-export type GridOptionsWithId = GridOptions & {
-  id: GridId;
-};
-
-/**
- * Computed metadata for a grid schema such as the generated {@link GridRows} and resolved
- * {@link PrimaryColumnKey}.
- */
-export type GridMeta = {
-  rows: GridRows;
-  primaryColumnKey: PrimaryColumnKey;
-};
-
-/**
- * Schema definition exposed to grid plugins.
- */
-export type GridSchema = {
-  meta: GridMeta;
-  options: GridOptionsWithId;
-};
-
-/**
- * `GridSchema` with the `PluginConfig`
- */
-export type GridSchemaWithConfig<C extends PluginConfig> = GridSchema & {
-  config: C;
-};

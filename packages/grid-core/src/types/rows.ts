@@ -23,7 +23,7 @@ export type RowPropertyValue = UJSONValue;
 
 /**
  * Single row. A row is a plain object (property-value pairs).
- * Refer {@link generateRows} for how rows are derived from {@link GridDataReadonly}.
+ * Refer {@link generateRows} for how rows are derived from {@link GridData}.
  */
 export type GridRow = UJSONObject;
 
