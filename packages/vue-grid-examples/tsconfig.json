@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "paths": {
+      "#*": ["./src/*"]
+    }
+  },
+  "include": ["src", "env.d.ts"],
+  "exclude": ["dist", "node_modules"]
+}

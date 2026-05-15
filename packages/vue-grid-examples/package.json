@@ -1,0 +1,38 @@
+{
+  "name": "@jsoc/vue-grid-examples",
+  "version": "0.0.1",
+  "description": "Shared utilities for JSOC Grid Vue documentation examples.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "packages/vue-grid-examples"
+  },
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-docs": "workspace:*",
+    "@jsoc/grid-examples-shared": "workspace:*",
+    "@jsoc/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vue": "^3.5.13"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  }
+}
