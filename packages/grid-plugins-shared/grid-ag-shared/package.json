@@ -1,0 +1,41 @@
+{
+  "name": "@jsoc/grid-ag-shared",
+  "version": "0.0.0",
+  "description": "Shared AG Grid column definitions (host-agnostic)",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ag-grid-community": "^35.0.0",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "ag-grid-community": "^35.0.0"
+  }
+}

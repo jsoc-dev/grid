@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "paths": {
+      "#*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "dist",
+    "build",
+    "**/*.min.js",
+    "node_modules",
+    "**/node_modules/*"
+  ]
+}
