@@ -1,9 +1,34 @@
 packages:
+  - docs
+  - examples/**
   - packages/**
 
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  esbuild: true
+  sharp: true # for nextra-theme-docs
+  unrs-resolver: true # for nextra-theme-docs
 
 catalog:
   tsdown: "^0.x"
-  typescript: "^5.9.3"
+  typescript: "^6.0.3"
+
+overrides:
+  # for overriding packages in examples/** to use workspace:* instead of published versions
+  "@jsoc/grid-core": "workspace:*"
+  "@jsoc/grid-docs": "workspace:*"
+  "@jsoc/grid-examples-shared": "workspace:*"
+
+  "@jsoc/react-grid": "workspace:*"
+  "@jsoc/react-grid-examples": "workspace:*"
+  "@jsoc/react-grid-ag": "workspace:*"
+  "@jsoc/react-grid-ant": "workspace:*"
+  "@jsoc/react-grid-mantine": "workspace:*"
+  "@jsoc/react-grid-mui": "workspace:*"
+  "@jsoc/react-grid-prime": "workspace:*"
+  "@jsoc/react-grid-tanstack": "workspace:*"
+
+  "@jsoc/vue-grid": "workspace:*"
+  "@jsoc/vue-grid-examples": "workspace:*"
+  "@jsoc/vue-grid-ag": "workspace:*"
+
+  "@jsoc/vanilla-grid-examples": "workspace:*"
