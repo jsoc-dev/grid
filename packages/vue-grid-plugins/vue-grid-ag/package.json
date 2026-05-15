@@ -1,0 +1,49 @@
+{
+  "name": "@jsoc/vue-grid-ag",
+  "version": "0.0.0",
+  "description": "Dynamic columns/rows generator for AG Grid Vue component",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-ag-shared": "workspace:*",
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "@jsoc/vue-grid": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "ag-grid-community": "^35.0.0",
+    "ag-grid-vue3": "^35.0.0",
+    "typescript": "catalog:",
+    "vue": "^3.5.13"
+  },
+  "peerDependencies": {
+    "ag-grid-community": "^35.0.0",
+    "ag-grid-vue3": "^35.0.0",
+    "vue": "^3.4.0"
+  }
+}
