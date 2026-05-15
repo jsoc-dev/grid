@@ -1,0 +1,58 @@
+{
+  "name": "@jsoc/vanilla-grid",
+  "version": "0.0.0",
+  "description": "Dynamic columns/rows generator for popular Vanilla(JS/TS) grid components",
+  "keywords": [
+    "datagrid",
+    "datatable",
+    "grid",
+    "jsongrid",
+    "javascript",
+    "typescript",
+    "table"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "packages/vanilla-grid"
+  },
+  "bugs": {
+    "url": "https://github.com/jsoc-dev/grid/issues"
+  },
+  "homepage": "https://github.com/jsoc-dev/grid/tree/main/packages/vanilla-grid#readme",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "lit-html": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "catalog:"
+  }
+}
