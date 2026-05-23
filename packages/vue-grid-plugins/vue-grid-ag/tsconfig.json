@@ -12,12 +12,5 @@
     "noUnusedLocals": true,
     "noEmit": true
   },
-  "include": ["src", "env.d.ts"],
-  "exclude": [
-    "dist",
-    "build",
-    "**/*.min.js",
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  "include": ["src", "env.d.ts"]
 }

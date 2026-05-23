@@ -20,12 +20,5 @@
     "noEmit": true
   },
 
-  "include": ["src"],
-  "exclude": [
-    "dist",
-    "build",
-    "**/*.min.js",
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  "include": ["src"]
 }

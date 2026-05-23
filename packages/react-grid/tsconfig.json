@@ -19,11 +19,5 @@
     "noEmit": true // bundler will be used to emit
   },
 
-  "exclude": [
-    "dist",
-    "build",
-    "**/*.min.js",
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  "include": ["src"]
 }
