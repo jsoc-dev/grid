@@ -16,14 +16,7 @@
     "noUnusedLocals": true,
 
     // output
-    "noEmit": true, // bundler will be used to emit
-
-    // source files
-    "paths": {
-      // this is for resolving imports which uses "#" subpath defined in package.json
-      // https://turborepo.dev/docs/guides/tools/typescript#use-nodejs-subpath-imports-instead-of-typescript-compiler-paths
-      "#*": ["./src/*"]
-    }
+    "noEmit": true // bundler will be used to emit
   },
 
   "exclude": [

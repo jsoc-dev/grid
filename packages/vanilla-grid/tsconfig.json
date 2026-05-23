@@ -15,12 +15,7 @@
     "noUnusedLocals": true,
 
     // output
-    "noEmit": true, // bundler will be used to emit
-
-    // source files
-    "paths": {
-      "#*": ["./src/*"]
-    }
+    "noEmit": true // bundler will be used to emit
   },
 
   "exclude": [

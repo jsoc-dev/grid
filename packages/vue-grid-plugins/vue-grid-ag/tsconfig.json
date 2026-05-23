@@ -10,10 +10,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noUnusedLocals": true,
-    "noEmit": true,
-    "paths": {
-      "#*": ["./src/*"]
-    }
+    "noEmit": true
   },
   "include": ["src", "env.d.ts"],
   "exclude": [

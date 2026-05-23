@@ -9,12 +9,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noUnusedLocals": true,
-    "noEmit": true,
-    "paths": {
-      "#*": [
-        "./src/*"
-      ]
-    }
+    "noEmit": true
   },
   "exclude": [
     "dist",

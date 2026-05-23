@@ -17,12 +17,7 @@
     "noUnusedLocals": true,
 
     // output
-    "noEmit": true,
-
-    // source files
-    "paths": {
-      "#*": ["./src/*"]
-    }
+    "noEmit": true
   },
 
   "include": ["src"],
