@@ -22,7 +22,7 @@
 
 ## Commits
 
-- Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This is enforced by [commitlint](https://commitlint.js.org/) via a Husky hook. Refer to examples below:
+- Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. Refer to examples below:
 
   | Change Type           | Commit Type | Example                                                         |
   | :-------------------- | :---------- | :-------------------------------------------------------------- |
@@ -38,6 +38,5 @@
   | **Chore/Maintenance** | `chore`     | `chore: update eslint rules` or `chore: add .gitignore entry`   |
   | **Revert**            | `revert`    | `revert: "feat: add temporary logging"`                         |
 
-- This project uses [Husky](https://typicode.github.io/husky/) to run automated checks:
-  - `pre-commit`: Runs lint checks and formatting via [lint-staged](https://github.com/lint-staged/lint-staged) (using [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/)).
-  - `commit-msg`: Validates the commit message format using [commitlint](https://commitlint.js.org/).
+- Commit messages are validated in CI with [commitlint](https://commitlint.js.org/) on pull requests and pushes to `main` (see [.github/workflows/commitlint.yml](.github/workflows/commitlint.yml)).
+- Locally, [Husky](https://typicode.github.io/husky/) runs `pre-commit` only: lint and format staged files via [lint-staged](https://github.com/lint-staged/lint-staged) (using [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/)).
