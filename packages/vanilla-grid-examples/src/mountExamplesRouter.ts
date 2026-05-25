@@ -2,7 +2,7 @@ import {
   readExampleId,
   setExampleId,
   subscribeExampleId,
-} from "#exampleIdSearchParam.ts";
+} from "#subscribeExampleId.ts";
 import type { ExampleMount } from "#types.ts";
 
 import {

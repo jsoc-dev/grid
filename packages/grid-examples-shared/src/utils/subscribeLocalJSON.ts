@@ -1,15 +1,8 @@
-import { LOCAL_DATA_EXAMPLE_CHANNEL } from "#constants/example-constants.ts";
 import {
-  type LocalBroadcastMessage,
-  newBroadcastChannel,
-} from "#utils/local-broadcasting.ts";
-
-export function getLocalJSON(): string | undefined {
-  const channel = newBroadcastChannel(LOCAL_DATA_EXAMPLE_CHANNEL);
-  const message = channel.getLastStoredMessage();
-  channel.close();
-  return typeof message === "string" ? message : undefined;
-}
+  PersistentBroadcastChannel,
+  type PersistentBroadcastMessage,
+} from "#api/PersistentBroadcastChannel.ts";
+import { LOCAL_DATA_EXAMPLE_CHANNEL } from "#constants/example-constants.ts";
 
 /**
  * Subscribes to messages on the local JSON broadcast channel (e.g. docs playground).
@@ -23,18 +16,18 @@ export function subscribeLocalJSON(
 
 export function subscribeBroadcastChannel(
   channelName: string,
-  listener: (message: LocalBroadcastMessage) => void,
+  listener: (message: PersistentBroadcastMessage) => void,
 ): () => void {
-  const channel = newBroadcastChannel(channelName);
+  const channel = new PersistentBroadcastChannel(channelName);
 
-  const notifyFromStorage = () => {
-    listener(channel.getLastStoredMessage());
+  const notifyLastMessage = () => {
+    listener(channel.getLastMessage());
   };
 
-  notifyFromStorage();
+  notifyLastMessage();
 
   const handleMessage = (event: MessageEvent) => {
-    const data = event.data as LocalBroadcastMessage;
+    const data = event.data as PersistentBroadcastMessage;
     listener(typeof data === "string" ? data : undefined);
   };
 

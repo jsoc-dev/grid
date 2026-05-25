@@ -1,7 +1,6 @@
 import {
-  type LocalBroadcastChannel,
-  type LocalBroadcastMessage,
-  newBroadcastChannel,
+  PersistentBroadcastChannel,
+  type PersistentBroadcastMessage,
 } from "@jsoc/grid-examples-shared";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,9 +11,9 @@ import { useEffect, useRef, useState } from "react";
  */
 export function useBroadcast(
   channelName: string,
-  message: LocalBroadcastMessage,
+  message: PersistentBroadcastMessage,
 ) {
-  const channelRef = useRef<LocalBroadcastChannel | null>(null);
+  const channelRef = useRef<PersistentBroadcastChannel | null>(null);
 
   useEffect(() => {
     if (
@@ -24,12 +23,12 @@ export function useBroadcast(
       // But when remounted (coming back to page), `channel` state ideally should reinitialize and new channel
       // should create but somehow it still refers to old closed channel. This causes `InvalidStateError` when
       // calling `postMessage`. To work around this, we recreate the channel if it's closed.
-      channelRef.current.closed
+      channelRef.current.isClosed()
     ) {
-      channelRef.current = newBroadcastChannel(channelName);
+      channelRef.current = new PersistentBroadcastChannel(channelName);
     }
 
-    channelRef.current.storeAndPostMessage(message);
+    channelRef.current.postMessage(message);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ignoring channelName in dependencies intentionally
   }, [message]);
@@ -45,14 +44,12 @@ export function useBroadcast(
  */
 export function useGetBroadcastMessage(
   channelName: string,
-): LocalBroadcastMessage {
-  const channelRef = useRef<LocalBroadcastChannel | null>(null);
+): PersistentBroadcastMessage {
+  const channelRef = useRef<PersistentBroadcastChannel | null>(null);
 
-  const [message, setMessage] = useState(() => {
-    const channel = newBroadcastChannel(channelName);
-    channel.close();
-    return channel.getLastStoredMessage();
-  });
+  const [message, setMessage] = useState(() =>
+    PersistentBroadcastChannel.getLastMessage(channelName),
+  );
 
   useEffect(() => {
     if (
@@ -63,12 +60,15 @@ export function useGetBroadcastMessage(
       // reinitialize the hook's states, but somehow it still refers to old closed channel state. Due to which
       // same closed channel is used again so messages are not being received.
       // To work around this, we are recreating the channel if it's closed.
-      channelRef.current.closed
+      channelRef.current.isClosed()
     ) {
-      channelRef.current = newBroadcastChannel(channelName);
+      channelRef.current = new PersistentBroadcastChannel(channelName);
     }
 
-    const handler = (event: MessageEvent) => setMessage(event.data);
+    const handler = (event: MessageEvent) => {
+      const msg = event.data as string | null;
+      setMessage(msg ?? undefined);
+    };
 
     channelRef.current.addEventListener("message", handler);
 
