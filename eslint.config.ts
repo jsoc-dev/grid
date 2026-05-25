@@ -2,7 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import js from "@eslint/js";
-import type { ESLint } from "eslint";
+import type { ESLint, Linter } from "eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 import pluginImport from "eslint-plugin-import";
 import react from "eslint-plugin-react";
@@ -12,6 +12,23 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/** Subpath import rules for workspace packages and scripts. */
+const packageImportRules = {
+  "no-restricted-syntax": [
+    "error",
+    {
+      selector: "ImportDeclaration[source.value=/^\\./]",
+      message:
+        "Use absolute paths (starting with #) instead of relative paths.",
+    },
+    {
+      selector: "ImportDeclaration[source.value=/^#(?!.*\\.tsx?$).*/]",
+      message:
+        "Subpath imports (starting with #) must include the .ts or .tsx extension to ensure proper module resolution.",
+    },
+  ],
+} satisfies Linter.RulesRecord;
 
 export default defineConfig([
   globalIgnores([
@@ -113,29 +130,33 @@ export default defineConfig([
     },
   },
 
-  // type checks for packages with tsconfig.json
-  ...tseslint.configs.recommendedTypeChecked.map((c) => ({
-    ...c,
+  // Type-aware linting for packages and scripts
+  {
     files: ["packages/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
+    ignores: ["packages/vue-grid-examples/**/*.ts"],
+    extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
         project: true,
+        tsconfigRootDir: __dirname,
       },
     },
-    rules: {
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector: "ImportDeclaration[source.value=/^\\./]",
-          message:
-            "Use absolute paths (starting with #) instead of relative paths.",
-        },
-        {
-          selector: "ImportDeclaration[source.value=/^#(?!.*\\.tsx?$).*/]",
-          message:
-            "Subpath imports (starting with #) must include the .ts or .tsx extension to ensure proper module resolution.",
-        },
-      ],
+    rules: packageImportRules,
+  },
+
+  // @jsoc/vue-grid-examples: src (tsconfig.json) + tsdown.config.ts (tsconfig.node.json)
+  {
+    files: ["packages/vue-grid-examples/**/*.ts"],
+    extends: [tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        project: [
+          "packages/vue-grid-examples/tsconfig.json",
+          "packages/vue-grid-examples/tsconfig.node.json",
+        ],
+        tsconfigRootDir: __dirname,
+      },
     },
-  })),
+    rules: packageImportRules,
+  },
 ]);
