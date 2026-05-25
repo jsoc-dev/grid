@@ -79,7 +79,9 @@ async function getPluginIdsFromUser<F extends FrameworkId>(
   frameworkId: F,
   choices: PluginId<F>[],
 ): Promise<PluginId<F>[]> {
-  const { pluginIds } = await inquirer.prompt([
+  const { pluginIds } = await inquirer.prompt<{
+    pluginIds: PluginId<F>[];
+  }>([
     {
       type: "checkbox",
       name: "pluginIds",

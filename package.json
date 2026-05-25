@@ -40,13 +40,13 @@
     "build-examples": "tsx scripts/build-examples.ts",
     "build-examples:manual": "tsx scripts/build-examples.ts manual",
     "build-packages": "tsx scripts/build-packages.ts",
-    "build": "pnpm build-examples && pnpm --recursive --parallel run build",
+    "build": "pnpm build-examples && pnpm build-packages",
     "changeset": "changeset",
-    "lint": "pnpm eslint . && pnpm --recursive --parallel run lint",
-    "lint:fix": "pnpm eslint . --fix && pnpm --recursive --parallel run lint:fix",
+    "lint": "eslint . && pnpm --recursive --parallel run lint",
+    "lint:fix": "eslint . --fix && pnpm --recursive --parallel run lint:fix",
     "prepare": "husky",
     "release": "pnpm build && changeset publish",
-    "typecheck": "pnpm tsc && pnpm --recursive --parallel run typecheck",
+    "typecheck": "tsc && pnpm --recursive --parallel run typecheck",
     "version-packages": "changeset version"
   },
   "lint-staged": {
