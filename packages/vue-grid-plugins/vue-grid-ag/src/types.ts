@@ -1,7 +1,6 @@
+import type { ColDefAg } from "@jsoc/grid-ag-shared";
 import type { GridRow, PluginConfig } from "@jsoc/grid-core";
-import type { ColDef, GridOptions } from "ag-grid-community";
-
-export type ColDefAg = ColDef<GridRow>;
+import type { GridOptions } from "ag-grid-community";
 
 export type PluginConfigAg = PluginConfig<ColDefAg> &
   Pick<GridOptions<GridRow>, "rowData" | "columnDefs" | "getRowId">;
