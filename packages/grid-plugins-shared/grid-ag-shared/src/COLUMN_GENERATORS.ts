@@ -1,3 +1,5 @@
+import type { ColDefAg } from "#types.ts";
+
 import type {
   ColumnDataType,
   ColumnGeneratorParams,
@@ -13,15 +15,14 @@ import {
   ujsonValueToString,
 } from "@jsoc/utils";
 import type {
-  ColDef,
   ValueFormatterParams,
   ValueGetterParams,
 } from "ag-grid-community";
 
 export function getBaseColumnDef<D extends ColumnDataType>(
   params: ColumnGeneratorParams<D>,
-  overrides?: Partial<ColDef>,
-): ColDef {
+  overrides?: Partial<ColDefAg>,
+): ColDefAg {
   const { columnKey } = params;
   return {
     field: columnKey,
@@ -32,7 +33,7 @@ export function getBaseColumnDef<D extends ColumnDataType>(
 
 export const sharedStringColumnGenerator = (
   params: ColumnGeneratorParams<"string">,
-): ColDef => {
+): ColDefAg => {
   return getBaseColumnDef(params, {
     cellDataType: "text",
     sortable: true,
@@ -42,7 +43,7 @@ export const sharedStringColumnGenerator = (
 
 export const sharedBooleanColumnGenerator = (
   params: ColumnGeneratorParams<"boolean">,
-): ColDef => {
+): ColDefAg => {
   return getBaseColumnDef(params, {
     cellDataType: "boolean",
     sortable: true,
@@ -52,7 +53,7 @@ export const sharedBooleanColumnGenerator = (
 
 export const sharedNumberColumnGenerator = (
   params: ColumnGeneratorParams<"number">,
-): ColDef => {
+): ColDefAg => {
   return getBaseColumnDef(params, {
     cellDataType: "number",
     sortable: true,
@@ -62,7 +63,7 @@ export const sharedNumberColumnGenerator = (
 
 export const sharedStringDateColumnGenerator = (
   params: ColumnGeneratorParams<"stringDate">,
-): ColDef => {
+): ColDefAg => {
   return getBaseColumnDef(params, {
     cellDataType: "dateTimeString",
     sortable: true,
@@ -77,7 +78,7 @@ export const sharedStringDateColumnGenerator = (
 
 export const sharedUjsonObjectColumnGenerator = (
   params: ColumnGeneratorParams<"ujsonObject">,
-): ColDef => {
+): ColDefAg => {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     cellDataType: "object",
@@ -100,7 +101,7 @@ export const sharedUjsonObjectColumnGenerator = (
 
 export const sharedUjsonObjectArrayColumnGenerator = (
   params: ColumnGeneratorParams<"ujsonObjectArray">,
-): ColDef => {
+): ColDefAg => {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     cellDataType: "object",
@@ -121,7 +122,7 @@ export const sharedUjsonObjectArrayColumnGenerator = (
 
 export const sharedUjsonValueColumnGenerator = (
   params: ColumnGeneratorParams<"ujsonValue">,
-): ColDef => {
+): ColDefAg => {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     sortable: false,
