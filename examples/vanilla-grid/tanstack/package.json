@@ -4,17 +4,19 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-core": "workspace:*",
-    "@jsoc/grid-examples-shared": "workspace:*",
-    "@jsoc/vanilla-grid": "workspace:*",
-    "@jsoc/vanilla-grid-examples": "workspace:*",
-    "@jsoc/vanilla-grid-tanstack": "workspace:*",
+    "@jsoc/grid-core": "latest",
+    "@jsoc/grid-examples-shared": "latest",
+    "@jsoc/vanilla-grid": "latest",
+    "@jsoc/vanilla-grid-examples": "latest",
+    "@jsoc/vanilla-grid-tanstack": "latest",
     "@tanstack/table-core": "^8.21.3"
   },
   "devDependencies": {
+    "typescript": "^6.0.3",
     "vite": "^8.0.10"
   }
 }
