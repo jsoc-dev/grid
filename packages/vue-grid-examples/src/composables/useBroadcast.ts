@@ -1,44 +1,42 @@
 import {
-  type LocalBroadcastMessage,
-  newBroadcastChannel,
+  PersistentBroadcastChannel,
+  type PersistentBroadcastMessage,
   subscribeBroadcastChannel,
 } from "@jsoc/grid-examples-shared";
 import { onMounted, onUnmounted, type Ref, ref, watch } from "vue";
 
 export function useBroadcast(
   channelName: string,
-  message: LocalBroadcastMessage,
+  message: PersistentBroadcastMessage,
 ) {
-  const channel = ref(newBroadcastChannel(channelName));
+  const channelRef = ref(new PersistentBroadcastChannel(channelName));
 
   watch(
     () => message,
     (value) => {
-      if (channel.value.closed) {
-        const newChannel = newBroadcastChannel(channelName);
-        newChannel.storeAndPostMessage(value);
-        channel.value = newChannel;
+      if (channelRef.value.isClosed()) {
+        const newChannel = new PersistentBroadcastChannel(channelName);
+        newChannel.postMessage(value);
+        channelRef.value = newChannel;
       } else {
-        channel.value.storeAndPostMessage(value);
+        channelRef.value.postMessage(value);
       }
     },
     { flush: "sync", immediate: true },
   );
 
   onUnmounted(() => {
-    channel.value.close();
+    channelRef.value.close();
   });
 }
 
 export function useGetBroadcastMessage(
   channelName: string,
-): Ref<LocalBroadcastMessage> {
-  const message = ref<LocalBroadcastMessage>();
+): Ref<PersistentBroadcastMessage> {
+  const message = ref<PersistentBroadcastMessage>();
 
   if (typeof window !== "undefined") {
-    const channel = newBroadcastChannel(channelName);
-    message.value = channel.getLastStoredMessage();
-    channel.close();
+    message.value = PersistentBroadcastChannel.getLastMessage(channelName);
   }
 
   let unsubscribe: (() => void) | undefined;
