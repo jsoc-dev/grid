@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "build": "pnpm -w build-packages",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@jsoc/grid-docs": "workspace:*",
@@ -30,7 +30,9 @@
   "devDependencies": {
     "tsdown": "catalog:",
     "typescript": "catalog:",
-    "vue": "^3.5.13"
+    "unplugin-vue": "^7.2.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "~3.2.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
