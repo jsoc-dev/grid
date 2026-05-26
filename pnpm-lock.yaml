@@ -1127,6 +1127,9 @@ importers:
       '@jsoc/utils':
         specifier: workspace:*
         version: link:../utils
+      lit-html:
+        specifier: ^3.3.3
+        version: 3.3.3
     devDependencies:
       typescript:
         specifier: 'catalog:'
