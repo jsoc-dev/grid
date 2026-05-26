@@ -8,7 +8,7 @@ import {
   type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
-import { createGridStore as createGridStoreCore } from "@jsoc/vanilla-grid";
+import { createGridStoreCore } from "@jsoc/vanilla-grid";
 
 /**
  * Creates a grid store with the given options.

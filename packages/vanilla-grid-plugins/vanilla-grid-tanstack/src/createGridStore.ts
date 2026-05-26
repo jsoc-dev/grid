@@ -8,7 +8,7 @@ import {
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
 import type { PluginConfigTanstack } from "@jsoc/grid-tanstack-shared";
-import { createGridStore as createGridStoreCore } from "@jsoc/vanilla-grid";
+import { createGridStoreCore } from "@jsoc/vanilla-grid";
 
 /**
  * Creates a grid store with the given options.
