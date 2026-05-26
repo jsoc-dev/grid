@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LocalDataExample from "./LocalDataExample.vue";
+import LocalDataExample from "#/examples/local-data/LocalDataExample.vue";
 import { ErrorBoundary, useGetLocalJSON } from "@jsoc/vue-grid-examples";
 
 const data = useGetLocalJSON();

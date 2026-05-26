@@ -11,28 +11,3 @@ body,
 body {
   margin: 0;
 }
-
-/* Full-height chain: Root → App → example → AG Grid */
-.example-root,
-.example-view {
-  height: 100%;
-  width: 100%;
-}
-
-.example-view {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.example-grid {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-}
-
-.ag-grid-host {
-  height: 100%;
-  width: 100%;
-  min-height: 0;
-}

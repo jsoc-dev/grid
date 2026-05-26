@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RemoteDataExample from "./RemoteDataExample.vue";
+import RemoteDataExample from "#/examples/remote-data/RemoteDataExample.vue";
 import { useGetRemoteJSON } from "@jsoc/vue-grid-examples";
 
 const { data, loading, error } = useGetRemoteJSON();

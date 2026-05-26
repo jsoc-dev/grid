@@ -7,7 +7,9 @@ import type { GridOptions } from "ag-grid-community";
 import { AgGridVue as AgGrid } from "ag-grid-vue3";
 import { computed } from "vue";
 
-const props = defineProps<GridOptions<GridRow>>();
+const props = defineProps<{
+  gridOptions: GridOptions<GridRow>;
+}>();
 
 const colorScheme = useDetectColorScheme();
 const theme = computed(() =>
@@ -16,13 +18,13 @@ const theme = computed(() =>
     : themeQuartz,
 );
 
-const gridOptions = computed(
-  () => props as unknown as GridOptions,
-);
+const gridOptions = computed(() => props.gridOptions);
 </script>
 
 <template>
-  <div class="ag-grid-host">
-    <AgGrid :grid-options="gridOptions" :theme="theme" style="height: 100%; width: 100%" />
-  </div>
+  <AgGrid
+    :grid-options="gridOptions"
+    :theme="theme"
+    style="height: 100%; width: 100%"
+  />
 </template>
