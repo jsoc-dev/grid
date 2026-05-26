@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import {
-  exampleErrorMessageStyles,
-  toExampleError,
-} from "@jsoc/grid-examples-shared";
+import { exampleErrorMessageStyles } from "@jsoc/grid-examples-shared";
+import { ensureError } from "@jsoc/utils";
 import { computed, onErrorCaptured, ref, watch } from "vue";
 
 const props = defineProps<{
@@ -12,7 +10,7 @@ const props = defineProps<{
 const error = ref<Error | null>(null);
 
 onErrorCaptured((captured) => {
-  error.value = toExampleError(captured);
+  error.value = ensureError(captured);
   return false;
 });
 
@@ -34,7 +32,9 @@ watch(
       {{ error.name }}
     </p>
     <div :style="exampleErrorMessageStyles.message">
-      <pre :style="exampleErrorMessageStyles.messagePre">{{ error.message }}</pre>
+      <pre :style="exampleErrorMessageStyles.messagePre">{{
+        error.message
+      }}</pre>
     </div>
   </div>
   <template v-else :key="slotKey">

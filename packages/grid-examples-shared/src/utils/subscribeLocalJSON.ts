@@ -26,9 +26,8 @@ export function subscribeBroadcastChannel(
 
   notifyLastMessage();
 
-  const handleMessage = (event: MessageEvent) => {
-    const data = event.data as PersistentBroadcastMessage;
-    listener(typeof data === "string" ? data : undefined);
+  const handleMessage = (event: MessageEvent<PersistentBroadcastMessage>) => {
+    listener(event.data);
   };
 
   const handleStorage = (event: StorageEvent) => {
