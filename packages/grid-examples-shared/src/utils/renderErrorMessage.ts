@@ -1,5 +1,6 @@
 import { exampleErrorMessageStyles } from "#constants/errorMessageStyles.ts";
-import { toExampleError } from "#utils/toExampleError.ts";
+
+import { ensureError } from "@jsoc/utils";
 
 function applyStyles(element: HTMLElement, styles: Record<string, string>) {
   Object.assign(element.style, styles);
@@ -9,7 +10,7 @@ function applyStyles(element: HTMLElement, styles: Record<string, string>) {
  * Renders a shared error message panel into `root` (vanilla examples).
  */
 export function renderErrorMessage(root: HTMLElement, error: unknown): void {
-  const err = toExampleError(error);
+  const err = ensureError(error);
   root.replaceChildren();
 
   const container = document.createElement("div");

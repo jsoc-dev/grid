@@ -1,7 +1,5 @@
-import {
-  exampleErrorMessageStyles,
-  toExampleError,
-} from "@jsoc/grid-examples-shared";
+import { exampleErrorMessageStyles } from "@jsoc/grid-examples-shared";
+import { ensureError } from "@jsoc/utils";
 import {
   ErrorBoundary as ReactErrorBoundary,
   type ErrorBoundaryProps as ReactErrorBoundaryProps,
@@ -22,7 +20,7 @@ export function ErrorBoundary(props: ErrorBoundaryProps) {
 }
 
 function ErrorMessage({ error }: { error: unknown }) {
-  const err = toExampleError(error);
+  const err = ensureError(error);
 
   return (
     <div style={exampleErrorMessageStyles.container}>
