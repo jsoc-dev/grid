@@ -30,7 +30,7 @@ const activeComponent = computed(() => {
   if (!id || !(id in props.components)) {
     return null;
   }
-  return props.components[id as keyof typeof props.components];
+  return props.components[id];
 });
 
 const exampleIds = getExampleIds("vue-grid", props.pluginId);
@@ -38,9 +38,12 @@ const pluginName = getPluginMetadata("vue-grid", props.pluginId).name;
 </script>
 
 <template>
-  <div v-if="activeComponent" class="example-view">
+  <template v-if="activeComponent">
     <component :is="activeComponent" />
-  </div>
+  </template>
+
+  <p v-else-if="exampleId">Invalid example ID: "{{ exampleId }}"</p>
+
   <nav v-else>
     <h1>{{ pluginName }} x JSOC Grid</h1>
     <ul>
@@ -54,7 +57,4 @@ const pluginName = getPluginMetadata("vue-grid", props.pluginId).name;
       </li>
     </ul>
   </nav>
-  <p v-if="exampleId && !activeComponent">
-    Invalid example ID: "{{ exampleId }}"
-  </p>
 </template>
