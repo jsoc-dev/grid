@@ -3,31 +3,47 @@ import {
   type ExampleMount,
 } from "@jsoc/vanilla-grid-examples";
 
-import { createAgGridMount } from "../utils/mountAgGrid.ts";
+import { createAgGrid } from "#/utils/createAgGrid.ts";
+import type { GridApi } from "ag-grid-community";
+import { createGridStore, type PluginConfigAg } from "@jsoc/vanilla-grid-ag";
+import type { GridStore } from "@jsoc/grid-core";
 
 export const mountLocalData: ExampleMount = (root) => {
-  let disposeGrid: (() => void) | undefined;
+  let gridApi: GridApi | undefined;
+  let unsubscribeGridStore: (() => void) | undefined;
 
-  function render(json: string | undefined) {
-    disposeGrid?.();
-    disposeGrid = undefined;
-    root.replaceChildren();
+  const unsubscribeLocalJSON = subscribeLocalJSON((data) => {
+    // destroy the previous gridApi as the new structure of the new data can be different than the previous one,
+    // Use gridApi?.updateGridOptions() instead if you are sure that the structure of the data is the same.
+    gridApi?.destroy();
 
-    if (!json) {
-      const message = document.createElement("p");
-      message.textContent = "No data";
-      root.appendChild(message);
-      return;
-    }
+    if (!data) return renderNoData(root);
 
-    disposeGrid = createAgGridMount(json)(root);
-  }
+    const gridStore = createGridStore(data);
+    gridApi = renderGrid(root, gridStore);
 
-  const unsubscribe = subscribeLocalJSON(render);
+    unsubscribeGridStore = gridStore.subscribe(() => {
+      gridApi?.destroy();
+      gridApi = renderGrid(root, gridStore);
+    });
+  });
 
   return () => {
-    unsubscribe();
-    disposeGrid?.();
-    root.replaceChildren();
+    gridApi?.destroy();
+    unsubscribeGridStore?.();
+    unsubscribeLocalJSON();
   };
 };
+
+function renderNoData(container: HTMLElement) {
+  container.replaceChildren();
+  const para = document.createElement("p");
+  para.textContent = "No data";
+  container.appendChild(para);
+}
+
+function renderGrid(container: HTMLElement, store: GridStore<PluginConfigAg>) {
+  container.replaceChildren();
+  const activeSchema = store.getActiveSchema();
+  return createAgGrid(container, activeSchema.config);
+}

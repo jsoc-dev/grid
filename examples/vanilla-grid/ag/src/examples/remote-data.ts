@@ -1,40 +1,55 @@
+import { createAgGrid } from "#/utils/createAgGrid.ts";
+import type { GridStore } from "@jsoc/grid-core";
+import { createGridStore } from "@jsoc/vanilla-grid-ag";
+import type { PluginConfigAg } from "@jsoc/vanilla-grid-ag";
 import {
   subscribeRemoteJSON,
   type ExampleMount,
-  type RemoteJSONState,
 } from "@jsoc/vanilla-grid-examples";
-
-import { createAgGridMount } from "../utils/mountAgGrid.ts";
+import type { GridApi } from "ag-grid-community";
 
 export const mountRemoteData: ExampleMount = (root) => {
-  let disposeGrid: (() => void) | undefined;
+  let gridApi: GridApi | undefined;
+  let unsubscribeGridStore: (() => void) | undefined;
 
-  function render(state: RemoteJSONState) {
-    disposeGrid?.();
-    disposeGrid = undefined;
-    root.replaceChildren();
+  const unsubscribeRemoteJSON = subscribeRemoteJSON((state) => {
+    gridApi?.destroy();
 
-    if (state.status === "loading") {
-      const message = document.createElement("p");
-      message.textContent = "Loading...";
-      root.appendChild(message);
-      return;
+    if (state.status === "loading") renderLoading(root);
+    else if (state.status === "error") renderError(root, state.error);
+    else {
+      const gridStore = createGridStore(state.data);
+      gridApi = renderGrid(root, gridStore);
+      unsubscribeGridStore = gridStore.subscribe(() => {
+        gridApi?.destroy();
+        gridApi = renderGrid(root, gridStore);
+      });
     }
+  });
 
-    if (state.status === "error") {
-      const message = document.createElement("p");
-      message.textContent = `Error: ${state.error.message}`;
-      root.appendChild(message);
-      return;
-    }
-
-    disposeGrid = createAgGridMount(state.data)(root);
-  }
-
-  const unsubscribe = subscribeRemoteJSON(render);
   return () => {
-    unsubscribe();
-    disposeGrid?.();
-    root.replaceChildren();
+    gridApi?.destroy();
+    unsubscribeGridStore?.();
+    unsubscribeRemoteJSON();
   };
 };
+
+function renderLoading(container: HTMLElement) {
+  container.replaceChildren();
+  const message = document.createElement("p");
+  message.textContent = "Loading...";
+  container.appendChild(message);
+}
+
+function renderError(container: HTMLElement, error: Error) {
+  container.replaceChildren();
+  const message = document.createElement("p");
+  message.textContent = `Error: ${error.message}`;
+  container.appendChild(message);
+}
+
+function renderGrid(container: HTMLElement, store: GridStore<PluginConfigAg>) {
+  container.replaceChildren();
+  const activeSchema = store.getActiveSchema();
+  return createAgGrid(container, activeSchema.config);
+}
