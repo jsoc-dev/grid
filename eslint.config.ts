@@ -133,27 +133,10 @@ export default defineConfig([
   // Type-aware linting for packages and scripts
   {
     files: ["packages/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
-    ignores: ["packages/vue-grid-examples/**/*.ts"],
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
-        project: true,
-        tsconfigRootDir: __dirname,
-      },
-    },
-    rules: packageImportRules,
-  },
-
-  // @jsoc/vue-grid-examples: src (tsconfig.json) + tsdown.config.ts (tsconfig.node.json)
-  {
-    files: ["packages/vue-grid-examples/**/*.ts"],
-    extends: [tseslint.configs.recommendedTypeChecked],
-    languageOptions: {
-      parserOptions: {
-        project: [
-          "packages/vue-grid-examples/tsconfig.json",
-          "packages/vue-grid-examples/tsconfig.node.json",
-        ],
+        project: ["**/tsconfig.json", "**/tsconfig.node.json"],
         tsconfigRootDir: __dirname,
       },
     },
