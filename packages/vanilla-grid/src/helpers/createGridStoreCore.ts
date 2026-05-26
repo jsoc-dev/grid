@@ -12,7 +12,7 @@ import {
 /**
  * Creates a new {@link GridStore} for the given grid options and configuration generator.
  */
-export function createGridStore<C extends PluginConfig>(
+export function createGridStoreCore<C extends PluginConfig>(
   data: GridData,
   configGenerator: PluginConfigGenerator<C>,
   configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
