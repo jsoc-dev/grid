@@ -25,7 +25,8 @@
   "dependencies": {
     "@jsoc/grid-docs": "workspace:*",
     "@jsoc/grid-examples-shared": "workspace:*",
-    "@jsoc/utils": "workspace:*"
+    "@jsoc/utils": "workspace:*",
+    "lit-html": "^3.3.3"
   },
   "devDependencies": {
     "typescript": "catalog:"
