@@ -20,7 +20,8 @@ export function useGridStoreMemo<C extends PluginConfig>(
 ): ShallowRef<GridStore<C>> {
   const options = useShallowStable(configGeneratorOptions);
   const gridStore = shallowRef(
-    new BaseGridStore(data, {
+    new BaseGridStore({
+      data,
       configGenerator,
       configGeneratorOptions: options.value,
     }),
@@ -28,9 +29,10 @@ export function useGridStoreMemo<C extends PluginConfig>(
 
   // Do not pass `configGenerator` as a watch source — Vue treats functions as getters and calls them.
   watch(
-    () => [data, options.value] as const,
+    () => [data, options.value],
     () => {
-      gridStore.value = new BaseGridStore(data, {
+      gridStore.value = new BaseGridStore({
+        data,
         configGenerator,
         configGeneratorOptions: options.value,
       });

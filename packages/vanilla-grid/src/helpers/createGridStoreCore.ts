@@ -17,7 +17,8 @@ export function createGridStoreCore<C extends PluginConfig>(
   configGenerator: PluginConfigGenerator<C>,
   configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
 ): GridStore<C> {
-  const store = new BaseGridStore(data, {
+  const store = new BaseGridStore({
+    data,
     configGenerator,
     configGeneratorOptions,
   });

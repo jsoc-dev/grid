@@ -30,7 +30,8 @@ export function useGridStoreMemo<C extends PluginConfig>(
 
   return useMemo(
     () =>
-      new BaseGridStore(data, {
+      new BaseGridStore({
+        data,
         configGenerator,
         configGeneratorOptions,
       }),
