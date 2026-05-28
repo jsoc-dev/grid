@@ -1,11 +1,11 @@
 import {
   subscribeLocalJSON,
-  type ExampleMount,
+  type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
 
 import { createTanstackTableMount } from "./mountTanstackTable.ts";
 
-export const mountLocalData: ExampleMount = (root) => {
+export const renderLocalDataExample: ExampleRenderer = (root) => {
   let disposeTable: (() => void) | undefined;
 
   function render(json: string | undefined) {

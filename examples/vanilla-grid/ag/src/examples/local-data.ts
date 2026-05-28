@@ -1,6 +1,6 @@
 import {
   subscribeLocalJSON,
-  type ExampleMount,
+  type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
 
 import { createAgGrid } from "#/utils/createAgGrid.ts";
@@ -8,7 +8,7 @@ import type { GridApi } from "ag-grid-community";
 import { createGridStore, type PluginConfigAg } from "@jsoc/vanilla-grid-ag";
 import type { GridStore } from "@jsoc/grid-core";
 
-export const mountLocalData: ExampleMount = (root) => {
+export const renderLocalDataExample: ExampleRenderer = (root) => {
   let gridApi: GridApi | undefined;
   let unsubscribeGridStore: (() => void) | undefined;
 

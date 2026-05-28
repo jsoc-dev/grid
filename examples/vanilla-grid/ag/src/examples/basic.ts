@@ -4,10 +4,10 @@ import type { GridStore } from "@jsoc/grid-core";
 import { shoeJSON } from "@jsoc/grid-examples-shared";
 import { createGridStore } from "@jsoc/vanilla-grid-ag";
 import type { PluginConfigAg } from "@jsoc/vanilla-grid-ag";
-import type { ExampleMount } from "@jsoc/vanilla-grid-examples";
+import type { ExampleRenderer } from "@jsoc/vanilla-grid-examples";
 import type { GridApi } from "ag-grid-community";
 
-export const mountBasic: ExampleMount = (root) => {
+export const renderBasicExample: ExampleRenderer = (root) => {
   let gridApi: GridApi | undefined;
 
   const gridStore = createGridStore(shoeJSON);

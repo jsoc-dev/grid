@@ -6,12 +6,12 @@ import {
 } from "@jsoc/vanilla-grid-tanstack";
 import { getCoreRowModel } from "@tanstack/table-core";
 
-import type { ExampleMount } from "@jsoc/vanilla-grid-examples";
+import type { ExampleRenderer } from "@jsoc/vanilla-grid-examples";
 
 import { renderTable } from "../utils/renderTable.ts";
 import { useTable } from "../utils/useTable.ts";
 
-export function createTanstackTableMount(data: GridData): ExampleMount {
+export function createTanstackTableMount(data: GridData): ExampleRenderer {
   return (root) => {
     root.replaceChildren();
 
