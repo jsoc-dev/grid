@@ -1,29 +1,18 @@
 import { COLUMN_GENERATORS } from "#COLUMN_GENERATORS.ts";
-import type { PluginConfigAg } from "#types.ts";
+import type {
+  ConfigGeneratorAg,
+  GridStoreAg,
+  GridStoreOptionsAg,
+} from "#types.ts";
 
-import {
-  generateColumns,
-  getRowIdString,
-  type GridData,
-  type PluginConfigGenerator,
-  type PluginConfigGeneratorOptions,
-} from "@jsoc/grid-core";
+import { generateColumns, getRowIdString } from "@jsoc/grid-core";
 import { createGridStoreCore } from "@jsoc/vanilla-grid";
 
-/**
- * Creates a grid store with the given options.
- */
-export function createGridStore(
-  data: GridData,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<PluginConfigAg>,
-) {
-  return createGridStoreCore(data, CONFIG_GENERATOR, configGeneratorOptions);
+export function createGridStore(options: GridStoreOptionsAg): GridStoreAg {
+  return createGridStoreCore({ ...options, configGenerator });
 }
 
-const CONFIG_GENERATOR: PluginConfigGenerator<PluginConfigAg> = (
-  gridSchema,
-  options,
-) => {
+const configGenerator: ConfigGeneratorAg = (gridSchema, options) => {
   const columnDefs = generateColumns(
     gridSchema,
     COLUMN_GENERATORS,
