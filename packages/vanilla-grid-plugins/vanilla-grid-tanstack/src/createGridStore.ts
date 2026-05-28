@@ -1,29 +1,20 @@
 import { COLUMN_GENERATORS } from "#COLUMN_GENERATORS.ts";
+import type {
+  ConfigGeneratorTanstack,
+  GridStoreOptionsTanstack,
+  GridStoreTanstack,
+} from "#types.ts";
 
-import {
-  generateColumns,
-  getRowIdString,
-  type GridData,
-  type PluginConfigGenerator,
-  type PluginConfigGeneratorOptions,
-} from "@jsoc/grid-core";
-import type { PluginConfigTanstack } from "@jsoc/grid-tanstack-shared";
+import { generateColumns, getRowIdString } from "@jsoc/grid-core";
 import { createGridStoreCore } from "@jsoc/vanilla-grid";
 
-/**
- * Creates a grid store with the given options.
- */
 export function createGridStore(
-  data: GridData,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<PluginConfigTanstack>,
-) {
-  return createGridStoreCore(data, CONFIG_GENERATOR, configGeneratorOptions);
+  options: GridStoreOptionsTanstack,
+): GridStoreTanstack {
+  return createGridStoreCore({ ...options, configGenerator });
 }
 
-const CONFIG_GENERATOR: PluginConfigGenerator<PluginConfigTanstack> = (
-  gridSchema,
-  options,
-) => {
+const configGenerator: ConfigGeneratorTanstack = (gridSchema, options) => {
   const columns = generateColumns(
     gridSchema,
     COLUMN_GENERATORS,
