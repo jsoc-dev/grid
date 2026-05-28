@@ -1,5 +1,9 @@
 import type { ColumnKey } from "#types/column.ts";
-import type { PluginConfig, PluginOptions } from "#types/plugin.ts";
+import type {
+  PluginConfig,
+  PluginConfigGenerator,
+  PluginConfigGeneratorOptions,
+} from "#types/plugin.ts";
 import type { GridRow } from "#types/rows.ts";
 import type {
   GridData,
@@ -10,19 +14,32 @@ import type {
 
 export type GridStoreId = string;
 
+export interface GridStoreOptions<C extends PluginConfig = PluginConfig> {
+  data: GridData;
+  configGenerator: PluginConfigGenerator<C>;
+  configGeneratorOptions?: PluginConfigGeneratorOptions<C>;
+  listener?: GridStoreListener<C>;
+}
+
+export type PluginGridStoreOptions<C extends PluginConfig = PluginConfig> =
+  Omit<GridStoreOptions<C>, "configGenerator">;
+
 /**
  * GridStore API.
  */
 export interface GridStore<C extends PluginConfig = PluginConfig> {
   readonly id: GridStoreId;
-  readonly data: GridData;
-  readonly pluginOptions: PluginOptions<C>;
+  readonly options: GridStoreOptions<C>;
 
   /**
    * Adds a new child grid schema to the store.
    * @throws `BaseGridStoreError` if no root grid schema is present in the store.
    */
   addChildSchema(origin: GridSchemaOrigin): void;
+  /**
+   * Destroys the store.
+   */
+  destroy(): void;
   /**
    * Gets the active index.
    */
@@ -42,9 +59,7 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
   /**
    * Gets the child grid schema opened from the given cell on the parent schema.
    */
-  getChildSchema(
-    origin: GridSchemaOrigin,
-  ): GridSchemaNative<C> | undefined;
+  getChildSchema(origin: GridSchemaOrigin): GridSchemaNative<C> | undefined;
   /**
    * Gets the grid schema at the given index.
    * @param index index of the grid schema
@@ -104,9 +119,17 @@ export type GridStoreState<C extends PluginConfig> = Readonly<{
 }>;
 
 /**
+ * Params object passed to a {@link GridStoreListener}.
+ */
+export type GridStoreListenerParams<C extends PluginConfig = PluginConfig> = {
+  gridStore: GridStore<C>;
+  previousState: GridStoreState<C>;
+  state: GridStoreState<C>;
+};
+
+/**
  * Listener which gets called when the state of the bound {@link GridStore} changes.
  */
 export type GridStoreListener<C extends PluginConfig = PluginConfig> = (
-  previousState: GridStoreState<C>,
-  state: GridStoreState<C>,
+  params: GridStoreListenerParams<C>,
 ) => void;

@@ -1,10 +1,9 @@
 import { BaseGridStoreError } from "#internals/BaseGridStoreError.ts";
 import { BaseGridSchema } from "#store/BaseGridSchema.ts";
 import type { ColumnKey } from "#types/column.ts";
-import type { PluginConfig, PluginOptions } from "#types/plugin.ts";
+import type { PluginConfig } from "#types/plugin.ts";
 import type { GridRow } from "#types/rows.ts";
 import type {
-  GridData,
   GridSchema,
   GridSchemaIndex,
   GridSchemaNative,
@@ -14,6 +13,7 @@ import type {
   GridStore,
   GridStoreId,
   GridStoreListener,
+  GridStoreOptions,
   GridStoreState,
 } from "#types/store.ts";
 import { getRowIdString } from "#utils/rows.ts";
@@ -21,21 +21,34 @@ import { getRowIdString } from "#utils/rows.ts";
 import { assertIsValidIndex, uuid } from "@jsoc/utils";
 
 export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
-  readonly id: GridStoreId;
-  readonly data: GridData;
-  readonly pluginOptions: PluginOptions<C>;
-
+  public readonly id: GridStoreId;
+  public readonly options: GridStoreOptions<C>;
+  #listeners = new Set<GridStoreListener<C>>();
   #state: GridStoreState<C> = {
     activeIndex: -1,
     schemas: [],
   };
-  #listeners = new Set<GridStoreListener<C>>();
 
-  public constructor(data: GridData, pluginOptions: PluginOptions<C>) {
+  public constructor(options: GridStoreOptions<C>) {
+    this.options = Object.freeze(options);
     this.id = uuid();
-    this.data = data;
-    this.pluginOptions = pluginOptions;
 
+    if (options.listener) this.subscribe(options.listener);
+
+    this.beforeInit();
+    this.init();
+  }
+
+  /**
+   * Hook invoked before the store is initialized.
+   * Ovveride this to perform any custom logic that must run before the init() method.
+   */
+  protected beforeInit() {}
+
+  /**
+   * Initializes the store with a root schema.
+   */
+  protected init() {
     const rootSchema = this.newSchema();
 
     this.#setState({
@@ -44,6 +57,12 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
     });
   }
 
+  /**
+   * Creates a new schema. This method has protected access modifier to allow
+   * subclasses to override it and provide a custom schema implementation if needed.
+   * @param origin - The origin of the schema.
+   * @returns A new schema.
+   */
   protected newSchema(origin?: GridSchemaOrigin) {
     return new BaseGridSchema<C>(this, origin);
   }
@@ -72,6 +91,11 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
       activeIndex: currentActiveIndex + 1,
       schemas,
     });
+  }
+
+  // TODO: Make the store unusable after destruction.
+  public destroy() {
+    this.#listeners.clear();
   }
 
   public getActiveIndex() {
@@ -209,9 +233,13 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
     }
   }
 
-  #notify(previousState: GridStoreState<C>, newState: GridStoreState<C>) {
+  #notify(previousState: GridStoreState<C>, state: GridStoreState<C>) {
     for (const listener of this.#listeners) {
-      listener(previousState, newState);
+      listener({
+        gridStore: this,
+        previousState,
+        state,
+      });
     }
   }
 

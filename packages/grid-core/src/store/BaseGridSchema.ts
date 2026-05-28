@@ -1,5 +1,9 @@
 import { GridCoreError } from "#internals/GridCoreError.ts";
-import type { ColumnDataType, ColumnValueByDataType, PrimaryColumnKey } from "#types/column.ts";
+import type {
+  ColumnDataType,
+  ColumnValueByDataType,
+  PrimaryColumnKey,
+} from "#types/column.ts";
 import type { PluginConfig } from "#types/plugin.ts";
 import type { GridRow, GridRowId, GridRows } from "#types/rows.ts";
 import type {
@@ -30,7 +34,7 @@ export class BaseGridSchema<
       ? origin.parent.getCellValue<"ujsonObject" | "ujsonObjectArray">(
           origin.cell,
         )
-      : store.data;
+      : store.options.data;
     const { rows, primaryColumnKey, rowsById } = generateRows(data);
 
     this.id = id;
@@ -41,9 +45,9 @@ export class BaseGridSchema<
     this.primaryColumnKey = primaryColumnKey;
     this.#rowsById = rowsById;
 
-    this.config = store.pluginOptions.configGenerator(
+    this.config = store.options.configGenerator(
       this,
-      store.pluginOptions.configGeneratorOptions,
+      store.options.configGeneratorOptions,
     );
   }
 
@@ -87,5 +91,4 @@ export class BaseGridSchema<
     const value = row[cell.columnKey];
     return value as ColumnValueByDataType[D];
   }
-
 }

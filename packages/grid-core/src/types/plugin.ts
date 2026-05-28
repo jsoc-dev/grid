@@ -20,14 +20,6 @@ export type InferColumnType<C extends PluginConfig> =
   C["__columnType"] extends infer T ? NonNullable<T> : never;
 
 /**
- * Plugin related options
- */
-export type PluginOptions<C extends PluginConfig> = {
-  configGenerator: PluginConfigGenerator<C>;
-  configGeneratorOptions?: PluginConfigGeneratorOptions<C>;
-};
-
-/**
  * Options for the {@link PluginConfigGenerator}
  */
 export type PluginConfigGeneratorOptions<
