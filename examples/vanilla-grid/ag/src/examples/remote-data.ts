@@ -4,11 +4,11 @@ import { createGridStore } from "@jsoc/vanilla-grid-ag";
 import type { PluginConfigAg } from "@jsoc/vanilla-grid-ag";
 import {
   subscribeRemoteJSON,
-  type ExampleMount,
+  type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
 import type { GridApi } from "ag-grid-community";
 
-export const mountRemoteData: ExampleMount = (root) => {
+export const renderRemoteDataExample: ExampleRenderer = (root) => {
   let gridApi: GridApi | undefined;
   let unsubscribeGridStore: (() => void) | undefined;
 

@@ -1,12 +1,12 @@
 import {
   subscribeRemoteJSON,
-  type ExampleMount,
+  type ExampleRenderer,
   type RemoteJSONState,
 } from "@jsoc/vanilla-grid-examples";
 
 import { createTanstackTableMount } from "./mountTanstackTable.ts";
 
-export const mountRemoteData: ExampleMount = (root) => {
+export const renderRemoteDataExample: ExampleRenderer = (root) => {
   let disposeTable: (() => void) | undefined;
 
   function render(state: RemoteJSONState) {

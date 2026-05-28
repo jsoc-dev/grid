@@ -11,20 +11,21 @@ import {
 } from "@jsoc/grid-docs";
 import { html, render, type TemplateResult } from "lit-html";
 
-export type ExampleMount = (root: HTMLElement) => () => void;
+export type ExampleRendererCleanup = () => void;
+export type ExampleRenderer = (root: HTMLElement) => ExampleRendererCleanup;
 
-export type MountExamplesRouterOptions<
+export type ExamplesRouterOptions<
   P extends PluginId<"vanilla-grid"> = PluginId<"vanilla-grid">,
 > = {
   root: HTMLElement;
   pluginId: P;
-  examples: {
-    [EId in ExampleId<"vanilla-grid", P>]: ExampleMount;
+  renderers: {
+    [EId in ExampleId<"vanilla-grid", P>]: ExampleRenderer;
   };
 };
 
 export function mountExamplesRouter<P extends PluginId<"vanilla-grid">>(
-  options: MountExamplesRouterOptions<P>,
+  options: ExamplesRouterOptions<P>,
 ): () => void {
   let cleanup = renderExample(options);
 
@@ -39,22 +40,22 @@ export function mountExamplesRouter<P extends PluginId<"vanilla-grid">>(
   };
 }
 
-function renderExample(options: MountExamplesRouterOptions) {
-  const { examples, root } = options;
+function renderExample(options: ExamplesRouterOptions) {
+  const { renderers, root } = options;
   const exampleId = readExampleId();
 
   if (!exampleId) return renderIndexPage(options);
-  if (!(exampleId in examples)) return renderNotFound(root);
+  if (!(exampleId in renderers)) return renderNotFound(root);
 
-  const example = examples[exampleId];
-  return example(root);
+  const renderer = renderers[exampleId];
+  return renderer(root);
 }
 
 function renderNotFound(container: HTMLElement) {
   render(html` <p>Example not found</p> `, container);
 }
 
-function renderIndexPage(options: MountExamplesRouterOptions) {
+function renderIndexPage(options: ExamplesRouterOptions) {
   const { pluginId } = options;
   const { name } = getPluginMetadata("vanilla-grid", pluginId);
   const exampleIds = getExampleIds("vanilla-grid", pluginId);
