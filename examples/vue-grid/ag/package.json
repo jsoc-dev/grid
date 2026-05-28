@@ -11,11 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-core": "workspace:*",
-    "@jsoc/grid-examples-shared": "workspace:*",
-    "@jsoc/vue-grid": "workspace:*",
-    "@jsoc/vue-grid-ag": "workspace:*",
-    "@jsoc/vue-grid-examples": "workspace:*",
+    "@jsoc/grid-core": "*",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/vue-grid": "*",
+    "@jsoc/vue-grid-ag": "*",
+    "@jsoc/vue-grid-examples": "*",
     "ag-grid-community": "35.2.1",
     "ag-grid-vue3": "35.2.1",
     "vue": "^3.5.13"

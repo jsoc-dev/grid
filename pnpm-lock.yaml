@@ -13,26 +13,6 @@ catalogs:
       specifier: ^6.0.3
       version: 6.0.3
 
-overrides:
-  '@jsoc/grid-core': workspace:*
-  '@jsoc/grid-docs': workspace:*
-  '@jsoc/grid-examples-shared': workspace:*
-  '@jsoc/react-grid': workspace:*
-  '@jsoc/react-grid-examples': workspace:*
-  '@jsoc/react-grid-ag': workspace:*
-  '@jsoc/react-grid-ant': workspace:*
-  '@jsoc/react-grid-mantine': workspace:*
-  '@jsoc/react-grid-mui': workspace:*
-  '@jsoc/react-grid-prime': workspace:*
-  '@jsoc/react-grid-tanstack': workspace:*
-  '@jsoc/vue-grid': workspace:*
-  '@jsoc/vue-grid-examples': workspace:*
-  '@jsoc/vue-grid-ag': workspace:*
-  '@jsoc/vanilla-grid': workspace:*
-  '@jsoc/vanilla-grid-examples': workspace:*
-  '@jsoc/vanilla-grid-ag': workspace:*
-  '@jsoc/vanilla-grid-tanstack': workspace:*
-
 importers:
 
   .:
@@ -184,16 +164,16 @@ importers:
   examples/react-grid/ag:
     dependencies:
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-ag':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-ag
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       ag-grid-community:
         specifier: ^35.0.0
@@ -260,16 +240,16 @@ importers:
   examples/react-grid/ant:
     dependencies:
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-ant':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-ant
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       antd:
         specifier: ^6.3.5
@@ -330,16 +310,16 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@types/react@18.3.29)(react@18.3.1)
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       '@jsoc/react-grid-mantine':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-mantine
       '@mantine/core':
         specifier: 6.0.21
@@ -415,16 +395,16 @@ importers:
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.4))(@types/react@19.2.14)(react@19.2.4)
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       '@jsoc/react-grid-mui':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-mui
       '@mui/material':
         specifier: ^7.0.0
@@ -491,16 +471,16 @@ importers:
   examples/react-grid/prime:
     dependencies:
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       '@jsoc/react-grid-prime':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-prime
       primereact:
         specifier: ^10.9.7
@@ -558,19 +538,19 @@ importers:
   examples/react-grid/tanstack:
     dependencies:
       '@jsoc/grid-core':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-core
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/react-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-examples
       '@jsoc/react-grid-tanstack':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-tanstack
       '@tanstack/react-table':
         specifier: ^8.21.3
@@ -628,19 +608,19 @@ importers:
   examples/vanilla-grid/ag:
     dependencies:
       '@jsoc/grid-core':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-core
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/vanilla-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid
       '@jsoc/vanilla-grid-ag':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid-plugins/vanilla-grid-ag
       '@jsoc/vanilla-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid-examples
       ag-grid-community:
         specifier: 35.2.1
@@ -656,19 +636,19 @@ importers:
   examples/vanilla-grid/tanstack:
     dependencies:
       '@jsoc/grid-core':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-core
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/vanilla-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid
       '@jsoc/vanilla-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid-examples
       '@jsoc/vanilla-grid-tanstack':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vanilla-grid-plugins/vanilla-grid-tanstack
       '@tanstack/table-core':
         specifier: ^8.21.3
@@ -684,19 +664,19 @@ importers:
   examples/vue-grid/ag:
     dependencies:
       '@jsoc/grid-core':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-core
       '@jsoc/grid-examples-shared':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/grid-examples-shared
       '@jsoc/vue-grid':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vue-grid
       '@jsoc/vue-grid-ag':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vue-grid-plugins/vue-grid-ag
       '@jsoc/vue-grid-examples':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../../../packages/vue-grid-examples
       ag-grid-community:
         specifier: 35.2.1

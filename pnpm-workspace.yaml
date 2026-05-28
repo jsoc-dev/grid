@@ -12,36 +12,4 @@ catalog:
   tsdown: "^0.x"
   typescript: "^6.0.3"
 
-overrides:
-  # for overriding packages in examples/** to use workspace:* instead of published versions
-  # core packages
-  "@jsoc/grid-core": "workspace:*"
-  "@jsoc/grid-docs": "workspace:*"
-  "@jsoc/grid-examples-shared": "workspace:*"
-
-  # react-grid
-  "@jsoc/react-grid": "workspace:*"
-  "@jsoc/react-grid-examples": "workspace:*"
-
-  # react-grid-plugins
-  "@jsoc/react-grid-ag": "workspace:*"
-  "@jsoc/react-grid-ant": "workspace:*"
-  "@jsoc/react-grid-mantine": "workspace:*"
-  "@jsoc/react-grid-mui": "workspace:*"
-  "@jsoc/react-grid-prime": "workspace:*"
-  "@jsoc/react-grid-tanstack": "workspace:*"
-
-  # vue-grid
-  "@jsoc/vue-grid": "workspace:*"
-  "@jsoc/vue-grid-examples": "workspace:*"
-
-  # vue-grid-plugins
-  "@jsoc/vue-grid-ag": "workspace:*"
-
-  # vanilla-grid
-  "@jsoc/vanilla-grid": "workspace:*"
-  "@jsoc/vanilla-grid-examples": "workspace:*"
-
-  # vanilla-grid-plugins
-  "@jsoc/vanilla-grid-ag": "workspace:*"
-  "@jsoc/vanilla-grid-tanstack": "workspace:*"
+linkWorkspacePackages: true

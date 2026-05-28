@@ -11,11 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-core": "latest",
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/vanilla-grid": "latest",
-    "@jsoc/vanilla-grid-ag": "latest",
-    "@jsoc/vanilla-grid-examples": "latest",
+    "@jsoc/grid-core": "*",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/vanilla-grid": "*",
+    "@jsoc/vanilla-grid-ag": "*",
+    "@jsoc/vanilla-grid-examples": "*",
     "ag-grid-community": "35.2.1"
   },
   "devDependencies": {
