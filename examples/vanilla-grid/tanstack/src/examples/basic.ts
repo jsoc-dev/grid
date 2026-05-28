@@ -1,5 +1,22 @@
+import { useTable } from "#/utils/useTable.ts";
+import { renderTable } from "#/utils/renderTable.ts";
+
 import { shoeJSON } from "@jsoc/grid-examples-shared";
+import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
+import type { ExampleRenderer } from "@jsoc/vanilla-grid-examples";
+import { getCoreRowModel } from "@tanstack/table-core";
 
-import { createTanstackTableMount } from "./mountTanstackTable.ts";
+export const renderBasicExample: ExampleRenderer = (root) => {
+  const gridStore = createGridStore({ data: shoeJSON });
+  const tableOptions = gridStore.getActiveSchema().config;
+  const table = useTable({
+    ...tableOptions,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
-export const renderBasicExample = createTanstackTableMount(shoeJSON);
+  renderTable(table, root);
+
+  return () => {
+    gridStore.destroy();
+  };
+};

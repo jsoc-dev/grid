@@ -1,40 +1,59 @@
+import { useTable } from "#/utils/useTable.ts";
+import { renderTable } from "#/utils/renderTable.ts";
+
+import {
+  createGridStore,
+  type GridStoreTanstack,
+} from "@jsoc/vanilla-grid-tanstack";
 import {
   subscribeRemoteJSON,
   type ExampleRenderer,
-  type RemoteJSONState,
 } from "@jsoc/vanilla-grid-examples";
-
-import { createTanstackTableMount } from "./mountTanstackTable.ts";
+import { getCoreRowModel } from "@tanstack/table-core";
 
 export const renderRemoteDataExample: ExampleRenderer = (root) => {
-  let disposeTable: (() => void) | undefined;
+  let gridStore: GridStoreTanstack | undefined;
 
-  function render(state: RemoteJSONState) {
-    disposeTable?.();
-    disposeTable = undefined;
-    root.replaceChildren();
-
+  const unsubscribeRemoteJSON = subscribeRemoteJSON((state) => {
     if (state.status === "loading") {
-      const message = document.createElement("p");
-      message.textContent = "Loading...";
-      root.appendChild(message);
+      renderLoading(root);
       return;
     }
 
     if (state.status === "error") {
-      const message = document.createElement("p");
-      message.textContent = `Error: ${state.error.message}`;
-      root.appendChild(message);
+      renderError(root, state.error);
       return;
     }
 
-    disposeTable = createTanstackTableMount(state.data)(root);
-  }
+    gridStore?.destroy();
+    gridStore = createGridStore({
+      data: state.data,
+      listener: ({ gridStore }) => {
+        const tableOptions = gridStore.getActiveSchema().config;
+        const table = useTable({
+          ...tableOptions,
+          getCoreRowModel: getCoreRowModel(),
+        });
 
-  const unsubscribe = subscribeRemoteJSON(render);
+        renderTable(table, root);
+      },
+    });
+  });
+
   return () => {
-    unsubscribe();
-    disposeTable?.();
-    root.replaceChildren();
+    gridStore?.destroy();
+    unsubscribeRemoteJSON();
   };
 };
+
+function renderLoading(container: HTMLElement) {
+  const message = document.createElement("p");
+  message.textContent = "Loading...";
+  container.replaceChildren(message);
+}
+
+function renderError(container: HTMLElement, error: Error) {
+  const message = document.createElement("p");
+  message.textContent = `Error: ${error.message}`;
+  container.replaceChildren(message);
+}

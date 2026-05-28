@@ -1,32 +1,48 @@
+import { useTable } from "#/utils/useTable.ts";
+import { renderTable } from "#/utils/renderTable.ts";
+
+import {
+  createGridStore,
+  type GridStoreTanstack,
+} from "@jsoc/vanilla-grid-tanstack";
 import {
   subscribeLocalJSON,
   type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
-
-import { createTanstackTableMount } from "./mountTanstackTable.ts";
+import { getCoreRowModel } from "@tanstack/table-core";
 
 export const renderLocalDataExample: ExampleRenderer = (root) => {
-  let disposeTable: (() => void) | undefined;
+  let gridStore: GridStoreTanstack | undefined;
 
-  function render(json: string | undefined) {
-    disposeTable?.();
-    disposeTable = undefined;
-    root.replaceChildren();
-
-    if (!json) {
-      const message = document.createElement("p");
-      message.textContent = "No data";
-      root.appendChild(message);
+  const unsubscribeLocalJSON = subscribeLocalJSON((data) => {
+    if (!data) {
+      renderNoData(root);
       return;
     }
 
-    disposeTable = createTanstackTableMount(json)(root);
-  }
+    gridStore?.destroy();
+    gridStore = createGridStore({
+      data,
+      listener: ({ gridStore }) => {
+        const tableOptions = gridStore.getActiveSchema().config;
+        const table = useTable({
+          ...tableOptions,
+          getCoreRowModel: getCoreRowModel(),
+        });
 
-  const unsubscribe = subscribeLocalJSON(render);
+        renderTable(table, root);
+      },
+    });
+  });
+
   return () => {
-    unsubscribe();
-    disposeTable?.();
-    root.replaceChildren();
+    gridStore?.destroy();
+    unsubscribeLocalJSON();
   };
 };
+
+function renderNoData(container: HTMLElement) {
+  const message = document.createElement("p");
+  message.textContent = "No data";
+  container.replaceChildren(message);
+}
