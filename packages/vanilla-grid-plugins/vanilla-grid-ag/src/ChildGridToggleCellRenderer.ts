@@ -1,12 +1,14 @@
-import type { ColumnKey, GridRow, GridStoreId } from "@jsoc/grid-core";
+import type { ColumnGeneratorParams, GridRow } from "@jsoc/grid-core";
 import { ChildGridToggle } from "@jsoc/vanilla-grid";
 import type { ICellRendererComp, ICellRendererParams } from "ag-grid-community";
 import { html, render } from "lit-html";
 
-export type ChildGridToggleCellRendererParams = ICellRendererParams<GridRow> & {
-  columnKey: ColumnKey;
-  storeId: GridStoreId;
+export type ChildGridToggleCellRendererCustomParams = {
+  columnParams: ColumnGeneratorParams<"ujsonObject" | "ujsonObjectArray">;
 };
+
+export type ChildGridToggleCellRendererParams = ICellRendererParams<GridRow> &
+  ChildGridToggleCellRendererCustomParams;
 
 /**
  * AG Grid cell renderer for {@link ChildGridToggle}.
@@ -36,10 +38,8 @@ export class ChildGridToggleCellRenderer implements ICellRendererComp<GridRow> {
    * @see https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/#creating-custom-components
    */
   refresh(params: ChildGridToggleCellRendererParams): boolean {
-    const { data: row, columnKey, storeId } = params;
-    const template = row
-      ? ChildGridToggle({ row, columnKey, storeId })
-      : html``;
+    const { data: row, columnParams } = params;
+    const template = row ? ChildGridToggle({ row, columnParams }) : html``;
     render(template, this.eGui);
     return true;
   }

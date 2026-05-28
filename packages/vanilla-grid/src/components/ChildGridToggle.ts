@@ -1,20 +1,21 @@
-import { getGridStore } from "#helpers/getGridStore.ts";
-
-import type { ColumnKey, GridRow, GridStoreId } from "@jsoc/grid-core";
+import {
+  BaseGridSchema,
+  type ColumnGeneratorParams,
+  type GridRow,
+} from "@jsoc/grid-core";
 import { html, render, type TemplateResult } from "lit-html";
 
 export type ChildGridToggleOptions = {
   row: GridRow;
-  columnKey: ColumnKey;
-  storeId: GridStoreId;
+  columnParams: ColumnGeneratorParams<"ujsonObject" | "ujsonObjectArray">;
 };
-
 export function ChildGridToggle({
   row,
-  columnKey,
-  storeId,
+  columnParams,
 }: ChildGridToggleOptions): TemplateResult {
-  const gridStore = getGridStore(storeId);
+  const { columnKey, gridSchema } = columnParams;
+  BaseGridSchema.assertInstance(gridSchema);
+  const gridStore = gridSchema.store;
   const origin = gridStore.getChildSchemaOrigin(row, columnKey);
   const toggleStatus = gridStore.hasChildSchema(origin);
   const toggle = () => gridStore.toggleChildSchema(origin);
