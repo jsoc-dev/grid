@@ -128,21 +128,3 @@ export function deleteKeys<T extends object, K extends keyof T>(
 
   return clone;
 }
-
-/**
- * Shallow-compares two objects by their enumerable own keys.
- * Returns true if all keys and their values are the same (using Object.is).
- */
-export function shallowEqual(a: unknown, b: unknown): boolean {
-  if (!isPlainObject(a) || !isPlainObject(b)) {
-    return Object.is(a, b);
-  }
-
-  const keysA = Object.keys(a);
-  const keysB = Object.keys(b);
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  return keysA.every((key) => Object.is(a[key], b[key]));
-}

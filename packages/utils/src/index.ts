@@ -8,7 +8,7 @@ export * from "./function.ts";
 export * from "./json.ts";
 export * from "./null.ts";
 export * from "./number.ts";
-export * from "./object.ts";
+export * from "./object/index.ts";
 export * from "./string.ts";
 export * from "./symbol.ts";
 export * from "./ujson.ts";

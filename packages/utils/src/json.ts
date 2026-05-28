@@ -2,7 +2,7 @@ import { isArray } from "#array.ts";
 import { isBoolean } from "#boolean.ts";
 import { isNull, isUndefined } from "#null.ts";
 import { isFiniteNumber } from "#number.ts";
-import { isPlainObject } from "#object.ts";
+import { isPlainObject } from "#object/object.ts";
 import { isString, toStringSafe } from "#string.ts";
 
 /**
