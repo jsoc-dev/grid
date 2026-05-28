@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/react-grid": "latest",
-    "@jsoc/react-grid-ag": "latest",
-    "@jsoc/react-grid-examples": "latest",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/react-grid": "*",
+    "@jsoc/react-grid-ag": "*",
+    "@jsoc/react-grid-examples": "*",
     "ag-grid-community": "^35.0.0",
     "ag-grid-react": "^35.0.0",
     "react": "^19.2.3",

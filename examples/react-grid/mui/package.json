@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/react-grid": "latest",
-    "@jsoc/react-grid-mui": "latest",
-    "@jsoc/react-grid-examples": "latest",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/react-grid": "*",
+    "@jsoc/react-grid-mui": "*",
+    "@jsoc/react-grid-examples": "*",
     "@mui/material": "^7.0.0",
     "@mui/x-data-grid": "^8.16.0",
     "@emotion/styled": "^11.14.1",

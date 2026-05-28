@@ -9,11 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-core": "latest",
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/react-grid": "latest",
-    "@jsoc/react-grid-tanstack": "latest",
-    "@jsoc/react-grid-examples": "latest",
+    "@jsoc/grid-core": "*",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/react-grid": "*",
+    "@jsoc/react-grid-tanstack": "*",
+    "@jsoc/react-grid-examples": "*",
     "@tanstack/react-table": "^8.21.3",
     "react": "^19",
     "react-dom": "^19"

@@ -8,11 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-core": "latest",
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/vanilla-grid": "latest",
-    "@jsoc/vanilla-grid-examples": "latest",
-    "@jsoc/vanilla-grid-tanstack": "latest",
+    "@jsoc/grid-core": "*",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/vanilla-grid": "*",
+    "@jsoc/vanilla-grid-examples": "*",
+    "@jsoc/vanilla-grid-tanstack": "*",
     "@tanstack/table-core": "^8.21.3"
   },
   "devDependencies": {

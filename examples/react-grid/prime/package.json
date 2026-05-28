@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-examples-shared": "latest",
-    "@jsoc/react-grid": "latest",
-    "@jsoc/react-grid-prime": "latest",
-    "@jsoc/react-grid-examples": "latest",
+    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/react-grid": "*",
+    "@jsoc/react-grid-prime": "*",
+    "@jsoc/react-grid-examples": "*",
     "primereact": "^10.9.7",
     "react": "^19",
     "react-dom": "^19"
