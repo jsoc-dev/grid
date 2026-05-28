@@ -1,4 +1,7 @@
-import { ChildGridToggleCellRenderer } from "#ChildGridToggleCellRenderer.ts";
+import {
+  ChildGridToggleCellRenderer,
+  type ChildGridToggleCellRendererCustomParams,
+} from "#ChildGridToggleCellRenderer.ts";
 import type { PluginConfigAg } from "#types.ts";
 
 import {
@@ -16,7 +19,7 @@ import {
   type ColumnGenerator,
   type ColumnGeneratorByType,
 } from "@jsoc/grid-core";
-import { getGridStoreId } from "@jsoc/vanilla-grid";
+
 export type ColumnGeneratorAg<D extends ColumnDataType> = ColumnGenerator<
   PluginConfigAg,
   D
@@ -41,30 +44,24 @@ const stringDateColumnGenerator: ColumnGeneratorAg<"stringDate"> = (params) => {
 const ujsonObjectColumnGenerator: ColumnGeneratorAg<"ujsonObject"> = (
   params,
 ) => {
-  const storeId = getGridStoreId(params.gridSchema);
-
   return {
     ...sharedUjsonObjectColumnGenerator(params),
     cellRenderer: ChildGridToggleCellRenderer,
     cellRendererParams: {
-      columnKey: params.columnKey,
-      storeId,
-    },
+      columnParams: params,
+    } satisfies ChildGridToggleCellRendererCustomParams,
   };
 };
 
 const ujsonObjectArrayColumnGenerator: ColumnGeneratorAg<"ujsonObjectArray"> = (
   params,
 ) => {
-  const storeId = getGridStoreId(params.gridSchema);
-
   return {
     ...sharedUjsonObjectArrayColumnGenerator(params),
     cellRenderer: ChildGridToggleCellRenderer,
     cellRendererParams: {
-      columnKey: params.columnKey,
-      storeId,
-    },
+      columnParams: params,
+    } satisfies ChildGridToggleCellRendererCustomParams,
   };
 };
 
