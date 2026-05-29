@@ -1,3 +1,7 @@
+import {
+  ChildGridToggleCellRenderer,
+  type ChildGridToggleCellRendererCustomParams,
+} from "#ChildGridToggleCellRenderer.ts";
 import type { PluginConfigAg } from "#types.ts";
 
 import {
@@ -14,11 +18,7 @@ import {
   type ColumnDataType,
   type ColumnGenerator,
   type ColumnGeneratorByType,
-  type GridRow,
 } from "@jsoc/grid-core";
-import { ChildGridToggle } from "@jsoc/vue-grid";
-import type { ICellRendererParams } from "ag-grid-community";
-import { h } from "vue";
 
 export type ColumnGeneratorAg<D extends ColumnDataType> = ColumnGenerator<
   PluginConfigAg,
@@ -46,14 +46,10 @@ const ujsonObjectColumnGenerator: ColumnGeneratorAg<"ujsonObject"> = (
 ) => {
   return {
     ...sharedUjsonObjectColumnGenerator(params),
-    cellRenderer: (rParams: ICellRendererParams<GridRow, string>) => {
-      const { data } = rParams;
-      if (!data) return null;
-      return h(ChildGridToggle, {
-        row: data,
-        columnKey: params.columnKey,
-      });
-    },
+    cellRenderer: ChildGridToggleCellRenderer,
+    cellRendererParams: {
+      columnParams: params,
+    } satisfies ChildGridToggleCellRendererCustomParams,
   };
 };
 
@@ -62,14 +58,10 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorAg<"ujsonObjectArray"> = (
 ) => {
   return {
     ...sharedUjsonObjectArrayColumnGenerator(params),
-    cellRenderer: (rParams: ICellRendererParams<GridRow, string>) => {
-      const { data } = rParams;
-      if (!data) return null;
-      return h(ChildGridToggle, {
-        row: data,
-        columnKey: params.columnKey,
-      });
-    },
+    cellRenderer: ChildGridToggleCellRenderer,
+    cellRendererParams: {
+      columnParams: params,
+    } satisfies ChildGridToggleCellRendererCustomParams,
   };
 };
 
