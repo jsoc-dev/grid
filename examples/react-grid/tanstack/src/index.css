@@ -16,8 +16,9 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+* {
   margin: 0;
+  box-sizing: border-box;
 }
 
 .table-container {
