@@ -1,4 +1,4 @@
-import { isPlainObject } from "#/object/object.ts";
+import { isPlainObject } from "#object/object.ts";
 
 export type DeepEqualKeyPath = ReadonlyArray<string>;
 export type DeepEqualComparisonKeys = ReadonlyArray<DeepEqualKeyPath>;
