@@ -1,2 +1,2 @@
-export { default as productsJSON } from "./products.json";
-export { default as shoeJSON } from "./shoe.json";
+export { default as basicJSON } from "./basic.json";
+export { default as nestedJSON } from "./nested.json";

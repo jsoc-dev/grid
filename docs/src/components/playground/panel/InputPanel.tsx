@@ -1,7 +1,7 @@
 "use client";
 
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
-import { shoeJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-shared";
 import { useSetLocalJSON } from "@jsoc/react-grid-examples";
 import { encodePretty } from "@jsoc/utils";
 import Editor from "@monaco-editor/react";
@@ -10,7 +10,7 @@ import { useTheme } from "next-themes";
 import { RotateCcw } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const DEFAULT_DATA = encodePretty(shoeJSON);
+const DEFAULT_DATA = encodePretty(basicJSON);
 
 export function InputPanel() {
   const { resolvedTheme } = useTheme();
