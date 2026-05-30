@@ -42,6 +42,7 @@
     "build-packages": "tsx scripts/build-packages.ts",
     "build": "pnpm build-examples && pnpm build-packages",
     "changeset": "changeset",
+    "commitlint": "commitlint",
     "lint": "eslint . && pnpm --recursive --parallel run lint",
     "lint:fix": "eslint . --fix && pnpm --recursive --parallel run lint:fix",
     "prepare": "husky",
