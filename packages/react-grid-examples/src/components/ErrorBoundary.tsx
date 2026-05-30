@@ -1,5 +1,5 @@
-import { exampleErrorMessageStyles } from "@jsoc/grid-examples-shared";
-import { ensureError } from "@jsoc/utils";
+import { ErrorMessage } from "#components/ErrorMessage.tsx";
+
 import {
   ErrorBoundary as ReactErrorBoundary,
   type ErrorBoundaryProps as ReactErrorBoundaryProps,
@@ -16,18 +16,5 @@ export function ErrorBoundary(props: ErrorBoundaryProps) {
       fallbackRender={({ error }) => <ErrorMessage error={error} />}
       {...props}
     />
-  );
-}
-
-function ErrorMessage({ error }: { error: unknown }) {
-  const err = ensureError(error);
-
-  return (
-    <div style={exampleErrorMessageStyles.container}>
-      <p style={exampleErrorMessageStyles.title}>{err.name}</p>
-      <div style={exampleErrorMessageStyles.message}>
-        <pre style={exampleErrorMessageStyles.messagePre}>{err.message}</pre>
-      </div>
-    </div>
   );
 }
