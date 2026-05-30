@@ -1,4 +1,5 @@
 import { createAgGrid } from "#/utils/createAgGrid.ts";
+import { ensureError } from "@jsoc/utils";
 
 import { createGridStore, type GridStoreAg } from "@jsoc/vanilla-grid-ag";
 import {
@@ -17,16 +18,20 @@ export const renderLocalDataExample: ExampleRenderer = (root) => {
       return;
     }
 
-    gridStore?.destroy();
-    gridStore = createGridStore({
-      data,
-      listener: ({ gridStore }) => {
-        const gridOptions = gridStore.getActiveSchema().config;
-        root.replaceChildren();
-        gridApi?.destroy();
-        gridApi = createAgGrid(root, gridOptions);
-      },
-    });
+    try {
+      gridStore?.destroy();
+      gridStore = createGridStore({
+        data,
+        listener: ({ gridStore }) => {
+          const gridOptions = gridStore.getActiveSchema().config;
+          root.replaceChildren();
+          gridApi?.destroy();
+          gridApi = createAgGrid(root, gridOptions);
+        },
+      });
+    } catch (error) {
+      renderError(root, error);
+    }
   });
 
   return () => {
@@ -39,5 +44,12 @@ export const renderLocalDataExample: ExampleRenderer = (root) => {
 function renderNoData(container: HTMLElement) {
   const message = document.createElement("p");
   message.textContent = "No data";
+  container.replaceChildren(message);
+}
+
+function renderError(container: HTMLElement, error: unknown) {
+  const err = ensureError(error);
+  const message = document.createElement("p");
+  message.textContent = `Error: ${err.message}`;
   container.replaceChildren(message);
 }
