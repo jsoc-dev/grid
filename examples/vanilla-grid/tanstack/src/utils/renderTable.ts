@@ -2,6 +2,24 @@ import type { GridRow } from "@jsoc/grid-core";
 import type { Table } from "@tanstack/table-core";
 
 export function renderTable(table: Table<GridRow>, container: HTMLElement) {
+  const headerGroups = table.getHeaderGroups();
+  const rows = table.getRowModel().rows;
+
+  const hasRows = rows.length > 0;
+  const hasHeaders = headerGroups.some((group) => group.headers.length > 0);
+
+  if (!hasRows) {
+    renderMessage("No rows", container);
+    return;
+  }
+
+  if (!hasHeaders) {
+    renderMessage("No columns", container);
+    return;
+  }
+
+  const tableContainer = document.createElement("div");
+  tableContainer.className = "table-container";
   const tableElement = document.createElement("table");
   const theadElement = document.createElement("thead");
   const tbodyElement = document.createElement("tbody");
@@ -10,8 +28,9 @@ export function renderTable(table: Table<GridRow>, container: HTMLElement) {
   tableElement.appendChild(theadElement);
   tableElement.appendChild(tbodyElement);
   tableElement.appendChild(tfootElement);
+  tableContainer.appendChild(tableElement);
 
-  for (const headerGroup of table.getHeaderGroups()) {
+  for (const headerGroup of headerGroups) {
     const trElement = document.createElement("tr");
 
     for (const header of headerGroup.headers) {
@@ -26,7 +45,7 @@ export function renderTable(table: Table<GridRow>, container: HTMLElement) {
     theadElement.appendChild(trElement);
   }
 
-  for (const row of table.getRowModel().rows) {
+  for (const row of rows) {
     const trElement = document.createElement("tr");
 
     for (const cell of row.getVisibleCells()) {
@@ -41,7 +60,7 @@ export function renderTable(table: Table<GridRow>, container: HTMLElement) {
     tbodyElement.appendChild(trElement);
   }
 
-  container.replaceChildren(tableElement);
+  container.replaceChildren(tableContainer);
 }
 
 /**
@@ -66,4 +85,10 @@ function renderElement(el: HTMLElement, content: unknown) {
   }
 
   el.textContent = String(content);
+}
+
+function renderMessage(message: string, container: HTMLElement) {
+  const el = document.createElement("p");
+  el.textContent = message;
+  container.replaceChildren(el);
 }
