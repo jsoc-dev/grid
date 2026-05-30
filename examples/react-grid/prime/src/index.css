@@ -1,16 +1,2 @@
 @import "primereact/resources/primereact.css";
-
-:root {
-  color-scheme: light dark;
-}
-
-html,
-body,
-#root {
-  height: 100%;
-}
-
-* {
-  margin: 0;
-  box-sizing: border-box;
-}
+@import "@jsoc/grid-examples-shared/css/base.css";

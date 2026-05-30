@@ -6,6 +6,7 @@ import {
   type GridStoreTanstack,
 } from "@jsoc/vanilla-grid-tanstack";
 import {
+  renderError,
   subscribeRemoteJSON,
   type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
@@ -49,11 +50,5 @@ export const renderRemoteDataExample: ExampleRenderer = (root) => {
 function renderLoading(container: HTMLElement) {
   const message = document.createElement("p");
   message.textContent = "Loading...";
-  container.replaceChildren(message);
-}
-
-function renderError(container: HTMLElement, error: Error) {
-  const message = document.createElement("p");
-  message.textContent = `Error: ${error.message}`;
   container.replaceChildren(message);
 }

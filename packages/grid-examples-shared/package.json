@@ -13,7 +13,8 @@
     "#*": "./src/*"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./css/*": "./src/css/*"
   },
   "files": [
     "src"

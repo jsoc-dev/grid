@@ -1,0 +1,26 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 2px solid #ef4444;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  background-color: canvas;
+}
+
+.error > p {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #ef4444;
+}
+
+.error > div {
+  font-size: 0.875rem;
+  color: #71717a;
+}
+
+.error pre {
+  display: inline;
+  white-space: pre-wrap;
+  font-family: inherit;
+}

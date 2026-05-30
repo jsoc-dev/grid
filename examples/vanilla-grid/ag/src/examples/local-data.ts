@@ -1,8 +1,8 @@
 import { createAgGrid } from "#/utils/createAgGrid.ts";
-import { ensureError } from "@jsoc/utils";
 
 import { createGridStore, type GridStoreAg } from "@jsoc/vanilla-grid-ag";
 import {
+  renderError,
   subscribeLocalJSON,
   type ExampleRenderer,
 } from "@jsoc/vanilla-grid-examples";
@@ -44,12 +44,5 @@ export const renderLocalDataExample: ExampleRenderer = (root) => {
 function renderNoData(container: HTMLElement) {
   const message = document.createElement("p");
   message.textContent = "No data";
-  container.replaceChildren(message);
-}
-
-function renderError(container: HTMLElement, error: unknown) {
-  const err = ensureError(error);
-  const message = document.createElement("p");
-  message.textContent = `Error: ${err.message}`;
   container.replaceChildren(message);
 }
