@@ -8,20 +8,28 @@ import {
   type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
-import { type ShallowRef, shallowRef, watch } from "vue";
+import {
+  type MaybeRefOrGetter,
+  type ShallowRef,
+  shallowRef,
+  toValue,
+  watch,
+} from "vue";
 
 /**
  * Creates a {@link GridStore} that is recreated when inputs change shallowly.
  */
 export function useGridStoreMemo<C extends PluginConfig>(
-  data: GridData,
+  data: MaybeRefOrGetter<GridData>,
   configGenerator: PluginConfigGenerator<C>,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<C>,
+  configGeneratorOptions?: MaybeRefOrGetter<
+    PluginConfigGeneratorOptions<C> | undefined
+  >,
 ): ShallowRef<GridStore<C>> {
   const options = useShallowStable(configGeneratorOptions);
   const gridStore = shallowRef(
     new BaseGridStore({
-      data,
+      data: toValue(data),
       configGenerator,
       configGeneratorOptions: options.value,
     }),
@@ -29,10 +37,10 @@ export function useGridStoreMemo<C extends PluginConfig>(
 
   // Do not pass `configGenerator` as a watch source — Vue treats functions as getters and calls them.
   watch(
-    () => [data, options.value],
+    () => [toValue(data), options.value] as const,
     () => {
       gridStore.value = new BaseGridStore({
-        data,
+        data: toValue(data),
         configGenerator,
         configGeneratorOptions: options.value,
       });
