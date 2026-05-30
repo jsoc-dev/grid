@@ -3,6 +3,9 @@
 ## Tools
 
 - This project uses `pnpm` as the package manager. Use `pnpm` commands whenever possible.
+- Before committing changes, verify that the commit message and body adhere to [commitlint](commitlint.config.ts) rules:
+  - Draft message: `pnpm commitlint` (pipe the message on stdin)
+  - Last commit: `pnpm commitlint -- --last`
 
 ---
 
@@ -24,4 +27,4 @@
 
 - All the example apps are located in [Examples](examples) grouped by frameworks.
 - Examples must be pure NPM packages so that they can be also run directly on environments like CodeSandbox/StackBlitz/etc.
-- Use NPM supported version specifiers only. Don't use PNPM "catalog:" or "workspace:\*" in package.json.
+- Use NPM supported version specifiers only. Don't use PNPM "catalog:" or "workspace:" in package.json.
