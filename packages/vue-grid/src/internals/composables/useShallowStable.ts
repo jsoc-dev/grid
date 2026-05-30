@@ -1,11 +1,17 @@
 import { shallowEqual } from "@jsoc/utils";
-import { type ShallowRef, shallowRef, watch } from "vue";
+import {
+  type MaybeRefOrGetter,
+  type ShallowRef,
+  shallowRef,
+  toValue,
+  watch,
+} from "vue";
 
-export function useShallowStable<T>(value: T): ShallowRef<T> {
-  const stable = shallowRef(value);
+export function useShallowStable<T>(value: MaybeRefOrGetter<T>): ShallowRef<T> {
+  const stable = shallowRef(toValue(value));
 
   watch(
-    () => value,
+    () => toValue(value),
     (next) => {
       if (!shallowEqual(stable.value, next)) {
         stable.value = next;

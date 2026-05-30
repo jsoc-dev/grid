@@ -9,13 +9,18 @@ import {
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
 import { useGridStoreMemo } from "@jsoc/vue-grid";
+import type { MaybeRefOrGetter } from "vue";
 
 /**
  * Composable to create a grid store for AG Grid.
+ *
+ * Pass reactive props with {@link toRef}, e.g. `useGridStore(toRef(props, "data"))`.
  */
 export function useGridStore(
-  data: GridData,
-  configGeneratorOptions?: PluginConfigGeneratorOptions<PluginConfigAg>,
+  data: MaybeRefOrGetter<GridData>,
+  configGeneratorOptions?: MaybeRefOrGetter<
+    PluginConfigGeneratorOptions<PluginConfigAg> | undefined
+  >,
 ) {
   return useGridStoreMemo<PluginConfigAg>(
     data,
