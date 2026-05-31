@@ -49,7 +49,7 @@
   "dependencies": {
     "@jsoc/grid-core": "workspace:*",
     "@jsoc/utils": "workspace:*",
-    "lit-html": "^3.3.3"
+    "jsx-dom": "^8.1.6"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
