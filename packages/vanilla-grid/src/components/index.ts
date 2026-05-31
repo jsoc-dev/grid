@@ -1,2 +1,2 @@
-export * from "./ChildGridToggle.ts";
-export * from "./SimpleNavigator.ts";
+export * from "./ChildGridToggle.tsx";
+export * from "./SimpleNavigator.tsx";

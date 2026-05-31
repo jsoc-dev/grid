@@ -4,6 +4,8 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "jsx-dom",
 
     "allowImportingTsExtensions": true, // subpath imports require file extensions
 
