@@ -78,6 +78,12 @@ const VUE_GRID_PLUGINS_METADATA_MAP = {
     packageName: "@jsoc/vue-grid-ag",
     peerDeps: ["ag-grid-community", "ag-grid-vue3"],
   },
+  tanstack: {
+    name: "TanStack Table",
+    shortName: "TanStack",
+    packageName: "@jsoc/vue-grid-tanstack",
+    peerDeps: ["@tanstack/vue-table"],
+  },
 } as const satisfies PluginMetadataMap<"vue-grid">;
 
 const PLUGIN_METADATA_MAP_BY_FRAMEWORK: PluginMetadataMapByFramework = {
