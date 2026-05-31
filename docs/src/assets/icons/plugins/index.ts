@@ -26,6 +26,7 @@ const PLUGIN_ICONS_BY_FRAMEWORK = {
   },
   "vue-grid": {
     ag: AgIcon,
+    tanstack: TanStackIcon,
   },
   "vanilla-grid": {
     ag: AgIcon,
