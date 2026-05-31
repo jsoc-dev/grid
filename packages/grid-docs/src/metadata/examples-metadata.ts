@@ -66,6 +66,7 @@ const VANILLA_GRID_EXAMPLES_METADATA_MAP = {
 
 const VUE_GRID_EXAMPLES_METADATA_MAP = {
   ag: { ...SHARED_EXAMPLE_METADATA_MAP },
+  tanstack: { ...SHARED_EXAMPLE_METADATA_MAP },
 } as const satisfies ExampleMetadataMapByPlugin<"vue-grid">;
 
 const EXAMPLES_METADATA_BY_FRAMEWORK: ExampleMetadataMapByPluginByFramework = {

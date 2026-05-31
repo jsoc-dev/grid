@@ -6,7 +6,7 @@ export type ReactGridPluginId =
   | "tanstack"
   | "prime";
 
-export type VueGridPluginId = "ag";
+export type VueGridPluginId = "ag" | "tanstack";
 
 export type VanillaGridPluginId = "ag" | "tanstack";
 
