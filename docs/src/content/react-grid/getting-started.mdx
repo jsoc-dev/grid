@@ -1,4 +1,3 @@
-import { If } from "../../components/docs/If";
 import { CodeExample } from "../../components/docs/CodeExample";
 import { SelectedPlugin } from "../../components/docs/SelectedPlugin";
 import { PluginDropdown } from "../../components/docs/PluginDropdown";
@@ -6,7 +5,7 @@ import { Steps } from "nextra/components";
 
 # Getting Started
 
-JSOC Grid is currently available for React only. In the future we are planning to add plugins for grid components built using Vanilla JS, Angular, Vue, etc.
+You are currently reading the React framework guide for JSOC Grid.
 
 ## Basic Example
 
@@ -16,10 +15,10 @@ Select your desired grid component that you want to use: <PluginDropdown />
 
 ### Installation
 
-- Install the [@jsoc/react-grid](https://www.npmjs.com/package/@jsoc/react-grid) package.
+- Install [@jsoc/react-grid](https://www.npmjs.com/package/@jsoc/react-grid) and the plugin package for your selected grid library:
 
   ```sh npm2yarn
-  npm install @jsoc/react-grid
+  npm install @jsoc/react-grid ${plugin.packageName}
   ```
 
 - Install the peer dependencies:
@@ -29,44 +28,56 @@ Select your desired grid component that you want to use: <PluginDropdown />
 
 > [!TIP]
 >
-> Refer to [package.json](https://github.com/jsoc-dev/grid/blob/main/packages/react-grid/package.json) for exact version ranges.
+> See the [Plugins](/react-grid/plugins) page for package names. Refer to each package's `package.json` on [GitHub](https://github.com/jsoc-dev/grid/tree/main/packages) for exact peer dependency ranges.
 
 #### Import necessary features
 
-- `StoreContextProvider`
-- `useStore` hook
+From `@jsoc/react-grid`:
 
+- `GridStoreProvider`
+- `useGridStoreSelector`
 
+From your plugin package:
 
-````typescript
-import { StoreContextProvider } from "@jsoc/react-grid";
-import { useStore } from "${plugin.importPath}";
-```` 
+- `useGridStore`
+
+```typescript
+import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStore } from "${plugin.packageName}";
+```
 
 > [!TIP]
 >
-> You can refer to the [Plugins](/react-grid/plugins) page to know the dedicated import paths for other grid components.
+> You can refer to the [Plugins](/react-grid/plugins) page for import paths for other grid libraries.
 
 #### Create the store
 
+Pass your grid data directly to `useGridStore`, then read the active schema with `useGridStoreSelector`:
+
 ```typescript
-const storeContext = useStore({ data: basicJSON });
-const { config } = storeContext.gridStore.getActiveSchema();
+const data = [{ id: 1, name: "Alice" }];
+
+const gridStore = useGridStore(data);
+const activeSchema = useGridStoreSelector(gridStore, (store) =>
+  store.getActiveSchema(),
+);
 ```
 
-#### Wrap with `StoreContextProvider`
+#### Wrap with `GridStoreProvider`
 
-- Make sure to wrap your grid component with `StoreContextProvider` and pass the store context.
+Wrap your grid component with `GridStoreProvider` and pass the store. Spread `activeSchema.config` into your grid library component:
 
 ```tsx
-<StoreContextProvider value={storeContext}>
-  {/* grid component */}
-</StoreContextProvider>
+<GridStoreProvider value={gridStore}>
+  <YourGridComponent key={activeSchema.id} {...activeSchema.config} />
+</GridStoreProvider>
 ```
+
+Replace `YourGridComponent` with the component from your grid library (for example, AG Grid's `AgGridReact`, Ant Design's `Table`, or TanStack Table's `useReactTable`).
 
 #### That's all!
 
-- Your grid component is ready to use! Here's how it would look like
+Your grid component is ready to use. Here is how it looks:
 
 <CodeExample exampleId="basic" />
 
