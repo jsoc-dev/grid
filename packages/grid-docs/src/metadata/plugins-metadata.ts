@@ -3,7 +3,7 @@ import type { FrameworkId, PluginId } from "#types.ts";
 export type PluginMetadata = {
   name: string;
   shortName: string;
-  importPath: string;
+  packageName: string;
   peerDeps: string[];
 };
 export type PluginMetadataProperty = keyof PluginMetadata;
@@ -21,37 +21,37 @@ const REACT_GRID_PLUGINS_METADATA_MAP = {
   ag: {
     name: "AG Grid",
     shortName: "AG",
-    importPath: "@jsoc/react-grid/ag",
+    packageName: "@jsoc/react-grid-ag",
     peerDeps: ["ag-grid-community", "ag-grid-react"],
   },
   ant: {
     name: "Ant Design Table",
     shortName: "AntD",
-    importPath: "@jsoc/react-grid/ant",
+    packageName: "@jsoc/react-grid-ant",
     peerDeps: ["antd"],
   },
   mantine: {
     name: "Mantine React Table",
     shortName: "Mantine",
-    importPath: "@jsoc/react-grid/mantine",
+    packageName: "@jsoc/react-grid-mantine",
     peerDeps: ["mantine-react-table"],
   },
   mui: {
     name: "MUI DataGrid",
     shortName: "MUI",
-    importPath: "@jsoc/react-grid/mui",
+    packageName: "@jsoc/react-grid-mui",
     peerDeps: ["@mui/x-data-grid"],
   },
   prime: {
     name: "PrimeReact DataTable",
     shortName: "Prime",
-    importPath: "@jsoc/react-grid/prime",
+    packageName: "@jsoc/react-grid-prime",
     peerDeps: ["primereact"],
   },
   tanstack: {
     name: "TanStack Table",
     shortName: "TanStack",
-    importPath: "@jsoc/react-grid/tanstack",
+    packageName: "@jsoc/react-grid-tanstack",
     peerDeps: ["@tanstack/react-table"],
   },
 } as const satisfies PluginMetadataMap<"react-grid">;
@@ -60,13 +60,13 @@ const VANILLA_GRID_PLUGINS_METADATA_MAP = {
   ag: {
     name: "AG Grid",
     shortName: "AG",
-    importPath: "@jsoc/vanilla-grid-ag",
+    packageName: "@jsoc/vanilla-grid-ag",
     peerDeps: ["ag-grid-community"],
   },
   tanstack: {
     name: "TanStack Table",
     shortName: "TanStack",
-    importPath: "@jsoc/vanilla-grid-tanstack",
+    packageName: "@jsoc/vanilla-grid-tanstack",
     peerDeps: ["@tanstack/table-core"],
   },
 } as const satisfies PluginMetadataMap<"vanilla-grid">;
@@ -75,7 +75,7 @@ const VUE_GRID_PLUGINS_METADATA_MAP = {
   ag: {
     name: "AG Grid",
     shortName: "AG",
-    importPath: "@jsoc/vue-grid-ag",
+    packageName: "@jsoc/vue-grid-ag",
     peerDeps: ["ag-grid-community", "ag-grid-vue3"],
   },
 } as const satisfies PluginMetadataMap<"vue-grid">;

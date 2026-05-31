@@ -1,12 +1,14 @@
 # Plugins
 
-JSOC Grid has the plugins for following React grid libraries:
+JSOC Grid ships each React grid integration as its own package:
 
-| Grid Library | Plugin ID | Import Path |
-|--------------|------------|-------------|
-| [AG Grid React](https://www.ag-grid.com/react-data-grid/) | `ag` | `@jsoc/react-grid/ag` |
-| [Ant Design Table](https://ant.design/components/table/) | `ant` | `@jsoc/react-grid/ant` |
-| [Mantine React Table](https://www.mantine-react-table.com/) | `mantine` | `@jsoc/react-grid/mantine` |
-| [MUI DataGrid](https://mui.com/x/react-data-grid/) | `mui` | `@jsoc/react-grid/mui` |
-| [PrimeReact DataTable](https://primereact.org/datatable/) | `prime` | `@jsoc/react-grid/prime` |
-| [TanStack Table](https://tanstack.com/table/latest) | `tanstack` | `@jsoc/react-grid/tanstack` |
+| Grid Library | Plugin ID | Package |
+|--------------|-----------|---------|
+| [AG Grid React](https://www.ag-grid.com/react-data-grid/) | `ag` | `@jsoc/react-grid-ag` |
+| [Ant Design Table](https://ant.design/components/table/) | `ant` | `@jsoc/react-grid-ant` |
+| [Mantine React Table](https://www.mantine-react-table.com/) | `mantine` | `@jsoc/react-grid-mantine` |
+| [MUI DataGrid](https://mui.com/x/react-data-grid/) | `mui` | `@jsoc/react-grid-mui` |
+| [PrimeReact DataTable](https://primereact.org/datatable/) | `prime` | `@jsoc/react-grid-prime` |
+| [TanStack Table](https://tanstack.com/table/latest) | `tanstack` | `@jsoc/react-grid-tanstack` |
+
+Install `@jsoc/react-grid` plus the plugin package for the grid library you use. Each plugin also requires the peer dependencies listed on its npm page.
