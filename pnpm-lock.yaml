@@ -722,6 +722,64 @@ importers:
         specifier: ~3.2.0
         version: 3.2.9(typescript@6.0.3)
 
+  examples/vue-grid/tanstack:
+    dependencies:
+      '@jsoc/grid-core':
+        specifier: '*'
+        version: link:../../../packages/grid-core
+      '@jsoc/grid-examples-shared':
+        specifier: '*'
+        version: link:../../../packages/grid-examples-shared
+      '@jsoc/vue-grid':
+        specifier: '*'
+        version: link:../../../packages/vue-grid
+      '@jsoc/vue-grid-examples':
+        specifier: '*'
+        version: link:../../../packages/vue-grid-examples
+      '@jsoc/vue-grid-tanstack':
+        specifier: '*'
+        version: link:../../../packages/vue-grid-plugins/vue-grid-tanstack
+      '@tanstack/vue-table':
+        specifier: ^8.21.3
+        version: 8.21.3(vue@3.5.34(typescript@6.0.3))
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.34(typescript@6.0.3)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.4
+        version: 9.39.4
+      '@types/node':
+        specifier: ^24.12.0
+        version: 24.12.4
+      '@vitejs/plugin-vue':
+        specifier: ^6.0.1
+        version: 6.0.7(vite@8.0.11(@types/node@24.12.4)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.22.3)(yaml@2.8.3))(vue@3.5.34(typescript@6.0.3))
+      '@vue/tsconfig':
+        specifier: ^0.9.1
+        version: 0.9.1(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3))
+      eslint:
+        specifier: ^9.39.4
+        version: 9.39.4(jiti@2.6.1)
+      eslint-plugin-vue:
+        specifier: ^10.5.0
+        version: 10.9.1(@typescript-eslint/parser@8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.3))(eslint@9.39.4(jiti@2.6.1))(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))
+      globals:
+        specifier: ^17.4.0
+        version: 17.4.0
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      typescript-eslint:
+        specifier: ^8.57.0
+        version: 8.58.1(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.3)
+      vite:
+        specifier: ^8.0.1
+        version: 8.0.11(@types/node@24.12.4)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.22.3)(yaml@2.8.3)
+      vue-tsc:
+        specifier: ~3.2.0
+        version: 3.2.9(typescript@6.0.3)
+
   packages/grid-core:
     dependencies:
       '@jsoc/utils':
@@ -1254,6 +1312,34 @@ importers:
       ag-grid-vue3:
         specifier: ^35.0.0
         version: 35.2.1(vue@3.5.34(typescript@6.0.3))
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.34(typescript@6.0.3)
+
+  packages/vue-grid-plugins/vue-grid-tanstack:
+    dependencies:
+      '@jsoc/grid-core':
+        specifier: workspace:*
+        version: link:../../grid-core
+      '@jsoc/grid-tanstack-shared':
+        specifier: workspace:*
+        version: link:../../grid-plugins-shared/grid-tanstack-shared
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      '@jsoc/vue-grid':
+        specifier: workspace:*
+        version: link:../../vue-grid
+    devDependencies:
+      '@tanstack/vue-table':
+        specifier: ^8.21.3
+        version: 8.21.3(vue@3.5.34(typescript@6.0.3))
+      '@types/node':
+        specifier: ^25.5.0
+        version: 25.5.2
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -4075,6 +4161,12 @@ packages:
 
   '@tanstack/virtual-core@3.16.0':
     resolution: {integrity: sha512-Er2N7q3WOiH6y2JLxsxNX+u2/sLqSsL0bxFgDjuiPiA7vKhZRm+IzcS17vRee3GNXr64UsesA5CAp9yTiIYw9A==}
+
+  '@tanstack/vue-table@8.21.3':
+    resolution: {integrity: sha512-rusRyd77c5tDPloPskctMyPLFEQUeBzxdQ+2Eow4F7gDPlPOB1UnnhzfpdvqZ8ZyX2rRNGmqNnQWm87OI2OQPw==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: '>=3.2'
 
   '@theguild/remark-mermaid@0.3.0':
     resolution: {integrity: sha512-Fy1J4FSj8totuHsHFpaeWyWRaRSIvpzGTRoEfnNJc1JmLV9uV70sYE3zcT+Jj5Yw20Xq4iCsiT+3Ho49BBZcBQ==}
@@ -10983,6 +11075,11 @@ snapshots:
   '@tanstack/virtual-core@3.0.0-beta.63': {}
 
   '@tanstack/virtual-core@3.16.0': {}
+
+  '@tanstack/vue-table@8.21.3(vue@3.5.34(typescript@6.0.3))':
+    dependencies:
+      '@tanstack/table-core': 8.21.3
+      vue: 3.5.34(typescript@6.0.3)
 
   '@theguild/remark-mermaid@0.3.0(react@19.2.4)':
     dependencies:
