@@ -1,0 +1,47 @@
+{
+  "name": "@jsoc/vue-grid-tanstack",
+  "version": "0.0.0",
+  "description": "Dynamic columns/rows generator for TanStack Table Vue component",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm -w build-packages",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/grid-tanstack-shared": "workspace:*",
+    "@jsoc/utils": "workspace:*",
+    "@jsoc/vue-grid": "workspace:*"
+  },
+  "devDependencies": {
+    "@tanstack/vue-table": "^8.21.3",
+    "@types/node": "^25.5.0",
+    "typescript": "catalog:",
+    "vue": "^3.5.13"
+  },
+  "peerDependencies": {
+    "@tanstack/vue-table": "^8.21.3",
+    "vue": "^3.4.0"
+  }
+}
