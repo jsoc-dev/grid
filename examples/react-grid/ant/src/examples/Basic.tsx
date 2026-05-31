@@ -2,6 +2,7 @@ import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
 import { basicJSON } from "@jsoc/grid-examples-shared";
 import { Table } from "antd";
+import { TableWrapper } from "../components/TableWrapper";
 
 export function Basic() {
   const gridStore = useGridStore(basicJSON);
@@ -11,7 +12,9 @@ export function Basic() {
 
   return (
     <GridStoreProvider value={gridStore}>
-      <Table key={activeSchema.id} {...activeSchema.config} />
+      <TableWrapper>
+        <Table key={activeSchema.id} {...activeSchema.config} />
+      </TableWrapper>
     </GridStoreProvider>
   );
 }

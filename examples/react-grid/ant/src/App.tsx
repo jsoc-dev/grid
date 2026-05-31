@@ -19,16 +19,14 @@ export default function App() {
 
   return (
     <ConfigProvider theme={themeConfig}>
-      <div style={{ backgroundColor: "canvas", overflow: "auto" }}>
-        <ExamplesRouter
-          pluginId="ant"
-          components={{
-            basic: Basic,
-            "local-data": LocalData,
-            "remote-data": RemoteData,
-          }}
-        />
-      </div>
+      <ExamplesRouter
+        pluginId="ant"
+        components={{
+          basic: Basic,
+          "local-data": LocalData,
+          "remote-data": RemoteData,
+        }}
+      />
     </ConfigProvider>
   );
 }
