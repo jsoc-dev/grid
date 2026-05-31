@@ -2,6 +2,7 @@ import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
 import { ErrorBoundary, useGetLocalJSON } from "@jsoc/react-grid-examples";
 import { Table } from "antd";
+import { TableWrapper } from "../components/TableWrapper";
 
 export function LocalData() {
   const data = useGetLocalJSON();
@@ -23,7 +24,9 @@ function Example({ data }: { data: string }) {
 
   return (
     <GridStoreProvider value={gridStore}>
-      <Table key={activeSchema.id} {...activeSchema.config} />
+      <TableWrapper>
+        <Table key={activeSchema.id} {...activeSchema.config} />
+      </TableWrapper>
     </GridStoreProvider>
   );
 }

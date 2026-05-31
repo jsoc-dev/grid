@@ -6,6 +6,7 @@ import {
 } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
 import { Table } from "antd";
+import { TableWrapper } from "../components/TableWrapper";
 
 export function RemoteData() {
   const { data, loading, error } = useGetRemoteJSON();
@@ -26,7 +27,9 @@ function Example({ data }: { data: string }) {
   return (
     <GridStoreProvider value={gridStore}>
       <SimpleNavigator />
-      <Table key={activeSchema.id} {...activeSchema.config} />
+      <TableWrapper>
+        <Table key={activeSchema.id} {...activeSchema.config} />
+      </TableWrapper>
     </GridStoreProvider>
   );
 }
