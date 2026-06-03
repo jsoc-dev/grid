@@ -3,6 +3,9 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    /* This is solely added for helping tsc/IDE resolve .tsx file imports in @jsoc/vanilla-grid.
+       This package itself does not use JSX. */
+    "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,
