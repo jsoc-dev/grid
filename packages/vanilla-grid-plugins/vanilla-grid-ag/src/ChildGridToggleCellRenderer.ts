@@ -1,7 +1,6 @@
 import type { ColumnGeneratorParams, GridRow } from "@jsoc/grid-core";
 import { ChildGridToggle } from "@jsoc/vanilla-grid";
 import type { ICellRendererComp, ICellRendererParams } from "ag-grid-community";
-import { html, render } from "lit-html";
 
 export type ChildGridToggleCellRendererCustomParams = {
   columnParams: ColumnGeneratorParams<"ujsonObject" | "ujsonObjectArray">;
@@ -39,8 +38,13 @@ export class ChildGridToggleCellRenderer implements ICellRendererComp<GridRow> {
    */
   refresh(params: ChildGridToggleCellRendererParams): boolean {
     const { data: row, columnParams } = params;
-    const template = row ? ChildGridToggle({ row, columnParams }) : html``;
-    render(template, this.eGui);
+
+    if (row) {
+      this.eGui.replaceChildren(ChildGridToggle({ row, columnParams }));
+    } else {
+      this.eGui.replaceChildren();
+    }
+
     return true;
   }
 }

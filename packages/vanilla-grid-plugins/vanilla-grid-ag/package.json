@@ -32,7 +32,6 @@
     "@jsoc/grid-core": "workspace:*",
     "@jsoc/utils": "workspace:*",
     "@jsoc/vanilla-grid": "workspace:*",
-    "lit-html": "^3.3.3",
     "@jsoc/grid-ag-shared": "workspace:*"
   },
   "devDependencies": {
