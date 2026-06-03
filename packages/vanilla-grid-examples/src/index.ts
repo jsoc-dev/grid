@@ -1,3 +1,2 @@
-export * from "./renderables/renderError.ts";
-export * from "./router/mountExamplesRouter.ts";
+export * from "./components/index.ts";
 export * from "./subscribables/index.ts";

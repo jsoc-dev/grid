@@ -26,7 +26,7 @@
     "@jsoc/grid-docs": "workspace:*",
     "@jsoc/grid-examples-shared": "workspace:*",
     "@jsoc/utils": "workspace:*",
-    "lit-html": "^3.3.3"
+    "jsx-dom": "^8.1.6"
   },
   "devDependencies": {
     "typescript": "catalog:"
