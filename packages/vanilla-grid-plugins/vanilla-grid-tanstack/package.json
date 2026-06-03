@@ -32,8 +32,7 @@
     "@jsoc/grid-core": "workspace:*",
     "@jsoc/utils": "workspace:*",
     "@jsoc/vanilla-grid": "workspace:*",
-    "@jsoc/grid-tanstack-shared": "workspace:*",
-    "lit-html": "^3.3.3"
+    "@jsoc/grid-tanstack-shared": "workspace:*"
   },
   "devDependencies": {
     "@tanstack/table-core": "^8.21.3",
