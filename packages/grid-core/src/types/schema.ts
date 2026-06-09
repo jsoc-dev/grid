@@ -11,21 +11,17 @@ import type { GridStore } from "#types/store.ts";
 import type { UJSONObject, UJSONObjectArray } from "@jsoc/utils";
 
 /**
- * `GridSchema` with the bound {@link GridStore} and {@link PluginConfig}.
- */
-export type GridSchemaNative<C extends PluginConfig> = GridSchema & {
-  readonly store: GridStore<C>;
-  readonly config: C;
-};
-
-/**
  * Schema definition exposed to grid plugins.
  */
-export interface GridSchema {
+export interface GridSchema<C extends PluginConfig = PluginConfig> {
+  /**
+   * The store that contains the schema.
+   */
+  readonly store: GridStore<C>;
   id: GridId;
   rows: GridRows;
   primaryColumnKey: PrimaryColumnKey;
-  origin?: GridSchemaOrigin;
+  origin: GridSchemaOrigin<C> | null;
   /**
    * Gets the cell value for the given {@link GridCellLocation}.
    */
@@ -33,6 +29,13 @@ export interface GridSchema {
     cell: GridCellLocation,
   ): ColumnValueByDataType[D];
 }
+
+/**
+ * `GridSchema` along with the generated {@link PluginConfig}.
+ */
+export type GridSchemaWithConfig<C extends PluginConfig> = GridSchema<C> & {
+  readonly config: C;
+};
 
 /**
  * Unique id of a `GridSchema` inside the `GridStore`
@@ -69,8 +72,7 @@ export type GridCellLocation = {
 /**
  * Describes where a child {@link GridSchema} was opened from.
  */
-export type GridSchemaOrigin = {
-  parent: GridSchema;
+export type GridSchemaOrigin<C extends PluginConfig = PluginConfig> = {
+  parent: GridSchema<C>;
   cell: GridCellLocation;
 };
-

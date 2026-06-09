@@ -22,7 +22,7 @@ export type ColumnValueByDataType = {
   ujsonObject: UJSONObject;
   ujsonObjectArray: UJSONObjectArray;
   ujsonValue: UJSONValue;
-}
+};
 
 /**
  * Mapping of each {@link ColumnKey} to the collected array of {@link ColumnValue}s gathered by
@@ -48,7 +48,10 @@ export type ColumnDataTypeResolverMethod = (
 /**
  * Parameters supplied to a {@link ColumnGenerator}.
  */
-export type ColumnGeneratorParams<D extends ColumnDataType> = {
+export type ColumnGeneratorParams<
+  C extends PluginConfig,
+  D extends ColumnDataType,
+> = {
   /**
    * `ColumnKey` of the column for which the column definition needs to be generated
    */
@@ -60,23 +63,25 @@ export type ColumnGeneratorParams<D extends ColumnDataType> = {
   /**
    * {@link GridSchema} that this column belongs to.
    */
-  gridSchema: GridSchema;
+  gridSchema: GridSchema<C>;
 };
 
 /**
  * Generates a column definition for a particular {@link ColumnDataType}.
  */
-export type ColumnGenerator<C extends PluginConfig, D extends ColumnDataType> = (
-  params: ColumnGeneratorParams<D>,
-) => InferColumnType<C>;
+export type ColumnGenerator<
+  C extends PluginConfig,
+  D extends ColumnDataType,
+> = (params: ColumnGeneratorParams<C, D>) => InferColumnType<C>;
 
 /**
  * Consumer-provided column generator to override the defaults for a specific {@link ColumnDataType}.
  * NOTE: It doesn't require to return the full column definition, only the properties that need to be overridden.
  */
-export type CustomColumnGenerator<C extends PluginConfig, D extends ColumnDataType> = (
-  params: ColumnGeneratorParams<D>,
-) => Partial<InferColumnType<C>>;
+export type CustomColumnGenerator<
+  C extends PluginConfig,
+  D extends ColumnDataType,
+> = (params: ColumnGeneratorParams<C, D>) => Partial<InferColumnType<C>>;
 
 /**
  * Mapping of `ColumnKey` and the resolved {@link ColumnDataType} for the `ColumnKey` generated
@@ -90,7 +95,7 @@ export type ColumnDataTypeMap = Record<ColumnKey, ColumnDataType>;
  */
 export type ColumnGeneratorByType<C extends PluginConfig> = {
   [D in ColumnDataType]: ColumnGenerator<C, D>;
-}
+};
 
 /**
  * Consumer overrides used by {@link generateColumns} to replace the default {@link ColumnGenerator}s for specific {@link ColumnDataType}s.
@@ -98,7 +103,7 @@ export type ColumnGeneratorByType<C extends PluginConfig> = {
  */
 export type CustomColumnGeneratorByType<C extends PluginConfig> = {
   [D in ColumnDataType]?: CustomColumnGenerator<C, D>;
-}
+};
 
 /**
  * Property that has a unique value for all the {@link GridRows}.

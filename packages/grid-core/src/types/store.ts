@@ -8,8 +8,8 @@ import type { GridRow } from "#types/rows.ts";
 import type {
   GridData,
   GridSchemaIndex,
-  GridSchemaNative,
   GridSchemaOrigin,
+  GridSchemaWithConfig,
 } from "#types/schema.ts";
 
 export type GridStoreId = string;
@@ -35,7 +35,7 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
    * Adds a new child grid schema to the store.
    * @throws `BaseGridStoreError` if no root grid schema is present in the store.
    */
-  addChildSchema(origin: GridSchemaOrigin): void;
+  addChildSchema(origin: GridSchemaOrigin<C>): void;
   /**
    * Destroys the store.
    */
@@ -47,29 +47,31 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
   /**
    * Gets the currently active grid schema.
    */
-  getActiveSchema(): GridSchemaNative<C>;
+  getActiveSchema(): GridSchemaWithConfig<C>;
   /**
    * Builds a {@link GridSchemaOrigin} for a cell on the given parent schema (active schema by default).
    */
   getChildSchemaOrigin(
     row: GridRow,
     columnKey: ColumnKey,
-    parentSchema?: GridSchemaNative<C>,
-  ): GridSchemaOrigin;
+    parentSchema?: GridSchemaWithConfig<C>,
+  ): GridSchemaOrigin<C>;
   /**
    * Gets the child grid schema opened from the given cell on the parent schema.
    */
-  getChildSchema(origin: GridSchemaOrigin): GridSchemaNative<C> | undefined;
+  getChildSchema(
+    origin: GridSchemaOrigin<C>,
+  ): GridSchemaWithConfig<C> | undefined;
   /**
    * Gets the grid schema at the given index.
    * @param index index of the grid schema
    * @throws `BaseGridStoreError` if the index is invalid
    */
-  getSchema(index: GridSchemaIndex): GridSchemaNative<C>;
+  getSchema(index: GridSchemaIndex): GridSchemaWithConfig<C>;
   /**
    * Gets all grid schemas on the current navigation path.
    */
-  getSchemas(): ReadonlyArray<GridSchemaNative<C>>;
+  getSchemas(): ReadonlyArray<GridSchemaWithConfig<C>>;
   /**
    * Gets the number of grid schemas in the store.
    */
@@ -81,17 +83,17 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
   /**
    * Returns whether a child schema exists on the navigation path for the given parent cell.
    */
-  hasChildSchema(origin: GridSchemaOrigin): boolean;
+  hasChildSchema(origin: GridSchemaOrigin<C>): boolean;
   /**
    * Checks if the given grid schema is the active schema.
    */
-  isActiveSchema(gridSchema: GridSchemaNative<C>): boolean;
+  isActiveSchema(gridSchema: GridSchemaWithConfig<C>): boolean;
   /**
    * Removes the given child schema.
    * If no child schema is provided, it removes the active child schema.
    * @throws `BaseGridStoreError` if the store has no child schemas.
    */
-  removeChildSchema(childSchema?: GridSchemaNative<C>): void;
+  removeChildSchema(childSchema?: GridSchemaWithConfig<C>): void;
   /**
    * Sets the active index.
    * @param index new active index
@@ -101,7 +103,7 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
   /**
    * Opens a child schema for the given cell, or closes it when already open.
    */
-  toggleChildSchema(origin: GridSchemaOrigin): void;
+  toggleChildSchema(origin: GridSchemaOrigin<C>): void;
   /**
    * Adds a listener to the store. Listener is called on every state change.
    * @param listener listener to add
@@ -115,7 +117,7 @@ export interface GridStore<C extends PluginConfig = PluginConfig> {
  */
 export type GridStoreState<C extends PluginConfig> = Readonly<{
   activeIndex: GridSchemaIndex;
-  schemas: ReadonlyArray<GridSchemaNative<C>>;
+  schemas: ReadonlyArray<GridSchemaWithConfig<C>>;
 }>;
 
 /**

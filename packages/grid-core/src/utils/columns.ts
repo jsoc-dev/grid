@@ -57,7 +57,7 @@ const COLUMN_DATA_TYPE_SEQUENTIAL_RESOLVERS: ColumnDataTypeResolverMethod[] = [
  * @returns Array of column definitions/configurations
  */
 export function generateColumns<C extends PluginConfig>(
-  gridSchema: GridSchema,
+  gridSchema: GridSchema<C>,
   defaultColumnGeneratorByType: ColumnGeneratorByType<C>,
   customColumnGeneratorByType?: CustomColumnGeneratorByType<C>,
 ): InferColumnType<C>[] {

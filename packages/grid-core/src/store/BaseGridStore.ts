@@ -6,8 +6,8 @@ import type { GridRow } from "#types/rows.ts";
 import type {
   GridSchema,
   GridSchemaIndex,
-  GridSchemaNative,
   GridSchemaOrigin,
+  GridSchemaWithConfig,
 } from "#types/schema.ts";
 import type {
   GridStore,
@@ -49,7 +49,7 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
    * Initializes the store with a root schema.
    */
   protected init() {
-    const rootSchema = this.newSchema();
+    const rootSchema = this.newSchema(null);
 
     this.#setState({
       activeIndex: 0,
@@ -63,15 +63,15 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
    * @param origin - The origin of the schema.
    * @returns A new schema.
    */
-  protected newSchema(origin?: GridSchemaOrigin) {
+  protected newSchema(origin: GridSchemaOrigin<C> | null) {
     return new BaseGridSchema<C>(this, origin);
   }
 
-  protected getSchemaIndex(schema: GridSchema) {
+  protected getSchemaIndex(schema: GridSchema<C>) {
     return this.getSchemas().findIndex((s) => s.id === schema.id);
   }
 
-  public addChildSchema(origin: GridSchemaOrigin) {
+  public addChildSchema(origin: GridSchemaOrigin<C>) {
     if (this.getTotalSchemas() === 0) {
       throw new BaseGridStoreError(
         "Invalid Operation",
@@ -109,10 +109,8 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
   public getChildSchemaOrigin(
     row: GridRow,
     columnKey: ColumnKey,
-    parentSchema: GridSchemaNative<C> = this.getActiveSchema(),
-  ): GridSchemaOrigin {
-    BaseGridSchema.assertInstance(parentSchema);
-
+    parentSchema: GridSchemaWithConfig<C> = this.getActiveSchema(),
+  ): GridSchemaOrigin<C> {
     return {
       parent: parentSchema,
       cell: {
@@ -122,7 +120,7 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
     };
   }
 
-  public getChildSchema(origin: GridSchemaOrigin) {
+  public getChildSchema(origin: GridSchemaOrigin<C>) {
     const targetId = BaseGridSchema.generateId(origin);
     return this.getSchemas().find((schema) => schema.id === targetId);
   }
@@ -154,15 +152,15 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
     return this.getTotalSchemas() - 1;
   }
 
-  public isActiveSchema(schema: GridSchemaNative<C>) {
+  public isActiveSchema(schema: GridSchemaWithConfig<C>) {
     return this.getActiveSchema().id === schema.id;
   }
 
-  public hasChildSchema(origin: GridSchemaOrigin) {
+  public hasChildSchema(origin: GridSchemaOrigin<C>) {
     return this.getChildSchema(origin) !== undefined;
   }
 
-  public removeChildSchema(childSchema?: GridSchemaNative<C>) {
+  public removeChildSchema(childSchema?: GridSchemaWithConfig<C>) {
     if (this.getTotalSchemas() <= 1) {
       throw new BaseGridStoreError(
         "Invalid Operation",
@@ -223,7 +221,7 @@ export class BaseGridStore<C extends PluginConfig> implements GridStore<C> {
     };
   }
 
-  public toggleChildSchema(origin: GridSchemaOrigin) {
+  public toggleChildSchema(origin: GridSchemaOrigin<C>) {
     const childSchema = this.getChildSchema(origin);
 
     if (childSchema) {

@@ -32,6 +32,6 @@ export type PluginConfigGeneratorOptions<
  * Method that will be used to generate the {@link PluginConfig} for the grid plugin
  */
 export type PluginConfigGenerator<C extends PluginConfig = PluginConfig> = (
-  gridSchema: GridSchema,
+  gridSchema: GridSchema<C>,
   options?: PluginConfigGeneratorOptions<C>,
 ) => C;
