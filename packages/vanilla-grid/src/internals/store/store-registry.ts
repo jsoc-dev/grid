@@ -14,7 +14,7 @@ export function findGridStoreById<C extends PluginConfig>(
 }
 
 export function registerGridStore<C extends PluginConfig>(store: GridStore<C>) {
-  GRID_STORE_REGISTRY.set(store.id, store as GridStore);
+  GRID_STORE_REGISTRY.set(store.id, store as unknown as GridStore);
 }
 
 export function unregisterGridStore<C extends PluginConfig>(

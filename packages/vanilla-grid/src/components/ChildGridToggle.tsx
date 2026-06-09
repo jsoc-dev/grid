@@ -1,23 +1,22 @@
-import {
-  BaseGridSchema,
-  type ColumnGeneratorParams,
-  type GridRow,
+import type {
+  ColumnGeneratorParams,
+  GridRow,
+  PluginConfig,
 } from "@jsoc/grid-core";
 
-export type ChildGridToggleOptions = {
+export type ChildGridToggleOptions<C extends PluginConfig> = {
   row: GridRow;
-  columnParams: ColumnGeneratorParams<"ujsonObject" | "ujsonObjectArray">;
+  columnParams: ColumnGeneratorParams<C, "ujsonObject" | "ujsonObjectArray">;
 };
 
 /**
  * Creates a ChildGridToggle button element.
  */
-export function ChildGridToggle({
+export function ChildGridToggle<C extends PluginConfig>({
   row,
   columnParams,
-}: ChildGridToggleOptions): HTMLButtonElement {
+}: ChildGridToggleOptions<C>): HTMLButtonElement {
   const { columnKey, gridSchema } = columnParams;
-  BaseGridSchema.assertInstance(gridSchema);
   const gridStore = gridSchema.store;
   const origin = gridStore.getChildSchemaOrigin(row, columnKey);
   const toggleStatus = gridStore.hasChildSchema(origin);
