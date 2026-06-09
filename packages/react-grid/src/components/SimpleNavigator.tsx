@@ -1,5 +1,6 @@
-import { useGridStoreContext, useGridStoreSelector } from "#hooks/index.ts";
+import { useGridStoreSelector } from "#hooks/useGridStoreSelector.ts";
 
+import type { GridStore, PluginConfig } from "@jsoc/grid-core";
 import type { ReactNode } from "react";
 
 export type SimpleNavigatorRenderer = (params: {
@@ -7,17 +8,18 @@ export type SimpleNavigatorRenderer = (params: {
   removeActiveSchema: () => void;
 }) => ReactNode;
 
-export type SimpleNavigatorProps = {
+export type SimpleNavigatorProps<C extends PluginConfig = PluginConfig> = {
+  gridStore: GridStore<C>;
   /**
    * Custom Renderer for the SimpleNavigator
    */
   children?: SimpleNavigatorRenderer;
 };
 
-export function SimpleNavigator({
+export function SimpleNavigator<C extends PluginConfig = PluginConfig>({
+  gridStore,
   children: customRenderer,
-}: SimpleNavigatorProps) {
-  const gridStore = useGridStoreContext();
+}: SimpleNavigatorProps<C>) {
   const totalChildSchemas = useGridStoreSelector(gridStore, (store) =>
     store.getTotalChildSchemas(),
   );
