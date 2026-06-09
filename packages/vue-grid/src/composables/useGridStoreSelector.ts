@@ -9,18 +9,24 @@ import {
   watch,
 } from "vue";
 
+/**
+ * Subscribes to a {@link GridStore} and returns a computed snapshot of `selector(store)`.
+ *
+ * The selector re-runs when the store emits, when `gridStoreSource` changes, and when any
+ * reactive values read inside the selector change (same idea as React's `useSyncExternalStore`
+ * getSnapshot running again on each render).
+ */
 export function useGridStoreSelector<C extends PluginConfig, T>(
   gridStoreSource: MaybeRefOrGetter<GridStore<C>>,
   selector: (gridStore: GridStore<C>) => T,
 ): ComputedRef<T> {
-  const snapshot = shallowRef(selector(toValue(gridStoreSource)));
+  const storeRevision = shallowRef(0);
   let stop: (() => void) | undefined;
 
   const bind = (store: GridStore<C>) => {
     stop?.();
-    snapshot.value = selector(store);
     stop = store.subscribe(() => {
-      snapshot.value = selector(store);
+      storeRevision.value++;
     });
   };
 
@@ -34,5 +40,8 @@ export function useGridStoreSelector<C extends PluginConfig, T>(
 
   onScopeDispose(() => stop?.());
 
-  return computed<T>(() => snapshot.value as T);
+  return computed(() => {
+    void storeRevision.value;
+    return selector(toValue(gridStoreSource));
+  });
 }

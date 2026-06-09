@@ -45,6 +45,7 @@ export function useGridStoreMemo<C extends PluginConfig>(
         configGeneratorOptions: options.value,
       });
     },
+    { flush: "sync" },
   );
 
   return gridStore;
