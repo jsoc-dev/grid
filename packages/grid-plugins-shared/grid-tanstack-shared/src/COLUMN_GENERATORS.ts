@@ -1,6 +1,10 @@
 import type { ColDefTanstack } from "#types.ts";
 
-import type { ColumnDataType, ColumnGeneratorParams } from "@jsoc/grid-core";
+import type {
+  ColumnDataType,
+  ColumnGeneratorParams,
+  PluginConfig,
+} from "@jsoc/grid-core";
 import {
   booleanToString,
   stringDateToDate,
@@ -13,8 +17,11 @@ import {
  * Builds the base TanStack column definition with id/accessor/header from {@link ColumnGeneratorParams}.
  * Adapters and shared generators extend this with sorting/filter/cell overrides.
  */
-export function extendBaseColumn<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+export function extendBaseColumn<
+  C extends PluginConfig,
+  D extends ColumnDataType,
+>(
+  params: ColumnGeneratorParams<C, D>,
   overrides?: Partial<ColDefTanstack>,
 ): ColDefTanstack {
   const { columnKey, columnDataType } = params;
@@ -29,20 +36,20 @@ export function extendBaseColumn<D extends ColumnDataType>(
   };
 }
 
-export const sharedStringColumnGenerator = (
-  params: ColumnGeneratorParams<"string">,
-): ColDefTanstack => {
+export function sharedStringColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "string">,
+): ColDefTanstack {
   return extendBaseColumn(params, {
     enableSorting: true,
     enableColumnFilter: true,
     // https://tanstack.com/table/v8/docs/api/features/sorting#sorting-functions
     sortingFn: "text",
   });
-};
+}
 
-export const sharedBooleanColumnGenerator = (
-  params: ColumnGeneratorParams<"boolean">,
-): ColDefTanstack => {
+export function sharedBooleanColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "boolean">,
+): ColDefTanstack {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
@@ -54,21 +61,21 @@ export const sharedBooleanColumnGenerator = (
     enableColumnFilter: true,
     sortingFn: "text",
   });
-};
+}
 
-export const sharedNumberColumnGenerator = (
-  params: ColumnGeneratorParams<"number">,
-): ColDefTanstack => {
+export function sharedNumberColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "number">,
+): ColDefTanstack {
   return extendBaseColumn(params, {
     enableSorting: true,
     enableColumnFilter: true,
     sortingFn: "alphanumeric",
   });
-};
+}
 
-export const sharedStringDateColumnGenerator = (
-  params: ColumnGeneratorParams<"stringDate">,
-): ColDefTanstack => {
+export function sharedStringDateColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "stringDate">,
+): ColDefTanstack {
   const { columnKey } = params;
 
   return extendBaseColumn(params, {
@@ -81,35 +88,35 @@ export const sharedStringDateColumnGenerator = (
     enableColumnFilter: true,
     sortingFn: "datetime",
   });
-};
+}
 
 /**
  * Shared shape for `ujsonObject` columns. Adapters override `cell` with a framework-specific renderer.
  */
-export const sharedUjsonObjectColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonObject">,
-): ColDefTanstack => {
+export function sharedUjsonObjectColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonObject">,
+): ColDefTanstack {
   return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
   });
-};
+}
 
 /**
  * Shared shape for `ujsonObjectArray` columns. Adapters override `cell` with a framework-specific renderer.
  */
-export const sharedUjsonObjectArrayColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonObjectArray">,
-): ColDefTanstack => {
+export function sharedUjsonObjectArrayColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonObjectArray">,
+): ColDefTanstack {
   return extendBaseColumn(params, {
     enableSorting: false,
     enableColumnFilter: false,
   });
-};
+}
 
-export const sharedUjsonValueColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonValue">,
-): ColDefTanstack => {
+export function sharedUjsonValueColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonValue">,
+): ColDefTanstack {
   return extendBaseColumn(params, {
     cell: ({ cell }) => {
       const value = cell.getValue<UJSONValue>();
@@ -118,4 +125,4 @@ export const sharedUjsonValueColumnGenerator = (
     enableSorting: false,
     enableColumnFilter: false,
   });
-};
+}

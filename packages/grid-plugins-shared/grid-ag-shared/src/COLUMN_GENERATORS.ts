@@ -4,6 +4,7 @@ import type {
   ColumnDataType,
   ColumnGeneratorParams,
   GridRow,
+  PluginConfig,
 } from "@jsoc/grid-core";
 import {
   prettyJSON,
@@ -19,8 +20,11 @@ import type {
   ValueGetterParams,
 } from "ag-grid-community";
 
-export function getBaseColumnDef<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+export function getBaseColumnDef<
+  C extends PluginConfig,
+  D extends ColumnDataType,
+>(
+  params: ColumnGeneratorParams<C, D>,
   overrides?: Partial<ColDefAg>,
 ): ColDefAg {
   const { columnKey } = params;
@@ -31,39 +35,39 @@ export function getBaseColumnDef<D extends ColumnDataType>(
   };
 }
 
-export const sharedStringColumnGenerator = (
-  params: ColumnGeneratorParams<"string">,
-): ColDefAg => {
+export function sharedStringColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "string">,
+): ColDefAg {
   return getBaseColumnDef(params, {
     cellDataType: "text",
     sortable: true,
     filter: true,
   });
-};
+}
 
-export const sharedBooleanColumnGenerator = (
-  params: ColumnGeneratorParams<"boolean">,
-): ColDefAg => {
+export function sharedBooleanColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "boolean">,
+): ColDefAg {
   return getBaseColumnDef(params, {
     cellDataType: "boolean",
     sortable: true,
     filter: true,
   });
-};
+}
 
-export const sharedNumberColumnGenerator = (
-  params: ColumnGeneratorParams<"number">,
-): ColDefAg => {
+export function sharedNumberColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "number">,
+): ColDefAg {
   return getBaseColumnDef(params, {
     cellDataType: "number",
     sortable: true,
     filter: true,
   });
-};
+}
 
-export const sharedStringDateColumnGenerator = (
-  params: ColumnGeneratorParams<"stringDate">,
-): ColDefAg => {
+export function sharedStringDateColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "stringDate">,
+): ColDefAg {
   return getBaseColumnDef(params, {
     cellDataType: "dateTimeString",
     sortable: true,
@@ -74,11 +78,11 @@ export const sharedStringDateColumnGenerator = (
       return stringDateToDate(value).toLocaleString();
     },
   });
-};
+}
 
-export const sharedUjsonObjectColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonObject">,
-): ColDefAg => {
+export function sharedUjsonObjectColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonObject">,
+): ColDefAg {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     cellDataType: "object",
@@ -97,11 +101,11 @@ export const sharedUjsonObjectColumnGenerator = (
       return value ? prettyJSON(value) : "";
     },
   });
-};
+}
 
-export const sharedUjsonObjectArrayColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonObjectArray">,
-): ColDefAg => {
+export function sharedUjsonObjectArrayColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonObjectArray">,
+): ColDefAg {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     cellDataType: "object",
@@ -118,11 +122,11 @@ export const sharedUjsonObjectArrayColumnGenerator = (
       return value ? prettyJSON(value) : "";
     },
   });
-};
+}
 
-export const sharedUjsonValueColumnGenerator = (
-  params: ColumnGeneratorParams<"ujsonValue">,
-): ColDefAg => {
+export function sharedUjsonValueColumnGenerator<C extends PluginConfig>(
+  params: ColumnGeneratorParams<C, "ujsonValue">,
+): ColDefAg {
   const { columnKey } = params;
   return getBaseColumnDef(params, {
     sortable: false,
@@ -134,4 +138,4 @@ export const sharedUjsonValueColumnGenerator = (
       return ujsonValueToString(value);
     },
   });
-};
+}
