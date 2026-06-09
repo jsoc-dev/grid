@@ -2,14 +2,28 @@ import { COLUMN_GENERATORS } from "#COLUMN_GENERATORS.ts";
 import type { PluginConfigAg } from "#types.ts";
 
 import {
+  BaseGridStore,
   generateColumns,
   getRowIdString,
   type GridData,
+  type GridStore,
   type PluginConfigGenerator,
   type PluginConfigGeneratorOptions,
 } from "@jsoc/grid-core";
 import { useGridStoreMemo } from "@jsoc/vue-grid";
 import type { MaybeRefOrGetter } from "vue";
+
+/** Creates a grid store for AG Grid. Throws when data is invalid. */
+export function createGridStore(
+  data: GridData,
+  configGeneratorOptions?: PluginConfigGeneratorOptions<PluginConfigAg>,
+): GridStore<PluginConfigAg> {
+  return new BaseGridStore({
+    data,
+    configGenerator: CONFIG_GENERATOR,
+    configGeneratorOptions,
+  });
+}
 
 /**
  * Composable to create a grid store for AG Grid.
