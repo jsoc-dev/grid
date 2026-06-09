@@ -26,7 +26,7 @@ export type ColumnGeneratorMui<D extends ColumnDataType> = ColumnGenerator<
 >;
 
 function extendBaseColumn<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+  params: ColumnGeneratorParams<PluginConfigMui, D>,
   overrides?: Partial<ColDefMui>,
 ): ColDefMui {
   const { columnKey } = params;
@@ -102,7 +102,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorMui<"ujsonObject"> = (
       return prettyJSON(value);
     },
     renderCell: (rParams: GridRenderCellParams<GridRow, string>) => (
-      <ChildGridToggle row={rParams.row} columnKey={params.columnKey} />
+      <ChildGridToggle row={rParams.row} columnParams={params} />
     ),
   });
 };
@@ -118,7 +118,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorMui<
       return prettyJSON(value);
     },
     renderCell: (rParams: GridRenderCellParams<GridRow, string>) => (
-      <ChildGridToggle row={rParams.row} columnKey={params.columnKey} />
+      <ChildGridToggle row={rParams.row} columnParams={params} />
     ),
   });
 };

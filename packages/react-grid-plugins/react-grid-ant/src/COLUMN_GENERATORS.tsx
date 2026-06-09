@@ -26,7 +26,7 @@ export type ColumnGeneratorAnt<D extends ColumnDataType> = ColumnGenerator<
 >;
 
 function extendBaseColumn<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+  params: ColumnGeneratorParams<PluginConfigAnt, D>,
   overrides?: Partial<ColDefAnt>,
 ): ColDefAnt {
   const { columnKey } = params;
@@ -90,7 +90,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorAnt<"ujsonObject"> = (
 ) => {
   return extendBaseColumn(params, {
     render: (_value, record) => (
-      <ChildGridToggle row={record} columnKey={params.columnKey} />
+      <ChildGridToggle row={record} columnParams={params} />
     ),
   });
 };
@@ -100,7 +100,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorAnt<
 > = (params) => {
   return extendBaseColumn(params, {
     render: (_value, record) => (
-      <ChildGridToggle row={record} columnKey={params.columnKey} />
+      <ChildGridToggle row={record} columnParams={params} />
     ),
   });
 };

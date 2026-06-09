@@ -49,7 +49,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorAg<"ujsonObject"> = (
     cellRenderer: (rParams: ICellRendererParams<GridRow, string>) => {
       const { data } = rParams;
       if (!data) return null;
-      return <ChildGridToggle row={data} columnKey={params.columnKey} />;
+      return <ChildGridToggle row={data} columnParams={params} />;
     },
   };
 };
@@ -62,7 +62,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorAg<"ujsonObjectArray"> = (
     cellRenderer: (rParams: ICellRendererParams<GridRow, string>) => {
       const { data } = rParams;
       if (!data) return null;
-      return <ChildGridToggle row={data} columnKey={params.columnKey} />;
+      return <ChildGridToggle row={data} columnParams={params} />;
     },
   };
 };

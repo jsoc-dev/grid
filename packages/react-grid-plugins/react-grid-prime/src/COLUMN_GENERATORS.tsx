@@ -17,7 +17,7 @@ export type ColumnGeneratorPrime<D extends ColumnDataType> = ColumnGenerator<
 >;
 
 function extendBaseColumn<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+  params: ColumnGeneratorParams<PluginConfigPrime, D>,
   overrides?: Partial<ColDefPrime>,
 ): ColDefPrime {
   const { columnKey } = params;
@@ -67,7 +67,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorPrime<"ujsonObject"> = (
     sortable: false,
     filter: false,
     body: (data: GridRow) => (
-      <ChildGridToggle row={data} columnKey={params.columnKey} />
+      <ChildGridToggle row={data} columnParams={params} />
     ),
   });
 };
@@ -79,7 +79,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorPrime<
     sortable: false,
     filter: false,
     body: (data: GridRow) => (
-      <ChildGridToggle row={data} columnKey={params.columnKey} />
+      <ChildGridToggle row={data} columnParams={params} />
     ),
   });
 };

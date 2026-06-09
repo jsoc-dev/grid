@@ -27,7 +27,7 @@ type ColumnGeneratorMantine<D extends ColumnDataType> = ColumnGenerator<
 // Also, we can't limit this library's tanstack version to match mantine's internal tanstack version as then it would be
 // not possible to develop the tanstack plugin independently.
 function extendBaseColumn<D extends ColumnDataType>(
-  params: ColumnGeneratorParams<D>,
+  params: ColumnGeneratorParams<PluginConfigMantine, D>,
   overrides?: Partial<ColDefMantine>,
 ): ColDefMantine {
   const { columnKey } = params;
@@ -98,7 +98,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorMantine<"ujsonObject"> = (
 ) => {
   return extendBaseColumn(params, {
     Cell: ({ row }) => (
-      <ChildGridToggle row={row.original} columnKey={params.columnKey} />
+      <ChildGridToggle row={row.original} columnParams={params} />
     ),
     enableColumnFilter: false,
     enableSorting: false,
@@ -110,7 +110,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorMantine<
 > = (params) => {
   return extendBaseColumn(params, {
     Cell: ({ row }) => (
-      <ChildGridToggle row={row.original} columnKey={params.columnKey} />
+      <ChildGridToggle row={row.original} columnParams={params} />
     ),
     enableColumnFilter: false,
     enableSorting: false,

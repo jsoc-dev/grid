@@ -45,7 +45,7 @@ const ujsonObjectColumnGenerator: ColumnGeneratorTanstack<"ujsonObject"> = (
   return {
     ...sharedUjsonObjectColumnGenerator(params),
     cell: ({ row }) => (
-      <ChildGridToggle row={row.original} columnKey={params.columnKey} />
+      <ChildGridToggle row={row.original} columnParams={params} />
     ),
   };
 };
@@ -56,7 +56,7 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorTanstack<
   return {
     ...sharedUjsonObjectArrayColumnGenerator(params),
     cell: ({ row }) => (
-      <ChildGridToggle row={row.original} columnKey={params.columnKey} />
+      <ChildGridToggle row={row.original} columnParams={params} />
     ),
   };
 };
