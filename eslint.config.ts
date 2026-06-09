@@ -23,9 +23,9 @@ const packageImportRules = {
         "Use absolute paths (starting with #) instead of relative paths.",
     },
     {
-      selector: "ImportDeclaration[source.value=/^#(?!.*\\.tsx?$).*/]",
+      selector: "ImportDeclaration[source.value=/^#(?!.*\\.(tsx?|vue)$).*/]",
       message:
-        "Subpath imports (starting with #) must include the .ts or .tsx extension to ensure proper module resolution.",
+        "Subpath imports (starting with #) must include the .ts, .tsx, or .vue extension to ensure proper module resolution.",
     },
   ],
 } satisfies Linter.RulesRecord;
