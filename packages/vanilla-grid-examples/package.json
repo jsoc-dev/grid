@@ -9,6 +9,9 @@
     "directory": "packages/vanilla-grid-examples"
   },
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "imports": {
     "#*": "./src/*"
   },
