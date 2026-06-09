@@ -1143,9 +1143,9 @@ importers:
       '@jsoc/utils':
         specifier: workspace:*
         version: link:../utils
-      lit-html:
-        specifier: ^3.3.3
-        version: 3.3.3
+      jsx-dom:
+        specifier: ^8.1.6
+        version: 8.1.6
     devDependencies:
       '@types/node':
         specifier: ^25.5.0
@@ -1165,9 +1165,9 @@ importers:
       '@jsoc/utils':
         specifier: workspace:*
         version: link:../utils
-      lit-html:
-        specifier: ^3.3.3
-        version: 3.3.3
+      jsx-dom:
+        specifier: ^8.1.6
+        version: 8.1.6
     devDependencies:
       typescript:
         specifier: 'catalog:'
@@ -1187,9 +1187,6 @@ importers:
       '@jsoc/vanilla-grid':
         specifier: workspace:*
         version: link:../../vanilla-grid
-      lit-html:
-        specifier: ^3.3.3
-        version: 3.3.3
     devDependencies:
       '@types/node':
         specifier: ^25.5.0
@@ -1215,9 +1212,6 @@ importers:
       '@jsoc/vanilla-grid':
         specifier: workspace:*
         version: link:../../vanilla-grid
-      lit-html:
-        specifier: ^3.3.3
-        version: 3.3.3
     devDependencies:
       '@tanstack/table-core':
         specifier: ^8.21.3
@@ -6248,6 +6242,9 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
+  jsx-dom@8.1.6:
+    resolution: {integrity: sha512-sB8YM7M1aEirenH391h+/Q10UlPuxPA1Gc9OOeONij1eFGu1vAijwzKO1bNcSjCztznjn6puFX43I6FoG8ePjg==}
+
   katex@0.16.47:
     resolution: {integrity: sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==}
     hasBin: true
@@ -6360,9 +6357,6 @@ packages:
   listr2@9.0.5:
     resolution: {integrity: sha512-ME4Fb83LgEgwNw96RKNvKV4VTLuXfoKudAmm2lP8Kk87KaMK0/Xrx/aAkMWmT8mDb+3MlFDspfbCs7adjRxA2g==}
     engines: {node: '>=20.0.0'}
-
-  lit-html@3.3.3:
-    resolution: {integrity: sha512-el8M6jK2o3RXBnrSHX3ZKrsN8zEV63pSExTO1wYJz7QndGYZ8353e2a5PPX+qHe2aGayfnchQmkAojaWAREOIA==}
 
   locate-path@5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
@@ -11316,7 +11310,8 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@types/trusted-types@2.0.7': {}
+  '@types/trusted-types@2.0.7':
+    optional: true
 
   '@types/unist@2.0.11': {}
 
@@ -13527,6 +13522,10 @@ snapshots:
       object.assign: 4.1.7
       object.values: 1.2.1
 
+  jsx-dom@8.1.6:
+    dependencies:
+      csstype: 3.2.3
+
   katex@0.16.47:
     dependencies:
       commander: 8.3.0
@@ -13620,10 +13619,6 @@ snapshots:
       log-update: 6.1.0
       rfdc: 1.4.1
       wrap-ansi: 9.0.2
-
-  lit-html@3.3.3:
-    dependencies:
-      '@types/trusted-types': 2.0.7
 
   locate-path@5.0.0:
     dependencies:
