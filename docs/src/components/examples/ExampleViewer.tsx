@@ -3,24 +3,24 @@
 import { ExamplePreview } from "@/components/generic/example-preview/ExamplePreview";
 import {
   getExampleMetadata,
-  type ExampleOptions,
-  type FrameworkId,
+  type ExampleLocator,
+  type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
 
-type Props<F extends FrameworkId, P extends PluginId<F>> = ExampleOptions<F, P>;
+type Props<A extends AdapterId, P extends PluginId<A>> = ExampleLocator<A, P>;
 
-export function ExampleViewer<F extends FrameworkId, P extends PluginId<F>>({
-  frameworkId,
+export function ExampleViewer<A extends AdapterId, P extends PluginId<A>>({
+  adapterId,
   pluginId,
   exampleId,
-}: Props<F, P>) {
+}: Props<A, P>) {
   const { name, description } = getExampleMetadata(
-    frameworkId,
+    adapterId,
     pluginId,
     exampleId,
   );
-  
+
   return (
     <div className="flex flex-col gap-4 flex-1 p-6">
       <h1 className="text-2xl font-bold">{name}</h1>
@@ -28,7 +28,7 @@ export function ExampleViewer<F extends FrameworkId, P extends PluginId<F>>({
 
       <div className="flex flex-1 justify-center items-center ">
         <ExamplePreview
-          frameworkId={frameworkId}
+          adapterId={adapterId}
           pluginId={pluginId}
           exampleId={exampleId}
         >

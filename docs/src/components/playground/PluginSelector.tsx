@@ -1,5 +1,5 @@
 import {
-  type FrameworkId,
+  type AdapterId,
   type PluginMetadata,
   type PluginId,
 } from "@jsoc/grid-docs";
@@ -7,20 +7,20 @@ import { usePlaygroundContext } from "@/contexts/PlaygroundContext";
 import clsx from "clsx";
 import { getPluginIcon } from "@/assets/icons/plugins";
 
-type Props<F extends FrameworkId> = {
-  frameworkId: F;
-  pluginId: PluginId<F>;
+type Props<A extends AdapterId> = {
+  adapterId: A;
+  pluginId: PluginId<A>;
   meta: PluginMetadata;
 };
 
-export function PluginSelector<F extends FrameworkId>({
-  frameworkId,
+export function PluginSelector<A extends AdapterId>({
+  adapterId,
   pluginId,
   meta,
-}: Props<F>) {
+}: Props<A>) {
   const { selectedPluginId, setSelectedPluginId } = usePlaygroundContext();
   const { shortName } = meta;
-  const Icon = getPluginIcon(frameworkId, pluginId);
+  const Icon = getPluginIcon(adapterId, pluginId);
   const isSelected = pluginId === selectedPluginId;
 
   return (

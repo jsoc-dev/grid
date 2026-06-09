@@ -10,7 +10,7 @@ import {
 } from "@jsoc/grid-docs";
 import { formatValue } from "@/components/docs/format-value";
 
-const FRAMEWORK_ID = "react-grid" as const;
+const ADAPTER_ID = "react-grid" as const;
 
 export function useReplaceTokens(children: ReactNode) {
   const rootContextValue = useRootContext();
@@ -95,7 +95,7 @@ function getValueForPluginMetaKey(
   pluginId: PluginId<"react-grid">,
   property: PluginMetadataProperty,
 ): string {
-  const metadata = getPluginMetadata(FRAMEWORK_ID, pluginId);
+  const metadata = getPluginMetadata(ADAPTER_ID, pluginId);
   return formatValue(metadata[property]);
 }
 

@@ -4,7 +4,7 @@ import {
   PlaygroundContext,
   type PlaygroundContextValue,
 } from "@/contexts/PlaygroundContext";
-import type { FrameworkId, PluginId } from "@jsoc/grid-docs";
+import type { AdapterId, PluginId } from "@jsoc/grid-docs";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -14,15 +14,15 @@ export function PlaygroundContextProvider({
   children: ReactNode;
 }) {
   const [selectedPluginId, setSelectedPluginId] =
-    useState<PluginId<FrameworkId>>("ag");
-  const [selectedFrameworkId, setSelectedFrameworkId] =
-    useState<FrameworkId>("react-grid");
+    useState<PluginId<AdapterId>>("ag");
+  const [selectedAdapterId, setSelectedAdapterId] =
+    useState<AdapterId>("react-grid");
 
   const value: PlaygroundContextValue = {
     selectedPluginId,
     setSelectedPluginId,
-    selectedFrameworkId,
-    setSelectedFrameworkId,
+    selectedAdapterId,
+    setSelectedAdapterId,
   };
 
   return (

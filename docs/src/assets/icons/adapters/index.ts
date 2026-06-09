@@ -3,17 +3,17 @@ import AngularIcon from "./angular.svg";
 import VueIcon from "./vue.svg";
 import JavaScript2Icon from "./javascript2.svg";
 import type { SvgIcon } from "@/types/svg";
+import type { AdapterId, UpcomingAdapterId } from "@jsoc/grid-docs";
 
-const FRAMEWORKS_ICONS_MAP = {
+const ADAPTERS_ICONS_MAP = {
   "react-grid": ReactIcon,
   "angular-grid": AngularIcon,
   "vue-grid": VueIcon,
-  "javascript-grid": JavaScript2Icon,
   "vanilla-grid": JavaScript2Icon,
-} as const;
+} as const satisfies Record<AdapterId | UpcomingAdapterId, SvgIcon>;
 
-export function getFrameworkIcon(
-  frameworkId: keyof typeof FRAMEWORKS_ICONS_MAP,
+export function getAdapterIcon(
+  adapterId: keyof typeof ADAPTERS_ICONS_MAP,
 ): SvgIcon {
-  return FRAMEWORKS_ICONS_MAP[frameworkId];
+  return ADAPTERS_ICONS_MAP[adapterId];
 }

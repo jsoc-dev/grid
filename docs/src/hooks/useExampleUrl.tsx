@@ -3,17 +3,17 @@
 import {
   getExampleUrl,
   type ExampleId,
-  type FrameworkId,
+  type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
 import { useQuery } from "@tanstack/react-query";
 
 export function useExampleUrl<
-  F extends FrameworkId,
-  P extends PluginId<F>,
-  E extends ExampleId<F, P>,
->(frameworkId: F, pluginId: P, exampleId: E) {
-  const url = getExampleUrl(frameworkId, pluginId, exampleId);
+  A extends AdapterId,
+  P extends PluginId<A>,
+  E extends ExampleId<A, P>,
+>(adapterId: A, pluginId: P, exampleId: E) {
+  const url = getExampleUrl(adapterId, pluginId, exampleId);
 
   const queryFn = async () => {
     try {

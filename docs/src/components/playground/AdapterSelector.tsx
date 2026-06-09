@@ -1,30 +1,30 @@
 "use client";
 
-import { getFrameworkIcon } from "@/assets/icons/frameworks";
+import { getAdapterIcon } from "@/assets/icons/adapters";
 import { usePlaygroundContext } from "@/contexts/PlaygroundContext";
 import {
-  getFrameworkMetadata,
+  getAdapterMetadata,
   getPluginIds,
-  type FrameworkId,
+  type AdapterId,
 } from "@jsoc/grid-docs";
 import clsx from "clsx";
 
 type Props = {
-  frameworkId: FrameworkId;
+  adapterId: AdapterId;
 };
 
-export function FrameworkSelector({ frameworkId }: Props) {
-  const { selectedFrameworkId, setSelectedFrameworkId, setSelectedPluginId } =
+export function AdapterSelector({ adapterId }: Props) {
+  const { selectedAdapterId, setSelectedAdapterId, setSelectedPluginId } =
     usePlaygroundContext();
-  const { name } = getFrameworkMetadata(frameworkId);
-  const Icon = getFrameworkIcon(frameworkId);
-  const isSelected = frameworkId === selectedFrameworkId;
+  const { name } = getAdapterMetadata(adapterId);
+  const Icon = getAdapterIcon(adapterId);
+  const isSelected = adapterId === selectedAdapterId;
 
   return (
     <button
       onClick={() => {
-        setSelectedFrameworkId(frameworkId);
-        setSelectedPluginId(getPluginIds(frameworkId)[0]);
+        setSelectedAdapterId(adapterId);
+        setSelectedPluginId(getPluginIds(adapterId)[0]);
       }}
       className={clsx(
         "relative flex flex-col items-center gap-1.5 px-4 py-3 text-xs font-medium transition-colors shrink-0 cursor-pointer",

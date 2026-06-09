@@ -1,12 +1,12 @@
 import { ChooseExample } from "@/components/examples/ChooseExample";
 import { ExampleViewer } from "@/components/examples/ExampleViewer";
-import { ChooseFramework } from "@/components/examples/ChooseFramework";
+import { ChooseAdapter } from "@/components/examples/ChooseAdapter";
 import { Breadcrumbs } from "@/components/examples/Breadcrumbs";
 import { ChoosePlugin } from "@/components/examples/ChoosePlugin";
 import {
+  isValidAdapterId,
   isValidExampleId,
   isValidPluginId,
-  isValidFrameworkId,
 } from "@jsoc/grid-docs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -25,27 +25,27 @@ export async function generateMetadata(
 
 export default async function Page(props: PageProps<"/examples/[[...path]]">) {
   const { path = [] } = await props.params;
-  const [frameworkId, pluginId, exampleId] = path;
+  const [adapterId, pluginId, exampleId] = path;
   let content;
 
   if (path.length > 3) {
     notFound();
-  } else if (!frameworkId) {
-    content = <ChooseFramework />;
-  } else if (!isValidFrameworkId(frameworkId)) {
+  } else if (!adapterId) {
+    content = <ChooseAdapter />;
+  } else if (!isValidAdapterId(adapterId)) {
     notFound();
   } else if (!pluginId) {
-    content = <ChoosePlugin frameworkId={frameworkId} />;
-  } else if (!isValidPluginId(frameworkId, pluginId)) {
+    content = <ChoosePlugin adapterId={adapterId} />;
+  } else if (!isValidPluginId(adapterId, pluginId)) {
     notFound();
   } else if (!exampleId) {
-    content = <ChooseExample frameworkId={frameworkId} pluginId={pluginId} />;
-  } else if (!isValidExampleId(frameworkId, pluginId, exampleId)) {
+    content = <ChooseExample adapterId={adapterId} pluginId={pluginId} />;
+  } else if (!isValidExampleId(adapterId, pluginId, exampleId)) {
     notFound();
   } else {
     content = (
       <ExampleViewer
-        frameworkId={frameworkId}
+        adapterId={adapterId}
         pluginId={pluginId}
         exampleId={exampleId}
       />

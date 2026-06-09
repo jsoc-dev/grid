@@ -1,32 +1,35 @@
 "use client";
 
-import { getPluginIds, getPluginMetadata } from "@jsoc/grid-docs";
-import { type FrameworkId } from "@jsoc/grid-docs";
+import {
+  getPluginIds,
+  getPluginMetadata,
+  type AdapterId,
+} from "@jsoc/grid-docs";
 import CardGrid from "@/components/generic/CardGrid";
 import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 import { getPluginIcon } from "@/assets/icons/plugins";
 
-type Props<F extends FrameworkId> = {
-  frameworkId: F;
+type Props<A extends AdapterId> = {
+  adapterId: A;
 };
 
-export function ChoosePlugin<F extends FrameworkId>({ frameworkId }: Props<F>) {
+export function ChoosePlugin<A extends AdapterId>({ adapterId }: Props<A>) {
   const navigateToExample = useExamplesNavigator();
-  const pluginIds = getPluginIds(frameworkId);
+  const pluginIds = getPluginIds(adapterId);
 
   return (
     <div className="flex flex-col py-6 gap-6 w-full items-center">
       <h1 className="text-2xl font-semibold">Choose a plugin</h1>
       <CardGrid
         cards={pluginIds.map((pluginId) => {
-          const { name } = getPluginMetadata(frameworkId, pluginId);
-          const PluginIcon = getPluginIcon(frameworkId, pluginId);
+          const { name } = getPluginMetadata(adapterId, pluginId);
+          const PluginIcon = getPluginIcon(adapterId, pluginId);
 
           return {
             id: pluginId,
             label: name,
             icon: <PluginIcon className="w-12 h-12" />,
-            onClick: () => navigateToExample([frameworkId, pluginId]),
+            onClick: () => navigateToExample([adapterId, pluginId]),
           };
         })}
       />

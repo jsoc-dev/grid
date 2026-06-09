@@ -5,7 +5,7 @@ import { Steps } from "nextra/components";
 
 # Getting Started
 
-You are currently reading the React framework guide for JSOC Grid.
+Guide for using the React Grid Adapter.
 
 ## Basic Example
 
@@ -34,7 +34,6 @@ Select your desired grid component that you want to use: <PluginDropdown />
 
 From `@jsoc/react-grid`:
 
-- `GridStoreProvider`
 - `useGridStoreSelector`
 
 From your plugin package:
@@ -42,7 +41,7 @@ From your plugin package:
 - `useGridStore`
 
 ```typescript
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "${plugin.packageName}";
 ```
 
@@ -63,14 +62,12 @@ const activeSchema = useGridStoreSelector(gridStore, (store) =>
 );
 ```
 
-#### Wrap with `GridStoreProvider`
+#### Render your grid
 
-Wrap your grid component with `GridStoreProvider` and pass the store. Spread `activeSchema.config` into your grid library component:
+Spread `activeSchema.config` into your grid library component:
 
 ```tsx
-<GridStoreProvider value={gridStore}>
-  <YourGridComponent key={activeSchema.id} {...activeSchema.config} />
-</GridStoreProvider>
+<YourGridComponent key={activeSchema.id} {...activeSchema.config} />
 ```
 
 Replace `YourGridComponent` with the component from your grid library (for example, AG Grid's `AgGridReact`, Ant Design's `Table`, or TanStack Table's `useReactTable`).

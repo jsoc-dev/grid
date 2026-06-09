@@ -7,7 +7,7 @@ export function Breadcrumbs(props: { path: string[] }) {
 
   // Build up breadcrumbs data
   const breadcrumbs = [
-    { label: "Frameworks", href: "/examples" },
+    { label: "Adapters", href: "/examples" },
     ...path.map((seg, i) => ({
       label: seg,
       href: `/examples/${path.slice(0, i + 1).join("/")}`,

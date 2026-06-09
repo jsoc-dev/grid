@@ -2,7 +2,7 @@
 
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
 import { basicJSON } from "@jsoc/grid-examples-shared";
-import { useSetLocalJSON } from "@jsoc/react-grid-examples";
+import { useSetLocalData } from "@jsoc/react-grid-examples";
 import { encodePretty } from "@jsoc/utils";
 import Editor from "@monaco-editor/react";
 import clsx from "clsx";
@@ -16,7 +16,7 @@ export function InputPanel() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [data, setData] = useState<string | undefined>(DEFAULT_DATA);
-  useSetLocalJSON(data);
+  useSetLocalData(data);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect

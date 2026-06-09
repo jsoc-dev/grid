@@ -6,15 +6,14 @@ import { ExamplePreview } from "@/components/generic/example-preview/ExamplePrev
 import { usePlaygroundContext } from "@/contexts/PlaygroundContext";
 
 export function OutputPanel() {
-  const { selectedFrameworkId, selectedPluginId } = usePlaygroundContext();
+  const { selectedAdapterId, selectedPluginId } = usePlaygroundContext();
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative gap-3">
       <ExamplePreview
-        frameworkId={selectedFrameworkId}
+        adapterId={selectedAdapterId}
         pluginId={selectedPluginId}
-        // @ts-expect-error - exampleId is resolving to never
-        exampleId="local-data"
+        exampleId="localData"
       >
         {(params) => {
           const { preview, isPending } = params;

@@ -5,23 +5,23 @@ import {
   type ExamplePreviewRendererParams,
 } from "@/components/generic/example-preview/ExamplePreview";
 import { useRootContext } from "@/contexts/RootContext";
-import type { ExampleId, FrameworkId, PluginId } from "@jsoc/grid-docs";
+import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";
 import clsx from "clsx";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
 type Props = {
-  exampleId: ExampleId<FrameworkId, PluginId<FrameworkId>>;
+  exampleId: ExampleId<AdapterId, PluginId<AdapterId>>;
 };
 
 export function CodeExample({ exampleId }: Props) {
   const [showCode, setShowCode] = useState(false);
-  const { selectedFrameworkId, selectedPluginId } = useRootContext();
+  const { selectedAdapterId, selectedPluginId } = useRootContext();
 
   return (
     <div className="flex flex-col gap-4">
       <ExamplePreview
         className="h-48!"
-        frameworkId={selectedFrameworkId}
+        adapterId={selectedAdapterId}
         pluginId={selectedPluginId}
         exampleId={exampleId}
       >

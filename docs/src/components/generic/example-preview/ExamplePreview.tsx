@@ -4,16 +4,16 @@ import { FallbackText } from "@/components/generic/example-preview/FallbackText"
 import { Frame } from "@/components/generic/example-preview/Frame";
 import { useExampleUrl } from "@/hooks/useExampleUrl";
 import {
-  type ExampleOptions,
-  type FrameworkId,
+  type ExampleLocator,
+  type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
 import { useRef, type ReactNode } from "react";
 
 export type ExamplePreviewProps<
-  F extends FrameworkId,
-  P extends PluginId<F>,
-> = ExampleOptions<F, P> & {
+  A extends AdapterId,
+  P extends PluginId<A>,
+> = ExampleLocator<A, P> & {
   className?: string;
   children?: ExamplePreviewRenderer;
 };
@@ -42,16 +42,16 @@ export type Param = {
   reload: () => void;
 };
 
-export function ExamplePreview<F extends FrameworkId, P extends PluginId<F>>({
+export function ExamplePreview<A extends AdapterId, P extends PluginId<A>>({
   className,
-  frameworkId,
+  adapterId,
   pluginId,
   exampleId,
   children: renderer = ({ preview }) => preview,
-}: ExamplePreviewProps<F, P>) {
+}: ExamplePreviewProps<A, P>) {
   const previewRef = useRef<HTMLIFrameElement>(null);
   const { url, isPending, error } = useExampleUrl(
-    frameworkId,
+    adapterId,
     pluginId,
     exampleId,
   );

@@ -7,7 +7,7 @@ import {
   type PluginId,
 } from "@jsoc/grid-docs";
 
-const FRAMEWORK_ID = "react-grid" as const;
+const ADAPTER_ID = "react-grid" as const;
 
 export function PluginDropdown() {
   const { selectedPluginId, setSelectedPluginId } = useRootContext();
@@ -16,12 +16,12 @@ export function PluginDropdown() {
     <select
       value={selectedPluginId}
       onChange={(e) =>
-        setSelectedPluginId(e.target.value as PluginId<typeof FRAMEWORK_ID>)
+        setSelectedPluginId(e.target.value as PluginId<typeof ADAPTER_ID>)
       }
     >
-      {getPluginIds(FRAMEWORK_ID).map((pluginId) => (
+      {getPluginIds(ADAPTER_ID).map((pluginId) => (
         <option key={pluginId} value={pluginId}>
-          {getPluginMetadata(FRAMEWORK_ID, pluginId).name}
+          {getPluginMetadata(ADAPTER_ID, pluginId).name}
         </option>
       ))}
     </select>

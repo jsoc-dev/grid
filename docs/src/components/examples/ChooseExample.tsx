@@ -6,21 +6,21 @@ import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 import {
   getExampleIds,
   getExampleMetadata,
-  type FrameworkId,
+  type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
 
-type Props<F extends FrameworkId> = {
-  frameworkId: F;
-  pluginId: PluginId<F>;
+type Props<A extends AdapterId> = {
+  adapterId: A;
+  pluginId: PluginId<A>;
 };
 
-export function ChooseExample<F extends FrameworkId>({
-  frameworkId,
+export function ChooseExample<A extends AdapterId>({
+  adapterId,
   pluginId,
-}: Props<F>) {
+}: Props<A>) {
   const navigateToExample = useExamplesNavigator();
-  const exampleIds = getExampleIds(frameworkId, pluginId);
+  const exampleIds = getExampleIds(adapterId, pluginId);
 
   return (
     <div className="flex flex-col py-6 gap-6 w-full items-center">
@@ -28,18 +28,17 @@ export function ChooseExample<F extends FrameworkId>({
       <CardGrid
         cards={exampleIds.map((exampleId) => {
           const exampleMetadata = getExampleMetadata(
-            frameworkId,
+            adapterId,
             pluginId,
             exampleId,
           );
-          const PluginIcon = getPluginIcon(frameworkId, pluginId);
+          const PluginIcon = getPluginIcon(adapterId, pluginId);
 
           return {
             id: exampleId,
             label: exampleMetadata.name,
             icon: <PluginIcon className="w-12 h-12" />,
-            onClick: () =>
-              navigateToExample([frameworkId, pluginId, exampleId]),
+            onClick: () => navigateToExample([adapterId, pluginId, exampleId]),
           };
         })}
       />

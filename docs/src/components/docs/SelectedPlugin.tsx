@@ -12,11 +12,11 @@ type Props = {
 };
 
 export function SelectedPlugin(props: Props) {
-  const { selectedFrameworkId, selectedPluginId } = useRootContext();
+  const { selectedAdapterId, selectedPluginId } = useRootContext();
 
   for (const [property, show] of Object.entries(props)) {
     if (show) {
-      const metdata = getPluginMetadata(selectedFrameworkId, selectedPluginId);
+      const metdata = getPluginMetadata(selectedAdapterId, selectedPluginId);
 
       return formatValue(metdata[property as PluginMetadataProperty]);
     }

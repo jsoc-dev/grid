@@ -1,6 +1,6 @@
 "use client";
 
-import type { FrameworkId, PluginId } from "@jsoc/grid-docs";
+import type { AdapterId, PluginId } from "@jsoc/grid-docs";
 import {
   createContext,
   useContext,
@@ -9,10 +9,10 @@ import {
 } from "react";
 
 export type PlaygroundContextValue = {
-  selectedFrameworkId: FrameworkId;
-  setSelectedFrameworkId: Dispatch<SetStateAction<FrameworkId>>;
-  selectedPluginId: PluginId<FrameworkId>;
-  setSelectedPluginId: Dispatch<SetStateAction<PluginId<FrameworkId>>>;
+  selectedAdapterId: AdapterId;
+  setSelectedAdapterId: Dispatch<SetStateAction<AdapterId>>;
+  selectedPluginId: PluginId<AdapterId>;
+  setSelectedPluginId: Dispatch<SetStateAction<PluginId<AdapterId>>>;
 };
 
 export const PlaygroundContext = createContext<PlaygroundContextValue | null>(
