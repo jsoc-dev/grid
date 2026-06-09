@@ -9,6 +9,9 @@
     "directory": "packages/vue-grid-examples"
   },
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "imports": {
     "#*": "./src/*"
   },

@@ -2,7 +2,9 @@ import { onUnmounted, ref } from "vue";
 
 export function useDetectColorScheme() {
   const colorScheme = ref<"dark" | "light">(
-    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light",
   );
 
   const matcher = window.matchMedia("(prefers-color-scheme: dark)");
