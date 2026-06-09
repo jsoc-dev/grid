@@ -1,7 +1,7 @@
-import { REPO_DIR } from "#/repo.ts";
-import { findPackageDirectories } from "#/scripts/utils/findPackageDirectories.ts";
-import { getPackageJson } from "#/scripts/utils/getPackageJson.ts";
-import { logMilestone } from "#/scripts/utils/logMilestone.ts";
+import { REPO_DIR } from "#repo.ts";
+import { findPackageDirectories } from "#scripts/utils/findPackageDirectories.ts";
+import { getPackageJson } from "#scripts/utils/getPackageJson.ts";
+import { logMilestone } from "#scripts/utils/logMilestone.ts";
 
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
