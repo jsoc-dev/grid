@@ -1,4 +1,4 @@
-.error {
+.error-message {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -8,18 +8,18 @@
   background-color: canvas;
 }
 
-.error > p {
+.error-message > p {
   font-weight: 600;
   font-size: 1.25rem;
   color: #ef4444;
 }
 
-.error > div {
+.error-message > div {
   font-size: 0.875rem;
   color: #71717a;
 }
 
-.error pre {
+.error-message pre {
   display: inline;
   white-space: pre-wrap;
   font-family: inherit;
