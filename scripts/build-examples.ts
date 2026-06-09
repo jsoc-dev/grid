@@ -4,10 +4,10 @@ import { logMilestone } from "#scripts/utils/logMilestone.ts";
 import path from "node:path";
 
 import {
-  type FrameworkId,
+  type AdapterId,
+  getAdapterIds,
+  getAdapterMetadata,
   getExamplesRelativePath,
-  getFrameworkIds,
-  getFrameworkMetadata,
   getPluginIds,
   type PluginId,
 } from "@jsoc/grid-docs";
@@ -19,28 +19,28 @@ await main();
 async function main() {
   try {
     const manualMode = process.argv.includes("manual");
-    const frameworkIdsToBuild = manualMode
-      ? await askFrameworkIdsToBuild()
-      : getFrameworkIds();
+    const adapterIdsToBuild = manualMode
+      ? await askAdapterIdsToBuild()
+      : getAdapterIds();
 
-    for (const frameworkId of frameworkIdsToBuild) {
-      const allPluginIds = getPluginIds(frameworkId);
+    for (const adapterId of adapterIdsToBuild) {
+      const allPluginIds = getPluginIds(adapterId);
       let buildPluginIds = allPluginIds;
 
       if (manualMode && allPluginIds.length > 0) {
-        buildPluginIds = await getPluginIdsFromUser(frameworkId, allPluginIds);
+        buildPluginIds = await getPluginIdsFromUser(adapterId, allPluginIds);
       }
 
       if (!buildPluginIds.length) {
-        console.info(`No plugins selected for "${frameworkId}". Skipping...\n`);
+        console.info(`No plugins selected for "${adapterId}". Skipping...\n`);
         continue;
       }
 
       // Sequential build (not parallelized to keep it simple)
       for (const pluginId of buildPluginIds) {
-        const packageId = `${frameworkId}/${pluginId}`;
+        const packageId = `${adapterId}/${pluginId}`;
         logMilestone(`📦 Build started for "${packageId}"`, "start");
-        await buildExamples(frameworkId, pluginId);
+        await buildExamples(adapterId, pluginId);
         logMilestone(`✅ Build completed for "${packageId}"`, "end");
       }
     }
@@ -50,42 +50,42 @@ async function main() {
   }
 }
 
-async function askFrameworkIdsToBuild(): Promise<FrameworkId[]> {
-  const { frameworkIds } = await inquirer.prompt<{
-    frameworkIds: FrameworkId[];
+async function askAdapterIdsToBuild(): Promise<AdapterId[]> {
+  const { adapterIds } = await inquirer.prompt<{
+    adapterIds: AdapterId[];
   }>([
     {
       type: "checkbox",
-      name: "frameworkIds",
-      message: "Select which frameworks to build examples for:",
-      choices: getFrameworkIds().map((frameworkId) => {
-        const { name } = getFrameworkMetadata(frameworkId);
+      name: "adapterIds",
+      message: "Select which adapters to build examples for:",
+      choices: getAdapterIds().map((adapterId) => {
+        const { name } = getAdapterMetadata(adapterId);
         return {
-          name: `${name} (${frameworkId})`,
-          value: frameworkId,
+          name: `${name} (${adapterId})`,
+          value: adapterId,
         };
       }),
     },
   ]);
 
-  if (!frameworkIds.length) {
-    throw new Error("No frameworks selected. Exiting.");
+  if (!adapterIds.length) {
+    throw new Error("No adapters selected. Exiting.");
   }
 
-  return frameworkIds;
+  return adapterIds;
 }
 
-async function getPluginIdsFromUser<F extends FrameworkId>(
-  frameworkId: F,
-  choices: PluginId<F>[],
-): Promise<PluginId<F>[]> {
+async function getPluginIdsFromUser<A extends AdapterId>(
+  adapterId: A,
+  choices: PluginId<A>[],
+): Promise<PluginId<A>[]> {
   const { pluginIds } = await inquirer.prompt<{
-    pluginIds: PluginId<F>[];
+    pluginIds: PluginId<A>[];
   }>([
     {
       type: "checkbox",
       name: "pluginIds",
-      message: `Select for which of the following plugins of "${frameworkId}", the examples should be build:`,
+      message: `Select for which of the following plugins of "${adapterId}", the examples should be build:`,
       choices,
     },
   ]);
@@ -93,12 +93,12 @@ async function getPluginIdsFromUser<F extends FrameworkId>(
   return pluginIds;
 }
 
-async function buildExamples<F extends FrameworkId>(
-  frameworkId: F,
-  pluginId: PluginId<F>,
+async function buildExamples<A extends AdapterId>(
+  adapterId: A,
+  pluginId: PluginId<A>,
 ) {
-  const sourceDir = getExamplesSourceDir(frameworkId, pluginId);
-  const outputDir = getExamplesOutputDir(frameworkId, pluginId);
+  const sourceDir = getExamplesSourceDir(adapterId, pluginId);
+  const outputDir = getExamplesOutputDir(adapterId, pluginId);
 
   console.log("SOURCE DIR:", sourceDir);
   console.log("OUTPUT DIR:", outputDir, "\n");
@@ -118,20 +118,20 @@ async function buildExamples<F extends FrameworkId>(
   });
 }
 
-function getExamplesSourceDir<F extends FrameworkId>(
-  frameworkId: F,
-  pluginId: PluginId<F>,
+function getExamplesSourceDir<A extends AdapterId>(
+  adapterId: A,
+  pluginId: PluginId<A>,
 ): string {
-  return path.resolve(REPO_DIR, getExamplesRelativePath(frameworkId, pluginId));
+  return path.resolve(REPO_DIR, getExamplesRelativePath(adapterId, pluginId));
 }
 
-function getExamplesOutputDir<F extends FrameworkId>(
-  frameworkId: F,
-  pluginId: PluginId<F>,
+function getExamplesOutputDir<A extends AdapterId>(
+  adapterId: A,
+  pluginId: PluginId<A>,
 ): string {
   return path.resolve(
     REPO_DIR,
     "docs/public",
-    getExamplesRelativePath(frameworkId, pluginId),
+    getExamplesRelativePath(adapterId, pluginId),
   );
 }
