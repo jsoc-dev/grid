@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const getModulePath = (m) => fileURLToPath(import.meta.resolve(m));
 
 // path to the build script
-const buildScriptPath = getModulePath("#/scripts/build-packages.ts");
+const buildScriptPath = getModulePath("#scripts/build-packages.ts");
 
 // path to the tsx cli module (tsx/cli.mjs)
 const tsxCliPath = getModulePath("tsx/cli");

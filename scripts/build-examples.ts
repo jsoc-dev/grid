@@ -1,5 +1,5 @@
-import { REPO_DIR } from "#/repo.ts";
-import { logMilestone } from "#/scripts/utils/logMilestone.ts";
+import { REPO_DIR } from "#repo.ts";
+import { logMilestone } from "#scripts/utils/logMilestone.ts";
 
 import path from "node:path";
 
