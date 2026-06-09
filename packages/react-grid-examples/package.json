@@ -9,6 +9,9 @@
     "directory": "packages/react-grid-examples"
   },
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "imports": {
     "#*": "./src/*"
   },

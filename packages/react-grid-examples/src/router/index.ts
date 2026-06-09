@@ -1,2 +1,2 @@
-export * from "./ErrorBoundary.tsx";
 export * from "./ExamplesRouter.tsx";
+export type * from "./types.ts";

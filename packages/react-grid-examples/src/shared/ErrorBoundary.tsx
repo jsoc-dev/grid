@@ -1,4 +1,4 @@
-import { ErrorMessage } from "#components/ErrorMessage.tsx";
+import { ErrorMessage } from "#shared/ErrorMessage.tsx";
 
 import {
   ErrorBoundary as ReactErrorBoundary,
