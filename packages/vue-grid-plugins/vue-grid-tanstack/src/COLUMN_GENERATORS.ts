@@ -14,8 +14,7 @@ import {
   sharedUjsonObjectColumnGenerator,
   sharedUjsonValueColumnGenerator,
 } from "@jsoc/grid-tanstack-shared";
-import { ChildGridToggle } from "@jsoc/vue-grid";
-import { h } from "vue";
+import { renderChildGridToggle } from "@jsoc/vue-grid";
 
 export type ColumnGeneratorTanstack<D extends ColumnDataType> = ColumnGenerator<
   PluginConfigTanstack,
@@ -46,9 +45,9 @@ const ujsonObjectColumnGenerator: ColumnGeneratorTanstack<"ujsonObject"> = (
   return {
     ...sharedUjsonObjectColumnGenerator(params),
     cell: ({ row }) =>
-      h(ChildGridToggle, {
+      renderChildGridToggle({
         row: row.original,
-        columnKey: params.columnKey,
+        columnParams: params,
       }),
   };
 };
@@ -59,9 +58,9 @@ const ujsonObjectArrayColumnGenerator: ColumnGeneratorTanstack<
   return {
     ...sharedUjsonObjectArrayColumnGenerator(params),
     cell: ({ row }) =>
-      h(ChildGridToggle, {
+      renderChildGridToggle({
         row: row.original,
-        columnKey: params.columnKey,
+        columnParams: params,
       }),
   };
 };

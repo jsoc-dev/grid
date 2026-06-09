@@ -12,5 +12,5 @@
     "noUnusedLocals": true,
     "noEmit": true
   },
-  "include": ["src", "env.d.ts"]
+  "include": ["src"]
 }
