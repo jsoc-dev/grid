@@ -6,6 +6,7 @@
     /* This is solely added for helping tsc/IDE resolve .tsx file imports in @jsoc/vanilla-grid.
        This package itself does not use JSX. */
     "jsx": "react-jsx",
+    "jsxImportSource": "jsx-dom",
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,
