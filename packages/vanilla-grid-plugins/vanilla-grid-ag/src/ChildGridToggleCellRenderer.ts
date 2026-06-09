@@ -1,9 +1,14 @@
+import type { PluginConfigAg } from "#types.ts";
+
 import type { ColumnGeneratorParams, GridRow } from "@jsoc/grid-core";
 import { ChildGridToggle } from "@jsoc/vanilla-grid";
 import type { ICellRendererComp, ICellRendererParams } from "ag-grid-community";
 
 export type ChildGridToggleCellRendererCustomParams = {
-  columnParams: ColumnGeneratorParams<"ujsonObject" | "ujsonObjectArray">;
+  columnParams: ColumnGeneratorParams<
+    PluginConfigAg,
+    "ujsonObject" | "ujsonObjectArray"
+  >;
 };
 
 export type ChildGridToggleCellRendererParams = ICellRendererParams<GridRow> &
