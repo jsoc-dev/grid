@@ -1,4 +1,6 @@
-import { Basic, LocalData, RemoteData } from "./examples/";
+import basic from "./examples/Basic";
+import localData from "./examples/LocalData";
+import remoteData from "./examples/RemoteData";
 
 import { PrimeReactProvider } from "primereact/api";
 import { ExamplesRouter } from "@jsoc/react-grid-examples";
@@ -26,9 +28,9 @@ export default function App() {
         <ExamplesRouter
           pluginId="prime"
           components={{
-            basic: Basic,
-            "local-data": LocalData,
-            "remote-data": RemoteData,
+            basic,
+            localData,
+            remoteData,
           }}
         />
       </PrimeReactProvider>

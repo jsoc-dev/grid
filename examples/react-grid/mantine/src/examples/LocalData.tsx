@@ -1,18 +1,10 @@
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-mantine";
-import { ErrorBoundary, useGetLocalJSON } from "@jsoc/react-grid-examples";
+import { LocalDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
-export function LocalData() {
-  const data = useGetLocalJSON();
-
-  if (!data) return <p>No data</p>;
-
-  return (
-    <ErrorBoundary resetKeys={[data]}>
-      <Example data={data} />
-    </ErrorBoundary>
-  );
+export default function LocalDataExample() {
+  return <LocalDataExampleRenderer component={Example} />;
 }
 
 function Example({ data }: { data: string }) {
@@ -23,9 +15,5 @@ function Example({ data }: { data: string }) {
 
   const table = useMantineReactTable(activeSchema.config);
 
-  return (
-    <GridStoreProvider value={gridStore}>
-      <MantineReactTable table={table} />
-    </GridStoreProvider>
-  );
+  return <MantineReactTable table={table} />;
 }

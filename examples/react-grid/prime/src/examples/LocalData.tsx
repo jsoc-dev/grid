@@ -1,19 +1,11 @@
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-prime";
-import { ErrorBoundary, useGetLocalJSON } from "@jsoc/react-grid-examples";
+import { LocalDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 
-export function LocalData() {
-  const data = useGetLocalJSON();
-
-  if (!data) return <p>No data</p>;
-
-  return (
-    <ErrorBoundary resetKeys={[data]}>
-      <Example data={data} />
-    </ErrorBoundary>
-  );
+export default function LocalDataExample() {
+  return <LocalDataExampleRenderer component={Example} />;
 }
 
 function Example({ data }: { data: string }) {
@@ -24,12 +16,10 @@ function Example({ data }: { data: string }) {
   const { columns, ...config } = activeSchema.config;
 
   return (
-    <GridStoreProvider value={gridStore}>
-      <DataTable key={activeSchema.id} {...config}>
-        {columns.map((col) => (
-          <Column key={col.field} {...col} />
-        ))}
-      </DataTable>
-    </GridStoreProvider>
+    <DataTable key={activeSchema.id} {...config}>
+      {columns.map((col) => (
+        <Column key={col.field} {...col} />
+      ))}
+    </DataTable>
   );
 }

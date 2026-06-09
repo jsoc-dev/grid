@@ -1,10 +1,10 @@
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";
 import { basicJSON } from "@jsoc/grid-examples-shared";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { SimpleTable } from "../components/SimpleTable";
 
-export function Basic() {
+export default function BasicExample() {
   const gridStore = useGridStore(basicJSON);
   const activeSchema = useGridStoreSelector(gridStore, (gridStore) =>
     gridStore.getActiveSchema(),
@@ -16,9 +16,5 @@ export function Basic() {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return (
-    <GridStoreProvider value={gridStore}>
-      <SimpleTable table={table} />
-    </GridStoreProvider>
-  );
+  return <SimpleTable table={table} />;
 }

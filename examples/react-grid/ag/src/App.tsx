@@ -1,4 +1,6 @@
-import { Basic, LocalData, RemoteData } from "./examples/";
+import basic from "./examples/Basic";
+import localData from "./examples/LocalData";
+import remoteData from "./examples/RemoteData";
 
 import { AllCommunityModule } from "ag-grid-community";
 import { AgGridProvider } from "ag-grid-react";
@@ -16,9 +18,9 @@ export default function App() {
       <ExamplesRouter
         pluginId="ag"
         components={{
-          basic: Basic,
-          "local-data": LocalData,
-          "remote-data": RemoteData,
+          basic,
+          localData,
+          remoteData,
         }}
       />
     </AgGridProvider>

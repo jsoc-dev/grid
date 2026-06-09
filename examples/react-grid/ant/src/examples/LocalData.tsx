@@ -1,19 +1,11 @@
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { AntTable } from "#components/AntTable.tsx";
+
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
-import { ErrorBoundary, useGetLocalJSON } from "@jsoc/react-grid-examples";
-import { Table } from "antd";
-import { TableWrapper } from "../components/TableWrapper";
+import { LocalDataExampleRenderer } from "@jsoc/react-grid-examples";
 
-export function LocalData() {
-  const data = useGetLocalJSON();
-
-  if (!data) return <p>No data</p>;
-
-  return (
-    <ErrorBoundary resetKeys={[data]}>
-      <Example data={data} />
-    </ErrorBoundary>
-  );
+export default function LocalDataExample() {
+  return <LocalDataExampleRenderer component={Example} />;
 }
 
 function Example({ data }: { data: string }) {
@@ -22,11 +14,5 @@ function Example({ data }: { data: string }) {
     gridStore.getActiveSchema(),
   );
 
-  return (
-    <GridStoreProvider value={gridStore}>
-      <TableWrapper>
-        <Table key={activeSchema.id} {...activeSchema.config} />
-      </TableWrapper>
-    </GridStoreProvider>
-  );
+  return <AntTable key={activeSchema.id} {...activeSchema.config} />;
 }

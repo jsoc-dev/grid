@@ -1,19 +1,13 @@
-import { AgGridReact } from "../components/AgGridReact";
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
-import { useGridStore } from "@jsoc/react-grid-ag";
+import { AgGridReact } from "#components/AgGridReact.tsx";
 import { basicJSON } from "@jsoc/grid-examples-shared";
+import { useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStore } from "@jsoc/react-grid-ag";
 
-export function Basic() {
+export default function BasicExample() {
   const gridStore = useGridStore(basicJSON);
   const activeSchema = useGridStoreSelector(gridStore, (gridStore) =>
     gridStore.getActiveSchema(),
   );
 
-  return (
-    <GridStoreProvider value={gridStore}>
-      <div style={{ height: "100%" }}>
-        <AgGridReact key={activeSchema.id} {...activeSchema.config} />
-      </div>
-    </GridStoreProvider>
-  );
+  return <AgGridReact key={activeSchema.id} {...activeSchema.config} />;
 }

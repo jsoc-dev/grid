@@ -1,19 +1,11 @@
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/react-grid";
+import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";
-import { ErrorBoundary, useGetLocalJSON } from "@jsoc/react-grid-examples";
+import { LocalDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { SimpleTable } from "../components/SimpleTable";
 
-export function LocalData() {
-  const data = useGetLocalJSON();
-
-  if (!data) return <p>No data</p>;
-
-  return (
-    <ErrorBoundary resetKeys={[data]}>
-      <Example data={data} />
-    </ErrorBoundary>
-  );
+export default function LocalDataExample() {
+  return <LocalDataExampleRenderer component={Example} />;
 }
 
 function Example({ data }: { data: string }) {
@@ -28,9 +20,5 @@ function Example({ data }: { data: string }) {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return (
-    <GridStoreProvider value={gridStore}>
-      <SimpleTable table={table} />
-    </GridStoreProvider>
-  );
+  return <SimpleTable table={table} />;
 }

@@ -1,3 +1,5 @@
+import "@jsoc/grid-examples-shared/css/tanstack-table.css";
+
 import type { GridRow } from "@jsoc/grid-core";
 import { flexRender, type Table } from "@tanstack/react-table";
 
@@ -14,7 +16,7 @@ export function SimpleTable({ table }: { table: Table<GridRow> }) {
   return (
     // wrapping in <div> with overflow: auto to handle horizontal scrolling,
     // because standard HTML tables do not support overflow properties directly
-    <div className="table-container">
+    <div className="table-wrapper">
       <table>
         <thead>
           {headerGroups.map((hg) => (

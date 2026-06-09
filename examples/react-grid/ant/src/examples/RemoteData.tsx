@@ -1,21 +1,11 @@
-import { useGetRemoteJSON } from "@jsoc/react-grid-examples";
-import {
-  GridStoreProvider,
-  SimpleNavigator,
-  useGridStoreSelector,
-} from "@jsoc/react-grid";
+import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import { RemoteDataExampleRenderer } from "@jsoc/react-grid-examples";
+import { SimpleNavigator, useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
 import { Table } from "antd";
-import { TableWrapper } from "../components/TableWrapper";
 
-export function RemoteData() {
-  const { data, loading, error } = useGetRemoteJSON();
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!data) return <p>No data</p>;
-
-  return <Example data={data} />;
+export default function RemoteDataExample() {
+  return <RemoteDataExampleRenderer component={Example} />;
 }
 
 function Example({ data }: { data: string }) {
@@ -25,11 +15,11 @@ function Example({ data }: { data: string }) {
   );
 
   return (
-    <GridStoreProvider value={gridStore}>
-      <SimpleNavigator />
-      <TableWrapper>
+    <div className={classNames.layout}>
+      <SimpleNavigator gridStore={gridStore} />
+      <div className={classNames.gridContainer}>
         <Table key={activeSchema.id} {...activeSchema.config} />
-      </TableWrapper>
-    </GridStoreProvider>
+      </div>
+    </div>
   );
 }
