@@ -1,4 +1,4 @@
-import type { FrameworkId, PluginId } from "#types.ts";
+import type { AdapterId, PluginId } from "#types.ts";
 
 export type PluginMetadata = {
   name: string;
@@ -9,12 +9,12 @@ export type PluginMetadata = {
 export type PluginMetadataProperty = keyof PluginMetadata;
 export type PluginMetadataValue = PluginMetadata[PluginMetadataProperty];
 
-export type PluginMetadataMap<F extends FrameworkId = FrameworkId> = {
-  [id in PluginId<F>]: PluginMetadata;
+export type PluginMetadataMap<A extends AdapterId = AdapterId> = {
+  [id in PluginId<A>]: PluginMetadata;
 };
 
-export type PluginMetadataMapByFramework = {
-  [F in FrameworkId]: PluginMetadataMap<F>;
+export type PluginMetadataMapByAdapter = {
+  [A in AdapterId]: PluginMetadataMap<A>;
 };
 
 const REACT_GRID_PLUGINS_METADATA_MAP = {
@@ -86,29 +86,27 @@ const VUE_GRID_PLUGINS_METADATA_MAP = {
   },
 } as const satisfies PluginMetadataMap<"vue-grid">;
 
-const PLUGIN_METADATA_MAP_BY_FRAMEWORK: PluginMetadataMapByFramework = {
+const PLUGIN_METADATA_MAP_BY_ADAPTER: PluginMetadataMapByAdapter = {
   "react-grid": REACT_GRID_PLUGINS_METADATA_MAP,
   "vue-grid": VUE_GRID_PLUGINS_METADATA_MAP,
   "vanilla-grid": VANILLA_GRID_PLUGINS_METADATA_MAP,
 };
 
-export function getPluginIds<F extends FrameworkId>(
-  frameworkId: F,
-): PluginId<F>[] {
-  const pluginsMetadata = PLUGIN_METADATA_MAP_BY_FRAMEWORK[frameworkId];
-  return Object.keys(pluginsMetadata) as PluginId<F>[];
+export function getPluginIds<A extends AdapterId>(adapterId: A): PluginId<A>[] {
+  const pluginsMetadata = PLUGIN_METADATA_MAP_BY_ADAPTER[adapterId];
+  return Object.keys(pluginsMetadata) as PluginId<A>[];
 }
 
-export function isValidPluginId<F extends FrameworkId>(
-  frameworkId: F,
+export function isValidPluginId<A extends AdapterId>(
+  adapterId: A,
   pluginId: string,
-): pluginId is PluginId<F> {
-  return getPluginIds(frameworkId).includes(pluginId as PluginId<F>);
+): pluginId is PluginId<A> {
+  return getPluginIds(adapterId).includes(pluginId as PluginId<A>);
 }
 
-export function getPluginMetadata<F extends FrameworkId, P extends PluginId<F>>(
-  frameworkId: F,
+export function getPluginMetadata<A extends AdapterId, P extends PluginId<A>>(
+  adapterId: A,
   pluginId: P,
-): PluginMetadataMap<F>[P] {
-  return PLUGIN_METADATA_MAP_BY_FRAMEWORK[frameworkId][pluginId];
+): PluginMetadataMap<A>[P] {
+  return PLUGIN_METADATA_MAP_BY_ADAPTER[adapterId][pluginId];
 }

@@ -10,12 +10,13 @@ export type VueGridPluginId = "ag" | "tanstack";
 
 export type VanillaGridPluginId = "ag" | "tanstack";
 
-export type PluginIdsByFramework = {
+export type PluginIdsByAdapter = {
   "react-grid": ReactGridPluginId;
   "vue-grid": VueGridPluginId;
   "vanilla-grid": VanillaGridPluginId;
 };
 
-export type FrameworkId = keyof PluginIdsByFramework;
+export type AdapterId = keyof PluginIdsByAdapter;
+export type UpcomingAdapterId = "angular-grid";
 
-export type PluginId<F extends FrameworkId> = PluginIdsByFramework[F];
+export type PluginId<A extends AdapterId> = PluginIdsByAdapter[A];

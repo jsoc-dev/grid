@@ -1,23 +1,23 @@
 import type { ExampleId } from "#metadata/examples-metadata.ts";
-import type { FrameworkId, PluginId } from "#types.ts";
+import type { AdapterId, PluginId } from "#types.ts";
 
-export type ExamplesRelativePath<F extends FrameworkId = FrameworkId> =
-  F extends FrameworkId ? `examples/${F}/${PluginId<F>}` : never;
+export type ExamplesRelativePath<A extends AdapterId = AdapterId> =
+  A extends AdapterId ? `examples/${A}/${PluginId<A>}` : never;
 
-export function getExamplesRelativePath<F extends FrameworkId>(
-  frameworkId: F,
-  pluginId: PluginId<F>,
-): ExamplesRelativePath<F> {
-  return `examples/${frameworkId}/${pluginId}` as ExamplesRelativePath<F>;
+export function getExamplesRelativePath<A extends AdapterId>(
+  adapterId: A,
+  pluginId: PluginId<A>,
+): ExamplesRelativePath<A> {
+  return `examples/${adapterId}/${pluginId}` as ExamplesRelativePath<A>;
 }
 
 // Returns the url of a specific example app present in the public/ folder of docs app.
-export function getExampleUrl<F extends FrameworkId, P extends PluginId<F>>(
-  frameworkId: F,
+export function getExampleUrl<A extends AdapterId, P extends PluginId<A>>(
+  adapterId: A,
   pluginId: P,
-  exampleId: ExampleId<F, P>,
+  exampleId: ExampleId<A, P>,
 ) {
-  const examplesPath = getExamplesRelativePath(frameworkId, pluginId);
+  const examplesPath = getExamplesRelativePath(adapterId, pluginId);
   const indexFilePath = `/${examplesPath}/index.html`;
 
   return indexFilePath + buildExampleIdSearchQuery(exampleId);
