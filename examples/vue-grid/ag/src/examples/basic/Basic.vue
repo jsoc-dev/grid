@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AgGridVue from "#/components/AgGridVue.vue";
-import { GridStoreProvider, useGridStoreSelector } from "@jsoc/vue-grid";
+import AgGridVue from "#components/AgGridVue.vue";
+import { useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-ag";
 import { basicJSON } from "@jsoc/grid-examples-shared";
 
@@ -11,7 +11,5 @@ const activeSchema = useGridStoreSelector(gridStore, (store) =>
 </script>
 
 <template>
-  <GridStoreProvider :value="gridStore">
-    <AgGridVue :key="activeSchema.id" :grid-options="activeSchema.config" />
-  </GridStoreProvider>
+  <AgGridVue :key="activeSchema.id" :grid-options="activeSchema.config" />
 </template>

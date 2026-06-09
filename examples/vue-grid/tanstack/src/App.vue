@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { Basic, LocalData, RemoteData } from "#/examples/index.ts";
-import { ExamplesRouter, useDetectColorScheme } from "@jsoc/vue-grid-examples";
-import { watchEffect } from "vue";
+import basic from "#examples/basic/Basic.vue";
+import localData from "#examples/local-data/LocalData.vue";
+import remoteData from "#examples/remote-data/RemoteData.vue";
 
-const colorScheme = useDetectColorScheme();
-
-watchEffect(() => {
-  document.documentElement.classList.toggle("dark", colorScheme.value === "dark");
-});
+import { ExamplesRouter } from "@jsoc/vue-grid-examples";
 </script>
 
 <template>
   <ExamplesRouter
     plugin-id="tanstack"
-    :components="{
-      basic: Basic,
-      'local-data': LocalData,
-      'remote-data': RemoteData,
-    }"
+    :components="{ basic, localData, remoteData }"
   />
 </template>

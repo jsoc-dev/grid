@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import RemoteDataExample from "#/examples/remote-data/RemoteDataExample.vue";
-import { useGetRemoteJSON } from "@jsoc/vue-grid-examples";
-
-const { data, loading, error } = useGetRemoteJSON();
+import RemoteDataExample from "#examples/remote-data/RemoteDataExample.vue";
+import { RemoteDataExampleRenderer } from "@jsoc/vue-grid-examples";
 </script>
 
 <template>
-  <p v-if="loading">Loading...</p>
-  <p v-else-if="error instanceof Error">Error: {{ error.message }}</p>
-  <p v-else-if="!data">No data</p>
-  <RemoteDataExample v-else :data="data" />
+  <RemoteDataExampleRenderer :component="RemoteDataExample" />
 </template>

@@ -1,24 +1,30 @@
 <script setup lang="ts">
 import { useDetectColorScheme } from "@jsoc/vue-grid-examples";
-
 import type { GridRow } from "@jsoc/grid-core";
 import { colorSchemeDark, themeQuartz } from "ag-grid-community";
 import type { GridOptions } from "ag-grid-community";
 import { AgGridVue as AgGrid } from "ag-grid-vue3";
 import { computed } from "vue";
 
-const props = defineProps<{
+const themes = {
+  light: themeQuartz,
+  dark: themeQuartz.withPart(colorSchemeDark),
+};
+
+defineProps<{
   gridOptions: GridOptions<GridRow>;
 }>();
 
-const colorScheme = useDetectColorScheme();
-const theme = computed(() =>
-  colorScheme.value === "dark"
-    ? themeQuartz.withPart(colorSchemeDark)
-    : themeQuartz,
-);
+const theme = useTheme();
 
-const gridOptions = computed(() => props.gridOptions);
+/**
+ * `AgGridVue` with automatic Quartz light/dark theme based on the system preference.
+ * @see {@link https://www.ag-grid.com/vue-data-grid/getting-started/ Vue AG Grid}
+ */
+function useTheme() {
+  const colorScheme = useDetectColorScheme();
+  return computed(() => themes[colorScheme.value]);
+}
 </script>
 
 <template>

@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import TanStackTable from "#/components/TanStackTable.vue";
-import {
-  GridStoreProvider,
-  SimpleNavigator,
-  useGridStoreSelector,
-} from "@jsoc/vue-grid";
+import TanStackTable from "#components/TanStackTable.vue";
+
+import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import { SimpleNavigator, useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-tanstack";
 import { toRef } from "vue";
 
@@ -20,12 +18,14 @@ const activeSchema = useGridStoreSelector(gridStore, (store) =>
 </script>
 
 <template>
-  <GridStoreProvider :value="gridStore">
-    <SimpleNavigator />
+  <div :class="classNames.layout">
+    <SimpleNavigator :grid-store="gridStore" />
 
-    <TanStackTable
-      :key="gridStore.id + activeSchema.id"
-      :config="activeSchema.config"
-    />
-  </GridStoreProvider>
+    <div :class="classNames.gridContainer">
+      <TanStackTable
+        :key="gridStore.id + activeSchema.id"
+        :config="activeSchema.config"
+      />
+    </div>
+  </div>
 </template>

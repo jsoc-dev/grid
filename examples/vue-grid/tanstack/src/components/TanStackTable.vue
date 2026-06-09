@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import "@jsoc/grid-examples-shared/css/tanstack-table.css";
+
 import type { PluginConfigTanstack } from "@jsoc/vue-grid-tanstack";
 import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
 import { computed } from "vue";
@@ -25,7 +27,7 @@ const hasHeaders = computed(() =>
   <p v-else-if="!hasHeaders">No columns</p>
   <!-- wrapping in div with overflow: auto to handle horizontal scrolling,
        because standard HTML tables do not support overflow properties directly -->
-  <div v-else class="table-container">
+  <div v-else class="table-wrapper">
     <table>
       <thead>
         <tr v-for="headerGroup in headerGroups" :key="headerGroup.id">

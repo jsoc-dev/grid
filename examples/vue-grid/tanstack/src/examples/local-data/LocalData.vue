@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import LocalDataExample from "#/examples/local-data/LocalDataExample.vue";
-import { ErrorBoundary, useGetLocalJSON } from "@jsoc/vue-grid-examples";
+import LocalDataExample from "#examples/local-data/LocalDataExample.vue";
+import { createGridStore } from "@jsoc/vue-grid-tanstack";
+import { LocalDataExampleRenderer } from "@jsoc/vue-grid-examples";
 
-const data = useGetLocalJSON();
+function render(data: string) {
+  createGridStore(data);
+}
 </script>
 
 <template>
-  <p v-if="data === undefined">No data</p>
-  <ErrorBoundary v-else :reset-keys="[data]">
-    <LocalDataExample :data="data" />
-  </ErrorBoundary>
+  <LocalDataExampleRenderer :component="LocalDataExample" :render="render" />
 </template>

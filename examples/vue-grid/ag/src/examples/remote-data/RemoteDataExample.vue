@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import AgGridVue from "#/components/AgGridVue.vue";
-import {
-  GridStoreProvider,
-  SimpleNavigator,
-  useGridStoreSelector,
-} from "@jsoc/vue-grid";
+import AgGridVue from "#components/AgGridVue.vue";
+
+import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import { SimpleNavigator, useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-ag";
 import { toRef } from "vue";
 
@@ -20,13 +18,15 @@ const activeSchema = useGridStoreSelector(gridStore, (store) =>
 </script>
 
 <template>
-  <GridStoreProvider :value="gridStore">
-    <SimpleNavigator />
+  <div :class="classNames.layout">
+    <SimpleNavigator :grid-store="gridStore" />
 
-    <!-- remount when store or schema changes because ag-grid-vue doesn't fully apply new grid-options without remounting. -->
-    <AgGridVue
-      :key="gridStore.id + activeSchema.id"
-      :grid-options="activeSchema.config"
-    />
-  </GridStoreProvider>
+    <div :class="classNames.gridContainer">
+      <!-- remount when store or schema changes because ag-grid-vue doesn't fully apply new grid-options without remounting. -->
+      <AgGridVue
+        :key="gridStore.id + activeSchema.id"
+        :grid-options="activeSchema.config"
+      />
+    </div>
+  </div>
 </template>
