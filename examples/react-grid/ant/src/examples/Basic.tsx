@@ -1,7 +1,7 @@
 import { AntTable } from "#components/AntTable.tsx";
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 
 export default function BasicExample() {
   const gridStore = useGridStore(basicJSON);

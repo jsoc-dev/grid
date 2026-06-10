@@ -1,6 +1,6 @@
 import { createAgGrid } from "#utils/createAgGrid.ts";
 
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { createGridStore } from "@jsoc/vanilla-grid-ag";
 import { onUnmounted } from "@jsoc/vanilla-grid-examples";
 

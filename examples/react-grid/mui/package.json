@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/grid-examples-core": "*",
     "@jsoc/react-grid": "*",
     "@jsoc/react-grid-mui": "*",
     "@jsoc/react-grid-examples": "*",

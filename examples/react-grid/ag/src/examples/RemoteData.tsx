@@ -1,6 +1,6 @@
 import { AgGridReact } from "#components/AgGridReact.tsx";
 
-import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { RemoteDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { SimpleNavigator, useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ag";

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
-    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/grid-examples-core": "*",
     "@jsoc/react-grid": "*",
     "@jsoc/react-grid-mantine": "*",
     "@jsoc/react-grid-examples": "*",

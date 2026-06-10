@@ -93,12 +93,12 @@ importers:
       '@jsoc/grid-docs':
         specifier: workspace:*
         version: link:../packages/grid-docs
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: workspace:*
-        version: link:../packages/grid-examples-shared
+        version: link:../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid-examples':
         specifier: workspace:*
-        version: link:../packages/react-grid-examples
+        version: link:../packages/grid-examples/react-grid-examples
       '@jsoc/utils':
         specifier: workspace:*
         version: link:../packages/utils
@@ -163,9 +163,9 @@ importers:
 
   examples/react-grid/ag:
     dependencies:
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
@@ -174,7 +174,7 @@ importers:
         version: link:../../../packages/react-grid-plugins/react-grid-ag
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       ag-grid-community:
         specifier: ^35.0.0
         version: 35.2.1
@@ -239,9 +239,9 @@ importers:
 
   examples/react-grid/ant:
     dependencies:
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
@@ -250,7 +250,7 @@ importers:
         version: link:../../../packages/react-grid-plugins/react-grid-ant
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       antd:
         specifier: ^6.3.5
         version: 6.3.5(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -309,15 +309,15 @@ importers:
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@18.3.29)(react@18.3.1)
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       '@jsoc/react-grid-mantine':
         specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-mantine
@@ -394,15 +394,15 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       '@jsoc/react-grid-mui':
         specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-mui
@@ -470,15 +470,15 @@ importers:
 
   examples/react-grid/prime:
     dependencies:
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       '@jsoc/react-grid-prime':
         specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-prime
@@ -540,15 +540,15 @@ importers:
       '@jsoc/grid-core':
         specifier: '*'
         version: link:../../../packages/grid-core
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/react-grid':
         specifier: '*'
         version: link:../../../packages/react-grid
       '@jsoc/react-grid-examples':
         specifier: '*'
-        version: link:../../../packages/react-grid-examples
+        version: link:../../../packages/grid-examples/react-grid-examples
       '@jsoc/react-grid-tanstack':
         specifier: '*'
         version: link:../../../packages/react-grid-plugins/react-grid-tanstack
@@ -610,9 +610,9 @@ importers:
       '@jsoc/grid-core':
         specifier: '*'
         version: link:../../../packages/grid-core
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/vanilla-grid':
         specifier: '*'
         version: link:../../../packages/vanilla-grid
@@ -621,7 +621,7 @@ importers:
         version: link:../../../packages/vanilla-grid-plugins/vanilla-grid-ag
       '@jsoc/vanilla-grid-examples':
         specifier: '*'
-        version: link:../../../packages/vanilla-grid-examples
+        version: link:../../../packages/grid-examples/vanilla-grid-examples
       ag-grid-community:
         specifier: 35.2.1
         version: 35.2.1
@@ -638,15 +638,15 @@ importers:
       '@jsoc/grid-core':
         specifier: '*'
         version: link:../../../packages/grid-core
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/vanilla-grid':
         specifier: '*'
         version: link:../../../packages/vanilla-grid
       '@jsoc/vanilla-grid-examples':
         specifier: '*'
-        version: link:../../../packages/vanilla-grid-examples
+        version: link:../../../packages/grid-examples/vanilla-grid-examples
       '@jsoc/vanilla-grid-tanstack':
         specifier: '*'
         version: link:../../../packages/vanilla-grid-plugins/vanilla-grid-tanstack
@@ -669,9 +669,9 @@ importers:
       '@jsoc/grid-core':
         specifier: '*'
         version: link:../../../packages/grid-core
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/vue-grid':
         specifier: '*'
         version: link:../../../packages/vue-grid
@@ -680,7 +680,7 @@ importers:
         version: link:../../../packages/vue-grid-plugins/vue-grid-ag
       '@jsoc/vue-grid-examples':
         specifier: '*'
-        version: link:../../../packages/vue-grid-examples
+        version: link:../../../packages/grid-examples/vue-grid-examples
       ag-grid-community:
         specifier: 35.2.1
         version: 35.2.1
@@ -730,15 +730,15 @@ importers:
       '@jsoc/grid-core':
         specifier: '*'
         version: link:../../../packages/grid-core
-      '@jsoc/grid-examples-shared':
+      '@jsoc/grid-examples-core':
         specifier: '*'
-        version: link:../../../packages/grid-examples-shared
+        version: link:../../../packages/grid-examples/grid-examples-core
       '@jsoc/vue-grid':
         specifier: '*'
         version: link:../../../packages/vue-grid
       '@jsoc/vue-grid-examples':
         specifier: '*'
-        version: link:../../../packages/vue-grid-examples
+        version: link:../../../packages/grid-examples/vue-grid-examples
       '@jsoc/vue-grid-tanstack':
         specifier: '*'
         version: link:../../../packages/vue-grid-plugins/vue-grid-tanstack
@@ -803,18 +803,102 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
-  packages/grid-examples-shared:
+  packages/grid-examples/grid-examples-core:
     dependencies:
       '@jsoc/grid-docs':
         specifier: workspace:*
-        version: link:../grid-docs
+        version: link:../../grid-docs
       '@jsoc/utils':
         specifier: workspace:*
-        version: link:../utils
+        version: link:../../utils
     devDependencies:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+
+  packages/grid-examples/react-grid-examples:
+    dependencies:
+      '@jsoc/grid-docs':
+        specifier: workspace:*
+        version: link:../../grid-docs
+      '@jsoc/grid-examples-core':
+        specifier: workspace:*
+        version: link:../grid-examples-core
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      react-error-boundary:
+        specifier: ^6.1.1
+        version: 6.1.2(react@19.2.4)
+      react-router:
+        specifier: 7.14.1
+        version: 7.14.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react-router-dom:
+        specifier: 7.14.1
+        version: 7.14.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.3(@types/react@19.2.14)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/grid-examples/vanilla-grid-examples:
+    dependencies:
+      '@jsoc/grid-docs':
+        specifier: workspace:*
+        version: link:../../grid-docs
+      '@jsoc/grid-examples-core':
+        specifier: workspace:*
+        version: link:../grid-examples-core
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../../utils
+      jsx-dom:
+        specifier: ^8.1.6
+        version: 8.1.6
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/grid-examples/vue-grid-examples:
+    dependencies:
+      '@jsoc/grid-docs':
+        specifier: workspace:*
+        version: link:../../grid-docs
+      '@jsoc/grid-examples-core':
+        specifier: workspace:*
+        version: link:../grid-examples-core
+      '@jsoc/utils':
+        specifier: workspace:*
+        version: link:../../utils
+    devDependencies:
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.21.7(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(typescript@6.0.3)(vue-tsc@3.2.9(typescript@6.0.3))
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      unplugin-vue:
+        specifier: ^7.2.0
+        version: 7.2.0(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.22.3)(vue@3.5.34(typescript@6.0.3))(yaml@2.8.3)
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.34(typescript@6.0.3)
+      vue-tsc:
+        specifier: ~3.2.0
+        version: 3.2.9(typescript@6.0.3)
 
   packages/grid-plugins-shared/grid-ag-shared:
     dependencies:
@@ -878,43 +962,6 @@ importers:
       react-dom:
         specifier: ^18.3.0
         version: 18.3.1(react@18.3.1)
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/react-grid-examples:
-    dependencies:
-      '@jsoc/grid-docs':
-        specifier: workspace:*
-        version: link:../grid-docs
-      '@jsoc/grid-examples-shared':
-        specifier: workspace:*
-        version: link:../grid-examples-shared
-      '@jsoc/utils':
-        specifier: workspace:*
-        version: link:../utils
-      react-error-boundary:
-        specifier: ^6.1.1
-        version: 6.1.2(react@19.2.5)
-      react-router:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      react-router-dom:
-        specifier: 7.14.1
-        version: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-    devDependencies:
-      '@types/react':
-        specifier: ^19.0.0
-        version: 19.2.14
-      '@types/react-dom':
-        specifier: ^19.0.0
-        version: 19.2.3(@types/react@19.2.14)
-      react:
-        specifier: ^19.0.0
-        version: 19.2.5
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.2.5(react@19.2.5)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1157,25 +1204,6 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
-  packages/vanilla-grid-examples:
-    dependencies:
-      '@jsoc/grid-docs':
-        specifier: workspace:*
-        version: link:../grid-docs
-      '@jsoc/grid-examples-shared':
-        specifier: workspace:*
-        version: link:../grid-examples-shared
-      '@jsoc/utils':
-        specifier: workspace:*
-        version: link:../utils
-      jsx-dom:
-        specifier: ^8.1.6
-        version: 8.1.6
-    devDependencies:
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
   packages/vanilla-grid-plugins/vanilla-grid-ag:
     dependencies:
       '@jsoc/grid-ag-shared':
@@ -1241,34 +1269,6 @@ importers:
       '@vue/runtime-core':
         specifier: ^3.5.13
         version: 3.5.34
-      tsdown:
-        specifier: 'catalog:'
-        version: 0.21.7(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(typescript@6.0.3)(vue-tsc@3.2.9(typescript@6.0.3))
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-      unplugin-vue:
-        specifier: ^7.2.0
-        version: 7.2.0(@types/node@25.5.2)(esbuild@0.28.0)(jiti@2.6.1)(tsx@4.22.3)(vue@3.5.34(typescript@6.0.3))(yaml@2.8.3)
-      vue:
-        specifier: ^3.5.13
-        version: 3.5.34(typescript@6.0.3)
-      vue-tsc:
-        specifier: ~3.2.0
-        version: 3.2.9(typescript@6.0.3)
-
-  packages/vue-grid-examples:
-    dependencies:
-      '@jsoc/grid-docs':
-        specifier: workspace:*
-        version: link:../grid-docs
-      '@jsoc/grid-examples-shared':
-        specifier: workspace:*
-        version: link:../grid-examples-shared
-      '@jsoc/utils':
-        specifier: workspace:*
-        version: link:../utils
-    devDependencies:
       tsdown:
         specifier: 'catalog:'
         version: 0.21.7(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(typescript@6.0.3)(vue-tsc@3.2.9(typescript@6.0.3))
@@ -14661,9 +14661,9 @@ snapshots:
       react: 19.2.5
       scheduler: 0.27.0
 
-  react-error-boundary@6.1.2(react@19.2.5):
+  react-error-boundary@6.1.2(react@19.2.4):
     dependencies:
-      react: 19.2.5
+      react: 19.2.4
 
   react-is@16.13.1: {}
 
@@ -14714,19 +14714,19 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.14
 
-  react-router-dom@7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router-dom@7.14.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
-      react: 19.2.5
-      react-dom: 19.2.5(react@19.2.5)
-      react-router: 7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      react-router: 7.14.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
 
-  react-router@7.14.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  react-router@7.14.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
       cookie: 1.1.1
-      react: 19.2.5
+      react: 19.2.4
       set-cookie-parser: 2.7.2
     optionalDependencies:
-      react-dom: 19.2.5(react@19.2.5)
+      react-dom: 19.2.4(react@19.2.4)
 
   react-stately@3.47.0(react@19.2.4):
     dependencies:

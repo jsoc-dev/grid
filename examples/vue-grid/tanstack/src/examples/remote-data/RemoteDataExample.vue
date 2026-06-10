@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TanStackTable from "#components/TanStackTable.vue";
 
-import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { SimpleNavigator, useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-tanstack";
 import { toRef } from "vue";

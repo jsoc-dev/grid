@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import "@jsoc/grid-examples-shared/css/tanstack-table.css";
+import "@jsoc/grid-examples-core/css/tanstack-table.css";
 
 import type { PluginConfigTanstack } from "@jsoc/vue-grid-tanstack";
 import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";

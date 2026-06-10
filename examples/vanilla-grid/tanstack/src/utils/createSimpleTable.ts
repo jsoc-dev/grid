@@ -1,4 +1,4 @@
-import "@jsoc/grid-examples-shared/css/tanstack-table.css";
+import "@jsoc/grid-examples-core/css/tanstack-table.css";
 
 import type { GridRow } from "@jsoc/grid-core";
 

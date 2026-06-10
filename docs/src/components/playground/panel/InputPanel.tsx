@@ -1,7 +1,7 @@
 "use client";
 
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { useSetLocalData } from "@jsoc/react-grid-examples";
 import { encodePretty } from "@jsoc/utils";
 import Editor from "@monaco-editor/react";

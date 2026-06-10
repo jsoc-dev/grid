@@ -1,7 +1,7 @@
 import { createSimpleTable } from "#utils/createSimpleTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
-import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { createSimpleNavigator } from "@jsoc/vanilla-grid";
 import {
   createGridStore,

@@ -1,5 +1,5 @@
 import { AgGridReact } from "#components/AgGridReact.tsx";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ag";
 

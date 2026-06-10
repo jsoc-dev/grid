@@ -109,7 +109,7 @@ export default defineConfig([
     files: [
       "packages/react-grid/**/*.{ts,tsx}",
       "packages/react-grid-plugins/**/*.{ts,tsx}",
-      "packages/react-grid-examples/**/*.{ts,tsx}",
+      "packages/grid-examples/react-grid-examples/**/*.{ts,tsx}",
     ],
 
     plugins: {

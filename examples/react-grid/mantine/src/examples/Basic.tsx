@@ -1,6 +1,6 @@
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-mantine";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
 export default function BasicExample() {

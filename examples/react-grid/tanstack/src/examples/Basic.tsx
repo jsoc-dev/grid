@@ -1,6 +1,6 @@
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { SimpleTable } from "../components/SimpleTable";
 

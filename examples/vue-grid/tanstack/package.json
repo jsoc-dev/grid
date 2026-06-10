@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@jsoc/grid-core": "*",
-    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/grid-examples-core": "*",
     "@jsoc/vue-grid": "*",
     "@jsoc/vue-grid-examples": "*",
     "@jsoc/vue-grid-tanstack": "*",

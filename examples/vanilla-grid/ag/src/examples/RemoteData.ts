@@ -1,6 +1,6 @@
 import { createAgGrid } from "#utils/createAgGrid.ts";
 
-import classNames from "@jsoc/grid-examples-shared/css/modules/remoteData.module.css";
+import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { createSimpleNavigator } from "@jsoc/vanilla-grid";
 import { createGridStore, type GridStoreAg } from "@jsoc/vanilla-grid-ag";
 import {

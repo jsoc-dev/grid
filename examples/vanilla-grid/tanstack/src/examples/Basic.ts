@@ -1,7 +1,7 @@
 import { createSimpleTable } from "#utils/createSimpleTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
 import { getCoreRowModel } from "@tanstack/table-core";
 import { onUnmounted } from "@jsoc/vanilla-grid-examples";

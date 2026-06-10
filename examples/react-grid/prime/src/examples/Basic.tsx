@@ -1,6 +1,6 @@
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-prime";
-import { basicJSON } from "@jsoc/grid-examples-shared";
+import { basicJSON } from "@jsoc/grid-examples-core";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 

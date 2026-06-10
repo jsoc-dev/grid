@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@jsoc/grid-core": "*",
-    "@jsoc/grid-examples-shared": "*",
+    "@jsoc/grid-examples-core": "*",
     "@jsoc/vanilla-grid": "*",
     "@jsoc/vanilla-grid-ag": "*",
     "@jsoc/vanilla-grid-examples": "*",

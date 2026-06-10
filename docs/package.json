@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@jsoc/grid-docs": "workspace:*",
-    "@jsoc/grid-examples-shared": "workspace:*",
+    "@jsoc/grid-examples-core": "workspace:*",
     "@jsoc/react-grid-examples": "workspace:*",
     "@jsoc/utils": "workspace:*",
     "@tanstack/react-query": "5.100.11",
