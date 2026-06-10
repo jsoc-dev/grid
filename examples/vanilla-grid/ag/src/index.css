@@ -1,1 +1,5 @@
-@import "@jsoc/grid-examples-shared/css/base.css";
+@import "@jsoc/grid-examples-shared/css/global.css";
+
+.grid-container {
+  flex: 1;
+}

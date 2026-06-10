@@ -13,21 +13,33 @@ import {
   type ColorScheme,
 } from "@jsoc/vanilla-grid-examples";
 
+const themes = {
+  light: themeQuartz,
+  dark: themeQuartz.withPart(colorSchemeDark),
+};
+
 /**
- * Creates AG Grid with automatic detection of color scheme and default theme.
+ * Creates a JavaScript AG Grid with automatic Quartz light/dark theme based on the system preference.
+ * @see {@link https://www.ag-grid.com/javascript-data-grid/getting-started/ JavaScript AG Grid}
  */
 export function createAgGrid(
   eGridDiv: HTMLElement,
   gridOptions: GridOptions<GridRow>,
   params?: Params,
 ): GridApi<GridRow> {
-  const colorScheme = detectColorScheme();
-  const gridApi = createGrid(
-    eGridDiv,
-    { theme: getTheme(colorScheme), ...gridOptions },
-    params,
-  );
+  const theme = getTheme();
+  const gridApi = createGrid(eGridDiv, { theme, ...gridOptions }, params);
 
+  syncThemeWithColorScheme(gridApi);
+
+  return gridApi;
+}
+
+function getTheme(colorScheme: ColorScheme = detectColorScheme()) {
+  return themes[colorScheme];
+}
+
+function syncThemeWithColorScheme(gridApi: GridApi<GridRow>) {
   const unsubscribeColorScheme = subscribeColorScheme((colorScheme) => {
     gridApi.updateGridOptions({ theme: getTheme(colorScheme) });
   });
@@ -35,12 +47,4 @@ export function createAgGrid(
   gridApi.addEventListener("gridPreDestroyed", () => {
     unsubscribeColorScheme();
   });
-
-  return gridApi;
-}
-
-function getTheme(colorScheme: ColorScheme) {
-  return colorScheme === "dark"
-    ? themeQuartz.withPart(colorSchemeDark)
-    : themeQuartz;
 }

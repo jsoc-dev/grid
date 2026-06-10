@@ -1,12 +1,12 @@
-import { useTable } from "#/utils/useTable.ts";
-import { renderTable } from "#/utils/renderTable.ts";
+import { createSimpleTable } from "#utils/createSimpleTable.ts";
+import { useTable } from "#utils/useTable.ts";
 
 import { basicJSON } from "@jsoc/grid-examples-shared";
 import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
-import type { ExampleRenderer } from "@jsoc/vanilla-grid-examples";
 import { getCoreRowModel } from "@tanstack/table-core";
+import { onUnmounted } from "@jsoc/vanilla-grid-examples";
 
-export const renderBasicExample: ExampleRenderer = (root) => {
+export default function (root: HTMLElement) {
   const gridStore = createGridStore({ data: basicJSON });
   const tableOptions = gridStore.getActiveSchema().config;
   const table = useTable({
@@ -14,9 +14,10 @@ export const renderBasicExample: ExampleRenderer = (root) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  renderTable(table, root);
+  const tableElement = createSimpleTable(table);
+  root.replaceChildren(tableElement);
 
-  return () => {
+  onUnmounted(() => {
     gridStore.destroy();
-  };
-};
+  });
+}

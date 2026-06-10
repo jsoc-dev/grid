@@ -1,34 +1,34 @@
+import "@jsoc/grid-examples-shared/css/tanstack-table.css";
+
 import type { GridRow } from "@jsoc/grid-core";
+
 import type { Table } from "@tanstack/table-core";
 
-export function renderTable(table: Table<GridRow>, container: HTMLElement) {
+/**
+ * Creates a HTML table from given TanStack Table instance
+ * @param table - TanStack Table instance.
+ */
+export function createSimpleTable(table: Table<GridRow>): HTMLElement {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
 
   const hasRows = rows.length > 0;
   const hasHeaders = headerGroups.some((group) => group.headers.length > 0);
 
-  if (!hasRows) {
-    renderMessage("No rows", container);
-    return;
-  }
+  if (!hasRows) return createMessageBox("No rows");
+  if (!hasHeaders) return createMessageBox("No columns");
 
-  if (!hasHeaders) {
-    renderMessage("No columns", container);
-    return;
-  }
-
-  const tableContainer = document.createElement("div");
-  tableContainer.className = "table-container";
+  const wrapper = document.createElement("div");
   const tableElement = document.createElement("table");
   const theadElement = document.createElement("thead");
   const tbodyElement = document.createElement("tbody");
   const tfootElement = document.createElement("tfoot");
 
+  wrapper.className = "table-wrapper";
   tableElement.appendChild(theadElement);
   tableElement.appendChild(tbodyElement);
   tableElement.appendChild(tfootElement);
-  tableContainer.appendChild(tableElement);
+  wrapper.appendChild(tableElement);
 
   for (const headerGroup of headerGroups) {
     const trElement = document.createElement("tr");
@@ -60,11 +60,14 @@ export function renderTable(table: Table<GridRow>, container: HTMLElement) {
     tbodyElement.appendChild(trElement);
   }
 
-  container.replaceChildren(tableContainer);
+  return wrapper;
 }
 
 /**
- * If rendering headers, cells, or footers with custom markup, use flexRender instead of `cell.getValue()` or `cell.renderValue()`.
+ * Use this method to render headers, cells, or footers with custom markup,
+ * instead of using `cell.getValue()` or `cell.renderValue()`.
+ *
+ * Copied from the official TanStack Table Vanilla example: {@link https://tanstack.com/table/latest/docs/framework/vanilla/examples/basic}
  */
 function flexRender<TProps extends object>(comp: unknown, props: TProps) {
   if (typeof comp === "function") {
@@ -87,8 +90,12 @@ function renderElement(el: HTMLElement, content: unknown) {
   el.textContent = String(content);
 }
 
-function renderMessage(message: string, container: HTMLElement) {
-  const el = document.createElement("p");
-  el.textContent = message;
-  container.replaceChildren(el);
+/**
+ * Creates a message box element with given message.
+ * @param message - The message to display in the message box.
+ */
+function createMessageBox(message: string) {
+  const div = document.createElement("div");
+  div.textContent = message;
+  return div;
 }

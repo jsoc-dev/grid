@@ -1,9 +1,7 @@
-import "#/index.css";
-import {
-  renderBasicExample,
-  renderLocalDataExample,
-  renderRemoteDataExample,
-} from "#/examples/index.ts";
+import "#index.css";
+import basic from "#examples/Basic.ts";
+import localData from "#examples/LocalData.ts";
+import remoteData from "#examples/RemoteData.ts";
 
 import { mountExamplesRouter } from "@jsoc/vanilla-grid-examples";
 
@@ -16,9 +14,9 @@ const root = document.getElementById("root")!;
 mountExamplesRouter({
   root,
   pluginId: "ag",
-  renderers: {
-    basic: renderBasicExample,
-    "local-data": renderLocalDataExample,
-    "remote-data": renderRemoteDataExample,
+  components: {
+    basic,
+    localData,
+    remoteData,
   },
 });

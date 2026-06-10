@@ -8,6 +8,12 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+
+    /* This is solely added for helping tsc/IDE resolve .tsx file imports in @jsoc/vanilla-grid-examples.
+       This app itself does not use JSX. */
+    "jsx": "react-jsx",
+    "jsxImportSource": "jsx-dom",
+
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
