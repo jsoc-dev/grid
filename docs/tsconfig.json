@@ -30,7 +30,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "**/*.mdx" // Include MDX in the TS project so the IDE can resolve @/* path aliases. Does not typecheck MDX content or catch bad imports in pnpm typecheck.
   ],
   "exclude": ["node_modules"]
 }
