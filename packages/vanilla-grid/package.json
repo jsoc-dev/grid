@@ -1,10 +1,11 @@
 {
   "name": "@jsoc/vanilla-grid",
   "version": "0.0.0",
-  "description": "Dynamic columns/rows generator for popular Vanilla(JS/TS) grid components",
+  "description": "Adapter for using JSOC Grid with Vanilla(JS/TS)",
   "keywords": [
     "datagrid",
     "datatable",
+    "jsoc",
     "grid",
     "jsongrid",
     "javascript",

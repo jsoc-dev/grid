@@ -1,10 +1,11 @@
 {
   "name": "@jsoc/vue-grid",
   "version": "0.0.1",
-  "description": "Dynamic columns/rows generator for popular Vue grid components",
+  "description": "Adapter for using JSOC Grid with Vue",
   "keywords": [
     "datagrid",
     "datatable",
+    "jsoc",
     "grid",
     "jsongrid",
     "vue",

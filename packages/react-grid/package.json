@@ -1,10 +1,11 @@
 {
   "name": "@jsoc/react-grid",
   "version": "0.0.2",
-  "description": "Dynamic columns/rows generator for popular React grid components",
+  "description": "Adapter for using JSOC Grid with React",
   "keywords": [
     "datagrid",
     "datatable",
+    "jsoc",
     "grid",
     "jsongrid",
     "react",
