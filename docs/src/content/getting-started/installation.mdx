@@ -1,141 +1,29 @@
-import { If } from "@/components/docs/content/If";
-import { AdapterMeta } from "@/components/docs/content/AdapterMeta";
-import { PluginMeta } from "@/components/docs/content/PluginMeta";
+---
+dynamicContent: true
+---
 
 # Installation
+First of all, you need to have Node.js and NPM (or any other package manager) installed on your machine. If you haven't installed them yet, please follow the instructions on the [Node.js website](https://nodejs.org/) to download and install the latest stable version.
 
-## Installing the adapter and plugin packages
+Once you have Node.js and a package manager installed, you can proceed with the installation of the adapter and plugin packages.
 
-With the help of the <AdapterMeta metaKey="frameworkName" /> adapter and <PluginMeta metaKey="name" /> plugin, you can generate dynamic configurations for your AG Grid component.
-Run the following command to install the adapter and plugin:
 
-<If adapterId="react-grid" pluginId="ag">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-ag
+## Adapter Package
+Run the following command to install the [%%adapter.frameworkName%%](/docs/adapters/%%adapter.id%%) adapter:
+
+```sh npm2yarn
+npm install %%adapter.packageName%%
 ```
-</If>
 
-<If adapterId="react-grid" pluginId="ant">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-ant
+Also, install the peer dependencies of the adapter package as listed in the [package.json](https://unpkg.com/%%adapter.packageName%%/package.json) file.
+
+
+## Plugin Package
+Run the following command to install the [%%plugin.name%%](/docs/plugins/%%adapter.id%%-%%plugin.id%%) plugin:
+
+```sh npm2yarn
+npm install %%plugin.packageName%%
 ```
-</If>
 
-<If adapterId="react-grid" pluginId="mantine">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-mantine
-```
-</If>
+Also, install the peer dependencies of the plugin package as listed in the [package.json](https://unpkg.com/%%plugin.packageName%%/package.json) file.
 
-<If adapterId="react-grid" pluginId="mui">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-mui
-```
-</If>
-
-<If adapterId="react-grid" pluginId="prime">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-prime
-```
-</If>
-
-<If adapterId="react-grid" pluginId="tanstack">
-```sh npm2yarn copy
-npm install @jsoc/react-grid @jsoc/react-grid-tanstack
-```
-</If>
-
-<If adapterId="vanilla-grid" pluginId="ag">
-```sh npm2yarn copy
-npm install @jsoc/vanilla-grid @jsoc/vanilla-grid-ag
-```
-</If>
-
-<If adapterId="vanilla-grid" pluginId="tanstack">
-```sh npm2yarn copy
-npm install @jsoc/vanilla-grid @jsoc/vanilla-grid-tanstack
-```
-</If>
-
-<If adapterId="vue-grid" pluginId="ag">
-```sh npm2yarn copy
-npm install @jsoc/vue-grid @jsoc/vue-grid-ag
-```
-</If>
-
-<If adapterId="vue-grid" pluginId="tanstack">
-```sh npm2yarn copy
-npm install @jsoc/vue-grid @jsoc/vue-grid-tanstack
-```
-</If>
-
-### Peer Dependencies
-
-The peer dependencies of the adapter and plugin packages also need to be installed.
-
-<If adapterId="react-grid">
-The React adapter has the following peer dependencies:
-  - `react`
-  - `react-dom`
-</If>
-
-<If adapterId="vue-grid">
-The Vue adapter has the following peer dependencies:
-  - `vue`
-</If>
-
-<If adapterId="react-grid" pluginId="ag">
-The AG Grid plugin has the following peer dependencies:
-  - `ag-grid-community`
-  - `ag-grid-react`
-</If>
-
-<If adapterId="vanilla-grid" pluginId="ag">
-The AG Grid plugin has the following peer dependencies:
-  - `ag-grid-community`
-</If>
-
-<If adapterId="vue-grid" pluginId="ag">
-The AG Grid plugin has the following peer dependencies:
-  - `ag-grid-community`
-  - `ag-grid-vue3`
-</If>
-
-<If adapterId="react-grid" pluginId="tanstack">
-The TanStack Table plugin has the following peer dependencies:
-  - `@tanstack/react-table`
-</If>
-
-<If adapterId="vanilla-grid" pluginId="tanstack">
-The TanStack Table plugin has the following peer dependencies:
-  - `@tanstack/table-core`
-</If>
-
-<If adapterId="vue-grid" pluginId="tanstack">
-The TanStack Table plugin has the following peer dependencies:
-  - `@tanstack/vue-table`
-</If>
-
-<If adapterId="react-grid" pluginId="ant">
-The Ant Design plugin has the following peer dependencies:
-  - `antd`
-</If>
-
-<If adapterId="react-grid" pluginId="mantine">
-The Mantine React Table plugin has the following peer dependencies:
-  - `mantine-react-table`
-</If>
-
-<If adapterId="react-grid" pluginId="mui">
-The MUI X Data Grid plugin has the following peer dependencies:
-  - `@mui/x-data-grid`
-</If>
-
-<If adapterId="react-grid" pluginId="prime">
-The PrimeReact DataTable plugin has the following peer dependencies:
-  - `primereact`
-</If>
-
-> [!TIP]
->
-> See supported version ranges in the adapter and plugin packages' `package.json` on npm.

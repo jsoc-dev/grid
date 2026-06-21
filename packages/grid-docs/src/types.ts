@@ -19,4 +19,4 @@ export type PluginIdsByAdapter = {
 export type AdapterId = keyof PluginIdsByAdapter;
 export type UpcomingAdapterId = "angular-grid";
 
-export type PluginId<A extends AdapterId> = PluginIdsByAdapter[A];
+export type PluginId<A extends AdapterId = AdapterId> = PluginIdsByAdapter[A];

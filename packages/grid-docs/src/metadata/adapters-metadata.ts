@@ -1,28 +1,36 @@
 import type { AdapterId, UpcomingAdapterId } from "#types.ts";
 
-export type AdapterMetadata = {
+export type AdapterMetadata<id extends AdapterId> = {
+  id: id;
   name: string;
   frameworkName: string;
   packageName: string;
+  peerDependencies: readonly string[];
 };
 
-export type AdapterMetadataMap = { [key in AdapterId]: AdapterMetadata };
+export type AdapterMetadataMap = { [id in AdapterId]: AdapterMetadata<id> };
 
 const ADAPTER_METADATA_MAP: AdapterMetadataMap = {
   "react-grid": {
+    id: "react-grid",
     name: "React Grid",
     frameworkName: "React",
     packageName: "@jsoc/react-grid",
+    peerDependencies: ["react", "react-dom"],
   },
   "vanilla-grid": {
+    id: "vanilla-grid",
     name: "Vanilla Grid",
     frameworkName: "Vanilla",
     packageName: "@jsoc/vanilla-grid",
+    peerDependencies: [],
   },
   "vue-grid": {
+    id: "vue-grid",
     name: "Vue Grid",
     frameworkName: "Vue",
     packageName: "@jsoc/vue-grid",
+    peerDependencies: ["vue"],
   },
 };
 

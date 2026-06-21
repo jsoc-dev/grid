@@ -1,15 +1,17 @@
 import type { AdapterId, PluginId } from "#types.ts";
 
-export type PluginMetadata = {
+export type PluginMetadata<id extends PluginId = PluginId> = {
+  id: id;
   name: string;
   shortName: string;
   packageName: string;
+  peerDependencies: readonly string[];
 };
 export type PluginMetadataProperty = keyof PluginMetadata;
 export type PluginMetadataValue = PluginMetadata[PluginMetadataProperty];
 
 export type PluginMetadataMap<A extends AdapterId = AdapterId> = {
-  [id in PluginId<A>]: PluginMetadata;
+  [id in PluginId<A>]: PluginMetadata<id>;
 };
 
 export type PluginMetadataMapByAdapter = {
@@ -18,60 +20,80 @@ export type PluginMetadataMapByAdapter = {
 
 const REACT_GRID_PLUGINS_METADATA_MAP = {
   ag: {
+    id: "ag",
     name: "AG Grid",
     shortName: "AG",
     packageName: "@jsoc/react-grid-ag",
+    peerDependencies: ["ag-grid-community", "ag-grid-react"],
   },
   ant: {
+    id: "ant",
     name: "Ant Design Table",
     shortName: "AntD",
     packageName: "@jsoc/react-grid-ant",
+    peerDependencies: ["antd"],
   },
   mantine: {
+    id: "mantine",
     name: "Mantine React Table",
     shortName: "Mantine",
     packageName: "@jsoc/react-grid-mantine",
+    peerDependencies: ["mantine-react-table"],
   },
   mui: {
+    id: "mui",
     name: "MUI DataGrid",
     shortName: "MUI",
     packageName: "@jsoc/react-grid-mui",
+    peerDependencies: ["@mui/x-data-grid"],
   },
   prime: {
+    id: "prime",
     name: "PrimeReact DataTable",
     shortName: "Prime",
     packageName: "@jsoc/react-grid-prime",
+    peerDependencies: ["primereact"],
   },
   tanstack: {
+    id: "tanstack",
     name: "TanStack Table",
     shortName: "TanStack",
     packageName: "@jsoc/react-grid-tanstack",
+    peerDependencies: ["@tanstack/react-table"],
   },
 } as const satisfies PluginMetadataMap<"react-grid">;
 
 const VANILLA_GRID_PLUGINS_METADATA_MAP = {
   ag: {
+    id: "ag",
     name: "AG Grid",
     shortName: "AG",
     packageName: "@jsoc/vanilla-grid-ag",
+    peerDependencies: ["ag-grid-community"],
   },
   tanstack: {
+    id: "tanstack",
     name: "TanStack Table",
     shortName: "TanStack",
     packageName: "@jsoc/vanilla-grid-tanstack",
+    peerDependencies: ["@tanstack/table-core"],
   },
 } as const satisfies PluginMetadataMap<"vanilla-grid">;
 
 const VUE_GRID_PLUGINS_METADATA_MAP = {
   ag: {
+    id: "ag",
     name: "AG Grid",
     shortName: "AG",
     packageName: "@jsoc/vue-grid-ag",
+    peerDependencies: ["ag-grid-community", "ag-grid-vue3"],
   },
   tanstack: {
+    id: "tanstack",
     name: "TanStack Table",
     shortName: "TanStack",
     packageName: "@jsoc/vue-grid-tanstack",
+    peerDependencies: ["@tanstack/vue-table"],
   },
 } as const satisfies PluginMetadataMap<"vue-grid">;
 
@@ -97,5 +119,7 @@ export function getPluginMetadata<A extends AdapterId, P extends PluginId<A>>(
   adapterId: A,
   pluginId: P,
 ): PluginMetadataMap<A>[P] {
-  return PLUGIN_METADATA_MAP_BY_ADAPTER[adapterId][pluginId];
+  return PLUGIN_METADATA_MAP_BY_ADAPTER[adapterId][
+    pluginId
+  ] as unknown as PluginMetadataMap<A>[P];
 }

@@ -1,5 +1,5 @@
+import { useMDXComponents as getMDXComponents } from "@/mdx-components";
 import { getRouteFromFilePath } from "@/utils/getRouteFromFilePath";
-import { useMDXComponents as getMDXComponents } from "next-mdx-import-source-file";
 import type { PageMapItem } from "nextra";
 import { Cards } from "nextra/components";
 import { getIndexPageMap, getPageMap } from "nextra/page-map";
