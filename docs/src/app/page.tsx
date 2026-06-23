@@ -1,13 +1,7 @@
-import { FeaturesSection } from "@/components/home/FeaturesSection";
-import { HeroSection } from "@/components/home/HeroSection";
-import { PlaygroundSection } from "@/components/home/PlaygroundSection";
-
 export default function HomePage() {
   return (
-    <main>
-      <HeroSection />
-      <PlaygroundSection />
-      <FeaturesSection />
+    <main className="flex min-h-below-navbar">
+      <h1 className="flex flex-1 items-center justify-center">Home</h1>
     </main>
   );
 }

@@ -17,6 +17,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer utilities {
+  .min-h-below-navbar {
+    min-height: calc(100dvh - var(--nextra-navbar-height));
+  }
+
   .grid-pattern {
     background-image:
       linear-gradient(
