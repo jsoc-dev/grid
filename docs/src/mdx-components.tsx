@@ -1,4 +1,3 @@
-import { CodeOverride } from "@/components/docs/CodeOverride";
 import type { MDXComponents } from "nextra/mdx-components";
 import { useMDXComponents as getThemeComponents } from "nextra-theme-docs";
 
@@ -6,9 +5,7 @@ export type DefaultThemeComponents = typeof defaultThemeComponents;
 
 export const defaultThemeComponents = getThemeComponents();
 
-const customOrOverrides = {
-  code: CodeOverride,
-};
+const customOrOverrides = {};
 
 /**
  * Composes the final MDX components map used to render MDX content.

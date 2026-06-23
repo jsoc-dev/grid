@@ -3,8 +3,9 @@
 import {
   ExamplePreview,
   type ExamplePreviewRendererParams,
-} from "@/components/generic/example-preview/ExamplePreview";
-import { useRootContext } from "@/contexts/RootContext";
+} from "@/components/ExamplePreview";
+import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
+import { useDocsParams } from "@/hooks/useDocsParams";
 import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";
 import clsx from "clsx";
 import { useState, type Dispatch, type SetStateAction } from "react";
@@ -13,16 +14,16 @@ type Props = {
   exampleId: ExampleId<AdapterId, PluginId<AdapterId>>;
 };
 
-export function CodeExample({ exampleId }: Props) {
+export function Example({ exampleId }: Props) {
   const [showCode, setShowCode] = useState(false);
-  const { selectedAdapterId, selectedPluginId } = useRootContext();
+  const docsParams = useDocsParams();
 
   return (
     <div className="flex flex-col gap-4">
       <ExamplePreview
         className="h-48!"
-        adapterId={selectedAdapterId}
-        pluginId={selectedPluginId}
+        adapterId={docsParams[ADAPTER_ID_PARAM_KEY]}
+        pluginId={docsParams[PLUGIN_ID_PARAM_KEY]}
         exampleId={exampleId}
       >
         {(rendererParams) => {
@@ -34,7 +35,7 @@ export function CodeExample({ exampleId }: Props) {
                 setShowCode={setShowCode}
                 rendererParams={rendererParams}
               />
-              {showCode && <CodePanel />}
+              {showCode && <CodeExplorer />}
             </>
           );
         }}
@@ -43,7 +44,7 @@ export function CodeExample({ exampleId }: Props) {
   );
 }
 
-function CodePanel() {
+function CodeExplorer() {
   return (
     <div className="flex-1 h-24 flex items-center justify-center border rounded-2xl">
       Code Not Available
@@ -81,6 +82,7 @@ function ExampleControls({
       disabled: disableButtons,
     },
   ];
+
   return (
     <div className="flex justify-end gap-4">
       {buttons.map((button, index) => (

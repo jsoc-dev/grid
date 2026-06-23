@@ -1,0 +1,18 @@
+---
+title: Getting Started
+asIndexPage: true
+# theme: 
+#   toc: false
+#   copyPage: false
+---
+
+# Getting Started
+
+import { Overview } from "@/components/Overview";
+import { AdapterMeta } from "@/components/docs/content/AdapterMeta";
+import { PluginMeta } from "@/components/docs/content/PluginMeta";
+import { MenuLocation } from "@/components/docs/content/MenuLocation";
+
+Your currently selected framework is **<AdapterMeta metaKey="frameworkName" />** and component is **<PluginMeta metaKey="name" />**. If you wish to use any other framework or component, you can select your desired framework or component from the <MenuLocation/>.
+
+<Overview filePath={metadata.filePath} />

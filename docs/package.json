@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.10",
     "@jsoc/grid-docs": "workspace:*",
     "@jsoc/grid-examples-core": "workspace:*",
     "@jsoc/react-grid-examples": "workspace:*",
