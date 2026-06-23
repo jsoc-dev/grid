@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  PlaygroundContext,
-  type PlaygroundContextValue,
-} from "@/contexts/PlaygroundContext";
+import { PlaygroundContext } from "@/contexts/PlaygroundContext";
 import type { AdapterId, PluginId } from "@jsoc/grid-docs";
 import type { ReactNode } from "react";
 import { useState } from "react";
@@ -18,7 +15,7 @@ export function PlaygroundContextProvider({
   const [selectedAdapterId, setSelectedAdapterId] =
     useState<AdapterId>("react-grid");
 
-  const value: PlaygroundContextValue = {
+  const ctx = {
     selectedPluginId,
     setSelectedPluginId,
     selectedAdapterId,
@@ -26,7 +23,7 @@ export function PlaygroundContextProvider({
   };
 
   return (
-    <PlaygroundContext.Provider value={value}>
+    <PlaygroundContext.Provider value={ctx}>
       {children}
     </PlaygroundContext.Provider>
   );

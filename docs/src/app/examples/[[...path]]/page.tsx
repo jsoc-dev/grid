@@ -1,15 +1,15 @@
-import { ChooseExample } from "@/components/examples/ChooseExample";
-import { ExampleViewer } from "@/components/examples/ExampleViewer";
-import { ChooseAdapter } from "@/components/examples/ChooseAdapter";
 import { Breadcrumbs } from "@/components/examples/Breadcrumbs";
+import { ChooseAdapter } from "@/components/examples/ChooseAdapter";
+import { ChooseExample } from "@/components/examples/ChooseExample";
 import { ChoosePlugin } from "@/components/examples/ChoosePlugin";
+import { LiveExample } from "@/components/examples/LiveExample";
 import {
   isValidAdapterId,
   isValidExampleId,
   isValidPluginId,
 } from "@jsoc/grid-docs";
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata(
   props: PageProps<"/examples/[[...path]]">,
@@ -44,7 +44,7 @@ export default async function Page(props: PageProps<"/examples/[[...path]]">) {
     notFound();
   } else {
     content = (
-      <ExampleViewer
+      <LiveExample
         adapterId={adapterId}
         pluginId={pluginId}
         exampleId={exampleId}
@@ -53,7 +53,7 @@ export default async function Page(props: PageProps<"/examples/[[...path]]">) {
   }
 
   return (
-    <div className="flex flex-1 flex-col min-h-[calc(100dvh-var(--nextra-navbar-height))]">
+    <div className="flex min-h-below-navbar flex-1 flex-col">
       <Breadcrumbs path={path} />
       <main className="flex flex-1 px-6">{content}</main>
     </div>

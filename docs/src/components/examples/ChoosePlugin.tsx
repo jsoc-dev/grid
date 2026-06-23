@@ -5,16 +5,16 @@ import {
   getPluginMetadata,
   type AdapterId,
 } from "@jsoc/grid-docs";
-import CardGrid from "@/components/generic/CardGrid";
-import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
+import CardGrid from "@/components/CardGrid";
 import { getPluginIcon } from "@/assets/icons/plugins";
+import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 
 type Props<A extends AdapterId> = {
   adapterId: A;
 };
 
 export function ChoosePlugin<A extends AdapterId>({ adapterId }: Props<A>) {
-  const navigateToExample = useExamplesNavigator();
+  const navigate = useExamplesNavigator();
   const pluginIds = getPluginIds(adapterId);
 
   return (
@@ -29,7 +29,7 @@ export function ChoosePlugin<A extends AdapterId>({ adapterId }: Props<A>) {
             id: pluginId,
             label: name,
             icon: <PluginIcon className="w-12 h-12" />,
-            onClick: () => navigateToExample([adapterId, pluginId]),
+            onClick: () => navigate([adapterId, pluginId]),
           };
         })}
       />

@@ -2,18 +2,24 @@
 
 import { ExternalLink, RotateCcw } from "lucide-react";
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
-import { ExamplePreview } from "@/components/generic/example-preview/ExamplePreview";
-import { usePlaygroundContext } from "@/contexts/PlaygroundContext";
+import { ExamplePreview } from "@/components/ExamplePreview";
+import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
+import { type ExampleId } from "@jsoc/grid-docs";
 
 export function OutputPanel() {
   const { selectedAdapterId, selectedPluginId } = usePlaygroundContext();
+  const exampleId = "localData" as ExampleId<
+    typeof selectedAdapterId,
+    typeof selectedPluginId
+  >;
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 relative gap-3">
+    <div className="flex h-full min-h-0 flex-col gap-3">
       <ExamplePreview
         adapterId={selectedAdapterId}
         pluginId={selectedPluginId}
-        exampleId="localData"
+        exampleId={exampleId}
+        className="h-full min-h-0"
       >
         {(params) => {
           const { preview, isPending } = params;
@@ -22,7 +28,7 @@ export function OutputPanel() {
           const reload = disableButtons ? undefined : params.reload;
 
           return (
-            <>
+            <div className="flex min-h-0 flex-1 flex-col gap-3">
               <PanelHeader heading="Live Preview">
                 <PanelHeader.Button
                   label="Open"
@@ -37,8 +43,8 @@ export function OutputPanel() {
                   onClick={reload}
                 />
               </PanelHeader>
-              <div className="flex-1">{preview}</div>
-            </>
+              <div className="min-h-0 flex-1">{preview}</div>
+            </div>
           );
         }}
       </ExamplePreview>

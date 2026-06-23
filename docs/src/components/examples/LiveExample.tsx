@@ -1,6 +1,6 @@
 "use client";
 
-import { ExamplePreview } from "@/components/generic/example-preview/ExamplePreview";
+import { ExamplePreview } from "@/components/ExamplePreview";
 import {
   getExampleMetadata,
   type ExampleLocator,
@@ -10,7 +10,7 @@ import {
 
 type Props<A extends AdapterId, P extends PluginId<A>> = ExampleLocator<A, P>;
 
-export function ExampleViewer<A extends AdapterId, P extends PluginId<A>>({
+export function LiveExample<A extends AdapterId, P extends PluginId<A>>({
   adapterId,
   pluginId,
   exampleId,

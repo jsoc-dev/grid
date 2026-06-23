@@ -3,36 +3,32 @@
 import {
   getAdapterIds,
   getAdapterMetadata,
-  type UpcomingAdapterId,
+  getUpcomingAdapterIds,
 } from "@jsoc/grid-docs";
-import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
-import CardGrid from "@/components/generic/CardGrid";
-import { toPascalCase } from "@jsoc/utils";
+import CardGrid from "@/components/CardGrid";
 import { getAdapterIcon } from "@/assets/icons/adapters";
 import type { SvgIcon } from "@/types/svg";
+import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
+import { toPascalCase } from "@jsoc/utils";
 
 function renderIcon(Icon: SvgIcon) {
   return <Icon className="w-12 h-12" />;
 }
 
-const UPCOMING_ADAPTER_IDS = [
-  "angular-grid",
-] as const satisfies UpcomingAdapterId[];
-
 export function ChooseAdapter() {
-  const navigateToExample = useExamplesNavigator();
+  const navigate = useExamplesNavigator();
 
   const supportedAdapters = getAdapterIds().map((adapterId) => {
     const adapterMetadata = getAdapterMetadata(adapterId);
 
     return {
-      label: adapterMetadata.name,
+      label: adapterMetadata.frameworkName,
       icon: renderIcon(getAdapterIcon(adapterId)),
-      onClick: () => navigateToExample([adapterId]),
+      onClick: () => navigate([adapterId]),
     };
   });
 
-  const upcomingAdapters = UPCOMING_ADAPTER_IDS.map((adapterId) => {
+  const upcomingAdapters = getUpcomingAdapterIds().map((adapterId) => {
     return {
       label: toPascalCase(adapterId.replaceAll("-grid", "")),
       icon: renderIcon(getAdapterIcon(adapterId)),

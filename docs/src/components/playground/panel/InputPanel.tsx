@@ -8,7 +8,7 @@ import Editor from "@monaco-editor/react";
 import clsx from "clsx";
 import { useTheme } from "next-themes";
 import { RotateCcw } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const DEFAULT_DATA = encodePretty(basicJSON);
 
@@ -24,7 +24,7 @@ export function InputPanel() {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 relative gap-3">
+    <div className="flex h-full min-h-0 flex-col gap-3">
       <PanelHeader heading="JSON Editor">
         <PanelHeader.Button
           label="Reset"
@@ -36,7 +36,7 @@ export function InputPanel() {
 
       <div
         className={clsx(
-          "flex-1 min-h-0 rounded-xl border overflow-hidden transition-colors border-zinc-300",
+          "min-h-0 flex-1 overflow-hidden rounded-xl border transition-colors border-zinc-300",
           "dark:border-zinc-600/50",
         )}
       >
