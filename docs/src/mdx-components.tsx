@@ -1,28 +1,28 @@
-import type { MDXComponents } from "nextra/mdx-components";
+import { wrapDynamicContentComponent } from "@/utils/dynamicContent";
 import { useMDXComponents as getThemeComponents } from "nextra-theme-docs";
+import type { MDXComponents } from "nextra/mdx-components";
+import type { ComponentType } from "react";
 
-export type DefaultThemeComponents = typeof defaultThemeComponents;
-
-export const defaultThemeComponents = getThemeComponents();
-
-const customOrOverrides = {};
+export const themeComponents = getThemeComponents();
 
 /**
- * Composes the final MDX components map used to render MDX content.
- *
- * This function is automatically picked up by Nextra and invoked during MDX rendering.
- * It merges:
- * - Theme-provided components from `nextra-theme-docs`
- * - Optionally supplied MDX components (if any)
- * - Local custom overrides defined by the application
+ * This function is automatically picked up by Nextra and invoked during MDX rendering
+ * for getting the MDX components map.
  *
  * @param components - Optional MDX component overrides supplied by the MDX runtime,
  *                     usually `undefined` in Nextra apps.
  */
 export function useMDXComponents(components?: MDXComponents) {
-  return {
-    ...defaultThemeComponents,
-    ...components,
-    ...customOrOverrides,
-  };
+  const mdxComps = { ...themeComponents, ...components };
+  const mdxCompEntries = Object.entries(mdxComps);
+
+  const wrappedCompEntries = mdxCompEntries.map(([key, val]) =>
+    key === "wrapper" || typeof val !== "function"
+      ? [key, val]
+      : [key, wrapDynamicContentComponent(val as ComponentType)],
+  );
+
+  const wrappedComps = Object.fromEntries(wrappedCompEntries);
+
+  return wrappedComps as typeof mdxComps;
 }
