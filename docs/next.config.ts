@@ -15,4 +15,13 @@ export default withNextra({
       },
     },
   },
+
+  // mirror turbopack configs for webpack, so that next dev --webpack works too
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
 });
