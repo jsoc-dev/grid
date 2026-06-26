@@ -30,3 +30,18 @@ export const EXAMPLE_ID_SEARCH_PARAM = "exampleId";
 export function buildExampleIdSearchQuery<E extends string>(exampleId: E) {
   return "?" + EXAMPLE_ID_SEARCH_PARAM + "=" + exampleId;
 }
+
+/** A map of keys as file paths and value as file contents. */
+export type ExampleSourceManifest = Record<string, string>;
+
+/** The filename of the source code manifest. */
+export const EXAMPLE_SOURCE_MANIFEST_FILE_NAME = "source-manifest.json";
+
+/** Returns the url of the source code manifest for the given plugin. */
+export function getExampleSourceManifestUrl<A extends AdapterId>(
+  adapterId: A,
+  pluginId: PluginId<A>,
+) {
+  const examplesPath = getExamplesRelativePath(adapterId, pluginId);
+  return `/${examplesPath}/${EXAMPLE_SOURCE_MANIFEST_FILE_NAME}`;
+}
