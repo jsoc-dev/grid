@@ -1,4 +1,5 @@
 import { REPO_DIR } from "#repo.ts";
+import { emitExampleSourceManifest } from "#scripts/utils/emitExampleSourceManifest.ts";
 import { logMilestone } from "#scripts/utils/logMilestone.ts";
 
 import path from "node:path";
@@ -116,6 +117,8 @@ async function buildExamples<A extends AdapterId>(
       emptyOutDir: true,
     },
   });
+
+  await emitExampleSourceManifest(sourceDir, outputDir);
 }
 
 function getExamplesSourceDir<A extends AdapterId>(

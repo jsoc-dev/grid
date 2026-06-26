@@ -18,6 +18,9 @@
     "vite": "^8.0.8"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/plugin-syntax-jsx": "^8.0.1",
+    "@babel/preset-typescript": "^8.0.1",
     "@changesets/cli": "^2.30.0",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
