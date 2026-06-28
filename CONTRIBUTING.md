@@ -22,21 +22,43 @@
 
 ## Commits
 
-- Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. Refer to examples below:
-
-  | Change Type           | Commit Type | Example                                                         |
-  | :-------------------- | :---------- | :-------------------------------------------------------------- |
-  | **New Feature**       | `feat`      | `feat(core): add new feature`                                   |
-  | **Bug Fix**           | `fix`       | `fix(react): resolve bug`                                       |
-  | **Documentation**     | `docs`      | `docs: update contribution guide`                               |
-  | **Style Changes**     | `style`     | `style: fix indentation in config`                              |
-  | **Code Refactor**     | `refactor`  | `refactor(core): rename variable for clarity`                   |
-  | **Performance**       | `perf`      | `perf: optimized query execution`                               |
-  | **Testing**           | `test`      | `test(core): add unit tests` or `test: cover edge case in grid` |
-  | **Build System**      | `build`     | `build: update tsconfig.json` or `build: modify vite config`    |
-  | **CI/CD**             | `ci`        | `ci: add github action for tests`                               |
-  | **Chore/Maintenance** | `chore`     | `chore: update eslint rules` or `chore: add .gitignore entry`   |
-  | **Revert**            | `revert`    | `revert: "feat: add temporary logging"`                         |
+- Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
 - Commit messages are validated in CI with [commitlint](https://commitlint.js.org/) on pull requests and pushes to `main` (see [.github/workflows/commitlint.yml](.github/workflows/commitlint.yml)).
 - Locally, [Husky](https://typicode.github.io/husky/) runs `pre-commit` only: lint and format staged files via [lint-staged](https://github.com/lint-staged/lint-staged) (using [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/)).
+
+
+### Commit Types
+
+Refer to the examples below:
+
+| Commit Type | Change Type           | Description                                                                                                                 | Example                                                                  |
+| :---------- | :-------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------- |
+| `feat`      | **New Feature**       | Introduces a new feature to the codebase or application.                                                                    | `feat(core): add new feature`                                            |
+| `fix`       | **Bug Fix**           | Resolves a bug or issue.                                                                                                    | `fix(react): resolve bug`                                                |
+| `docs`      | **Documentation**     | Updates or additions to documentation only.                                                                                 | `docs: update contribution guide`                                        |
+| `style`     | **Style Changes**     | Use style if the change only affects code formatting, white space, or visual polish without changing how the feature works. | `style: fix indentation in config`<br>`style: change text color to blue` |
+| `refactor`  | **Code Refactor**     | A code change that neither fixes a bug nor adds a feature (e.g., restructuring code).                                       | `refactor(core): rename variable for clarity`                            |
+| `perf`      | **Performance**       | A code change specifically aimed at improving performance.                                                                  | `perf: optimized query execution`                                        |
+| `test`      | **Testing**           | Adding missing tests or correcting existing tests.                                                                          | `test(core): add unit tests`<br>`test: cover edge case in grid`          |
+| `build`     | **Build System**      | Changes affecting the build system, compilers, or external dependencies.                                                    | `build: update tsconfig.json`<br>`build: modify vite config`             |
+| `ci`        | **CI/CD**             | Changes to CI/CD configuration files and scripts.                                                                           | `ci: add github action for tests`                                        |
+| `chore`     | **Chore/Maintenance** | Maintenance tasks, dependency updates, or changes that don't modify source/test files.                                      | `chore: update eslint rules`<br>`chore: add .gitignore entry`            |
+| `revert`    | **Revert**            | Reverts a previous commit.                                                                                                  | `revert: "feat: add temporary logging"`                                  |
+
+### Commit Scopes
+
+Use the published package name for reusable packages:
+
+- `grid`
+- `react-grid`
+- `grid-docs`
+- `grid-examples`
+
+Use the repository path for internal apps and examples:
+
+- `docs`
+- `examples`
+- `examples/react-grid/ant`
+- `examples/vue/basic`
+
