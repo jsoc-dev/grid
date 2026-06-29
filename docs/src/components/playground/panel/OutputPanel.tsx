@@ -4,50 +4,53 @@ import { ExternalLink, RotateCcw } from "lucide-react";
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
 import { ExamplePreview } from "@/components/ExamplePreview";
 import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
-import { type ExampleId } from "@jsoc/grid-docs";
+import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
 
 export function OutputPanel() {
   const { selectedAdapterId, selectedPluginId } = usePlaygroundContext();
-  const exampleId = "localData" as ExampleId<
-    typeof selectedAdapterId,
-    typeof selectedPluginId
-  >;
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
-      <ExamplePreview
+      <ExamplePreview.Provider
         adapterId={selectedAdapterId}
         pluginId={selectedPluginId}
-        exampleId={exampleId}
-        className="h-full min-h-0"
+        exampleId="localData"
       >
-        {(params) => {
-          const { preview, isPending } = params;
-          const disableButtons = !!(isPending || params.error);
-          const openInNewTab = disableButtons ? undefined : params.openInNewTab;
-          const reload = disableButtons ? undefined : params.reload;
+        <PreviewWithControls />
+      </ExamplePreview.Provider>
+    </div>
+  );
+}
 
-          return (
-            <div className="flex min-h-0 flex-1 flex-col gap-3">
-              <PanelHeader heading="Live Preview">
-                <PanelHeader.Button
-                  label="Open"
-                  Icon={ExternalLink}
-                  disabled={disableButtons}
-                  onClick={openInNewTab}
-                />
-                <PanelHeader.Button
-                  label="Reload"
-                  Icon={RotateCcw}
-                  disabled={disableButtons}
-                  onClick={reload}
-                />
-              </PanelHeader>
-              <div className="min-h-0 flex-1">{preview}</div>
-            </div>
-          );
-        }}
-      </ExamplePreview>
+function PreviewWithControls() {
+  const { openPreviewInNewTab, viewSourceOnGitHub, reloadPreview } =
+    useExamplePreview();
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      {/* controls */}
+      <PanelHeader heading="Live Preview">
+        <PanelHeader.Button
+          label="Open in new tab"
+          Icon={ExternalLink}
+          onClick={openPreviewInNewTab}
+        />
+        <PanelHeader.Button
+          label="View on GitHub"
+          Icon={ExternalLink}
+          onClick={viewSourceOnGitHub}
+        />
+        <PanelHeader.Button
+          label="Reload"
+          Icon={RotateCcw}
+          onClick={reloadPreview}
+        />
+      </PanelHeader>
+
+      {/* iframe */}
+      <div className="min-h-0 flex-1">
+        <ExamplePreview />
+      </div>
     </div>
   );
 }

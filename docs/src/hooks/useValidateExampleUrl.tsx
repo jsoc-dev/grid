@@ -1,34 +1,22 @@
 "use client";
 
-import {
-  getExampleUrl,
-  type ExampleId,
-  type AdapterId,
-  type PluginId,
-} from "@jsoc/grid-docs";
 import { useQuery } from "@tanstack/react-query";
 
-export function useExampleUrl<
-  A extends AdapterId,
-  P extends PluginId<A>,
-  E extends ExampleId<A, P>,
->(adapterId: A, pluginId: P, exampleId: E) {
-  const url = getExampleUrl(adapterId, pluginId, exampleId);
-
-  const queryFn = async () => {
-    try {
-      const res = await fetch(url, { method: "HEAD" });
-      if (!res.ok) {
-        throw new Error("Example not found");
+export function useValidateExampleUrl(url: string) {
+  return useQuery({
+    queryKey: ["example-url", url],
+    queryFn: async () => {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        if (!res.ok) {
+          throw new Error("Example not found");
+        }
+        return url;
+      } catch (err) {
+        throw new Error("Example not found", { cause: err });
       }
-      return url;
-    } catch (err) {
-      throw new Error("Example not found", { cause: err });
-    }
-  };
-
-  const result = useQuery({ queryKey: ["example-url", url], queryFn });
-  return { url, ...result };
+    },
+  });
 }
 
 // Scenarios of invalid urls:

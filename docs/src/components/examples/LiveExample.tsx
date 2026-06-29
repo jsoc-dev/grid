@@ -27,13 +27,13 @@ export function LiveExample<A extends AdapterId, P extends PluginId<A>>({
       <p>{description}</p>
 
       <div className="flex flex-1 justify-center items-center ">
-        <ExamplePreview
+        <ExamplePreview.Provider
           adapterId={adapterId}
           pluginId={pluginId}
           exampleId={exampleId}
         >
-          {({ preview }) => preview}
-        </ExamplePreview>
+          <ExamplePreview />
+        </ExamplePreview.Provider>
       </div>
     </div>
   );
