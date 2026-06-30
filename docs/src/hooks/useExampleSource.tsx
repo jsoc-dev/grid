@@ -1,10 +1,10 @@
 "use client";
 
-import { getCodeLanguageByFilePath } from "@/utils/source-code";
-import type { ExampleSourceFile } from "@/types/code-explorer";
 import {
   getExampleSourceManifestUrl,
   type ExampleSourceManifest,
+  extractSourceFilesFromManifest,
+  type ExampleSourceFile,
   type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
@@ -24,12 +24,7 @@ export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
 
     const manifest = (await res.json()) as ExampleSourceManifest;
 
-    return Object.entries(manifest).map(([filePath, code]) => ({
-      path: filePath,
-      code,
-      name: filePath.split("/").pop()!,
-      language: getCodeLanguageByFilePath(filePath),
-    }));
+    return extractSourceFilesFromManifest(manifest);
   };
 
   const result = useQuery({ queryKey: ["example-source", url], queryFn });

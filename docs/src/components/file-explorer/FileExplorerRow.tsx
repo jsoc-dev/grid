@@ -3,7 +3,7 @@ import { FileIcon } from "@/components/FileIcon";
 import clsx from "clsx";
 import { ChevronRight } from "lucide-react";
 import type { FileExplorerItem } from "@/components/file-explorer/FileExplorer";
-import type { ExampleSourceFile } from "@/types/code-explorer";
+import type { ExampleSourceFile } from "@jsoc/grid-docs";
 
 type Props = {
   item: ItemInstance<FileExplorerItem>;

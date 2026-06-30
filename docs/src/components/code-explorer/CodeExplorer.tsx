@@ -1,11 +1,12 @@
-import { CodeBlockShiki } from "@/components/CodeBlockShiki";
+import { CodeBlock } from "@/components/CodeBlock";
 import { CE_Sidebar } from "@/components/code-explorer/CE_Sidebar";
 import { CodeExplorerProvider } from "@/components/code-explorer/CE_Context";
-import type {
-  ExampleSourceFile,
-  LanguagePreference,
-} from "@/types/code-explorer";
-import { isRelevantFile, findSuitableDefaultFile } from "@/utils/code-explorer";
+import type { ExampleSourceFile, LanguagePreference } from "@jsoc/grid-docs";
+import {
+  isRelevantFile,
+  findSuitableDefaultFile,
+  removeSnippetMarkers,
+} from "@jsoc/grid-docs";
 import { useExampleSource } from "@/hooks/useExampleSource";
 import { type AdapterId, type ExampleId, type PluginId } from "@jsoc/grid-docs";
 import { Info } from "lucide-react";
@@ -83,11 +84,12 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
               </span>
             </div>
           )}
-          <div className="min-h-0 flex-1">
-            <CodeBlockShiki
-              code={selectedFile.code}
+          <div className="min-h-0 flex-1 overflow-hidden flex flex-col [&_.nextra-code]:mt-0! [&_.nextra-code]:h-full [&_pre]:rounded-none! [&_pre]:h-full! [&_pre]:overflow-auto! [&_pre]:scrollbar-thin">
+            <CodeBlock
+              code={removeSnippetMarkers(selectedFile.code)}
               language={selectedFile.language}
               showCopyCode={false}
+              className="ring-0! border-0!"
             />
           </div>
         </div>

@@ -35,7 +35,8 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.mdx" // Include MDX in the TS project so the IDE can resolve @/* path aliases. Does not typecheck MDX content or catch bad imports in pnpm typecheck.
+    "**/*.mdx", // Include MDX in the TS project so the IDE can resolve @/* path aliases. Does not typecheck MDX content or catch bad imports in pnpm typecheck.
+    "../packages/grid-docs/src/utils/example-source-code.ts"
   ],
   "exclude": ["node_modules"]
 }

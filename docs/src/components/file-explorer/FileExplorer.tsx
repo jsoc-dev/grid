@@ -1,7 +1,7 @@
 "use client";
 
 import { FileExplorerRow } from "@/components/file-explorer/FileExplorerRow";
-import type { ExampleSourceFile } from "@/types/code-explorer";
+import type { ExampleSourceFile } from "@jsoc/grid-docs";
 import {
   hotkeysCoreFeature,
   selectionFeature,

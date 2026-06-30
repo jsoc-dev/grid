@@ -1,7 +1,7 @@
 import { useCodeExplorerContext } from "@/components/code-explorer/CE_Context";
 import type { SetState } from "@/types/react";
-import type { LanguagePreference } from "@/types/code-explorer";
-import { findFileByLanguagePreference } from "@/utils/code-explorer";
+import type { LanguagePreference } from "@jsoc/grid-docs";
+import { findFileByLanguagePreference } from "@jsoc/grid-docs";
 import clsx from "clsx";
 import { Settings, PanelLeftClose } from "lucide-react";
 import { useState } from "react";

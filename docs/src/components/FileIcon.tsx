@@ -1,4 +1,4 @@
-import type { CodeLanguage } from "@/utils/source-code";
+import type { CodeLanguage } from "@jsoc/grid-docs";
 import {
   getIconForFile,
   getIconForFolder,
@@ -9,6 +9,8 @@ import { ICON_MAP } from "@/assets/icons/file-icons";
 const LANGUAGE_TO_EXTENSION: Partial<Record<CodeLanguage, string>> = {
   javascript: "js",
   typescript: "ts",
+  jsx: "jsx",
+  tsx: "tsx",
   css: "css",
   html: "html",
   json: "json",

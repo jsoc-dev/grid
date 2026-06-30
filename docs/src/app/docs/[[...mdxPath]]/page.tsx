@@ -1,10 +1,11 @@
 import { useMDXComponents as getMDXComponents } from "@/mdx-components";
-import { DynamicContentScopeBoundary } from "@/utils/dynamicContentScope";
+import {
+  createDynamicContentScope,
+  DynamicContentScopeBoundary,
+} from "@/utils/dynamicContentScope";
 import type { Metadata } from "next";
 import { generateStaticParamsFor, importPage } from "nextra/pages";
 import { resolveDocsParams } from "@/utils/resolveDocsParams";
-import type { DocsParams } from "@/constants/docs";
-import { getAdapterMetadata, getPluginMetadata } from "@jsoc/grid-docs";
 import { hasDynamicContent } from "@/utils/dynamicContent";
 
 export const generateStaticParams = generateStaticParamsFor("mdxPath");
@@ -44,13 +45,4 @@ export default async function Page(props: PageProps<"/docs/[[...mdxPath]]">) {
   }
 
   return content;
-}
-
-function createDynamicContentScope(docsParams: DocsParams) {
-  // Keep token values grouped by top-level token namespace:
-  // %%adapter.packageName%%, %%plugin.name%%, and similar paths.
-  const adapter = getAdapterMetadata(docsParams.adapterId);
-  const plugin = getPluginMetadata(docsParams.adapterId, docsParams.pluginId);
-
-  return { adapter, plugin };
 }

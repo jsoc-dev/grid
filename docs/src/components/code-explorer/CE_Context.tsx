@@ -1,8 +1,5 @@
 import { createContext, useContext, ReactNode } from "react";
-import type {
-  ExampleSourceFile,
-  LanguagePreference,
-} from "@/types/code-explorer";
+import type { ExampleSourceFile, LanguagePreference } from "@jsoc/grid-docs";
 import type { AdapterId, ExampleId, PluginId } from "@jsoc/grid-docs";
 import type { SetState } from "@/types/react";
 

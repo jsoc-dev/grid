@@ -1,4 +1,4 @@
-import { findFileByLanguagePreference } from "@/utils/code-explorer";
+import { findFileByLanguagePreference } from "@jsoc/grid-docs";
 import { FileIcon } from "@/components/FileIcon";
 import { useCodeExplorerContext } from "@/components/code-explorer/CE_Context";
 import { toPascalCase } from "@jsoc/utils";
@@ -13,7 +13,7 @@ export function CE_LanguageStatus() {
     setLanguagePreference,
   } = useCodeExplorerContext();
 
-  const isJsOrTsFile = ["typescript", "javascript"].includes(
+  const isJsOrTsFile = ["typescript", "javascript", "tsx", "jsx"].includes(
     selectedFile.language,
   );
 

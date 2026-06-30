@@ -21,7 +21,10 @@ const DYNAMIC_CONTENT_TOKEN_REGEX =
   /(?:%%|%25%25)([a-zA-Z0-9_.]+)(?:%%|%25%25)/g;
 
 export function hasDynamicContent(sourceCode: string): boolean {
-  return DYNAMIC_CONTENT_TOKEN_REGEX.test(sourceCode);
+  return (
+    DYNAMIC_CONTENT_TOKEN_REGEX.test(sourceCode) ||
+    sourceCode.includes("<Snippet")
+  );
 }
 
 export function wrapDynamicContentComponent(

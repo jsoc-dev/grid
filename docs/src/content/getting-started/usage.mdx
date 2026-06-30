@@ -1,6 +1,7 @@
 import { Example } from "@/components/docs/example/Example";
 import { If } from "@/components/docs/content/If";
 import { Steps } from "nextra/components";
+import { Snippet } from "@/components/Snippet";
 
 # Usage
 
@@ -13,326 +14,44 @@ Basic example to get you started.
 ### Import necessary features
 
 <If adapterId="react-grid">
-
-- Import the grid component and `useGridStore` from the plugin package:
-
-  <If adapterId="react-grid" pluginId="ag">
-  ```typescript
-  import { AgGridReact } from "ag-grid-react";
-  import { useGridStore } from "@jsoc/react-grid-ag";
-  ```
-  </If>
-
-  <If adapterId="react-grid" pluginId="ant">
-  ```typescript
-  import { Table } from "antd";
-  import { useGridStore } from "@jsoc/react-grid-ant";
-  ```
-  </If>
-
-  <If adapterId="react-grid" pluginId="mantine">
-  ```typescript
-  import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
-  import { useGridStore } from "@jsoc/react-grid-mantine";
-  ```
-  </If>
-
-  <If adapterId="react-grid" pluginId="mui">
-  ```typescript
-  import { DataGrid } from "@mui/x-data-grid";
-  import { useGridStore } from "@jsoc/react-grid-mui";
-  ```
-  </If>
-
-  <If adapterId="react-grid" pluginId="prime">
-  ```typescript
-  import { Column } from "primereact/column";
-  import { DataTable } from "primereact/datatable";
-  import { useGridStore } from "@jsoc/react-grid-prime";
-  ```
-  </If>
-
-  <If adapterId="react-grid" pluginId="tanstack">
-  ```typescript
-  import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-  import { useGridStore } from "@jsoc/react-grid-tanstack";
-  ```
-  </If>
-
-- Import `useGridStoreSelector` from the adapter package:
-
-  ```typescript
-  import { useGridStoreSelector } from "@jsoc/react-grid";
-  ```
-
+  Import the grid store creation hook and reactive selector hook:
 </If>
-
 <If adapterId="vanilla-grid">
-
-- Import `createGridStore` from the plugin package:
-
-  <If adapterId="vanilla-grid" pluginId="ag">
-  ```typescript
-  import { createGridStore } from "@jsoc/vanilla-grid-ag";
-  ```
-  </If>
-
-  <If adapterId="vanilla-grid" pluginId="tanstack">
-  ```typescript
-  import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
-  import { getCoreRowModel } from "@tanstack/table-core";
-  ```
-  </If>
-
+  Import the grid store creation hook from the plugin package:
 </If>
-
 <If adapterId="vue-grid">
-
-- Import `useGridStore` from the plugin package:
-
-  <If adapterId="vue-grid" pluginId="ag">
-  ```typescript
-  import { useGridStore } from "@jsoc/vue-grid-ag";
-  import { AgGridVue } from "ag-grid-vue3";
-  ```
-  </If>
-
-  <If adapterId="vue-grid" pluginId="tanstack">
-  ```typescript
-  import { useGridStore } from "@jsoc/vue-grid-tanstack";
-  import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
-  ```
-  </If>
-
-- Import `useGridStoreSelector` from the adapter package:
-
-  ```typescript
-  import { useGridStoreSelector } from "@jsoc/vue-grid";
-  ```
-
+  Import the grid store creation hook from the plugin package:
 </If>
+
+<Snippet exampleId="basic" name="import" />
 
 ### Create the store
 
 <If adapterId="react-grid">
-
-Create the grid store with `useGridStore` and your grid data, then read the active schema using `useGridStoreSelector`:
-
-```typescript
-import { basicJSON } from "@jsoc/grid-examples-core";
-
-const gridStore = useGridStore(basicJSON);
-const activeSchema = useGridStoreSelector(gridStore, (store) =>
-  store.getActiveSchema(),
-);
-```
-
+  Create the grid store with `useGridStore` and your grid data, then read the
+  active schema using `useGridStoreSelector`:
 </If>
 
-<If adapterId="vanilla-grid">
-
-Create the grid store with `createGridStore` and your grid data, then read the active schema config:
-
-```typescript
-import { basicJSON } from "@jsoc/grid-examples-core";
-
-const gridStore = createGridStore({ data: basicJSON });
-const gridOptions = gridStore.getActiveSchema().config;
-```
-
-</If>
+<If adapterId="vanilla-grid">Create the grid store using `createGridStore`</If>
 
 <If adapterId="vue-grid">
-
-Create the grid store with `useGridStore` and your grid data, then read the active schema using `useGridStoreSelector`:
-
-```typescript
-import { basicJSON } from "@jsoc/grid-examples-core";
-
-const gridStore = useGridStore(basicJSON);
-const activeSchema = useGridStoreSelector(gridStore, (store) =>
-  store.getActiveSchema(),
-);
-```
-
+  Create the grid store with `useGridStore` and your grid data, then read the
+  active schema using `useGridStoreSelector`:
 </If>
+
+<Snippet exampleId="basic" name="create" />
 
 ### Render grid component
 
 Pass the generated config to the grid component:
 
-<If adapterId="react-grid" pluginId="ag">
-
-```tsx
-<AgGridReact key={activeSchema.id} {...activeSchema.config} />
-```
-
-</If>
-
-<If adapterId="react-grid" pluginId="ant">
-
-```tsx
-<Table key={activeSchema.id} {...activeSchema.config} />
-```
-
-</If>
-
-<If adapterId="react-grid" pluginId="mantine">
-
-```tsx
-const table = useMantineReactTable(activeSchema.config);
-
-<MantineReactTable table={table} />
-```
-
-</If>
-
-<If adapterId="react-grid" pluginId="mui">
-
-```tsx
-<DataGrid key={activeSchema.id} {...activeSchema.config} />
-```
-
-</If>
-
-<If adapterId="react-grid" pluginId="prime">
-
-```tsx
-const { columns, ...config } = activeSchema.config;
-
-<DataTable key={activeSchema.id} {...config}>
-  {columns.map((col) => (
-    <Column key={col.field} {...col} />
-  ))}
-</DataTable>
-```
-
-</If>
-
-<If adapterId="react-grid" pluginId="tanstack">
-
-```tsx
-const table = useReactTable({
-  ...activeSchema.config,
-  getCoreRowModel: getCoreRowModel(),
-});
-
-return (
-  <table>
-    <thead>
-      {table.getHeaderGroups().map((headerGroup) => (
-        <tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <th key={header.id}>
-              {flexRender(header.column.columnDef.header, header.getContext())}
-            </th>
-          ))}
-        </tr>
-      ))}
-    </thead>
-    <tbody>
-      {table.getRowModel().rows.map((row) => (
-        <tr key={row.id}>
-          {row.getVisibleCells().map((cell) => (
-            <td key={cell.id}>
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-            </td>
-          ))}
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
-```
-
-</If>
-
-<If adapterId="vanilla-grid" pluginId="ag">
-
-```typescript
-import { createGrid } from "ag-grid-community";
-
-const root = document.getElementById("grid")!;
-const gridApi = createGrid(root, gridOptions);
-
-// On teardown:
-// gridApi.destroy();
-// gridStore.destroy();
-```
-
-</If>
-
-<If adapterId="vanilla-grid" pluginId="tanstack">
-
-```typescript
-import { createTable } from "@tanstack/table-core";
-
-const table = createTable({
-  ...gridOptions,
-  getCoreRowModel: getCoreRowModel(),
-  state: {},
-  onStateChange: () => {},
-  renderFallbackValue: null,
-});
-
-// Build and mount a DOM table from the table instance — see the live example below
-```
-
-</If>
-
-<If adapterId="vue-grid" pluginId="ag">
-
-```vue
-<template>
-  <AgGridVue :key="activeSchema.id" :grid-options="activeSchema.config" />
-</template>
-```
-
-</If>
-
-<If adapterId="vue-grid" pluginId="tanstack">
-
-```vue
-<script setup lang="ts">
-const table = useVueTable({
-  ...activeSchema.config,
-  getCoreRowModel: getCoreRowModel(),
-});
-</script>
-
-<template>
-  <table>
-    <thead>
-      <tr v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-        <th v-for="header in headerGroup.headers" :key="header.id">
-          <FlexRender
-            v-if="!header.isPlaceholder"
-            :render="header.column.columnDef.header"
-            :props="header.getContext()"
-          />
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="row in table.getRowModel().rows" :key="row.id">
-        <td v-for="cell in row.getVisibleCells()" :key="cell.id">
-          <FlexRender
-            :render="cell.column.columnDef.cell"
-            :props="cell.getContext()"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-```
-
-</If>
+<Snippet exampleId="basic" name="render" />
 
 ### That's all!
 
 Your grid component is ready to use. Here is how it looks:
-<br/>
+
+<br />
 
 <Example exampleId="basic" />
 

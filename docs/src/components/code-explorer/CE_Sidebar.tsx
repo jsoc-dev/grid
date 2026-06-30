@@ -1,15 +1,12 @@
 import { FileExplorer } from "@/components/file-explorer/FileExplorer";
 import { CE_SidebarCollapsed } from "@/components/code-explorer/CE_SidebarCollapsed";
 import { CE_SidebarExpanded } from "@/components/code-explorer/CE_SidebarExpanded";
-import { filterFilesForExample } from "@/utils/code-explorer";
+import { filterFilesForExample } from "@jsoc/grid-docs";
 import clsx from "clsx";
 import { Activity, useState } from "react";
 
 import { useCodeExplorerContext } from "@/components/code-explorer/CE_Context";
-import type {
-  ExampleSourceFile,
-  LanguagePreference,
-} from "@/types/code-explorer";
+import type { ExampleSourceFile, LanguagePreference } from "@jsoc/grid-docs";
 import type { AdapterId, ExampleId, PluginId } from "@jsoc/grid-docs";
 
 export function CE_Sidebar() {
@@ -72,11 +69,18 @@ function filterFiles<A extends AdapterId, P extends PluginId<A>>(
     filteredFiles = filterFilesForExample(files, exampleId);
   }
 
-  filteredFiles = filteredFiles.filter((f) =>
-    ["typescript", "javascript"].includes(f.language)
-      ? f.language === languagePreference
-      : true,
-  );
+  filteredFiles = filteredFiles.filter((f) => {
+    // In our metadata, we properly identify .tsx and .jsx files as "tsx" and "jsx" languages.
+    // However, the language toggle in the UI only switches between "typescript" and "javascript".
+    // We map the framework-specific extensions back to their base language here so the filter works.
+    const isTSFile = ["typescript", "tsx"].includes(f.language);
+    const isJSFile = ["javascript", "jsx"].includes(f.language);
+
+    if (isTSFile) return languagePreference === "typescript";
+    if (isJSFile) return languagePreference === "javascript";
+
+    return true;
+  });
 
   return filteredFiles;
 }
