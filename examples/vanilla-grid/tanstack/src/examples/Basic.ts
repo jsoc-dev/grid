@@ -2,20 +2,26 @@ import { createSimpleTable } from "#utils/createSimpleTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
 import { basicJSON } from "@jsoc/grid-examples-core";
+// <snippet import>
 import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
+// </snippet>
 import { getCoreRowModel } from "@tanstack/table-core";
 import { onUnmounted } from "@jsoc/vanilla-grid-examples";
 
 export default function (root: HTMLElement) {
+  // <snippet create>
   const gridStore = createGridStore({ data: basicJSON });
   const tableOptions = gridStore.getActiveSchema().config;
   const table = useTable({
     ...tableOptions,
     getCoreRowModel: getCoreRowModel(),
   });
+  // </snippet>
 
+  // <snippet render>
   const tableElement = createSimpleTable(table);
   root.replaceChildren(tableElement);
+  // </snippet>
 
   onUnmounted(() => {
     gridStore.destroy();

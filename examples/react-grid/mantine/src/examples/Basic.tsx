@@ -1,15 +1,23 @@
+import { basicJSON } from "@jsoc/grid-examples-core";
+// <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-mantine";
-import { basicJSON } from "@jsoc/grid-examples-core";
+// </snippet>
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
 export default function BasicExample() {
+  // <snippet create>
   const gridStore = useGridStore(basicJSON);
   const activeSchema = useGridStoreSelector(gridStore, (gridStore) =>
     gridStore.getActiveSchema(),
   );
 
   const table = useMantineReactTable(activeSchema.config);
+  // </snippet>
 
-  return <MantineReactTable table={table} />;
+  return (
+    // <snippet render>
+    <MantineReactTable table={table} />
+    // </snippet>
+  );
 }

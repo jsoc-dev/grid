@@ -1,10 +1,13 @@
+import { SimpleTable } from "../components/SimpleTable";
+import { basicJSON } from "@jsoc/grid-examples-core";
+// <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";
-import { basicJSON } from "@jsoc/grid-examples-core";
+// </snippet>
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { SimpleTable } from "../components/SimpleTable";
 
 export default function BasicExample() {
+  // <snippet create>
   const gridStore = useGridStore(basicJSON);
   const activeSchema = useGridStoreSelector(gridStore, (gridStore) =>
     gridStore.getActiveSchema(),
@@ -15,6 +18,11 @@ export default function BasicExample() {
     ...activeSchema.config,
     getCoreRowModel: getCoreRowModel(),
   });
+  // </snippet>
 
-  return <SimpleTable table={table} />;
+  return (
+    // <snippet render>
+    <SimpleTable table={table} />
+    // </snippet>
+  );
 }
