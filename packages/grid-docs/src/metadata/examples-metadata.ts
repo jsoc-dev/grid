@@ -4,7 +4,7 @@ import type {
   ReactGridPluginId,
   VanillaGridPluginId,
   VueGridPluginId,
-} from "#types.ts";
+} from "#types/plugins.ts";
 
 export type ExampleMetadata = {
   name: string;

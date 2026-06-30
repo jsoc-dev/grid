@@ -1,4 +1,4 @@
-import type { AdapterId, UpcomingAdapterId } from "#types.ts";
+import type { AdapterId, UpcomingAdapterId } from "#types/plugins.ts";
 
 export type AdapterMetadata<id extends AdapterId> = {
   id: id;

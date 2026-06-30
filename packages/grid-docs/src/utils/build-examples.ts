@@ -1,5 +1,5 @@
 import type { ExampleId } from "#metadata/examples-metadata.ts";
-import type { AdapterId, PluginId } from "#types.ts";
+import type { AdapterId, PluginId } from "#types/plugins.ts";
 
 export type ExamplesRelativePath<A extends AdapterId = AdapterId> =
   A extends AdapterId ? `examples/${A}/${PluginId<A>}` : never;
