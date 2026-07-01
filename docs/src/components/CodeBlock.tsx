@@ -86,8 +86,9 @@ export function CodeBlock({
         // In a CSS grid, whitespace-only text nodes (like \n) are discarded by the browser.
         // Because Shiki outputs lines as inline <span> elements, an empty line becomes an empty span with 0 height.
         // Without the \n to force a line break, empty lines completely disappear in the grid!
-        // To fix this, "[&>.line]:block" and "[&>.line]:min-h-4" force these empty spans to have a physical height of 1rem.
-        className="nextra-code [&>.line]:block [&>.line]:min-h-4"
+        // To fix this, "[&>.line]:block" forces each line to be a block, and "[&>.line]:min-h-[1lh]"
+        // gives empty spans exactly 1 line-height of height — matching normal lines perfectly.
+        className="nextra-code [&>.line]:block [&>.line]:min-h-lh"
         dir="ltr"
         style={{ color: highlightResult.color || undefined }}
         dangerouslySetInnerHTML={{ __html: highlightResult.html }}
