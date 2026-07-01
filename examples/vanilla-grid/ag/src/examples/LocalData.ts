@@ -1,4 +1,4 @@
-import { createAgGrid } from "#utils/createAgGrid.ts";
+import { createGrid } from "ag-grid-community";
 
 import { createGridStore, type GridStoreAg } from "@jsoc/vanilla-grid-ag";
 import {
@@ -19,7 +19,7 @@ export default function (root: HTMLElement) {
         root.replaceChildren();
         const gridOptions = gridStore.getActiveSchema().config;
         gridApi?.destroy();
-        gridApi = createAgGrid(root, gridOptions);
+        gridApi = createGrid(root, gridOptions);
       },
     });
   });

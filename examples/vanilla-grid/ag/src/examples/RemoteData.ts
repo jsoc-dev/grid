@@ -1,4 +1,4 @@
-import { createAgGrid } from "#utils/createAgGrid.ts";
+import { createGrid } from "ag-grid-community";
 
 import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { createSimpleNavigator } from "@jsoc/vanilla-grid";
@@ -33,7 +33,7 @@ export default function (root: HTMLElement) {
         // https://www.ag-grid.com/vue-data-grid/grid-interface/#initial-grid-options for more details.
         // So, instead of using gridApi.updateGridOptions(), we need to destroy the previous grid and re-create it.
         gridApi?.destroy();
-        gridApi = createAgGrid(gridContainer, gridOptions);
+        gridApi = createGrid(gridContainer, gridOptions);
         layout.replaceChildren(navigator, gridContainer);
       },
     });

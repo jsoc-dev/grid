@@ -1,4 +1,4 @@
-import { createAgGrid } from "#utils/createAgGrid.ts";
+import { createGrid } from "ag-grid-community";
 
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
@@ -12,7 +12,7 @@ export default function (root: HTMLElement) {
   const gridOptions = gridStore.getActiveSchema().config;
   // </snippet>
   // <snippet render>
-  const gridApi = createAgGrid(root, gridOptions);
+  const gridApi = createGrid(root, gridOptions);
   // </snippet>
 
   onUnmounted(() => {

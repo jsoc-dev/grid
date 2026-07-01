@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AgGridVue from "#components/AgGridVue.vue";
+import { AgGridVue } from "ag-grid-vue3";
 
 import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { SimpleNavigator, useGridStoreSelector } from "@jsoc/vue-grid";

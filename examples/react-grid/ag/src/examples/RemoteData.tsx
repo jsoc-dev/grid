@@ -1,4 +1,4 @@
-import { AgGridReact } from "#components/AgGridReact.tsx";
+import { AgGridReact } from "ag-grid-react";
 
 import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { RemoteDataExampleRenderer } from "@jsoc/react-grid-examples";

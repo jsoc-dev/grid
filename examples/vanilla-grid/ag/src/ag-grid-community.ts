@@ -1,6 +1,8 @@
+export * from "ag-grid-community";
+
 import {
   colorSchemeDark,
-  createGrid,
+  createGrid as createGridOriginal,
   themeQuartz,
   type GridApi,
   type GridOptions,
@@ -18,17 +20,18 @@ const themes = {
   dark: themeQuartz.withPart(colorSchemeDark),
 };
 
-/**
- * Creates a JavaScript AG Grid with automatic Quartz light/dark theme based on the system preference.
- * @see {@link https://www.ag-grid.com/javascript-data-grid/getting-started/ JavaScript AG Grid}
- */
-export function createAgGrid(
+/** Creates a JavaScript AG Grid with automatic Quartz light/dark theme based on the system preference. */
+export function createGrid(
   eGridDiv: HTMLElement,
   gridOptions: GridOptions<GridRow>,
   params?: Params,
 ): GridApi<GridRow> {
   const theme = getTheme();
-  const gridApi = createGrid(eGridDiv, { theme, ...gridOptions }, params);
+  const gridApi = createGridOriginal(
+    eGridDiv,
+    { theme, ...gridOptions },
+    params,
+  );
 
   syncThemeWithColorScheme(gridApi);
 

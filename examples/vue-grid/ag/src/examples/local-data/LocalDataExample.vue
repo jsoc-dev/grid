@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AgGridVue from "#components/AgGridVue.vue";
+import { AgGridVue } from "ag-grid-vue3";
 import { useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-ag";
 import { toRef } from "vue";

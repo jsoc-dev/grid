@@ -1,4 +1,3 @@
-import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,23 +6,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [
-    vue(),
     {
-      // resolve imports of "ag-grid-vue3" to local file.
-      name: "alias-ag-grid-vue3",
+      // resolve imports of "ag-grid-community" to local file
+      name: "alias-ag-grid-community",
       enforce: "pre",
       resolveId(source, importer) {
         if (
-          source === "ag-grid-vue3" &&
+          source === "ag-grid-community" &&
           importer &&
-          !importer.endsWith("ag-grid-vue3.ts")
+          !importer.endsWith("ag-grid-community.ts")
         ) {
-          return path.resolve(__dirname, "src/ag-grid-vue3.ts");
+          return path.resolve(__dirname, "src/ag-grid-community.ts");
         }
       },
     },
   ],
-  resolve: {
-    dedupe: ["vue"],
-  },
 });

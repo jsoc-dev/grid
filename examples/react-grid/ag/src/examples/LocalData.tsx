@@ -1,4 +1,4 @@
-import { AgGridReact } from "#components/AgGridReact.tsx";
+import { AgGridReact } from "ag-grid-react";
 
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ag";
