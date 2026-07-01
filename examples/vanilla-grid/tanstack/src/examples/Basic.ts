@@ -1,7 +1,7 @@
 import { createSimpleTable } from "#utils/createSimpleTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
-import { basicJSON } from "@jsoc/grid-examples-core";
+import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { createGridStore } from "@jsoc/vanilla-grid-tanstack";
 // </snippet>
@@ -10,7 +10,7 @@ import { onUnmounted } from "@jsoc/vanilla-grid-examples";
 
 export default function (root: HTMLElement) {
   // <snippet create>
-  const gridStore = createGridStore({ data: basicJSON });
+  const gridStore = createGridStore({ data });
   const tableOptions = gridStore.getActiveSchema().config;
   const table = useTable({
     ...tableOptions,

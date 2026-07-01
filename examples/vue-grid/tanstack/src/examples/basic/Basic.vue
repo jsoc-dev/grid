@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import TanStackTable from "#components/TanStackTable.vue";
-import { basicJSON } from "@jsoc/grid-examples-core";
+import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-tanstack";
 // </snippet>
 
 // <snippet create>
-const gridStore = useGridStore(basicJSON);
+const gridStore = useGridStore(data);
 const activeSchema = useGridStoreSelector(gridStore, (store) =>
   store.getActiveSchema(),
 );

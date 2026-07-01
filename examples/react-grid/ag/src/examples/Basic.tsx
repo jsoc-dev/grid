@@ -1,5 +1,5 @@
 import { AgGridReact } from "#components/AgGridReact.tsx";
-import { basicJSON } from "@jsoc/grid-examples-core";
+import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ag";
@@ -7,7 +7,7 @@ import { useGridStore } from "@jsoc/react-grid-ag";
 
 export default function BasicExample() {
   // <snippet create>
-  const gridStore = useGridStore(basicJSON);
+  const gridStore = useGridStore(data);
   const activeSchema = useGridStoreSelector(gridStore, (gridStore) =>
     gridStore.getActiveSchema(),
   );
