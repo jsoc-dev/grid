@@ -2,10 +2,12 @@ import { REPO_DIR } from "#repo.ts";
 import { emitExampleSourceManifest } from "#scripts/utils/emitExampleSourceManifest.ts";
 import { logMilestone } from "#scripts/utils/logMilestone.ts";
 
+import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
 import {
   type AdapterId,
+  EXAMPLE_SOURCE_MANIFEST_FILE_NAME,
   getAdapterIds,
   getAdapterMetadata,
   getExamplesRelativePath,
@@ -19,7 +21,8 @@ await main();
 
 async function main() {
   try {
-    const manualMode = process.argv.includes("manual");
+    const manualMode = process.argv.includes("--manual");
+    const forceMode = process.argv.includes("--force");
     const adapterIdsToBuild = manualMode
       ? await askAdapterIdsToBuild()
       : getAdapterIds();
@@ -40,6 +43,14 @@ async function main() {
       // Sequential build (not parallelized to keep it simple)
       for (const pluginId of buildPluginIds) {
         const packageId = `${adapterId}/${pluginId}`;
+        const sourceDir = getExamplesSourceDir(adapterId, pluginId);
+        const outputDir = getExamplesOutputDir(adapterId, pluginId);
+
+        if (!forceMode && (await isOutputUpToDate(sourceDir, outputDir))) {
+          console.info(`\n⏭️ Skipping "${packageId}" (already up to date)`);
+          continue;
+        }
+
         logMilestone(`📦 Build started for "${packageId}"`, "start");
         await buildExamples(adapterId, pluginId);
         logMilestone(`✅ Build completed for "${packageId}"`, "end");
@@ -137,4 +148,43 @@ function getExamplesOutputDir<A extends AdapterId>(
     "docs/public",
     getExamplesRelativePath(adapterId, pluginId),
   );
+}
+
+async function getLatestModifiedTime(dir: string): Promise<number> {
+  let maxTime = 0;
+  try {
+    const dirStat = await stat(dir);
+    maxTime = dirStat.mtimeMs; // Catches file additions/deletions in this directory
+  } catch {
+    // Ignore if dir doesn't exist for some reason
+  }
+
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.resolve(dir, entry.name);
+    if (entry.name === "node_modules" || entry.name === "dist") continue;
+    if (entry.isDirectory()) {
+      const time = await getLatestModifiedTime(fullPath);
+      maxTime = Math.max(maxTime, time);
+    } else {
+      const stats = await stat(fullPath);
+      maxTime = Math.max(maxTime, stats.mtimeMs);
+    }
+  }
+  return maxTime;
+}
+
+async function isOutputUpToDate(
+  sourceDir: string,
+  outputDir: string,
+): Promise<boolean> {
+  try {
+    const manifestStat = await stat(
+      path.resolve(outputDir, EXAMPLE_SOURCE_MANIFEST_FILE_NAME),
+    );
+    const sourceTime = await getLatestModifiedTime(sourceDir);
+    return manifestStat.mtimeMs > sourceTime;
+  } catch {
+    return false;
+  }
 }
