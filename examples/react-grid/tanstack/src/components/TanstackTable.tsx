@@ -3,7 +3,7 @@ import "@jsoc/grid-examples-core/css/tanstack-table.css";
 import type { GridRow } from "@jsoc/grid-core";
 import { flexRender, type Table } from "@tanstack/react-table";
 
-export function SimpleTable({ table }: { table: Table<GridRow> }) {
+export function TanstackTable({ table }: { table: Table<GridRow> }) {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
 

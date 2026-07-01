@@ -1,4 +1,4 @@
-import { createSimpleTable } from "#utils/createSimpleTable.ts";
+import { renderTanstackTable } from "#utils/renderTanstackTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
 import { basicJSON as data } from "@jsoc/grid-examples-core";
@@ -19,7 +19,7 @@ export default function (root: HTMLElement) {
   // </snippet>
 
   // <snippet render>
-  const tableElement = createSimpleTable(table);
+  const tableElement = renderTanstackTable(table);
   root.replaceChildren(tableElement);
   // </snippet>
 

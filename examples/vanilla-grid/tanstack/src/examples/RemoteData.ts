@@ -1,4 +1,4 @@
-import { createSimpleTable } from "#utils/createSimpleTable.ts";
+import { renderTanstackTable } from "#utils/renderTanstackTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
 import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
@@ -35,7 +35,7 @@ export default function (root: HTMLElement) {
           getCoreRowModel: getCoreRowModel(),
         });
 
-        const tableElement = createSimpleTable(table);
+        const tableElement = renderTanstackTable(table);
         gridContainer.replaceChildren(tableElement);
         layout.replaceChildren(navigator, gridContainer);
       },

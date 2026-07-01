@@ -1,5 +1,4 @@
-import { SimpleTable } from "../components/SimpleTable";
-
+import { TanstackTable } from "#components/TanstackTable.tsx";
 import classNames from "@jsoc/grid-examples-core/css/modules/remoteData.module.css";
 import { RemoteDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { SimpleNavigator, useGridStoreSelector } from "@jsoc/react-grid";
@@ -26,7 +25,7 @@ function Example({ data }: { data: string }) {
     <div className={classNames.layout}>
       <SimpleNavigator gridStore={gridStore} />
       <div className={classNames.gridContainer}>
-        <SimpleTable table={table} />
+        <TanstackTable table={table} />
       </div>
     </div>
   );

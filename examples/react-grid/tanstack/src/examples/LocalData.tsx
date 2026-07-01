@@ -1,8 +1,8 @@
+import { TanstackTable } from "#components/TanstackTable.tsx";
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";
 import { LocalDataExampleRenderer } from "@jsoc/react-grid-examples";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { SimpleTable } from "../components/SimpleTable";
 
 export default function LocalDataExample() {
   return <LocalDataExampleRenderer component={Example} />;
@@ -20,5 +20,5 @@ function Example({ data }: { data: string }) {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <SimpleTable table={table} />;
+  return <TanstackTable table={table} />;
 }

@@ -1,4 +1,4 @@
-import { SimpleTable } from "../components/SimpleTable";
+import { TanstackTable } from "#components/TanstackTable.tsx";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
@@ -22,7 +22,7 @@ export default function BasicExample() {
 
   return (
     // <snippet render>
-    <SimpleTable table={table} />
+    <TanstackTable table={table} />
     // </snippet>
   );
 }

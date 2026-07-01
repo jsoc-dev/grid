@@ -8,7 +8,7 @@ import type { Table } from "@tanstack/table-core";
  * Creates a HTML table from given TanStack Table instance
  * @param table - TanStack Table instance.
  */
-export function createSimpleTable(table: Table<GridRow>): HTMLElement {
+export function renderTanstackTable(table: Table<GridRow>): HTMLElement {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
 

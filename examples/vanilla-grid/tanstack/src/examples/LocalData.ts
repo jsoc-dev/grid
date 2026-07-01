@@ -1,3 +1,4 @@
+import { renderTanstackTable } from "#utils/renderTanstackTable.ts";
 import { useTable } from "#utils/useTable.ts";
 
 import {
@@ -9,7 +10,6 @@ import {
   onUnmounted,
 } from "@jsoc/vanilla-grid-examples";
 import { getCoreRowModel } from "@tanstack/table-core";
-import { createSimpleTable } from "#utils/createSimpleTable.ts";
 
 export default function (root: HTMLElement) {
   let gridStore: GridStoreTanstack | undefined;
@@ -26,7 +26,7 @@ export default function (root: HTMLElement) {
           getCoreRowModel: getCoreRowModel(),
         });
 
-        const tableElement = createSimpleTable(table);
+        const tableElement = renderTanstackTable(table);
         root.replaceChildren(tableElement);
       },
     });
