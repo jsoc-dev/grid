@@ -13,3 +13,11 @@ catalog:
   typescript: "^6.0.3"
 
 linkWorkspacePackages: true
+
+packageExtensions:
+  # react-error-boundary is missing @types/react in its dependencies.
+  # This causes pnpm's strict symlinking to evaluate its types to `any`, leading to JSX errors.
+  # Injecting it here forces pnpm to provide the types.
+  "react-error-boundary@*":
+    peerDependencies:
+      "@types/react": "^19.0.0"
