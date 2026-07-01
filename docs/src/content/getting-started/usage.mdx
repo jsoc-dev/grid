@@ -1,4 +1,4 @@
-import { Example } from "@/components/docs/content/Example";
+import { Example } from "@/components/docs/example/Example";
 import { If } from "@/components/docs/content/If";
 import { Steps } from "nextra/components";
 
@@ -119,9 +119,9 @@ Basic example to get you started.
 Create the grid store with `useGridStore` and your grid data, then read the active schema using `useGridStoreSelector`:
 
 ```typescript
-const data = [{ id: 1, name: "Alice" }];
+import { basicJSON } from "@jsoc/grid-examples-core";
 
-const gridStore = useGridStore(data);
+const gridStore = useGridStore(basicJSON);
 const activeSchema = useGridStoreSelector(gridStore, (store) =>
   store.getActiveSchema(),
 );
@@ -134,9 +134,9 @@ const activeSchema = useGridStoreSelector(gridStore, (store) =>
 Create the grid store with `createGridStore` and your grid data, then read the active schema config:
 
 ```typescript
-const data = [{ id: 1, name: "Alice" }];
+import { basicJSON } from "@jsoc/grid-examples-core";
 
-const gridStore = createGridStore({ data });
+const gridStore = createGridStore({ data: basicJSON });
 const gridOptions = gridStore.getActiveSchema().config;
 ```
 
@@ -147,9 +147,9 @@ const gridOptions = gridStore.getActiveSchema().config;
 Create the grid store with `useGridStore` and your grid data, then read the active schema using `useGridStoreSelector`:
 
 ```typescript
-const data = [{ id: 1, name: "Alice" }];
+import { basicJSON } from "@jsoc/grid-examples-core";
 
-const gridStore = useGridStore(data);
+const gridStore = useGridStore(basicJSON);
 const activeSchema = useGridStoreSelector(gridStore, (store) =>
   store.getActiveSchema(),
 );
@@ -332,6 +332,7 @@ const table = useVueTable({
 ### That's all!
 
 Your grid component is ready to use. Here is how it looks:
+<br/>
 
 <Example exampleId="basic" />
 

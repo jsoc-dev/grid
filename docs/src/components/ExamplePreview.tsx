@@ -57,12 +57,16 @@ export function ExamplePreview<A extends AdapterId, P extends PluginId<A>>({
   );
 
   if (isPending) {
-    const preview = <Fallback>Loading example...</Fallback>;
+    const preview = (
+      <Fallback className={className}>Loading example...</Fallback>
+    );
     return renderer({ preview, isPending });
   }
 
   if (error) {
-    const preview = <Fallback>Example not found</Fallback>;
+    const preview = (
+      <Fallback className={className}>Example not found</Fallback>
+    );
     return renderer({ preview, isPending, error });
   }
 
