@@ -23,6 +23,12 @@ export type SnippetMapByExampleId<
   P extends PluginId<A>,
 > = Record<ExampleId<A, P>, SnippetMap>;
 
+// Matches opening <script> tags in Vue SFCs, optionally capturing lang="ts" or lang="js"
+const VUE_SCRIPT_START_REGEX = /^\s*<script(?:\s[^>]*)?>$/;
+const VUE_SCRIPT_LANG_REGEX = /\blang="([^"]*)"/;
+// Matches </script> closing tag
+const VUE_SCRIPT_END_REGEX = /^\s*<\/script>/;
+
 export function extractSnippetsFromManifest<
   A extends AdapterId,
   P extends PluginId<A>,
@@ -48,8 +54,26 @@ export function extractSnippetsFromManifest<
 
       let currentRegionId: string | null = null;
       let currentRegionContent: string[] = [];
+      // For .vue files: track whether we're inside a <script> block and what language it uses.
+      let insideScriptBlock = false;
+      let scriptBlockLang: string | null = null;
 
       for (const line of lines) {
+        // Track <script> / </script> block boundaries in .vue files.
+        if (language === "vue") {
+          const scriptStart = line.match(VUE_SCRIPT_START_REGEX);
+          if (scriptStart) {
+            insideScriptBlock = true;
+            // lang="ts" → typescript, lang="js" or absent → javascript
+            const langMatch = line.match(VUE_SCRIPT_LANG_REGEX);
+            scriptBlockLang =
+              langMatch?.[1] === "ts" ? "typescript" : "javascript";
+          } else if (VUE_SCRIPT_END_REGEX.test(line)) {
+            insideScriptBlock = false;
+            scriptBlockLang = null;
+          }
+        }
+
         const startMatch = line.match(REGION_START_REGEX);
         if (startMatch) {
           currentRegionId = startMatch[1];
@@ -59,10 +83,17 @@ export function extractSnippetsFromManifest<
 
         if (currentRegionId && REGION_END_REGEX.test(line)) {
           const outdentedContent = outdent(currentRegionContent);
+          // If this snippet came from inside a <script> block of a .vue file,
+          // use the script block's language (ts/js) instead of "vue", since the
+          // extracted code is plain TypeScript/JavaScript without SFC structure.
+          const snippetLanguage =
+            language === "vue" && insideScriptBlock && scriptBlockLang != null
+              ? scriptBlockLang
+              : language;
           // Combine lines and trim trailing whitespace, preserving indentation.
           snippets[exampleId][currentRegionId] = {
             code: outdentedContent.join("\n").replace(/\s+$/, ""),
-            language,
+            language: snippetLanguage,
           };
           currentRegionId = null;
           continue;
