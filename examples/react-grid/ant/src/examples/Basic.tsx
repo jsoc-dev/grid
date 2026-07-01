@@ -1,4 +1,4 @@
-import { AntTable } from "#components/AntTable.tsx";
+import { Table } from "antd";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
@@ -15,7 +15,7 @@ export default function BasicExample() {
 
   return (
     // <snippet render>
-    <AntTable key={activeSchema.id} {...activeSchema.config} />
+    <Table key={activeSchema.id} {...activeSchema.config} />
     // </snippet>
   );
 }

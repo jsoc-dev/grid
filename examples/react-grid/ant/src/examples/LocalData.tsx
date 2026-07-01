@@ -1,4 +1,4 @@
-import { AntTable } from "#components/AntTable.tsx";
+import { Table } from "antd";
 
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
@@ -14,5 +14,5 @@ function Example({ data }: { data: string }) {
     gridStore.getActiveSchema(),
   );
 
-  return <AntTable key={activeSchema.id} {...activeSchema.config} />;
+  return <Table key={activeSchema.id} {...activeSchema.config} />;
 }
