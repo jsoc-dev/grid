@@ -8,6 +8,7 @@ import {
   syncDataLoaderFeature,
 } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 import { useEffect, useMemo, useState, useRef } from "react";
 
@@ -104,15 +105,29 @@ export function FileExplorer({ files, onSelect, defaultFile }: Props) {
   };
 
   return (
-    <div {...treeInstance.getContainerProps("Source files")} className="p-1">
-      {treeInstance.getItems().map((item) => (
-        <FileExplorerRow
-          key={item.getId()}
-          item={item}
-          onSelectFile={handleSelectFile}
-        />
-      ))}
-    </div>
+    <ScrollArea.Root className="group/scroll flex min-h-0 flex-1 flex-col overflow-hidden">
+      <ScrollArea.Viewport className="h-full w-full [&>div]:block!">
+        <div
+          {...treeInstance.getContainerProps("Source files")}
+          className="py-1"
+        >
+          {treeInstance.getItems().map((item) => (
+            <FileExplorerRow
+              key={item.getId()}
+              item={item}
+              onSelectFile={handleSelectFile}
+            />
+          ))}
+        </div>
+      </ScrollArea.Viewport>
+      <ScrollArea.Scrollbar
+        orientation="vertical"
+        className="flex touch-none select-none bg-transparent p-0 transition-colors duration-150 ease-out data-[orientation=vertical]:w-[8px]"
+      >
+        <ScrollArea.Thumb className="relative flex-1 rounded-none bg-transparent transition-colors group-hover/scroll:bg-black/20 dark:group-hover/scroll:bg-white/20" />
+      </ScrollArea.Scrollbar>
+      <ScrollArea.Corner />
+    </ScrollArea.Root>
   );
 }
 

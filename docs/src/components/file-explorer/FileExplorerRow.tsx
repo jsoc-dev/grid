@@ -33,7 +33,7 @@ export function FileExplorerRow({ item, onSelectFile }: Props) {
         }
       }}
       className={clsx(
-        "flex cursor-pointer w-full items-center gap-1.5 rounded-md px-2 py-1 text-left text-[13px] transition-colors",
+        "flex cursor-pointer w-full items-center gap-1.5 px-2 py-1 select-none text-left text-[13px] transition-colors",
         isSelected
           ? "bg-neutral-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100"
           : "text-neutral-600 hover:bg-neutral-200/70 dark:text-neutral-400 dark:hover:bg-neutral-800/60",
