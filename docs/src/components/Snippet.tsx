@@ -19,9 +19,6 @@ export function Snippet<A extends AdapterId, P extends PluginId<A>>({
   const snippets = scope.snippetMap[exampleId];
   const snippet = snippets?.[name];
 
-  if (!snippet) {
-    return <CodeBlock code="" language="tsx" />;
-  }
-
-  return <CodeBlock code={snippet.code} language={snippet.language} />;
+  if (!snippet) return <CodeBlock code="" lang="plaintext" />;
+  return <CodeBlock code={snippet.code} lang={snippet.language} />;
 }

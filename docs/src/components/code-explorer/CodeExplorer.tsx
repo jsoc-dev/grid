@@ -87,7 +87,7 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
           <div className="min-h-0 flex-1 overflow-hidden flex flex-col [&_.nextra-code]:mt-0! [&_.nextra-code]:h-full [&_.nextra-code]:content-start [&_pre]:rounded-none! [&_pre]:h-full! [&_pre]:overflow-auto! [&_pre]:scrollbar-thin">
             <CodeBlock
               code={removeSnippetMarkers(selectedFile.code)}
-              language={selectedFile.language}
+              lang={selectedFile.language}
               showCopyCode={false}
               className="ring-0! border-0!"
             />
