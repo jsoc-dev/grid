@@ -15,11 +15,11 @@ export type FileExtension = keyof typeof CODE_LANGUAGE_BY_EXTENSION;
 
 export const FILE_EXTENSIONS = Object.keys(
   CODE_LANGUAGE_BY_EXTENSION,
-) as FileExtension[];
+) as ReadonlyArray<FileExtension>;
 
 export const CODE_LANGUAGES = [
   ...new Set(Object.values(CODE_LANGUAGE_BY_EXTENSION)),
-] as CodeLanguage[];
+] as ReadonlyArray<CodeLanguage>;
 
 export function isValidFileExtension(ext: string): ext is FileExtension {
   return FILE_EXTENSIONS.includes(ext as FileExtension);

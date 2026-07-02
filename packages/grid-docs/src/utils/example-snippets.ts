@@ -1,6 +1,7 @@
 import { type ExampleId, getExampleIds } from "#metadata/examples-metadata.ts";
 import type { AdapterId, PluginId } from "#types/plugins.ts";
 import type { ExampleSourceManifest } from "#utils/build-examples.ts";
+import type { CodeLanguage } from "#utils/example-source-code.ts";
 import {
   extractSourceFilesFromManifest,
   isSpecificExampleFile,
@@ -15,7 +16,7 @@ const REGION_END_REGEX = /(?:\/\/|\/\*|<!--)\s*<\/snippet>\s*(?:\*\/|-->)?$/;
 export type SnippetName = string;
 export type SnippetData = {
   code: string;
-  language: string;
+  language: CodeLanguage;
 };
 export type SnippetMap = Record<SnippetName, SnippetData>;
 export type SnippetMapByExampleId<
@@ -56,7 +57,7 @@ export function extractSnippetsFromManifest<
       let currentRegionContent: string[] = [];
       // For .vue files: track whether we're inside a <script> block and what language it uses.
       let insideScriptBlock = false;
-      let scriptBlockLang: string | null = null;
+      let scriptBlockLang: CodeLanguage | null = null;
 
       for (const line of lines) {
         // Track <script> / </script> block boundaries in .vue files.
