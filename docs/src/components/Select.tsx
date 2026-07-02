@@ -37,12 +37,12 @@ export function Select({ value, options, onChange, title }: Props) {
         </span>
 
         <span className="flex min-w-0 flex-1 flex-col items-start">
-          <span className="max-w-full truncate text-sm font-medium text-gray-900 dark:text-gray-50">
+          <span className="max-w-full select-none truncate text-sm font-medium text-gray-900 dark:text-gray-50">
             {selected.title}
           </span>
 
           {selected.subtitle ? (
-            <span className="max-w-full truncate text-xs font-normal text-gray-500 dark:text-gray-400">
+            <span className="max-w-full select-none truncate text-xs font-normal text-gray-500 dark:text-gray-400">
               {selected.subtitle}
             </span>
           ) : null}
@@ -80,12 +80,12 @@ export function Select({ value, options, onChange, title }: Props) {
                 </span>
 
                 <span className="flex min-w-0 flex-1 flex-col items-start">
-                  <span className="max-w-full truncate text-sm font-medium">
+                  <span className="max-w-full select-none truncate text-sm font-medium">
                     {option.title}
                   </span>
 
                   {option.subtitle ? (
-                    <span className="max-w-full truncate text-xs text-gray-500 dark:text-gray-400">
+                    <span className="max-w-full select-none truncate text-xs text-gray-500 dark:text-gray-400">
                       {option.subtitle}
                     </span>
                   ) : null}
