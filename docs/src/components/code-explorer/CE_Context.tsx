@@ -15,6 +15,8 @@ export type CodeExplorerContextType<
   adapterId: A;
   pluginId: P;
   exampleId: ExampleId<A, P>;
+  fileExplorerExpanded: boolean;
+  setFileExplorerExpanded: SetState<boolean>;
 };
 
 const CodeExplorerContext = createContext<unknown>(null);

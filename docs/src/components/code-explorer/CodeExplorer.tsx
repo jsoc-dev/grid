@@ -1,5 +1,6 @@
-import { CodeBlock } from "@/components/CodeBlock";
-import { CE_Sidebar } from "@/components/code-explorer/CE_Sidebar";
+import { CE_CodeBlock } from "@/components/code-explorer/CE_CodeBlock";
+import { CE_FileExplorer } from "@/components/code-explorer/CE_FileExplorer";
+import { CE_Header } from "@/components/code-explorer/CE_Header";
 import { CodeExplorerProvider } from "@/components/code-explorer/CE_Context";
 import type { ExampleSourceFile, LanguagePreference } from "@jsoc/grid-docs";
 import {
@@ -60,6 +61,8 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
     findSuitableDefaultFile(files, exampleId, languagePreference),
   );
 
+  const [fileExplorerExpanded, setFileExplorerExpanded] = useState(false);
+
   const ctx = {
     files,
     selectedFile,
@@ -69,13 +72,16 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
     adapterId,
     pluginId,
     exampleId,
+    fileExplorerExpanded,
+    setFileExplorerExpanded,
   };
 
   return (
     <CodeExplorerProvider value={ctx}>
       <div className="flex h-64 overflow-hidden border border-neutral-200 dark:border-neutral-800 rounded-md">
-        <CE_Sidebar />
+        <CE_FileExplorer />
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <CE_Header />
           {!isRelevantFile(selectedFile, exampleId) && (
             <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:border-amber-900/50 dark:bg-amber-500/10 dark:text-amber-400">
               <Info className="h-4 w-4 shrink-0" />
@@ -84,12 +90,10 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
               </span>
             </div>
           )}
-          <div className="min-h-0 flex-1 overflow-hidden flex flex-col [&_.nextra-code]:mt-0! [&_.nextra-code]:h-full [&_.nextra-code]:content-start [&_pre]:rounded-none! [&_pre]:h-full! [&_pre]:overflow-auto! [&_pre]:scrollbar-thin">
-            <CodeBlock
+          <div className="min-h-0 flex-1 overflow-hidden flex flex-col">
+            <CE_CodeBlock
               code={removeSnippetMarkers(selectedFile.code)}
               lang={selectedFile.language}
-              showCopyCode={false}
-              className="ring-0! border-0!"
             />
           </div>
         </div>
