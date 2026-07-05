@@ -1,8 +1,16 @@
 import { transpileTsFile } from "#scripts/utils/transpileTsFile.ts";
+import { transpileVueSfc } from "#scripts/utils/transpileVueSfc.ts";
 
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import {
+  type ExampleSourceFile,
+  getCodeLanguageByFilePath,
+  getFileExtension,
+  type SourceCodeVariants,
+  vueSfcContainsTsScript,
+} from "@jsoc/grid-docs";
 import {
   EXAMPLE_SOURCE_MANIFEST_FILE_NAME,
   type ExampleSourceManifest,
@@ -37,18 +45,39 @@ async function createExampleSourceManifest(
 
   for (const filePath of filePaths) {
     const absolutePath = path.resolve(sourceDir, filePath);
-    const content = await readFile(absolutePath, "utf8");
-    manifest[filePath] = content;
+    const sourceCode = await readFile(absolutePath, "utf8");
+    const fileExtension = getFileExtension(filePath);
 
-    if ((filePath.endsWith(".ts") || filePath.endsWith(".tsx")) && !filePath.endsWith(".d.ts")) {
-      const isTsx = filePath.endsWith(".tsx");
+    manifest[filePath] = await prepareSourceFile(filePath, sourceCode);
+
+    // add additional js/jsx files for ts/tsx source files
+    if (["ts", "tsx"].includes(fileExtension!) && !filePath.endsWith(".d.ts")) {
+      const isTsx = fileExtension === "tsx";
       const jsFilePath = filePath.replace(/\.tsx?$/, isTsx ? ".jsx" : ".js");
+      const jsCode = await transpileTsFile(sourceCode, isTsx);
 
-      manifest[jsFilePath] = await transpileTsFile(content, isTsx);
+      manifest[jsFilePath] = await prepareSourceFile(jsFilePath, jsCode);
     }
   }
 
   return manifest;
+}
+
+async function prepareSourceFile(
+  path: string,
+  code: string,
+): Promise<ExampleSourceFile> {
+  const name = path.split("/").pop()!;
+  const language = getCodeLanguageByFilePath(path);
+  const fileExt = getFileExtension(path);
+  let variants: SourceCodeVariants | undefined = undefined;
+
+  if (fileExt === "vue" && vueSfcContainsTsScript(code)) {
+    const jsCode = await transpileVueSfc(code);
+    variants = { javascript: jsCode };
+  }
+
+  return { path, code, name, language, variants };
 }
 
 async function collectRelevantFilePaths(sourceDir: string): Promise<string[]> {
