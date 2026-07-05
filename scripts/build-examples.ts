@@ -46,14 +46,30 @@ async function main() {
         const sourceDir = getExamplesSourceDir(adapterId, pluginId);
         const outputDir = getExamplesOutputDir(adapterId, pluginId);
 
-        if (!forceMode && (await isOutputUpToDate(sourceDir, outputDir))) {
+        const buildUpToDate = await isBuildUpToDate(sourceDir, outputDir);
+        const manifestUpToDate = await isSourceManifestUpToDate(
+          sourceDir,
+          outputDir,
+        );
+
+        const doRebuild = forceMode || !buildUpToDate;
+        const doEmitManifest = forceMode || doRebuild || !manifestUpToDate;
+
+        if (!doRebuild && !doEmitManifest) {
           console.info(`\n⏭️ Skipping "${packageId}" (already up to date)`);
           continue;
         }
 
-        logMilestone(`📦 Build started for "${packageId}"`, "start");
-        await buildExamples(adapterId, pluginId);
-        logMilestone(`✅ Build completed for "${packageId}"`, "end");
+        if (doRebuild) {
+          logMilestone(`📦 Build started for "${packageId}"`, "start");
+          await buildExamples(sourceDir, outputDir);
+          logMilestone(`✅ Build completed for "${packageId}"`, "end");
+        }
+
+        if (doEmitManifest) {
+          console.log(`\nEmitting manifest for "${packageId}"...`);
+          await emitExampleSourceManifest(sourceDir, outputDir);
+        }
       }
     }
   } catch (err) {
@@ -105,13 +121,7 @@ async function getPluginIdsFromUser<A extends AdapterId>(
   return pluginIds;
 }
 
-async function buildExamples<A extends AdapterId>(
-  adapterId: A,
-  pluginId: PluginId<A>,
-) {
-  const sourceDir = getExamplesSourceDir(adapterId, pluginId);
-  const outputDir = getExamplesOutputDir(adapterId, pluginId);
-
+async function buildExamples(sourceDir: string, outputDir: string) {
   console.log("SOURCE DIR:", sourceDir);
   console.log("OUTPUT DIR:", outputDir, "\n");
 
@@ -128,8 +138,6 @@ async function buildExamples<A extends AdapterId>(
       emptyOutDir: true,
     },
   });
-
-  await emitExampleSourceManifest(sourceDir, outputDir);
 }
 
 function getExamplesSourceDir<A extends AdapterId>(
@@ -174,7 +182,20 @@ async function getLatestModifiedTime(dir: string): Promise<number> {
   return maxTime;
 }
 
-async function isOutputUpToDate(
+async function isBuildUpToDate(
+  sourceDir: string,
+  outputDir: string,
+): Promise<boolean> {
+  try {
+    const indexHtmlStat = await stat(path.resolve(outputDir, "index.html"));
+    const sourceTime = await getLatestModifiedTime(sourceDir);
+    return indexHtmlStat.mtimeMs > sourceTime;
+  } catch {
+    return false;
+  }
+}
+
+async function isSourceManifestUpToDate(
   sourceDir: string,
   outputDir: string,
 ): Promise<boolean> {
@@ -182,8 +203,15 @@ async function isOutputUpToDate(
     const manifestStat = await stat(
       path.resolve(outputDir, EXAMPLE_SOURCE_MANIFEST_FILE_NAME),
     );
+    const emitterStat = await stat(
+      path.resolve(REPO_DIR, "scripts/utils/emitExampleSourceManifest.ts"),
+    );
     const sourceTime = await getLatestModifiedTime(sourceDir);
-    return manifestStat.mtimeMs > sourceTime;
+
+    return (
+      manifestStat.mtimeMs > sourceTime &&
+      manifestStat.mtimeMs > emitterStat.mtimeMs
+    );
   } catch {
     return false;
   }
