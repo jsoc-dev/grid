@@ -25,8 +25,14 @@ export function isValidFileExtension(ext: string): ext is FileExtension {
   return FILE_EXTENSIONS.includes(ext as FileExtension);
 }
 
+export function getFileExtension(filePath: string): FileExtension | undefined {
+  const ext = filePath.split(".").at(-1);
+
+  return ext && isValidFileExtension(ext) ? ext : undefined;
+}
+
 export function getCodeLanguageByFilePath(filePath: string): CodeLanguage {
-  const fileExt = filePath.split(".").at(-1);
+  const fileExt = getFileExtension(filePath);
   return getCodeLanguageByFileExtension(fileExt ?? "");
 }
 

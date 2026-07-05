@@ -4,21 +4,9 @@ import type {
   LanguagePreference,
 } from "#types/example-source-files.ts";
 import type { AdapterId, PluginId } from "#types/plugins.ts";
-import type { ExampleSourceManifest } from "#utils/build-examples.ts";
-import { getCodeLanguageByFilePath } from "#utils/example-source-code.ts";
+import type { CodeLanguage } from "#utils/example-source-code.ts";
 
 import { equalsIgnoreCase } from "@jsoc/utils";
-
-export function extractSourceFilesFromManifest(
-  manifest: ExampleSourceManifest,
-): ExampleSourceFile[] {
-  return Object.entries(manifest).map(([filePath, code]) => ({
-    path: filePath,
-    code,
-    name: filePath.split("/").pop()!,
-    language: getCodeLanguageByFilePath(filePath),
-  }));
-}
 
 export function isExampleFile(file: ExampleSourceFile) {
   return file.path.startsWith("src/examples/");
@@ -79,13 +67,17 @@ export function filterFilesForExample<
   return files.filter((file) => isRelevantFile(file, exampleId));
 }
 
-export function findFileByLanguagePreference(
+export function findFileByLanguagePreference<C extends CodeLanguage>(
   files: ExampleSourceFile[],
-  file: ExampleSourceFile,
+  file: ExampleSourceFile<C>,
   languagePreference: LanguagePreference,
 ): ExampleSourceFile | undefined {
+  // if the file source code itself is in the preferred language
   if (file.language === languagePreference) return file;
+  // if the file contains a variant in the preferred language
+  if (file.variants && languagePreference in file.variants) return file;
 
+  // try to find a file with the same path but in the preferred language
   let targetPath = file.path;
   if (languagePreference === "javascript") {
     targetPath = targetPath.replace(/\.tsx?$/, (ext) =>
@@ -111,12 +103,23 @@ export function findSuitableDefaultFile<
   const exampleFiles = files.filter((f) => isSpecificExampleFile(f, exampleId));
 
   const file = exampleFiles.find((f) => {
-    if (languagePreference === "typescript") {
-      return f.language === "typescript" || f.language === "tsx";
-    }
     if (languagePreference === "javascript") {
-      return f.language === "javascript" || f.language === "jsx";
+      return (
+        f.language === "javascript" ||
+        f.language === "jsx" ||
+        f.variants?.javascript ||
+        f.variants?.jsx
+      );
     }
+    if (languagePreference === "typescript") {
+      return (
+        f.language === "typescript" ||
+        f.language === "tsx" ||
+        f.variants?.typescript ||
+        f.variants?.tsx
+      );
+    }
+
     return f.language === languagePreference;
   });
   if (file) return file;

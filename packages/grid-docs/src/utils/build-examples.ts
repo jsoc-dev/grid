@@ -1,4 +1,5 @@
 import type { ExampleId } from "#metadata/examples-metadata.ts";
+import type { ExampleSourceFile } from "#types/example-source-files.ts";
 import type { AdapterId, PluginId } from "#types/plugins.ts";
 
 export type ExamplesRelativePath<A extends AdapterId = AdapterId> =
@@ -54,7 +55,7 @@ export function buildExampleIdSearchQuery<E extends string>(exampleId: E) {
 }
 
 /** A map of keys as file paths and value as file contents. */
-export type ExampleSourceManifest = Record<string, string>;
+export type ExampleSourceManifest = Record<string, ExampleSourceFile>;
 
 /** The filename of the source code manifest. */
 export const EXAMPLE_SOURCE_MANIFEST_FILE_NAME = "source-manifest.json";

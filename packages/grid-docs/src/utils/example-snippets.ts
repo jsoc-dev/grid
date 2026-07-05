@@ -1,34 +1,26 @@
-import { type ExampleId, getExampleIds } from "#metadata/examples-metadata.ts";
+import { getExampleIds } from "#metadata/examples-metadata.ts";
+import type { SnippetMapByExampleId } from "#types/example-snippets.ts";
+import type { ExampleSourceFile } from "#types/example-source-files.ts";
 import type { AdapterId, PluginId } from "#types/plugins.ts";
 import type { ExampleSourceManifest } from "#utils/build-examples.ts";
 import type { CodeLanguage } from "#utils/example-source-code.ts";
-import {
-  extractSourceFilesFromManifest,
-  isSpecificExampleFile,
-} from "#utils/example-source-files.ts";
+import { isSpecificExampleFile } from "#utils/example-source-files.ts";
+import { outdentLines } from "#utils/outdentLines.ts";
+import { extractScriptsFromVueSfc } from "#utils/vue-sfc.ts";
 
-// Matches: // <snippet regionId> or /* <snippet regionId> or <!-- <snippet regionId>
-const REGION_START_REGEX =
+// Matches: // <snippet snippetId> or /* <snippet snippetId> or <!-- <snippet snippetId>
+const SNIPPET_START_REGEX =
   /(?:\/\/|\/\*|<!--)\s*<snippet\s+([\w.-]+)>\s*(?:\*\/|-->)?$/;
 // Matches: // </snippet> or /* </snippet> or <!-- </snippet>
-const REGION_END_REGEX = /(?:\/\/|\/\*|<!--)\s*<\/snippet>\s*(?:\*\/|-->)?$/;
+const SNIPPET_END_REGEX = /(?:\/\/|\/\*|<!--)\s*<\/snippet>\s*(?:\*\/|-->)?$/;
 
-export type SnippetName = string;
-export type SnippetData = {
-  code: string;
-  language: CodeLanguage;
-};
-export type SnippetMap = Record<SnippetName, SnippetData>;
-export type SnippetMapByExampleId<
-  A extends AdapterId,
-  P extends PluginId<A>,
-> = Record<ExampleId<A, P>, SnippetMap>;
-
-// Matches opening <script> tags in Vue SFCs, optionally capturing lang="ts" or lang="js"
-const VUE_SCRIPT_START_REGEX = /^\s*<script(?:\s[^>]*)?>$/;
-const VUE_SCRIPT_LANG_REGEX = /\blang="([^"]*)"/;
-// Matches </script> closing tag
-const VUE_SCRIPT_END_REGEX = /^\s*<\/script>/;
+export function removeSnippetMarkers(code: string): string {
+  const lines = code.split("\n");
+  const filtered = lines.filter(
+    (line) => !SNIPPET_START_REGEX.test(line) && !SNIPPET_END_REGEX.test(line),
+  );
+  return filtered.join("\n");
+}
 
 export function extractSnippetsFromManifest<
   A extends AdapterId,
@@ -45,64 +37,39 @@ export function extractSnippetsFromManifest<
   for (const exampleId of exampleIds) {
     snippets[exampleId] = {};
 
-    const sourceFiles = extractSourceFilesFromManifest(manifest);
+    const sourceFiles = Object.values(manifest);
     const relevantFiles = sourceFiles.filter((file) =>
       isSpecificExampleFile(file, exampleId as string),
     );
 
-    for (const { code, language } of relevantFiles) {
-      const lines = code.split("\n");
+    for (const file of relevantFiles) {
+      const lines = file.code.split("\n");
+      let currentSnippetId: string | null = null;
+      let currentSnippetLines: string[] = [];
 
-      let currentRegionId: string | null = null;
-      let currentRegionContent: string[] = [];
-      // For .vue files: track whether we're inside a <script> block and what language it uses.
-      let insideScriptBlock = false;
-      let scriptBlockLang: CodeLanguage | null = null;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
 
-      for (const line of lines) {
-        // Track <script> / </script> block boundaries in .vue files.
-        if (language === "vue") {
-          const scriptStart = line.match(VUE_SCRIPT_START_REGEX);
-          if (scriptStart) {
-            insideScriptBlock = true;
-            // lang="ts" → typescript, lang="js" or absent → javascript
-            const langMatch = line.match(VUE_SCRIPT_LANG_REGEX);
-            scriptBlockLang =
-              langMatch?.[1] === "ts" ? "typescript" : "javascript";
-          } else if (VUE_SCRIPT_END_REGEX.test(line)) {
-            insideScriptBlock = false;
-            scriptBlockLang = null;
-          }
-        }
+        const snippetStartMatch = line.match(SNIPPET_START_REGEX);
+        const snippetEndTest = SNIPPET_END_REGEX.test(line);
 
-        const startMatch = line.match(REGION_START_REGEX);
-        if (startMatch) {
-          currentRegionId = startMatch[1];
-          currentRegionContent = [];
+        if (snippetStartMatch) {
+          currentSnippetId = snippetStartMatch[1];
+          currentSnippetLines = [];
           continue;
         }
 
-        if (currentRegionId && REGION_END_REGEX.test(line)) {
-          const outdentedContent = outdent(currentRegionContent);
-          // If this snippet came from inside a <script> block of a .vue file,
-          // use the script block's language (ts/js) instead of "vue", since the
-          // extracted code is plain TypeScript/JavaScript without SFC structure.
-          const snippetLanguage =
-            language === "vue" && insideScriptBlock && scriptBlockLang != null
-              ? scriptBlockLang
-              : language;
-          // Combine lines and trim trailing whitespace, preserving indentation.
-          snippets[exampleId][currentRegionId] = {
-            code: outdentedContent.join("\n").replace(/\s+$/, ""),
-            language: snippetLanguage,
-          };
-          currentRegionId = null;
+        if (snippetEndTest && currentSnippetId) {
+          const code = joinSnippetLines(currentSnippetLines);
+          const language = resolveSnippetLanguage(file, i);
+
+          snippets[exampleId][currentSnippetId] = { code, language };
+
+          currentSnippetId = null;
           continue;
         }
 
-        if (currentRegionId) {
-          currentRegionContent.push(line);
-        }
+        if (currentSnippetId) currentSnippetLines.push(line);
       }
     }
   }
@@ -110,35 +77,26 @@ export function extractSnippetsFromManifest<
   return snippets as SnippetMapByExampleId<A, P>;
 }
 
-export function removeSnippetMarkers(code: string): string {
-  const lines = code.split("\n");
-  const filtered = lines.filter(
-    (line) => !REGION_START_REGEX.test(line) && !REGION_END_REGEX.test(line),
-  );
-  return filtered.join("\n");
+function joinSnippetLines(lines: string[]): string {
+  return outdentLines(lines).join("\n").replace(/\s+$/, "");
 }
 
-/**
- * Removes the common leading indentation (margin) from a block of text lines.
- * This is useful for extracted code snippets, shifting them flush to the left
- * while perfectly preserving their internal relative indentation.
- */
-function outdent(lines: string[]): string[] {
-  let minIndent = Infinity;
-  for (const line of lines) {
-    if (line.trim().length > 0) {
-      const match = line.match(/^(\s*)/);
-      if (match) {
-        minIndent = Math.min(minIndent, match[1].length);
-      }
-    }
+function resolveSnippetLanguage(
+  file: ExampleSourceFile,
+  snippetLineNum: number,
+): CodeLanguage {
+  let lang = file.language;
+
+  if (lang === "vue") {
+    const vueScripts = extractScriptsFromVueSfc(file.code);
+    const enclosingScript = vueScripts.find(
+      (s) => snippetLineNum >= s.startLine && snippetLineNum <= s.endLine,
+    );
+    // If this snippet came from inside a <script> block of a .vue file,
+    // use the script block's language (ts/js) instead of "vue", since the
+    // extracted code is plain TypeScript/JavaScript without SFC structure.
+    if (enclosingScript) lang = enclosingScript.lang;
   }
 
-  if (minIndent === Infinity || minIndent === 0) {
-    return lines;
-  }
-
-  return lines.map((line) =>
-    line.length >= minIndent ? line.slice(minIndent) : line,
-  );
+  return lang;
 }
