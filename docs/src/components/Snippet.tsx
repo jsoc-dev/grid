@@ -4,20 +4,22 @@ import type {
   AdapterId,
   ExampleId,
   PluginId,
-  SnippetName,
+  SnippetId,
 } from "@jsoc/grid-docs";
+
+type SnippetProps<A extends AdapterId, P extends PluginId<A>> = {
+  exampleId: ExampleId<A, P>;
+  snippetId: SnippetId;
+};
 
 export function Snippet<A extends AdapterId, P extends PluginId<A>>({
   exampleId,
-  name,
-}: {
-  exampleId: ExampleId<A, P>;
-  name: SnippetName;
-}) {
+  snippetId,
+}: SnippetProps<A, P>) {
   const scope = getDynamicContentScope<A, P>()!;
 
   const snippets = scope.snippetMap[exampleId];
-  const snippet = snippets?.[name];
+  const snippet = snippets?.[snippetId];
 
   if (!snippet) return <CodeBlock code="" lang="plaintext" />;
   return <CodeBlock code={snippet.code} lang={snippet.language} />;

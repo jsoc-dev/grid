@@ -3,7 +3,6 @@
 import {
   getExampleSourceManifestUrl,
   type ExampleSourceManifest,
-  extractSourceFilesFromManifest,
   type ExampleSourceFile,
   type AdapterId,
   type PluginId,
@@ -24,7 +23,7 @@ export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
 
     const manifest = (await res.json()) as ExampleSourceManifest;
 
-    return extractSourceFilesFromManifest(manifest);
+    return Object.values(manifest);
   };
 
   const result = useQuery({ queryKey: ["example-source", url], queryFn });

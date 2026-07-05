@@ -76,6 +76,8 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
     setFileExplorerExpanded,
   };
 
+  const code = selectedFile.variants?.[languagePreference] ?? selectedFile.code;
+
   return (
     <CodeExplorerProvider value={ctx}>
       <div className="flex h-64 overflow-hidden border border-neutral-200 dark:border-neutral-800 rounded-md">
@@ -92,7 +94,7 @@ function CE_View<A extends AdapterId, P extends PluginId<A>>({
           )}
           <div className="min-h-0 flex-1 overflow-hidden flex flex-col">
             <CE_CodeBlock
-              code={removeSnippetMarkers(selectedFile.code)}
+              code={removeSnippetMarkers(code)}
               lang={selectedFile.language}
             />
           </div>

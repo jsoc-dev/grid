@@ -12,18 +12,22 @@ export function CE_LanguagePreference() {
     setLanguagePreference,
   } = useCodeExplorerContext();
 
-  const isJsOrTsFile = ["typescript", "javascript", "tsx", "jsx"].includes(
-    selectedFile.language,
-  );
+  const fileSupportsJsTs = [
+    "typescript",
+    "javascript",
+    "tsx",
+    "jsx",
+    "vue",
+  ].includes(selectedFile.language);
 
-  const jsFile = isJsOrTsFile
+  const jsFile = fileSupportsJsTs
     ? findFileByLanguagePreference(files, selectedFile, "javascript")
     : null;
-  const tsFile = isJsOrTsFile
+  const tsFile = fileSupportsJsTs
     ? findFileByLanguagePreference(files, selectedFile, "typescript")
     : null;
 
-  if (!jsFile || !tsFile || jsFile.code === tsFile.code) return null;
+  if (!jsFile || !tsFile) return null;
 
   const languages = [
     { lang: "javascript", label: "JS", file: jsFile },
