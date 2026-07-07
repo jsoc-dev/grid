@@ -122,7 +122,7 @@ export function getExampleMetadata<
   A extends AdapterId,
   P extends PluginId<A>,
   E extends ExampleId<A, P>,
->(adapterId: A, pluginId: P, exampleId: E) {
+>(adapterId: A, pluginId: P, exampleId: E): ExampleMetadata {
   return (EXAMPLES_METADATA_BY_ADAPTER as ExampleMetadataMapByPluginByAdapter)[
     adapterId
   ][pluginId][exampleId];
