@@ -5,6 +5,11 @@ import { getPackageJson } from "#scripts/utils/getPackageJson.ts";
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
+export interface ScannedFile {
+  file: string;
+  time: number;
+}
+
 let cachedWorkspacePackages: Map<string, string> | null = null;
 
 async function getWorkspacePackagesMap(): Promise<Map<string, string>> {
@@ -67,13 +72,16 @@ async function getExampleWorkspaceDependencies(
 async function getDirectoryLatestModifiedTime(
   dir: string,
   includeDirMtime: boolean,
-): Promise<number> {
+  scannedFiles: ScannedFile[],
+): Promise<{ time: number; file: string }> {
   let maxTime = 0;
+  let maxFile = dir;
 
   if (includeDirMtime) {
     try {
       const dirStat = await stat(dir);
       maxTime = dirStat.mtimeMs;
+      scannedFiles.push({ file: dir, time: dirStat.mtimeMs });
     } catch {
       // Ignore if dir doesn't exist for some reason
     }
@@ -84,26 +92,46 @@ async function getDirectoryLatestModifiedTime(
     const fullPath = path.resolve(dir, entry.name);
     if (entry.name === "node_modules" || entry.name === "dist") continue;
     if (entry.isDirectory()) {
-      const time = await getDirectoryLatestModifiedTime(fullPath, false);
-      maxTime = Math.max(maxTime, time);
+      const res = await getDirectoryLatestModifiedTime(
+        fullPath,
+        false,
+        scannedFiles,
+      );
+      if (res.time > maxTime) {
+        maxTime = res.time;
+        maxFile = res.file;
+      }
     } else {
       const stats = await stat(fullPath);
-      maxTime = Math.max(maxTime, stats.mtimeMs);
+      scannedFiles.push({ file: fullPath, time: stats.mtimeMs });
+      if (stats.mtimeMs > maxTime) {
+        maxTime = stats.mtimeMs;
+        maxFile = fullPath;
+      }
     }
   }
-  return maxTime;
+  return { time: maxTime, file: maxFile };
 }
 
 export async function getLatestModifiedTime(
   sourceDir: string,
-): Promise<number> {
-  let maxTime = await getDirectoryLatestModifiedTime(sourceDir, true);
+): Promise<{ time: number; file: string; scannedFiles: ScannedFile[] }> {
+  const scannedFiles: ScannedFile[] = [];
+  let { time: maxTime, file: maxFile } = await getDirectoryLatestModifiedTime(
+    sourceDir,
+    true,
+    scannedFiles,
+  );
 
   const depDirs = await getExampleWorkspaceDependencies(sourceDir);
   for (const depDir of depDirs) {
-    const depTime = await getDirectoryLatestModifiedTime(depDir, false);
-    maxTime = Math.max(maxTime, depTime);
+    const { time: depTime, file: depFile } =
+      await getDirectoryLatestModifiedTime(depDir, false, scannedFiles);
+    if (depTime > maxTime) {
+      maxTime = depTime;
+      maxFile = depFile;
+    }
   }
 
-  return maxTime;
+  return { time: maxTime, file: maxFile, scannedFiles };
 }

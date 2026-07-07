@@ -24,6 +24,7 @@ async function main() {
   try {
     const manualMode = process.argv.includes("--manual");
     const forceMode = process.argv.includes("--force");
+    const dryRunMode = process.argv.includes("--dry-run");
     const adapterIdsToBuild = manualMode
       ? await askAdapterIdsToBuild()
       : getAdapterIds();
@@ -47,7 +48,11 @@ async function main() {
         const sourceDir = getExamplesSourceDir(adapterId, pluginId);
         const outputDir = getExamplesOutputDir(adapterId, pluginId);
 
-        const buildUpToDate = await isBuildUpToDate(sourceDir, outputDir);
+        const buildUpToDate = await isBuildUpToDate(
+          sourceDir,
+          outputDir,
+          dryRunMode,
+        );
         const manifestUpToDate = await isSourceManifestUpToDate(
           sourceDir,
           outputDir,
@@ -55,6 +60,17 @@ async function main() {
 
         const doRebuild = forceMode || !buildUpToDate;
         const doEmitManifest = forceMode || doRebuild || !manifestUpToDate;
+
+        if (dryRunMode) {
+          console.info(`\n📊 Status for "${packageId}":`);
+          console.info(
+            `  - Rebuild required:          ${doRebuild ? "⚠️ Yes" : "✅ No"}`,
+          );
+          console.info(
+            `  - Re-emit manifest required: ${doEmitManifest ? "⚠️ Yes" : "✅ No"}`,
+          );
+          continue;
+        }
 
         if (!doRebuild && !doEmitManifest) {
           console.info(`\n⏭️ Skipping "${packageId}" (already up to date)`);
@@ -162,12 +178,43 @@ function getExamplesOutputDir<A extends AdapterId>(
 async function isBuildUpToDate(
   sourceDir: string,
   outputDir: string,
+  dryRunMode: boolean,
 ): Promise<boolean> {
   try {
-    const indexHtmlStat = await stat(path.resolve(outputDir, "index.html"));
-    const sourceTime = await getLatestModifiedTime(sourceDir);
-    return indexHtmlStat.mtimeMs > sourceTime;
-  } catch {
+    const indexPath = path.resolve(outputDir, "index.html");
+    const indexHtmlStat = await stat(indexPath);
+    const {
+      time: sourceTime,
+      file: maxFile,
+      scannedFiles,
+    } = await getLatestModifiedTime(sourceDir);
+    const upToDate = indexHtmlStat.mtimeMs > sourceTime;
+
+    if (dryRunMode) {
+      console.log(`\n[DRY-RUN] Cache check for ${sourceDir}:`);
+      console.log(
+        `  index.html: ${new Date(indexHtmlStat.mtimeMs).toISOString()} (${indexHtmlStat.mtimeMs})`,
+      );
+      console.log(
+        `  Newest file: ${maxFile} -> ${new Date(sourceTime).toISOString()} (${sourceTime})`,
+      );
+      console.log(`  Up to date: ${upToDate}`);
+      if (!upToDate) {
+        const newerFiles = scannedFiles
+          .filter((f) => f.time > indexHtmlStat.mtimeMs)
+          .sort((a, b) => b.time - a.time);
+        console.log(`  Modified files causing rebuild:`);
+        newerFiles.slice(0, 10).forEach((f) => {
+          console.log(`    - ${f.file} (${new Date(f.time).toISOString()})`);
+        });
+      }
+    }
+
+    return upToDate;
+  } catch (err) {
+    if (dryRunMode) {
+      console.log(`\n[DRY-RUN] Cache check failed for ${sourceDir}:`, err);
+    }
     return false;
   }
 }
