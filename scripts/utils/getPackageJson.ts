@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 
 export type PackageJson = {
   name?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 };
 
 export function getPackageJson(packageDir: string): PackageJson | null {

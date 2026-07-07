@@ -1,13 +1,16 @@
 import { REPO_DIR } from "#repo.ts";
-import { emitExampleSourceManifest } from "#scripts/utils/emitExampleSourceManifest.ts";
+import {
+  emitExampleSourceManifest,
+  isSourceManifestUpToDate,
+} from "#scripts/utils/emitExampleSourceManifest.ts";
+import { getLatestModifiedTime } from "#scripts/utils/getLatestModifiedTime.ts";
 import { logMilestone } from "#scripts/utils/logMilestone.ts";
 
-import { readdir, stat } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import path from "node:path";
 
 import {
   type AdapterId,
-  EXAMPLE_SOURCE_MANIFEST_FILE_NAME,
   getAdapterIds,
   getAdapterMetadata,
   getExamplesRelativePath,
@@ -16,8 +19,6 @@ import {
 } from "@jsoc/grid-docs";
 import inquirer from "inquirer";
 import { build } from "vite";
-
-await main();
 
 async function main() {
   try {
@@ -158,30 +159,6 @@ function getExamplesOutputDir<A extends AdapterId>(
   );
 }
 
-async function getLatestModifiedTime(dir: string): Promise<number> {
-  let maxTime = 0;
-  try {
-    const dirStat = await stat(dir);
-    maxTime = dirStat.mtimeMs; // Catches file additions/deletions in this directory
-  } catch {
-    // Ignore if dir doesn't exist for some reason
-  }
-
-  const entries = await readdir(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const fullPath = path.resolve(dir, entry.name);
-    if (entry.name === "node_modules" || entry.name === "dist") continue;
-    if (entry.isDirectory()) {
-      const time = await getLatestModifiedTime(fullPath);
-      maxTime = Math.max(maxTime, time);
-    } else {
-      const stats = await stat(fullPath);
-      maxTime = Math.max(maxTime, stats.mtimeMs);
-    }
-  }
-  return maxTime;
-}
-
 async function isBuildUpToDate(
   sourceDir: string,
   outputDir: string,
@@ -195,24 +172,4 @@ async function isBuildUpToDate(
   }
 }
 
-async function isSourceManifestUpToDate(
-  sourceDir: string,
-  outputDir: string,
-): Promise<boolean> {
-  try {
-    const manifestStat = await stat(
-      path.resolve(outputDir, EXAMPLE_SOURCE_MANIFEST_FILE_NAME),
-    );
-    const emitterStat = await stat(
-      path.resolve(REPO_DIR, "scripts/utils/emitExampleSourceManifest.ts"),
-    );
-    const sourceTime = await getLatestModifiedTime(sourceDir);
-
-    return (
-      manifestStat.mtimeMs > sourceTime &&
-      manifestStat.mtimeMs > emitterStat.mtimeMs
-    );
-  } catch {
-    return false;
-  }
-}
+await main();

@@ -1,7 +1,9 @@
+import { REPO_DIR } from "#repo.ts";
+import { getLatestModifiedTime } from "#scripts/utils/getLatestModifiedTime.ts";
 import { transpileTsFile } from "#scripts/utils/transpileTsFile.ts";
 import { transpileVueSfc } from "#scripts/utils/transpileVueSfc.ts";
 
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -140,4 +142,26 @@ async function pathExists(filePath: string) {
 
 function toPosixPath(filePath: string) {
   return filePath.split(path.sep).join("/");
+}
+
+export async function isSourceManifestUpToDate(
+  sourceDir: string,
+  outputDir: string,
+): Promise<boolean> {
+  try {
+    const manifestStat = await stat(
+      path.resolve(outputDir, EXAMPLE_SOURCE_MANIFEST_FILE_NAME),
+    );
+    const emitterStat = await stat(
+      path.resolve(REPO_DIR, "scripts/utils/emitExampleSourceManifest.ts"),
+    );
+    const { time: sourceTime } = await getLatestModifiedTime(sourceDir);
+
+    return (
+      manifestStat.mtimeMs > sourceTime &&
+      manifestStat.mtimeMs > emitterStat.mtimeMs
+    );
+  } catch {
+    return false;
+  }
 }
