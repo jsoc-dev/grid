@@ -53,7 +53,7 @@ export default async function Page(props: PageProps<"/examples/[[...path]]">) {
   }
 
   return (
-    <div className="flex min-h-below-navbar flex-1 flex-col">
+    <div className="flex flex-1 flex-col h-fill-page">
       <Breadcrumbs path={path} />
       <main className="flex flex-1 px-6">{content}</main>
     </div>

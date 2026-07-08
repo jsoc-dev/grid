@@ -12,15 +12,12 @@
   --color-accent-800: var(--color-emerald-800);
   --color-accent-900: var(--color-emerald-900);
   --color-accent-950: var(--color-emerald-950);
+  --height-fill-page: calc(100dvh - var(--nextra-navbar-height));
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer utilities {
-  .min-h-below-navbar {
-    min-height: calc(100dvh - var(--nextra-navbar-height));
-  }
-
   .grid-pattern {
     background-image:
       linear-gradient(

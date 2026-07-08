@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function Page() {
   return (
-    <div className="flex min-h-below-navbar flex-1 flex-col p-4 md:p-10">
+    <div className="flex flex-1 flex-col p-4 md:p-10 min-h-fill-page">
       <PlaygroundContextProvider>
         <div className="flex w-full flex-1 flex-col overflow-hidden rounded-xl border border-zinc-100 bg-white shadow-2xl shadow-zinc-200/50 dark:border-zinc-800/50 dark:bg-zinc-900 dark:shadow-none">
           <PlaygroundHeader />
