@@ -7,12 +7,17 @@ import {
   type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+
+export type ExampleSourceQueryResult = UseQueryResult<
+  ExampleSourceFile[],
+  Error
+>;
 
 export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
   adapterId: A,
   pluginId: P,
-) {
+): ExampleSourceQueryResult {
   const url = getExampleSourceManifestUrl(adapterId, pluginId);
 
   const queryFn = async (): Promise<ExampleSourceFile[]> => {
@@ -28,5 +33,5 @@ export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
 
   const result = useQuery({ queryKey: ["example-source", url], queryFn });
 
-  return { ...result, files: result.data };
+  return result;
 }

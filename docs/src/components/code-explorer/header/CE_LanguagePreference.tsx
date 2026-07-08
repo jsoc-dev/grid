@@ -1,16 +1,17 @@
-import { useCodeExplorerContext } from "@/components/code-explorer/CE_Context";
+import { useCodeExplorerContext } from "@/components/code-explorer/CE_ContextProvider";
+import { useCodeExplorerSelectionContext } from "@/components/code-explorer/CE_SelectionContextProvider";
 import { findFileByLanguagePreference } from "@jsoc/grid-docs";
 import type { LanguagePreference } from "@jsoc/grid-docs";
 import clsx from "clsx";
 
 export function CE_LanguagePreference() {
-  const {
-    files,
-    selectedFile,
-    setSelectedFile,
-    languagePreference,
-    setLanguagePreference,
-  } = useCodeExplorerContext();
+  const selectionContext = useCodeExplorerSelectionContext();
+  const { languagePreference, setLanguagePreference } =
+    useCodeExplorerContext();
+
+  if (!selectionContext) return null;
+
+  const { files, selectedFile, setSelectedFile } = selectionContext;
 
   const fileSupportsJsTs = [
     "typescript",
@@ -51,7 +52,7 @@ export function CE_LanguagePreference() {
           type="button"
           onClick={() => handleLanguageChange(lang)}
           className={clsx(
-            "px-2 py-0.5 text-[11px] font-medium leading-none transition-colors select-none",
+            "px-2 py-1 text-xs leading-none transition-colors select-none",
             isPreferredLanguage(lang)
               ? "bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100"
               : "cursor-pointer text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300",

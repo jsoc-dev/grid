@@ -15,11 +15,16 @@
 
   --color-mono: white;
 
+  --color-panel-outline: var(--x-color-gray-300);
+  --color-panel-surface: var(--x-color-gray-100);
+
   --height-fill-page: calc(100dvh - var(--nextra-navbar-height));
 }
 
 .dark {
   --color-mono: black;
+  --color-panel-outline: var(--x-color-neutral-700);
+  --color-panel-surface: var(--x-color-neutral-900);
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
