@@ -2,8 +2,9 @@ import { Breadcrumbs } from "@/components/examples/Breadcrumbs";
 import { ChooseAdapter } from "@/components/examples/ChooseAdapter";
 import { ChooseExample } from "@/components/examples/ChooseExample";
 import { ChoosePlugin } from "@/components/examples/ChoosePlugin";
-import { LiveExample } from "@/components/examples/LiveExample";
+import { ExampleViewer } from "@/components/examples/example/ExampleViewer";
 import {
+  getExampleMetadata,
   isValidAdapterId,
   isValidExampleId,
   isValidPluginId,
@@ -25,37 +26,40 @@ export async function generateMetadata(
 
 export default async function Page(props: PageProps<"/examples/[[...path]]">) {
   const { path = [] } = await props.params;
-  const [adapterId, pluginId, exampleId] = path;
-  let content;
-
-  if (path.length > 3) {
-    notFound();
-  } else if (!adapterId) {
-    content = <ChooseAdapter />;
-  } else if (!isValidAdapterId(adapterId)) {
-    notFound();
-  } else if (!pluginId) {
-    content = <ChoosePlugin adapterId={adapterId} />;
-  } else if (!isValidPluginId(adapterId, pluginId)) {
-    notFound();
-  } else if (!exampleId) {
-    content = <ChooseExample adapterId={adapterId} pluginId={pluginId} />;
-  } else if (!isValidExampleId(adapterId, pluginId, exampleId)) {
-    notFound();
-  } else {
-    content = (
-      <LiveExample
-        adapterId={adapterId}
-        pluginId={pluginId}
-        exampleId={exampleId}
-      />
-    );
-  }
 
   return (
-    <div className="flex flex-1 flex-col h-fill-page">
+    <div className="flex flex-1 flex-col h-fill-page w-full max-w-full">
       <Breadcrumbs path={path} />
-      <main className="flex flex-1 px-6">{content}</main>
+      <main className="flex flex-1 flex-col px-6 min-w-0 min-h-0 max-w-full w-full">
+        <Content path={path} />
+      </main>
+    </div>
+  );
+}
+
+function Content({ path }: { path: string[] }) {
+  const [adapterId, pluginId, exampleId] = path;
+
+  if (path.length > 3) notFound();
+  if (!adapterId) return <ChooseAdapter />;
+  if (!isValidAdapterId(adapterId)) notFound();
+  if (!pluginId) return <ChoosePlugin {...{ adapterId }} />;
+  if (!isValidPluginId(adapterId, pluginId)) notFound();
+  if (!exampleId) return <ChooseExample {...{ adapterId, pluginId }} />;
+  if (!isValidExampleId(adapterId, pluginId, exampleId)) notFound();
+
+  const metadata = getExampleMetadata(adapterId, pluginId, exampleId);
+
+  return (
+    <div className="flex flex-col gap-8 flex-1 pb-10 min-w-0 min-h-0 w-full max-w-(--nextra-content-width) mx-auto">
+      <div className="shrink-0 pt-6">
+        <h1 className="text-2xl font-bold">{metadata.name}</h1>
+        <p className="text-neutral-600 dark:text-neutral-400">
+          {metadata.description}
+        </p>
+      </div>
+
+      <ExampleViewer {...{ adapterId, pluginId, exampleId }} />
     </div>
   );
 }
