@@ -4,7 +4,7 @@ import { ExamplePreview } from "@/components/ExamplePreview";
 import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
 import { useDocsParams } from "@/hooks/useDocsParams";
 import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import { CodeExplorer } from "@/components/code-explorer/CodeExplorer";
 import { ExampleControls } from "@/components/docs/example/ExampleControls";
 
@@ -21,32 +21,28 @@ export function Example({ exampleId }: Props) {
   const adapterId = docsParams[ADAPTER_ID_PARAM_KEY];
   const pluginId = docsParams[PLUGIN_ID_PARAM_KEY];
   return (
-    <div className="flex flex-col gap-4">
-      <ExamplePreview.Provider
-        adapterId={adapterId}
-        pluginId={pluginId}
-        exampleId={exampleId}
-      >
-        <div className="flex flex-col gap-2">
-          <div className="w-full h-64 checkerboard overflow-hidden">
-            <ExamplePreview />
-          </div>
-
-          <div className="flex flex-col">
-            <div className="p-2">
-              <ExampleControls showCode={showCode} setShowCode={setShowCode} />
-            </div>
-
-            {showCode && (
-              <CodeExplorer
-                adapterId={adapterId}
-                pluginId={pluginId}
-                exampleId={exampleId}
-              />
-            )}
-          </div>
+    <ExamplePreview.Provider
+      adapterId={adapterId}
+      pluginId={pluginId}
+      exampleId={exampleId}
+    >
+      <div className="flex flex-col gap-3">
+        <div className="w-full h-64 overflow-hidden">
+          <ExamplePreview />
         </div>
-      </ExamplePreview.Provider>
-    </div>
+
+        <ExampleControls showCode={showCode} setShowCode={setShowCode} />
+
+        <Activity mode={showCode ? "visible" : "hidden"}>
+          <div className="h-64">
+            <CodeExplorer
+              adapterId={adapterId}
+              pluginId={pluginId}
+              exampleId={exampleId}
+            />
+          </div>
+        </Activity>
+      </div>
+    </ExamplePreview.Provider>
   );
 }
