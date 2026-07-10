@@ -8,6 +8,11 @@ import type { CodeLanguage } from "#utils/example-source-code.ts";
 
 import { equalsIgnoreCase } from "@jsoc/utils";
 
+export function stripExtension(filePath: string): string {
+  const dot = filePath.lastIndexOf(".");
+  return dot === -1 ? filePath : filePath.slice(0, dot);
+}
+
 export function isExampleFile(file: ExampleSourceFile) {
   return file.path.startsWith("src/examples/");
 }
@@ -60,11 +65,26 @@ export function isRelevantFile<A extends AdapterId, P extends PluginId<A>>(
 /**
  * Returns only the files relevant to the given example ID.
  */
-export function filterFilesForExample<
+export function filterFilesByExampleId<
   A extends AdapterId,
   P extends PluginId<A>,
 >(files: ExampleSourceFile[], exampleId: ExampleId<A, P>): ExampleSourceFile[] {
   return files.filter((file) => isRelevantFile(file, exampleId));
+}
+
+export function filterFilesByLanguagePreference(
+  files: ExampleSourceFile[],
+  languagePreference: LanguagePreference,
+): ExampleSourceFile[] {
+  return files.filter((file) => {
+    if (["typescript", "tsx"].includes(file.language))
+      return languagePreference === "typescript";
+
+    if (["javascript", "jsx"].includes(file.language))
+      return languagePreference === "javascript";
+
+    return true;
+  });
 }
 
 export function findFileByLanguagePreference<C extends CodeLanguage>(
@@ -74,6 +94,7 @@ export function findFileByLanguagePreference<C extends CodeLanguage>(
 ): ExampleSourceFile | undefined {
   // if the file source code itself is in the preferred language
   if (file.language === languagePreference) return file;
+
   // if the file contains a variant in the preferred language
   if (file.variants && languagePreference in file.variants) return file;
 
@@ -90,6 +111,30 @@ export function findFileByLanguagePreference<C extends CodeLanguage>(
   }
 
   return files.find((f) => f.path === targetPath);
+}
+
+export function fileSupportsLanguagePreference(
+  file: ExampleSourceFile,
+  files: ExampleSourceFile[],
+): boolean {
+  const JS_TS_COMPATIBLE_LANGUAGES = [
+    "typescript",
+    "javascript",
+    "tsx",
+    "jsx",
+    "vue",
+  ] satisfies CodeLanguage[];
+
+  const isJsTsCompatible = JS_TS_COMPATIBLE_LANGUAGES.includes(
+    file.language as (typeof JS_TS_COMPATIBLE_LANGUAGES)[number],
+  );
+
+  if (!isJsTsCompatible) return false;
+
+  const jsFile = findFileByLanguagePreference(files, file, "javascript");
+  const tsFile = findFileByLanguagePreference(files, file, "javascript");
+
+  return jsFile && tsFile ? true : false;
 }
 
 export function findSuitableDefaultFile<
