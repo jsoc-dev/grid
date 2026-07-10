@@ -9,12 +9,7 @@ export function CE_Sidebar() {
     useCodeExplorerContext();
 
   return (
-    <div
-      className={clsx(
-        "bg-panel-surface border-r border-panel-outline flex flex-col shrink-0 transition-[width] duration-200",
-        showSidebar ? "w-56" : "w-0 overflow-hidden border-r-0",
-      )}
-    >
+    <div className="bg-panel-surface flex h-full w-full flex-col overflow-hidden">
       {/* Header toolbar */}
       <div className="border-b border-panel-outline flex h-10 shrink-0 items-center justify-between px-2">
         <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 select-none">
