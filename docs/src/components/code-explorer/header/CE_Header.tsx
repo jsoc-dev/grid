@@ -1,4 +1,4 @@
-import { useCodeExplorerContext } from "@/components/code-explorer/CE_ContextProvider";
+import { useCodeExplorerContext } from "@/components/code-explorer/CodeExplorerContext";
 import { CE_FileInfo } from "@/components/code-explorer/header/CE_FileInfo";
 import { CE_LanguagePreference } from "@/components/code-explorer/header/CE_LanguagePreference";
 import { PanelLeftOpen } from "lucide-react";

@@ -9,10 +9,14 @@ import {
 } from "@jsoc/grid-docs";
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
-export type ExampleSourceQueryResult = UseQueryResult<
-  ExampleSourceFile[],
-  Error
->;
+export type ExampleSourceQueryResult =
+  UseQueryResult<ExampleSourceFile[], Error> extends infer R
+    ? R extends { data: unknown }
+      ? R & {
+          files: R["data"];
+        }
+      : never
+    : never;
 
 export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
   adapterId: A,
@@ -33,5 +37,9 @@ export function useExampleSource<A extends AdapterId, P extends PluginId<A>>(
 
   const result = useQuery({ queryKey: ["example-source", url], queryFn });
 
-  return result;
+  Object.assign(result, {
+    files: result.data,
+  });
+
+  return result as ExampleSourceQueryResult;
 }

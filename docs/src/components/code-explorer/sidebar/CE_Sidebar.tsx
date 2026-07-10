@@ -1,12 +1,15 @@
-import { useCodeExplorerContext } from "@/components/code-explorer/CE_ContextProvider";
+import { useCodeExplorerContext } from "@/components/code-explorer/CodeExplorerContext";
 import { CE_FileExplorer } from "@/components/code-explorer/sidebar/CE_FileExplorer";
 import { CE_FileExplorerSettings } from "@/components/code-explorer/sidebar/CE_FileExplorerSettings";
 import clsx from "clsx";
 import { PanelLeftClose, Settings } from "lucide-react";
+import { useState } from "react";
 
 export function CE_Sidebar() {
-  const { showSidebar, setShowSidebar, showSettings, setShowSettings } =
-    useCodeExplorerContext();
+  const [showSettings, setShowSettings] = useState(false);
+  const [showOtherFiles, setShowOtherFiles] = useState(false);
+
+  const { showSidebar, setShowSidebar } = useCodeExplorerContext();
 
   return (
     <div className="bg-panel-surface flex h-full w-full flex-col overflow-hidden">
@@ -49,11 +52,14 @@ export function CE_Sidebar() {
         className="grid transition-[grid-template-rows] duration-200 ease-out"
         style={{ gridTemplateRows: showSettings ? "1fr" : "0fr" }}
       >
-        <CE_FileExplorerSettings />
+        <CE_FileExplorerSettings
+          showOtherFiles={showOtherFiles}
+          setShowOtherFiles={setShowOtherFiles}
+        />
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden relative">
-        <CE_FileExplorer />
+        <CE_FileExplorer showOtherFiles={showOtherFiles} />
       </div>
     </div>
   );

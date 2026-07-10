@@ -1,16 +1,18 @@
 import { useExampleSource } from "@/hooks/useExampleSource";
-import type {
-  AdapterId,
-  ExampleLocator,
-  LanguagePreference,
-  PluginId,
+import {
+  type AdapterId,
+  type ExampleLocator,
+  type LanguagePreference,
+  type PluginId,
 } from "@jsoc/grid-docs";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { CE_Sidebar } from "@/components/code-explorer/sidebar/CE_Sidebar";
 import { CE_Body } from "@/components/code-explorer/body/CE_Body";
 import { CE_Header } from "@/components/code-explorer/header/CE_Header";
-import { CE_ContextProvider } from "@/components/code-explorer/CE_ContextProvider";
-import { CE_SelectionContextProvider } from "@/components/code-explorer/CE_SelectionContextProvider";
+import {
+  CodeExplorerContext,
+  resolveActiveFile,
+} from "@/components/code-explorer/CodeExplorerContext";
 import {
   Panel,
   Group,
@@ -31,14 +33,24 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
 }: CodeExplorerProps<A, P>) {
   const [languagePreference, setLanguagePreference] =
     useState<LanguagePreference>("javascript");
+  const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showOtherFiles, setShowOtherFiles] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
 
   const sidebarPanelRef = useRef<PanelImperativeHandle | null>(null);
   const showSidebarCountRef = useRef(0);
 
   const source = useExampleSource(adapterId, pluginId);
+
+  const activeFile = useMemo(
+    () =>
+      resolveActiveFile(
+        exampleId,
+        languagePreference,
+        selectedFilePath,
+        source,
+      ),
+    [source, selectedFilePath, exampleId, languagePreference],
+  );
 
   useEffect(() => {
     const sidebarPanel = sidebarPanelRef.current;
@@ -62,56 +74,53 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
     adapterId,
     pluginId,
     exampleId,
-    languagePreference,
-    setLanguagePreference,
-    showSidebar,
-    setShowSidebar,
-    showOtherFiles,
-    setShowOtherFiles,
-    showSettings,
-    setShowSettings,
     source,
+    activeFile,
+    selectedFilePath,
+    languagePreference,
+    showSidebar,
+    setSelectedFilePath,
+    setLanguagePreference,
+    setShowSidebar,
   };
 
   return (
-    <CE_ContextProvider value={context}>
-      <CE_SelectionContextProvider>
-        <Group
-          orientation="horizontal"
-          className="bg-panel-surface border border-panel-outline flex h-full overflow-hidden rounded-md"
+    <CodeExplorerContext.Provider value={context}>
+      <Group
+        className="bg-panel-surface border border-panel-outline flex h-full overflow-hidden rounded-md"
+        orientation="horizontal"
+      >
+        <Panel
+          id="sidebar"
+          panelRef={sidebarPanelRef}
+          collapsible
+          defaultSize={0}
+          minSize={160}
+          maxSize={400}
+          onResize={(size) => {
+            setShowSidebar(size.inPixels > 0);
+          }}
         >
-          <Panel
-            id="sidebar"
-            panelRef={sidebarPanelRef}
-            collapsible
-            defaultSize={0}
-            minSize={160}
-            maxSize={400}
-            onResize={(size) => {
-              setShowSidebar(size.inPixels > 0);
-            }}
-          >
-            <CE_Sidebar />
-          </Panel>
+          <CE_Sidebar />
+        </Panel>
 
-          <Separator
-            className={clsx(
-              "w-[11px] mx-[-5px] cursor-col-resize relative select-none outline-none z-10",
-              "after:absolute after:inset-y-0 after:left-1/2 after:-translate-x-1/2",
-              "after:w-px after:transition-all",
-              showSidebar ? "after:bg-panel-outline" : "after:bg-transparent",
-              "hover:after:w-[3px] hover:after:bg-blue-500",
-            )}
-          />
+        <Separator
+          className={clsx(
+            "w-2.75 -mx-1.25 cursor-col-resize relative select-none outline-none z-10",
+            "after:absolute after:inset-y-0 after:left-1/2 after:-translate-x-1/2",
+            "after:w-px after:transition-all",
+            showSidebar ? "after:bg-panel-outline" : "after:bg-transparent",
+            "hover:after:w-0.75 hover:after:bg-blue-500",
+          )}
+        />
 
-          <Panel id="content">
-            <div className="flex min-w-0 flex-1 flex-col overflow-hidden h-full">
-              <CE_Header />
-              <CE_Body />
-            </div>
-          </Panel>
-        </Group>
-      </CE_SelectionContextProvider>
-    </CE_ContextProvider>
+        <Panel id="content">
+          <div className="flex min-w-0 flex-1 flex-col overflow-hidden h-full">
+            <CE_Header />
+            <CE_Body />
+          </div>
+        </Panel>
+      </Group>
+    </CodeExplorerContext.Provider>
   );
 }

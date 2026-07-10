@@ -1,38 +1,23 @@
-import { useCodeExplorerContext } from "@/components/code-explorer/CE_ContextProvider";
-import { useCodeExplorerSelectionContext } from "@/components/code-explorer/CE_SelectionContextProvider";
-import type { LanguagePreference } from "@jsoc/grid-docs";
-import { findFileByLanguagePreference } from "@jsoc/grid-docs";
+import { useCodeExplorerContext } from "@/components/code-explorer/CodeExplorerContext";
 
-const languages = [
-  { id: "javascript", label: "JS" },
-  { id: "typescript", label: "TS" },
-] as const;
+type Props = {
+  showOtherFiles: boolean;
+  setShowOtherFiles: (value: boolean) => void;
+};
 
-export function CE_FileExplorerSettings() {
-  const {
-    languagePreference,
-    setLanguagePreference,
-    showOtherFiles,
-    setShowOtherFiles,
-  } = useCodeExplorerContext();
-  const selectionContext = useCodeExplorerSelectionContext();
+export function CE_FileExplorerSettings({
+  showOtherFiles,
+  setShowOtherFiles,
+}: Props) {
+  const { activeFile, languagePreference, setLanguagePreference, source } =
+    useCodeExplorerContext();
 
-  if (!selectionContext) return null;
+  if (!activeFile || !source.isSuccess) return null;
 
-  const { files, selectedFile, setSelectedFile } = selectionContext;
-
-  const handleLanguageChange = (newLanguage: LanguagePreference) => {
-    setLanguagePreference(newLanguage);
-    const newFile = findFileByLanguagePreference(
-      files,
-      selectedFile,
-      newLanguage,
-    );
-
-    if (newFile) {
-      setSelectedFile(newFile);
-    }
-  };
+  const options = [
+    { lang: "javascript", label: "JS" },
+    { lang: "typescript", label: "TS" },
+  ] as const;
 
   return (
     <div className="overflow-hidden">
@@ -42,16 +27,16 @@ export function CE_FileExplorerSettings() {
             Language
           </div>
           <div className="flex items-center gap-4">
-            {languages.map(({ id, label }) => (
+            {options.map(({ lang, label }) => (
               <label
-                key={id}
+                key={lang}
                 className="flex cursor-pointer items-center gap-1.5 text-xs text-neutral-700 dark:text-neutral-300 select-none"
               >
                 <input
                   type="radio"
                   className="h-3 w-3 text-amber-600 focus:ring-amber-500 focus:ring-offset-0"
-                  checked={languagePreference === id}
-                  onChange={() => handleLanguageChange(id)}
+                  checked={languagePreference === lang}
+                  onChange={() => setLanguagePreference(lang)}
                 />
                 {label}
               </label>
