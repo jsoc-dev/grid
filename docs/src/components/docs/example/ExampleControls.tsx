@@ -2,7 +2,6 @@ import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
 import clsx from "clsx";
 import { Code2, ExternalLink, RotateCcw } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
-import { GitHubIcon } from "nextra/icons";
 
 export function ExampleControls({
   showCode,
@@ -11,16 +10,9 @@ export function ExampleControls({
   showCode: boolean;
   setShowCode: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { openPreviewInNewTab, viewSourceOnGitHub, reloadPreview } =
-    useExamplePreview();
+  const { openPreviewInNewTab, reloadPreview } = useExamplePreview();
 
   const controlButtons = [
-    {
-      title: "View source on GitHub",
-      Icon: GitHubIcon,
-      onClick: viewSourceOnGitHub,
-      disabled: false,
-    },
     {
       title: "Open preview in new tab",
       Icon: ExternalLink,

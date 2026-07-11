@@ -1,10 +1,5 @@
 import { createContext, useContext } from "react";
-import {
-  findFileByLanguagePreference,
-  findSuitableDefaultFile,
-  stripExtension,
-  type LanguagePreference,
-} from "@jsoc/grid-docs";
+import { type LanguagePreference } from "@jsoc/grid-docs";
 import type {
   AdapterId,
   ExampleId,
@@ -13,6 +8,7 @@ import type {
 } from "@jsoc/grid-docs";
 import type { SetState } from "@/types/react";
 import type { ExampleSourceQueryResult } from "@/hooks/useExampleSource";
+import type { SidebarView } from "@/components/code-explorer/sidebar-panel/CE_SidebarPanel";
 
 export type CodeExplorerContextType<
   A extends AdapterId,
@@ -31,6 +27,7 @@ export type CodeExplorerContextType<
    *   - Otherwise, a default file is picked from the {@link source} query result.
    */
   activeFile: ExampleSourceFile | null;
+  activeView: SidebarView;
   /**
    * This holds the path of the file that user has selected from the file explorer.
    *
@@ -43,6 +40,7 @@ export type CodeExplorerContextType<
   selectedFilePath: string | null;
   languagePreference: LanguagePreference;
   showSidebar: boolean;
+  setActiveView: SetState<SidebarView>;
   setSelectedFilePath: SetState<string | null>;
   setLanguagePreference: SetState<LanguagePreference>;
   setShowSidebar: SetState<boolean>;
@@ -61,40 +59,4 @@ export function useCodeExplorerContext<
     );
   }
   return context as CodeExplorerContextType<A, P>;
-}
-
-/**
- * Resolve the active file from the source files.
- */
-export function resolveActiveFile<A extends AdapterId, P extends PluginId<A>>(
-  exampleId: ExampleId<A, P>,
-  languagePreference: LanguagePreference,
-  selectedFilePath: string | null,
-  source: ExampleSourceQueryResult,
-) {
-  if (!source.isSuccess) return null;
-
-  let resolved: ExampleSourceFile | undefined = undefined;
-
-  if (selectedFilePath) {
-    const selectedFile = source.files.find(
-      (f) => stripExtension(f.path) === stripExtension(selectedFilePath),
-    );
-
-    if (selectedFile) {
-      resolved = findFileByLanguagePreference(
-        source.files,
-        selectedFile,
-        languagePreference,
-      );
-    }
-  }
-
-  resolved ??= findSuitableDefaultFile(
-    source.files,
-    exampleId,
-    languagePreference,
-  );
-
-  return resolved;
 }

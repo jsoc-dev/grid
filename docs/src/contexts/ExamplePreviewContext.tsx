@@ -1,3 +1,4 @@
+import { openLinkInNewTab } from "@/utils/window";
 import {
   getExampleAppGitHubUrl,
   getExampleUrl,
@@ -64,8 +65,4 @@ export function useExamplePreview() {
     );
   }
   return context;
-}
-
-function openLinkInNewTab(link: string) {
-  window.open(link, "_blank", "noopener,noreferrer");
 }

@@ -1,25 +1,27 @@
-import { useExampleSource } from "@/hooks/useExampleSource";
+import { CE_ActivityBar } from "@/components/code-explorer/activity-bar/CE_ActivityBar";
+import { CodeExplorerContext } from "@/components/code-explorer/CodeExplorerContext";
+import { CE_ContentPanel } from "@/components/code-explorer/content-panel/CE_ContentPanel";
 import {
+  CE_SidebarPanel,
+  type SidebarView,
+} from "@/components/code-explorer/sidebar-panel/CE_SidebarPanel";
+import {
+  useExampleSource,
+  type ExampleSourceQueryResult,
+} from "@/hooks/useExampleSource";
+import {
+  findFileByLanguagePreference,
+  findSuitableDefaultFile,
+  stripExtension,
   type AdapterId,
+  type ExampleId,
   type ExampleLocator,
+  type ExampleSourceFile,
   type LanguagePreference,
   type PluginId,
 } from "@jsoc/grid-docs";
-import { useState, useRef, useEffect, useMemo } from "react";
-import { CE_Sidebar } from "@/components/code-explorer/sidebar/CE_Sidebar";
-import { CE_Body } from "@/components/code-explorer/body/CE_Body";
-import { CE_Header } from "@/components/code-explorer/header/CE_Header";
-import {
-  CodeExplorerContext,
-  resolveActiveFile,
-} from "@/components/code-explorer/CodeExplorerContext";
-import {
-  Panel,
-  Group,
-  Separator,
-  type PanelImperativeHandle,
-} from "react-resizable-panels";
-import clsx from "clsx";
+import { useState, useMemo } from "react";
+import { Group } from "react-resizable-panels";
 
 export type CodeExplorerProps<
   A extends AdapterId,
@@ -35,9 +37,7 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
     useState<LanguagePreference>("javascript");
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(false);
-
-  const sidebarPanelRef = useRef<PanelImperativeHandle | null>(null);
-  const showSidebarCountRef = useRef(0);
+  const [activeView, setActiveView] = useState<SidebarView>("explorer");
 
   const source = useExampleSource(adapterId, pluginId);
 
@@ -52,30 +52,14 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
     [source, selectedFilePath, exampleId, languagePreference],
   );
 
-  useEffect(() => {
-    const sidebarPanel = sidebarPanelRef.current;
-    if (!sidebarPanel) return;
-
-    if (showSidebar) {
-      if (++showSidebarCountRef.current === 1) {
-        // On the first expansion, calling `expand()` restores to the defaultSize (0),
-        // which falls back to minSize. Since minSize is too narrow for the sidebar,
-        // we explicitly set a wider initial size using `resize()` instead.
-        sidebarPanel.resize(224);
-      } else {
-        sidebarPanel.expand();
-      }
-    } else {
-      sidebarPanel.collapse();
-    }
-  }, [showSidebar]);
-
   const context = {
     adapterId,
     pluginId,
     exampleId,
     source,
     activeFile,
+    activeView,
+    setActiveView,
     selectedFilePath,
     languagePreference,
     showSidebar,
@@ -86,41 +70,49 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
 
   return (
     <CodeExplorerContext.Provider value={context}>
-      <Group
-        className="bg-panel-surface border border-panel-outline flex h-full overflow-hidden rounded-md"
-        orientation="horizontal"
-      >
-        <Panel
-          id="sidebar"
-          panelRef={sidebarPanelRef}
-          collapsible
-          defaultSize={0}
-          minSize={160}
-          maxSize={400}
-          onResize={(size) => {
-            setShowSidebar(size.inPixels > 0);
-          }}
-        >
-          <CE_Sidebar />
-        </Panel>
-
-        <Separator
-          className={clsx(
-            "w-2.75 -mx-1.25 cursor-col-resize relative select-none outline-none z-10",
-            "after:absolute after:inset-y-0 after:left-1/2 after:-translate-x-1/2",
-            "after:w-px after:transition-all",
-            showSidebar ? "after:bg-panel-outline" : "after:bg-transparent",
-            "hover:after:w-0.75 hover:after:bg-blue-500",
-          )}
-        />
-
-        <Panel id="content">
-          <div className="flex min-w-0 flex-1 flex-col overflow-hidden h-full">
-            <CE_Header />
-            <CE_Body />
-          </div>
-        </Panel>
-      </Group>
+      <div className="bg-panel-surface border border-panel-outline flex h-full overflow-hidden rounded-md">
+        <CE_ActivityBar />
+        <Group className="flex flex-1" orientation="horizontal">
+          <CE_SidebarPanel />
+          <CE_ContentPanel />
+        </Group>
+      </div>
     </CodeExplorerContext.Provider>
   );
+}
+
+/**
+ * Resolve the active file from the source files.
+ */
+export function resolveActiveFile<A extends AdapterId, P extends PluginId<A>>(
+  exampleId: ExampleId<A, P>,
+  languagePreference: LanguagePreference,
+  selectedFilePath: string | null,
+  source: ExampleSourceQueryResult,
+) {
+  if (!source.isSuccess) return null;
+
+  let resolved: ExampleSourceFile | undefined = undefined;
+
+  if (selectedFilePath) {
+    const selectedFile = source.files.find(
+      (f) => stripExtension(f.path) === stripExtension(selectedFilePath),
+    );
+
+    if (selectedFile) {
+      resolved = findFileByLanguagePreference(
+        source.files,
+        selectedFile,
+        languagePreference,
+      );
+    }
+  }
+
+  resolved ??= findSuitableDefaultFile(
+    source.files,
+    exampleId,
+    languagePreference,
+  );
+
+  return resolved;
 }

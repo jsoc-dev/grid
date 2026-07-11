@@ -1,6 +1,6 @@
 import { isRelevantFile, removeSnippetMarkers } from "@jsoc/grid-docs";
 import { useCodeExplorerContext } from "@/components/code-explorer/CodeExplorerContext";
-import { CE_CodeBlock } from "@/components/code-explorer/body/CE_CodeBlock";
+import { CE_CodeBlock } from "@/components/code-explorer/content-panel/body/CE_CodeBlock";
 import { Info } from "lucide-react";
 
 export function CE_Body() {
