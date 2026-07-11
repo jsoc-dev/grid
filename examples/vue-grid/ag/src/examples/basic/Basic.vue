@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { AgGridVue } from "ag-grid-vue3";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-ag";
+import { AgGridVue } from "ag-grid-vue3";
 // </snippet>
 
 // <snippet create>

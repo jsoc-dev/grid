@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TanStackTable from "#components/TanStackTable.vue";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/vue-grid";
 import { useGridStore } from "@jsoc/vue-grid-tanstack";
+import TanStackTable from "#components/TanStackTable.vue";
 // </snippet>
 
 // <snippet create>

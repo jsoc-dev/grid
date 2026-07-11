@@ -1,8 +1,7 @@
-import { createGrid } from "ag-grid-community";
-
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { createGridStore } from "@jsoc/vanilla-grid-ag";
+import { createGrid } from "ag-grid-community";
 // </snippet>
 import { onUnmounted } from "@jsoc/vanilla-grid-examples";
 

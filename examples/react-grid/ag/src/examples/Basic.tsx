@@ -1,8 +1,8 @@
-import { AgGridReact } from "ag-grid-react";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ag";
+import { AgGridReact } from "ag-grid-react";
 // </snippet>
 
 export default function BasicExample() {

@@ -2,9 +2,9 @@ import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-prime";
-// </snippet>
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+// </snippet>
 
 export default function BasicExample() {
   // <snippet create>

@@ -1,8 +1,8 @@
-import { Table } from "antd";
 import { basicJSON as data } from "@jsoc/grid-examples-core";
 // <snippet import>
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-ant";
+import { Table } from "antd";
 // </snippet>
 
 export default function BasicExample() {
