@@ -5,8 +5,6 @@ import {
 } from "@/utils/dynamicContentScope";
 import type { Metadata } from "next";
 import { generateStaticParamsFor, importPage } from "nextra/pages";
-import { resolveDocsParams } from "@/utils/resolveDocsParams";
-import { hasDynamicContent } from "@/utils/dynamicContent";
 
 export const generateStaticParams = generateStaticParamsFor("mdxPath");
 
@@ -22,27 +20,16 @@ const Wrapper = getMDXComponents().wrapper;
 
 export default async function Page(props: PageProps<"/docs/[[...mdxPath]]">) {
   const params = await props.params;
-  const searchParams = await props.searchParams;
   const page = await importPage(params.mdxPath);
   const { default: MDXContent, toc, metadata, sourceCode } = page;
 
-  const content = (
+  const scope = await createDynamicContentScope(sourceCode, props);
+
+  return (
     <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
-      <MDXContent />
+      <DynamicContentScopeBoundary scope={scope}>
+        <MDXContent />
+      </DynamicContentScopeBoundary>
     </Wrapper>
   );
-
-  if (hasDynamicContent(sourceCode)) {
-    // Only dynamic pages need the replacement scope. Static pages stay unwrapped
-    // so their MDX renders exactly as compiled by Nextra.
-    const scope = createDynamicContentScope(resolveDocsParams(searchParams));
-
-    return (
-      <DynamicContentScopeBoundary scope={scope}>
-        {content}
-      </DynamicContentScopeBoundary>
-    );
-  }
-
-  return content;
 }

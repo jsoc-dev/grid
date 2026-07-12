@@ -20,11 +20,8 @@ import {
 const DYNAMIC_CONTENT_TOKEN_REGEX =
   /(?:%%|%25%25)([a-zA-Z0-9_.]+)(?:%%|%25%25)/g;
 
-export function hasDynamicContent(sourceCode: string): boolean {
-  return (
-    DYNAMIC_CONTENT_TOKEN_REGEX.test(sourceCode) ||
-    sourceCode.includes("<Snippet")
-  );
+export function hasDynamicContentTokens(sourceCode: string): boolean {
+  return DYNAMIC_CONTENT_TOKEN_REGEX.test(sourceCode);
 }
 
 export function wrapDynamicContentComponent(
@@ -37,7 +34,7 @@ export function wrapDynamicContentComponent(
   function DynamicContentComponent(props: StringKeyedObject) {
     const scope = getDynamicContentScope();
 
-    if (!scope) {
+    if (!scope?.hasDynamicContent) {
       return <Component {...props} />;
     }
 

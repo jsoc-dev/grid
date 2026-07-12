@@ -11,9 +11,10 @@ import {
   type PluginMetadata,
   type SnippetMapByExampleId,
 } from "@jsoc/grid-docs";
-import type { DocsParams } from "@/constants/docs";
 import { getCachedExampleManifest } from "@/utils/getCachedExampleManifest";
 import { getCachedSnippetMap } from "@/utils/getCachedSnippetMap";
+import { hasDynamicContentTokens } from "@/utils/dynamicContent";
+import { resolveDocsParams } from "@/utils/resolveDocsParams";
 
 export type DynamicContentScope<
   A extends AdapterId = AdapterId,
@@ -22,6 +23,7 @@ export type DynamicContentScope<
   adapter: AdapterMetadata<A>;
   plugin: PluginMetadata<P>;
   snippetMap: SnippetMapByExampleId<A, P>;
+  hasDynamicContent: boolean;
 };
 
 const dynamicContentScopeStorage = new AsyncLocalStorage<DynamicContentScope>();
@@ -54,9 +56,12 @@ export function getDynamicContentScope<
     | undefined;
 }
 
-export function createDynamicContentScope(docsParams: DocsParams) {
-  // Keep token values grouped by top-level token namespace:
-  // %%adapter.packageName%%, %%plugin.name%%, and similar paths.
+export async function createDynamicContentScope(
+  sourceCode: string,
+  pageProps: PageProps<"/docs/[[...mdxPath]]">,
+): Promise<DynamicContentScope> {
+  const searchParams = await pageProps.searchParams;
+  const docsParams = resolveDocsParams(searchParams);
   const adapter = getAdapterMetadata(docsParams.adapterId);
   const plugin = getPluginMetadata(docsParams.adapterId, docsParams.pluginId);
 
@@ -70,5 +75,7 @@ export function createDynamicContentScope(docsParams: DocsParams) {
     manifest,
   );
 
-  return { adapter, plugin, snippetMap };
+  const hasDynamicContent = hasDynamicContentTokens(sourceCode);
+
+  return { adapter, plugin, snippetMap, hasDynamicContent };
 }
