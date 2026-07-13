@@ -19,9 +19,12 @@ export const Overview: FC<{
     if (!Array.isArray(pageItem)) {
       return <H2 key={index}>{pageItem.title}</H2>;
     }
+
+    const filteredPageItem = pageItem.filter((item) => item.name !== "index");
+
     return (
       <Cards key={index}>
-        {pageItem.map((item) => {
+        {filteredPageItem.map((item) => {
           const icon = item.frontMatter?.icon;
           const Icon = icons?.[icon];
           if (icon && !Icon) {
