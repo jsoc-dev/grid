@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-import { CONTENT_DIR_BASE_PATH } from "@/constants/docs";
+import { CONTENT_DIR_BASE_PATH } from "@/config";
 import {
   resolveDocsParams,
   setDocsParamsInUrl,

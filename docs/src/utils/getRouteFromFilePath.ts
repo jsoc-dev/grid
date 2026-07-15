@@ -1,4 +1,4 @@
-import { CONTENT_DIR_BASE_PATH } from "@/constants/docs";
+import { CONTENT_DIR_BASE_PATH } from "@/config";
 
 const APP_DIR_RE = /^(?:src\/)?app\//;
 const CONTENT_DIR_RE = /^(?:src\/)?content\//;

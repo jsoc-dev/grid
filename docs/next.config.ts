@@ -1,4 +1,4 @@
-import { CONTENT_DIR_BASE_PATH } from "@/constants/docs";
+import { CONTENT_DIR_BASE_PATH } from "@/config";
 import nextra from "nextra";
 
 const withNextra = nextra({
