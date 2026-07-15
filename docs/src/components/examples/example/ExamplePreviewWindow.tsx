@@ -1,7 +1,7 @@
 "use client";
 
-import { ExamplePreview } from "@/components/ExamplePreview";
-import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
+import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
+import { useExamplePreviewContext } from "@/components/example-preview/ExamplePreviewContext";
 import { RotateCw, ExternalLink, Lock } from "lucide-react";
 import { useSyncExternalStore } from "react";
 
@@ -9,7 +9,8 @@ import { useSyncExternalStore } from "react";
 const emptySubscribe = () => () => {};
 
 export function ExamplePreviewWindow() {
-  const { url, reloadPreview, openPreviewInNewTab } = useExamplePreview();
+  const { url, reloadPreview, openPreviewInNewTab } =
+    useExamplePreviewContext();
 
   const origin = useSyncExternalStore(
     emptySubscribe,

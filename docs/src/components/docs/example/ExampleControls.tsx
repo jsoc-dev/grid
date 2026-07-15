@@ -1,4 +1,4 @@
-import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
+import { useExamplePreviewContext } from "@/components/example-preview/ExamplePreviewContext";
 import clsx from "clsx";
 import { Code2, ExternalLink, RotateCcw } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
@@ -10,7 +10,7 @@ export function ExampleControls({
   showCode: boolean;
   setShowCode: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { openPreviewInNewTab, reloadPreview } = useExamplePreview();
+  const { openPreviewInNewTab, reloadPreview } = useExamplePreviewContext();
 
   const controlButtons = [
     {

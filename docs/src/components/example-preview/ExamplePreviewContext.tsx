@@ -57,11 +57,11 @@ export function ExamplePreviewProvider<
 }
 
 /** Hook for reading value of {@link ExamplePreviewContext} */
-export function useExamplePreview() {
+export function useExamplePreviewContext() {
   const context = useContext(ExamplePreviewContext);
   if (!context) {
     throw new Error(
-      "useExamplePreview must be used within an ExamplePreviewProvider",
+      "useExamplePreviewContext must be used within an ExamplePreviewProvider",
     );
   }
   return context;

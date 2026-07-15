@@ -1,6 +1,6 @@
 "use client";
 
-import { ExamplePreview } from "@/components/ExamplePreview";
+import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { CodeExplorer } from "@/components/code-explorer/CodeExplorer";
 import { ExamplePreviewWindow } from "@/components/examples/example/ExamplePreviewWindow";
 import { Panel, Group, Separator } from "react-resizable-panels";

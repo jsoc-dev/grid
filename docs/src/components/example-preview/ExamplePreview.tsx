@@ -2,16 +2,16 @@
 
 import {
   ExamplePreviewProvider,
-  useExamplePreview,
-} from "@/contexts/ExamplePreviewContext";
-import { useValidateExampleUrl } from "@/hooks/useValidateExampleUrl";
+  useExamplePreviewContext,
+} from "@/components/example-preview/ExamplePreviewContext";
+import { useValidateExampleUrl } from "@/components/example-preview/useValidateExampleUrl";
 import type { ReactNode } from "react";
 
 /**
  * Example preview component. Must be wrapped in an {@link ExamplePreviewProvider} or {@link ExamplePreview.Provider}.
  */
 export function ExamplePreview() {
-  const { url, previewRef } = useExamplePreview();
+  const { url, previewRef } = useExamplePreviewContext();
   const { isPending, isError } = useValidateExampleUrl(url);
 
   if (isPending) return <Viewport />; // render nothing - similar to browsers when page is being fetched

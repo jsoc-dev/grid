@@ -1,6 +1,6 @@
 "use client";
 
-import { ExamplePreview } from "@/components/ExamplePreview";
+import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
 import { useDocsParams } from "@/hooks/useDocsParams";
 import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";

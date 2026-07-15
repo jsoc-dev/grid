@@ -2,9 +2,9 @@
 
 import { ExternalLink, RotateCcw } from "lucide-react";
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
-import { ExamplePreview } from "@/components/ExamplePreview";
+import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { usePlaygroundContext } from "@/components/playground/PlaygroundContext";
-import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
+import { useExamplePreviewContext } from "@/components/example-preview/ExamplePreviewContext";
 
 export function OutputPanel() {
   const { selectedAdapterId, selectedPluginId } = usePlaygroundContext();
@@ -24,7 +24,7 @@ export function OutputPanel() {
 
 function PreviewWithControls() {
   const { openPreviewInNewTab, viewSourceOnGitHub, reloadPreview } =
-    useExamplePreview();
+    useExamplePreviewContext();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
