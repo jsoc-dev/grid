@@ -1,7 +1,6 @@
 "use client";
 
 import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
-import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
 import { useDocsParams } from "@/hooks/useDocsParams";
 import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";
 import { Activity, useState } from "react";
@@ -17,9 +16,8 @@ type Props = {
  */
 export function Example({ exampleId }: Props) {
   const [showCode, setShowCode] = useState(false);
-  const docsParams = useDocsParams();
-  const adapterId = docsParams[ADAPTER_ID_PARAM_KEY];
-  const pluginId = docsParams[PLUGIN_ID_PARAM_KEY];
+  const { adapterId, pluginId } = useDocsParams();
+
   return (
     <ExamplePreview.Provider
       adapterId={adapterId}

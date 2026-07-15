@@ -1,6 +1,5 @@
 "use client";
 
-import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
 import { useDocsParams } from "@/hooks/useDocsParams";
 import type { AdapterId, PluginId } from "@jsoc/grid-docs";
 import type { ReactNode } from "react";
@@ -12,11 +11,12 @@ type Props = {
 };
 
 export function If({ adapterId, pluginId, children }: Props) {
-  const docsParams = useDocsParams();
+  const { adapterId: currentAdapterId, pluginId: currentPluginId } =
+    useDocsParams();
 
   if (
-    docsParams[ADAPTER_ID_PARAM_KEY] === adapterId &&
-    (pluginId === undefined || pluginId === docsParams[PLUGIN_ID_PARAM_KEY])
+    adapterId === currentAdapterId &&
+    (pluginId === undefined || pluginId === currentPluginId)
   ) {
     return children;
   }

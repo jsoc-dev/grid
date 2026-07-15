@@ -14,7 +14,7 @@ import {
 import { getCachedExampleManifest } from "@/utils/getCachedExampleManifest";
 import { getCachedSnippetMap } from "@/utils/getCachedSnippetMap";
 import { hasDynamicContentTokens } from "@/utils/dynamicContent";
-import { resolveDocsParams } from "@/utils/resolveDocsParams";
+import { resolveDocsParams } from "@/utils/docsParams";
 
 export type DynamicContentScope<
   A extends AdapterId = AdapterId,

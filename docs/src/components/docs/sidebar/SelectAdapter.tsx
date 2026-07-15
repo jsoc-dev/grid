@@ -2,7 +2,6 @@
 
 import { getAdapterIcon } from "@/assets/icons/adapters";
 import { Select } from "@/components/Select";
-import { ADAPTER_ID_PARAM_KEY, PLUGIN_ID_PARAM_KEY } from "@/constants/docs";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
 import {
   getAdapterIds,
@@ -38,18 +37,15 @@ export function SelectAdapter() {
       onChange={(adapterId) => {
         if (!isValidAdapterId(adapterId)) return;
 
-        const pluginId = isValidPluginId(
-          adapterId,
-          docsParams[PLUGIN_ID_PARAM_KEY],
-        )
-          ? docsParams[PLUGIN_ID_PARAM_KEY]
+        const pluginId = isValidPluginId(adapterId, docsParams.pluginId)
+          ? docsParams.pluginId
           : getPluginIds(adapterId)[0];
 
         updateDocsParams({ adapterId, pluginId });
       }}
       options={options}
       title="Select framework"
-      value={docsParams[ADAPTER_ID_PARAM_KEY]}
+      value={docsParams.adapterId}
     />
   );
 }

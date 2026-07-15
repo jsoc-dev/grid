@@ -3,13 +3,12 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
+import { CONTENT_DIR_BASE_PATH } from "@/constants/docs";
 import {
-  ADAPTER_ID_PARAM_KEY,
-  CONTENT_DIR_BASE_PATH,
+  resolveDocsParams,
+  setDocsParamsInUrl,
   type DocsParams,
-  PLUGIN_ID_PARAM_KEY,
-} from "@/constants/docs";
-import { resolveDocsParams } from "@/utils/resolveDocsParams";
+} from "@/utils/docsParams";
 
 export function useDocsParams(): DocsParams {
   const searchParams = useSearchParams();
@@ -30,8 +29,7 @@ export function useUpdateDocsParams() {
     (docsParams: DocsParams) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      params.set(ADAPTER_ID_PARAM_KEY, docsParams[ADAPTER_ID_PARAM_KEY]);
-      params.set(PLUGIN_ID_PARAM_KEY, docsParams[PLUGIN_ID_PARAM_KEY]);
+      setDocsParamsInUrl(docsParams, params);
 
       const query = params.toString();
 
