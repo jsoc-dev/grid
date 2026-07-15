@@ -1,4 +1,4 @@
-import { PlaygroundContextProvider } from "@/components/playground/PlaygroundContextProvider";
+import { PlaygroundContextProvider } from "@/components/playground/PlaygroundContext";
 import { PlaygroundHeader } from "@/components/playground/header/PlaygroundHeader";
 import { InputPanel } from "@/components/playground/panel/InputPanel";
 import { OutputPanel } from "@/components/playground/panel/OutputPanel";

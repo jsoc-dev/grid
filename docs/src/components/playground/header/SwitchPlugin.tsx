@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch } from "@/components/Switch";
-import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
+import { usePlaygroundContext } from "@/components/playground/PlaygroundContext";
 import {
   type AdapterId,
   type PluginMetadata,

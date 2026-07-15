@@ -2,12 +2,12 @@
 
 import { Switch } from "@/components/Switch";
 import { getAdapterIcon } from "@/assets/icons/adapters";
-import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
 import {
   getAdapterMetadata,
   getPluginIds,
   type AdapterId,
 } from "@jsoc/grid-docs";
+import { usePlaygroundContext } from "@/components/playground/PlaygroundContext";
 
 type Props = {
   adapterId: AdapterId;

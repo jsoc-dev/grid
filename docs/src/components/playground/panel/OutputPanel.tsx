@@ -3,7 +3,7 @@
 import { ExternalLink, RotateCcw } from "lucide-react";
 import { PanelHeader } from "@/components/playground/panel/PanelHeader";
 import { ExamplePreview } from "@/components/ExamplePreview";
-import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
+import { usePlaygroundContext } from "@/components/playground/PlaygroundContext";
 import { useExamplePreview } from "@/contexts/ExamplePreviewContext";
 
 export function OutputPanel() {

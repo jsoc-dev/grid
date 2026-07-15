@@ -2,7 +2,7 @@
 
 import { SwitchAdapter } from "@/components/playground/header/SwitchAdapter";
 import { SwitchPlugin } from "@/components/playground/header/SwitchPlugin";
-import { usePlaygroundContext } from "@/hooks/usePlaygroundContext";
+import { usePlaygroundContext } from "@/components/playground/PlaygroundContext";
 import {
   getAdapterIds,
   getPluginIds,
