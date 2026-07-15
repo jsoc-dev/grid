@@ -6,7 +6,7 @@ import {
   type AdapterId,
 } from "@jsoc/grid-docs";
 import CardGrid from "@/components/CardGrid";
-import { getPluginIcon } from "@/assets/icons/plugins";
+import { getPluginIcon } from "@/icons/plugins";
 import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 
 type Props<A extends AdapterId> = {

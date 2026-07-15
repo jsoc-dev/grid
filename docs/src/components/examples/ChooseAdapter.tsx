@@ -6,7 +6,7 @@ import {
   getUpcomingAdapterIds,
 } from "@jsoc/grid-docs";
 import CardGrid from "@/components/CardGrid";
-import { getAdapterIcon } from "@/assets/icons/adapters";
+import { getAdapterIcon } from "@/icons/adapters";
 import type { SvgIcon } from "@/types/svg";
 import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 import { toPascalCase } from "@jsoc/utils";

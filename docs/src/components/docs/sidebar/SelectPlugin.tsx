@@ -1,6 +1,6 @@
 "use client";
 
-import { getPluginIcon } from "@/assets/icons/plugins";
+import { getPluginIcon } from "@/icons/plugins";
 import { Select } from "@/components/Select";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
 import {

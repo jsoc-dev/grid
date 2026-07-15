@@ -7,7 +7,7 @@ import {
   type PluginMetadata,
   type PluginId,
 } from "@jsoc/grid-docs";
-import { getPluginIcon } from "@/assets/icons/plugins";
+import { getPluginIcon } from "@/icons/plugins";
 
 type Props<A extends AdapterId> = {
   adapterId: A;

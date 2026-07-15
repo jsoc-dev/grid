@@ -1,6 +1,6 @@
 "use client";
 
-import { getAdapterIcon } from "@/assets/icons/adapters";
+import { getAdapterIcon } from "@/icons/adapters";
 import { Select } from "@/components/Select";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
 import {

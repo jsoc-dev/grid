@@ -1,7 +1,7 @@
 "use client";
 
 import { Switch } from "@/components/Switch";
-import { getAdapterIcon } from "@/assets/icons/adapters";
+import { getAdapterIcon } from "@/icons/adapters";
 import {
   getAdapterMetadata,
   getPluginIds,

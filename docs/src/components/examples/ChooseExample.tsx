@@ -1,6 +1,6 @@
 "use client";
 
-import { getPluginIcon } from "@/assets/icons/plugins";
+import { getPluginIcon } from "@/icons/plugins";
 import CardGrid from "@/components/CardGrid";
 import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
 import {

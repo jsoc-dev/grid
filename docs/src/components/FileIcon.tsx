@@ -4,7 +4,7 @@ import {
   getIconForFolder,
   getIconForOpenFolder,
 } from "vscode-icons-js";
-import { ICON_MAP } from "@/assets/icons/file-icons";
+import { ICON_MAP } from "@/icons/file-icons";
 
 const LANGUAGE_TO_EXTENSION: Partial<Record<CodeLanguage, string>> = {
   javascript: "js",
