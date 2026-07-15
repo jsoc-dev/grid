@@ -5,7 +5,6 @@ export type AdapterMetadata<id extends AdapterId> = {
   name: string;
   frameworkName: string;
   packageName: string;
-  peerDependencies: readonly string[];
 };
 
 export type AdapterMetadataMap = { [id in AdapterId]: AdapterMetadata<id> };
@@ -16,21 +15,18 @@ const ADAPTER_METADATA_MAP: AdapterMetadataMap = {
     name: "React Grid",
     frameworkName: "React",
     packageName: "@jsoc/react-grid",
-    peerDependencies: ["react", "react-dom"],
   },
   "vanilla-grid": {
     id: "vanilla-grid",
     name: "Vanilla Grid",
     frameworkName: "Vanilla",
     packageName: "@jsoc/vanilla-grid",
-    peerDependencies: [],
   },
   "vue-grid": {
     id: "vue-grid",
     name: "Vue Grid",
     frameworkName: "Vue",
     packageName: "@jsoc/vue-grid",
-    peerDependencies: ["vue"],
   },
 };
 
@@ -50,4 +46,8 @@ export function getAdapterMetadata<A extends AdapterId>(
   adapterId: A,
 ): AdapterMetadataMap[A] {
   return ADAPTER_METADATA_MAP[adapterId];
+}
+
+export function getAllAdapterMetadata(): AdapterMetadata<AdapterId>[] {
+  return Object.values(ADAPTER_METADATA_MAP);
 }
