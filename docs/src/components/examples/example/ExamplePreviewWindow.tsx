@@ -55,7 +55,7 @@ export function ExamplePreviewWindow() {
 
       {/* Page Content */}
       <div className="h-full w-full overflow-hidden p-2 pt-0.25 ">
-        <div className="h-full w-full overflow-hidden rounded-md shadow-sm">
+        <div className="h-full w-full overflow-hidden shadow-sm">
           {displayUrl && <ExamplePreview />}
         </div>
       </div>
