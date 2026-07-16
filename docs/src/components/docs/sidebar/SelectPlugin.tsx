@@ -10,7 +10,7 @@ import {
 } from "@jsoc/grid-docs";
 import { useMemo } from "react";
 
-export function SelectPlugin() {
+export function SelectPlugin({ disabled }: { disabled?: boolean }) {
   const docsParams = useDocsParams();
   const updateDocsParams = useUpdateDocsParams();
 
@@ -40,8 +40,9 @@ export function SelectPlugin() {
         updateDocsParams({ adapterId: docsParams.adapterId, pluginId });
       }}
       options={options}
-      title="Select component"
+      title="Select UI component"
       value={docsParams.pluginId}
+      disabled={disabled}
     />
   );
 }

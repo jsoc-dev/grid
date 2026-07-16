@@ -3,7 +3,6 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-import { CONTENT_DIR_BASE_PATH } from "@/config";
 import {
   resolveDocsParams,
   setDocsParamsInUrl,
@@ -19,9 +18,6 @@ export function useDocsParams(): DocsParams {
 export function useUpdateDocsParams() {
   const router = useRouter();
   const pathname = usePathname();
-  const targetPathname = pathname.startsWith(CONTENT_DIR_BASE_PATH)
-    ? pathname
-    : CONTENT_DIR_BASE_PATH;
 
   const searchParams = useSearchParams();
 
@@ -33,11 +29,11 @@ export function useUpdateDocsParams() {
 
       const query = params.toString();
 
-      router.push(query ? `${targetPathname}?${query}` : targetPathname, {
+      router.push(query ? `${pathname}?${query}` : pathname, {
         scroll: false, // so that scroll position doesn't reset when user changes DocsParams
       });
     },
-    [targetPathname, router, searchParams],
+    [pathname, router, searchParams],
   );
 
   return updateDocsParams;

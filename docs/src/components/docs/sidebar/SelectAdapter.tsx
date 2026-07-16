@@ -12,7 +12,7 @@ import {
 } from "@jsoc/grid-docs";
 import { useMemo } from "react";
 
-export function SelectAdapter() {
+export function SelectAdapter({ disabled }: { disabled?: boolean }) {
   const docsParams = useDocsParams();
   const updateDocsParams = useUpdateDocsParams();
 
@@ -46,6 +46,7 @@ export function SelectAdapter() {
       options={options}
       title="Select framework"
       value={docsParams.adapterId}
+      disabled={disabled}
     />
   );
 }

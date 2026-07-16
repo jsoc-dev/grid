@@ -20,17 +20,23 @@ type Props = {
   options: SelectOption[];
   onChange: (id: string) => void;
   title: string;
+  disabled?: boolean;
 };
 
-export function Select({ value, options, onChange, title }: Props) {
+export function Select({ value, options, onChange, title, disabled }: Props) {
   const selected = options.find((option) => option.id === value) ?? options[0];
 
   return (
-    <Listbox value={value} onChange={onChange}>
+    <Listbox value={value} onChange={onChange} disabled={disabled}>
       {/* trigger to open the dropdown */}
       <ListboxButton
         title={title}
-        className="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left outline-none hover:bg-gray-100 dark:hover:bg-neutral-800"
+        className={clsx(
+          "flex w-full items-center gap-2.5 rounded-md px-2 py-2 text-left outline-none",
+          disabled
+            ? "cursor-not-allowed opacity-50"
+            : "cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800",
+        )}
       >
         <span className="flex size-5 shrink-0 items-center justify-center">
           {selected.icon}
