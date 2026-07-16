@@ -45,6 +45,7 @@
     "build": "pnpm build-examples && pnpm build-packages",
     "changeset": "changeset",
     "commitlint": "commitlint",
+    "commitlint:test": "commitlint --edit commit-msg.txt",
     "lint": "eslint . && pnpm --recursive --parallel run lint",
     "lint:fix": "eslint . --fix && pnpm --recursive --parallel run lint:fix",
     "prepare": "husky",

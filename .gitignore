@@ -45,3 +45,5 @@ out
 
 # ---------------VSC---------------
 !.vscode/extensions.json
+
+commit-msg.txt
