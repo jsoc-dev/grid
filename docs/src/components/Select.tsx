@@ -8,22 +8,28 @@ import clsx from "clsx";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 
-export type SelectOption = {
-  id: string;
+export type SelectOption<V extends string> = {
+  id: V;
   title: string;
   subtitle?: string;
   icon: ReactNode;
 };
 
-type Props = {
-  value: string;
-  options: SelectOption[];
-  onChange: (id: string) => void;
+type Props<V extends string> = {
+  value: V;
+  options: SelectOption<V>[];
+  onChange: (value: V) => void;
   title: string;
   disabled?: boolean;
 };
 
-export function Select({ value, options, onChange, title, disabled }: Props) {
+export function Select<V extends string>({
+  value,
+  options,
+  onChange,
+  title,
+  disabled,
+}: Props<V>) {
   const selected = options.find((option) => option.id === value) ?? options[0];
 
   return (

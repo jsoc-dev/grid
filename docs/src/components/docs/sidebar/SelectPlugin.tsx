@@ -3,11 +3,7 @@
 import { getPluginIcon } from "@/icons/plugins";
 import { Select } from "@/components/Select";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
-import {
-  getPluginIds,
-  getPluginMetadata,
-  isValidPluginId,
-} from "@jsoc/grid-docs";
+import { getPluginIds, getPluginMetadata } from "@jsoc/grid-docs";
 import { useMemo } from "react";
 
 export function SelectPlugin({ disabled }: { disabled?: boolean }) {
@@ -36,7 +32,6 @@ export function SelectPlugin({ disabled }: { disabled?: boolean }) {
   return (
     <Select
       onChange={(pluginId) => {
-        if (!isValidPluginId(docsParams.adapterId, pluginId)) return;
         updateDocsParams({ adapterId: docsParams.adapterId, pluginId });
       }}
       options={options}

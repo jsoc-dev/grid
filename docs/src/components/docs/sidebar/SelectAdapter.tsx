@@ -7,7 +7,6 @@ import {
   getAdapterIds,
   getAdapterMetadata,
   getPluginIds,
-  isValidAdapterId,
   isValidPluginId,
 } from "@jsoc/grid-docs";
 import { useMemo } from "react";
@@ -35,11 +34,9 @@ export function SelectAdapter({ disabled }: { disabled?: boolean }) {
   return (
     <Select
       onChange={(adapterId) => {
-        if (!isValidAdapterId(adapterId)) return;
-
         const pluginId = isValidPluginId(adapterId, docsParams.pluginId)
-          ? docsParams.pluginId
-          : getPluginIds(adapterId)[0];
+          ? docsParams.pluginId // use current pluginId if it's valid for the new adapterId
+          : getPluginIds(adapterId)[0]; // reset to default plugin based on newly selected adapterId
 
         updateDocsParams({ adapterId, pluginId });
       }}
