@@ -1,25 +1,49 @@
+import { If } from "@/components/docs/If"
+import { PeerDepsBlock } from "@/components/docs/PeerDepsBlock"
+
 # Installation
+
+This page covers the installation procedure for the [%%adapter.frameworkName%%](/docs/adapters/%%adapter.id%%) adapter 
+and [%%plugin.name%%](/docs/plugins/%%adapter.id%%-%%plugin.id%%) plugin.
+
+## Prerequisites
+
 First of all, you need to have Node.js and NPM (or any other package manager) installed on your machine. If you haven't installed them yet, please follow the instructions on the [Node.js website](https://nodejs.org/) to download and install the latest stable version.
 
-Once you have Node.js and a package manager installed, you can proceed with the installation of the adapter and plugin packages.
-
+Once you have Node.js and a package manager installed, you can proceed with the installation process below.
 
 ## Adapter Package
-Run the following command to install the [%%adapter.frameworkName%%](/docs/adapters/%%adapter.id%%) adapter:
+Run the following command to install the %%adapter.frameworkName%% adapter package:
 
 ```sh npm2yarn
 npm install %%adapter.packageName%%
 ```
+### Peer Dependencies
+<If adapterId="vanilla-grid">
+The `%%adapter.packageName%%` package has no peer dependencies and can be used in any %%adapter.frameworkName%% (JS/TS) app.
+</If>
 
-Also, install the peer dependencies of the adapter package as listed in the [package.json](https://unpkg.com/%%adapter.packageName%%/package.json) file.
+<If adapterId={["react-grid", "vue-grid"]}>
+The `%%adapter.packageName%%` package has following peer dependencies which also need to be installed:
 
+<PeerDepsBlock of="adapter"/>
+
+If you are using **%%adapter.frameworkName%%**, you probably have already installed the packages listed above.
+Just make sure their versions satisfy the peer dependencies above.
+
+</If>
 
 ## Plugin Package
-Run the following command to install the [%%plugin.name%%](/docs/plugins/%%adapter.id%%-%%plugin.id%%) plugin:
+Run the following command to install the %%plugin.name%% plugin package:
 
 ```sh npm2yarn
 npm install %%plugin.packageName%%
 ```
 
-Also, install the peer dependencies of the plugin package as listed in the [package.json](https://unpkg.com/%%plugin.packageName%%/package.json) file.
+### Peer Dependencies
+The `%%plugin.packageName%%` package has following peer dependencies which also need to be installed:
 
+<PeerDepsBlock of="plugin"/>
+
+If you are using **%%plugin.name%%** in a **%%adapter.frameworkName%%** app, you probably have already installed the packages listed above.
+Just make sure their versions satisfy the peer dependencies above.
