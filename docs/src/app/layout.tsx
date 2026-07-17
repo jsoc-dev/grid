@@ -11,7 +11,10 @@ import { Layout } from "nextra-theme-docs";
 import { getPageMap } from "nextra/page-map";
 
 export const metadata: Metadata = {
-  title: "JSOC Grid",
+  title: {
+    default: "JSOC Grid",
+    template: "%s | JSOC Grid",
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
