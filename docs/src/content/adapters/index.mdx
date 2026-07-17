@@ -4,15 +4,27 @@ asIndexPage: true
 ---
 
 import { Overview } from "@/components/Overview";
+import { FrameworkGrid } from "@/components/FrameworkGrid";
 
 # Framework Adapters
 
-Framework adapters purpose is to manage the lifecycle of the Grid Store in the particular framework manner. They also provide headless composable components that can be used as slots in the Grid component.
+**Framework Adapters** (or simply **Adapters**) are thin wrappers around the core package `@jsoc/grid-core`. 
+They expose similar API as the core package but use the native state management and rendering logic of their own framework.
 
-All the [component plugins](./component-plugins.mdx) are built on top of the framework adapters.
-If you looking to build a custom plugin for a Grid component, you can use the framework adapter to build it.
-All existing component plugins already use the framework adapters to build their functionality.
+Adapters lays the foundation for building plugins. Learn more about plugins [here](/docs/plugins).
 
-List of available framework adapters:
+## Available Adapters
 
-<Overview filePath={metadata.filePath} />
+Currently adapters are available for the following frameworks.
+
+Click any card to read its documentation, or use the GitHub and npm icons at the top of the card to view its source code and package.
+
+<FrameworkGrid />
+
+## Custom Adapter
+
+If your preferred framework is not listed, you can easily build your own adapter in your codebase. 
+Since adapters are lightweight wrappers around core package `@jsoc/grid-core`, you only need to 
+connect the core logic with your framework's state management and rendering lifecycle.
+
+Browse the source code of [available adapters](#available-adapters) to learn how they are implemented.

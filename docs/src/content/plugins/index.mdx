@@ -3,15 +3,38 @@ title: "Plugins"
 asIndexPage: true
 ---
 
-import { Overview } from "@/components/Overview";
+import { PluginGrid } from "@/components/PluginGrid";
 
-# Component Plugins
+# UI Plugins
 
-[Framework adapters](./adapters.mdx) alone can't be used to generate configurations for the Grid component. 
-For transforming the Grid Schemas to valid grid configurations, you need to use the component plugins.
+**UI Plugins** (or simply **Plugins**) contains the logic for transforming the intermediate [configuration object](/docs/guides/grid-schema#configuration-object)
+into native configurations for a UI component.
 
-Component plugins are the plugins that are used to transform the Grid Schemas to valid grid configurations.
+## Available plugins
+Plugins are available for various DataGrid and DataTable libraries, organized below by framework.
 
-List of available component plugins:
+Click any card to read its documentation, or use the GitHub and npm icons at the top of the card to view its source code and package.
 
-<Overview filePath={metadata.filePath} />
+### React
+
+Plugins are available for the following React DataGrid/DataTable libraries:
+
+<PluginGrid adapterId="react-grid" />
+
+### Vanilla
+
+Plugins are available for the following Vanilla DataGrid/DataTable libraries:
+
+<PluginGrid adapterId="vanilla-grid" />
+
+### Vue
+
+Plugins are available for the following Vue DataGrid/DataTable libraries:
+
+<PluginGrid adapterId="vue-grid" />
+
+## Custom Plugin
+
+If your preferred UI component is not listed, you can easily build your own plugin for it in your codebase.
+
+Browse the source code of [available plugins](#available-plugins) to learn how they are implemented.

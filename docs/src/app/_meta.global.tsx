@@ -18,7 +18,11 @@ const meta: MetaRecord = {
         title: <DocsSelectors />,
       },
       index: {},
+
+      "getting-started": {},
+
       adapters: {},
+
       plugins: {
         items: {
           "--plugin-separator-react": {
@@ -47,7 +51,13 @@ const meta: MetaRecord = {
           "vue-grid-tanstack": {},
         },
       },
-      "getting-started": {},
+
+      guides: {
+        items: {
+          "grid-store": {},
+          "grid-schema": {},
+        },
+      },
     },
   },
 
