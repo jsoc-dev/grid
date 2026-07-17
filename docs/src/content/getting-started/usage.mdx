@@ -4,55 +4,80 @@ import { Steps } from "nextra/components";
 import { Snippet } from "@/components/Snippet";
 
 # Usage
+This page will walk you through the basic usage of the library and assumes you have already installed the required dependencies. 
+If not, please refer to the [installation guide](/docs/getting-started/installation) first.  
 
 ## Basic Example
-
-Basic example to get you started.
-
+Below are the steps for creating a basic **%%plugin.name%%** component dynamically using **JSOC Grid**.
 <Steps>
 
-### Import necessary features
+### Add imports
+
+First, we need to import some essential utilities as below:
 
 <If adapterId="react-grid">
-  Import the grid store creation hook and reactive selector hook:
+- `useGridStore` - Hook that creates a store for managing dynamic configurations.
+- `useGridStoreSelector` - Hook that lets you react to store state changes.
+- **%%plugin.name%%** component - UI component that renders the grid.
 </If>
 <If adapterId="vanilla-grid">
-  Import the grid store creation hook from the plugin package:
+- `createGridStore` - Function that creates a store containing dynamic configurations for the grid component.
+- **%%plugin.name%%** element creator - Function that creates HTML element for rendering the grid.
 </If>
 <If adapterId="vue-grid">
-  Import the grid store creation hook from the plugin package:
+- `useGridStore` - Composable to create a store containing dynamic configurations for the grid component.
+- `useGridStoreSelector` - Composable that lets you react to store state changes.
+- **%%plugin.name%%** component - UI component that renders the grid.
 </If>
 
 <Snippet exampleId="basic" snippetId="import" />
 
-### Create the store
+<If pluginId="tanstack">
 
-<If adapterId="react-grid">
-  Create the grid store with `useGridStore` and your grid data, then read the
-  active schema using `useGridStoreSelector`:
+  > [!tip]
+  >
+  > The above snippet contains some relative imports using `#` alias. The source code for files imported this way is available in the [Preview and Source Code](#preview-and-source-code) section
+  > and also on the dedicated [example page](/examples/%%adapter.id%%/%%plugin.id%%/basic).
+  
 </If>
 
-<If adapterId="vanilla-grid">Create the grid store using `createGridStore`</If>
+### Create the grid store
 
+Next, initialize the grid store. The store manages all the data and configuration for your grid.
+
+<If adapterId="react-grid">
+Call `useGridStore` with your data to create the store instance. 
+Then, use `useGridStoreSelector` to reactively read the active schema (contains dynamic configurations):
+</If>
+<If adapterId="vanilla-grid">
+Call `createGridStore` with your data to create the store instance.
+</If>
 <If adapterId="vue-grid">
-  Create the grid store with `useGridStore` and your grid data, then read the
-  active schema using `useGridStoreSelector`:
+Call `useGridStore` with your data to create the store instance. 
+Then, use `useGridStoreSelector` to reactively read the active schema (contains dynamic configurations):
 </If>
 
 <Snippet exampleId="basic" snippetId="create" />
 
-### Render grid component
+### Render the grid
 
-Pass the generated config to the grid component:
+Finally, pass the configuration and state from your store into the grid component to render it on the screen:
 
 <Snippet exampleId="basic" snippetId="render" />
 
-### That's all!
+### Preview and Source Code
 
-Your grid component is ready to use. Here is how it looks:
-
+Here is a working preview of this basic example. Click on the `</> Code` button to see the code.
 <br />
 
 <Example exampleId="basic" />
 
 </Steps>
+
+## Next Steps 
+That was all for the basic example. To learn more about the available features, please refer to the following:
+
+- [Adapters](/docs/adapters)
+- [Plugins](/docs/plugins)
+- [Guides](/docs/guides)
+- [Examples](/examples)
