@@ -44,4 +44,5 @@ export function useValidateExampleUrl(url: string) {
 // but for this we will have to make the root layout client componment
 // OR we can use proxy.ts to set custom header "x-pathname" which stores pathname of request
 // and in root layout.tsx read header and conditionally render Nextra's Layout
-// but proxy.ts  requires server which won't be available in next.js static export build (which i am planning)
+// but this option will replace the layout for all cases (even when page is not inside example preview iframe)
+// Note: proxy.ts requires server (which is not available in Nextjs static export build which is fine since the docs is already dynamic)
