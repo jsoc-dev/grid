@@ -17,7 +17,12 @@ export type DocsParams = {
 export type DocsParamsKey = keyof DocsParams;
 
 const DEFAULT_ADAPTER_ID = "react-grid" satisfies AdapterId;
-const DEFAULT_PLUGIN_ID = getPluginIds(DEFAULT_ADAPTER_ID)[0];
+
+export function getDefaultPluginId<A extends AdapterId>(
+  adapterId: A,
+): PluginId<A> {
+  return getPluginIds(adapterId)[0];
+}
 
 export function resolveDocsParams(searchParams: SearchParams): DocsParams {
   const adapterIdParam = getDocsParam("adapterId", searchParams);
@@ -31,7 +36,7 @@ export function resolveDocsParams(searchParams: SearchParams): DocsParams {
   const pluginId =
     pluginIdParam && isValidPluginId(adapterId, pluginIdParam)
       ? pluginIdParam
-      : DEFAULT_PLUGIN_ID;
+      : getDefaultPluginId(adapterId);
 
   return { adapterId, pluginId };
 }
