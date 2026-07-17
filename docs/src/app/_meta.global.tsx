@@ -21,15 +21,29 @@ const meta: MetaRecord = {
       adapters: {},
       plugins: {
         items: {
+          "--plugin-separator-react": {
+            type: "separator",
+            title: "React",
+          },
           "react-grid-ag": {},
-          "vanilla-grid-ag": {},
-          "vue-grid-ag": {},
           "react-grid-ant": {},
           "react-grid-mantine": {},
           "react-grid-mui": {},
           "react-grid-prime": {},
           "react-grid-tanstack": {},
+
+          "--plugin-separator-vanilla": {
+            type: "separator",
+            title: "Vanilla",
+          },
+          "vanilla-grid-ag": {},
           "vanilla-grid-tanstack": {},
+
+          "--plugin-separator-vue": {
+            type: "separator",
+            title: "Vue",
+          },
+          "vue-grid-ag": {},
           "vue-grid-tanstack": {},
         },
       },
