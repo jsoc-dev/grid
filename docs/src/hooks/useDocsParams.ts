@@ -5,7 +5,8 @@ import { useCallback } from "react";
 
 import {
   resolveDocsParams,
-  setDocsParamsInUrl,
+  setCookieDocsParams,
+  setUrlDocsParams,
   type DocsParams,
 } from "@/utils/docsParams";
 
@@ -25,10 +26,12 @@ export function useUpdateDocsParams() {
     (docsParams: DocsParams) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      setDocsParamsInUrl(docsParams, params);
+      setUrlDocsParams(params, docsParams);
+      setCookieDocsParams(document, docsParams);
 
       const query = params.toString();
 
+      // this sends a new request to server, ensuring that new page content is rendered based on new params
       router.push(query ? `${pathname}?${query}` : pathname, {
         scroll: false, // so that scroll position doesn't reset when user changes DocsParams
       });
