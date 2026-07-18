@@ -1,7 +1,7 @@
 "use client";
 
 import { getAdapterIcon } from "@/icons/adapters";
-import { Select } from "@/components/Select";
+import { Select, SelectSkeleton } from "@/components/Select";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
 import { getDefaultPluginId } from "@/utils/docsParams";
 import {
@@ -25,9 +25,7 @@ export function SelectAdapter({ disabled }: { disabled?: boolean }) {
   const docsParams = useDocsParams();
   const updateDocsParams = useUpdateDocsParams();
 
-  if (!docsParams) {
-    return <div className="h-9 w-full"></div>;
-  }
+  if (!docsParams) return <SelectSkeleton />;
 
   return (
     <Select

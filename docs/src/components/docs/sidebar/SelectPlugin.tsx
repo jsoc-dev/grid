@@ -1,7 +1,7 @@
 "use client";
 
 import { getPluginIcon } from "@/icons/plugins";
-import { Select } from "@/components/Select";
+import { Select, SelectSkeleton } from "@/components/Select";
 import { useDocsParams, useUpdateDocsParams } from "@/hooks/useDocsParams";
 import {
   getPluginIds,
@@ -30,9 +30,7 @@ export function SelectPlugin({ disabled }: { disabled?: boolean }) {
   const adapterId = docsParams?.adapterId;
   const options = useMemo(() => createOptions(adapterId), [adapterId]);
 
-  if (!docsParams) {
-    return <div className="h-9 w-full"></div>;
-  }
+  if (!docsParams) return <SelectSkeleton />;
 
   return (
     <Select

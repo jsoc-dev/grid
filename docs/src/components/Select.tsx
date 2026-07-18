@@ -114,3 +114,16 @@ export function Select<V extends string>({
     </Listbox>
   );
 }
+
+export function SelectSkeleton() {
+  return (
+    <div className="flex w-full items-center gap-2.5 rounded-md px-2 py-2">
+      <div className="size-5 shrink-0 animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800"></div>
+      <div className="h-4 flex-1 animate-pulse rounded-md bg-neutral-200 dark:bg-neutral-800"></div>
+      <ChevronsUpDown
+        aria-hidden
+        className="ml-auto size-3.5 shrink-0 text-gray-400"
+      />
+    </div>
+  );
+}
