@@ -2,23 +2,15 @@
 
 import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { useExamplePreviewContext } from "@/components/example-preview/ExamplePreviewContext";
+import { useWindow } from "@/hooks/useWindow";
 import { RotateCw, ExternalLink, Lock } from "lucide-react";
-import { useSyncExternalStore } from "react";
-
-// Empty subscription since window.location.origin doesn't change over time
-const emptySubscribe = () => () => {};
 
 export function ExamplePreviewWindow() {
+  const win = useWindow();
   const { url, reloadPreview, openPreviewInNewTab } =
     useExamplePreviewContext();
 
-  const origin = useSyncExternalStore(
-    emptySubscribe,
-    () => window.location.origin,
-    () => "",
-  );
-
-  const displayUrl = origin ? origin + url : "";
+  const displayUrl = win ? win.location.origin + url : "";
 
   return (
     <div className="bg-panel-surface border border-panel-outline flex-1 flex flex-col min-w-0 rounded-md">
