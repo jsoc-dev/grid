@@ -25,6 +25,10 @@ export function SelectAdapter({ disabled }: { disabled?: boolean }) {
   const docsParams = useDocsParams();
   const updateDocsParams = useUpdateDocsParams();
 
+  if (!docsParams) {
+    return <div className="h-9 w-full"></div>;
+  }
+
   return (
     <Select
       onChange={(adapterId) => {

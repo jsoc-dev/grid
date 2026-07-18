@@ -64,13 +64,23 @@ export function parseCookieDocsParams(cookies: Cookies) {
 }
 
 /**
- * Resolves full docs params from url search params and cookies
- * @param params url search params
- * @param cookies optional cookies to use for fallback values
+ * Resolves a complete {@link DocsParams} by merging URL search params, cookies,
+ * and built-in defaults using the following priority:
+ *
+ * 1. **URL search params** (highest) — used when present (e.g. shared links).
+ * 2. **Cookies** — the user's persisted preference, used as fallback.
+ * 3. **Defaults** — built-in defaults when neither source provides a value.
+ *
+ * If a source provides only `adapterId` (no `pluginId`), the missing `pluginId`
+ * is filled from the next available source, falling back to the adapter's
+ * default plugin.
+ *
+ * @param params - URL search params to read DocsParams from.
+ * @param cookies - Cookie string or object to use as the fallback source.
  */
 export function resolveDocsParams(
   params: SearchParams,
-  cookies?: Cookies,
+  cookies: Cookies,
 ): DocsParams {
   const urlDocsParams = parseUrlDocsParams(params);
   const cookieDocsParams = parseCookieDocsParams(cookies || "");

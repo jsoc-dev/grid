@@ -15,6 +15,7 @@ import { getCachedExampleManifest } from "@/utils/getCachedExampleManifest";
 import { getCachedSnippetMap } from "@/utils/getCachedSnippetMap";
 import { hasDynamicContentTokens } from "@/utils/dynamicContent";
 import { resolveDocsParams } from "@/utils/docsParams";
+import { cookies } from "next/headers";
 
 export type DynamicContentScope<
   A extends AdapterId = AdapterId,
@@ -61,7 +62,7 @@ export async function createDynamicContentScope(
   pageProps: PageProps<"/docs/[[...mdxPath]]">,
 ): Promise<DynamicContentScope> {
   const searchParams = await pageProps.searchParams;
-  const docsParams = resolveDocsParams(searchParams);
+  const docsParams = resolveDocsParams(searchParams, await cookies());
   const adapter = getAdapterMetadata(docsParams.adapterId);
   const plugin = getPluginMetadata(docsParams.adapterId, docsParams.pluginId);
 
