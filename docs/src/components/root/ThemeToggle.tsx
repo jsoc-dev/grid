@@ -1,37 +1,32 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useWindow } from "@/hooks/useWindow";
 import { Sun, Moon } from "lucide-react";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const win = useWindow();
 
-  // Avoid hydration mismatch
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
+  if (!win) return <ThemeToggleSkeleton />;
 
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
-  const isDark = resolvedTheme === "dark";
-  const Icon = isDark ? Moon : Sun;
+  const isDarkMode = resolvedTheme === "dark";
+  const Icon = isDarkMode ? Moon : Sun;
 
   return (
-    <div className="h-6 w-6">
-      {mounted && (
-        <button
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
-          title={isDark ? "dark mode" : "light mode"}
-        >
-          <Icon className="cursor-pointer" />
-        </button>
-      )}
-    </div>
+    <button
+      className="size-6"
+      onClick={() => setTheme(isDarkMode ? "light" : "dark")}
+      aria-label="Toggle theme"
+      title={isDarkMode ? "dark mode" : "light mode"}
+    >
+      <Icon className="cursor-pointer" />
+    </button>
+  );
+}
+
+function ThemeToggleSkeleton() {
+  return (
+    <div className="size-6 animate-pulse rounded-full bg-neutral-200 dark:bg-neutral-800" />
   );
 }
