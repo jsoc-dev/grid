@@ -3,7 +3,8 @@ import type { MetaRecord } from "nextra";
 
 const meta: MetaRecord = {
   index: {
-    display: "hidden",
+    type: "page",
+    title: "Home",
   },
 
   docs: {
@@ -69,11 +70,6 @@ const meta: MetaRecord = {
   playground: {
     type: "page",
     href: "/playground",
-  },
-
-  packages: {
-    type: "page",
-    href: "https://www.npmjs.com/org/jsoc",
   },
 };
 
