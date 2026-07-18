@@ -1,6 +1,4 @@
-"use client";
-
-import { useDocsParams } from "@/hooks/useDocsParams";
+import { getDynamicContentScope } from "@/utils/dynamicContentScope";
 import type { AdapterId, PluginId } from "@jsoc/grid-docs";
 import { ensureArray } from "@jsoc/utils";
 import type { ReactNode } from "react";
@@ -12,13 +10,11 @@ type Props = {
 };
 
 export function If({ children, adapterId, pluginId }: Props) {
-  const { adapterId: currentAdapterId, pluginId: currentPluginId } =
-    useDocsParams();
+  const { adapter, plugin } = getDynamicContentScope()!;
 
   const isAdapterMatch =
-    !adapterId || ensureArray(adapterId).includes(currentAdapterId);
-  const isPluginMatch =
-    !pluginId || ensureArray(pluginId).includes(currentPluginId);
+    !adapterId || ensureArray(adapterId).includes(adapter.id);
+  const isPluginMatch = !pluginId || ensureArray(pluginId).includes(plugin.id);
 
   if (isAdapterMatch && isPluginMatch) {
     return children;

@@ -1,11 +1,8 @@
-"use client";
-
+import { ExampleClient } from "@/components/docs/example/ExampleClient";
 import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
-import { useDocsParams } from "@/hooks/useDocsParams";
+import { ExamplePreviewProvider } from "@/components/example-preview/ExamplePreviewContext";
+import { getDynamicContentScope } from "@/utils/dynamicContentScope";
 import type { ExampleId, AdapterId, PluginId } from "@jsoc/grid-docs";
-import { Activity, useState } from "react";
-import { CodeExplorer } from "@/components/code-explorer/CodeExplorer";
-import { ExampleControls } from "@/components/docs/example/ExampleControls";
 
 type Props = {
   exampleId: ExampleId<AdapterId, PluginId<AdapterId>>;
@@ -15,32 +12,17 @@ type Props = {
  * Readonly example preview and source code viewer for documentation pages.
  */
 export function Example({ exampleId }: Props) {
-  const [showCode, setShowCode] = useState(false);
-  const { adapterId, pluginId } = useDocsParams();
-
+  const { adapter, plugin } = getDynamicContentScope()!;
+  const adapterId = adapter.id;
+  const pluginId = plugin.id;
   return (
-    <ExamplePreview.Provider
-      adapterId={adapterId}
-      pluginId={pluginId}
-      exampleId={exampleId}
-    >
+    <ExamplePreviewProvider {...{ adapterId, pluginId, exampleId }}>
       <div className="flex flex-col gap-3">
         <div className="w-full h-64 overflow-hidden">
           <ExamplePreview />
         </div>
-
-        <ExampleControls showCode={showCode} setShowCode={setShowCode} />
-
-        <Activity mode={showCode ? "visible" : "hidden"}>
-          <div className="h-64">
-            <CodeExplorer
-              adapterId={adapterId}
-              pluginId={pluginId}
-              exampleId={exampleId}
-            />
-          </div>
-        </Activity>
+        <ExampleClient {...{ adapterId, pluginId, exampleId }} />
       </div>
-    </ExamplePreview.Provider>
+    </ExamplePreviewProvider>
   );
 }

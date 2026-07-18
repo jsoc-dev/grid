@@ -1,3 +1,5 @@
+"use client";
+
 import { openLinkInNewTab } from "@/utils/window";
 import {
   getExampleAppGitHubUrl,

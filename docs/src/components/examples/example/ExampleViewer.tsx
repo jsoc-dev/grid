@@ -1,7 +1,7 @@
 "use client";
 
-import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { CodeExplorer } from "@/components/code-explorer/CodeExplorer";
+import { ExamplePreviewProvider } from "@/components/example-preview/ExamplePreviewContext";
 import { ExamplePreviewWindow } from "@/components/examples/example/ExamplePreviewWindow";
 import { Panel, Group, Separator } from "react-resizable-panels";
 import { GripVertical } from "lucide-react";
@@ -37,9 +37,9 @@ export function ExampleViewer<A extends AdapterId, P extends PluginId<A>>({
 
       <Panel id="preview" minSize={0}>
         <div className="flex h-full">
-          <ExamplePreview.Provider {...{ adapterId, pluginId, exampleId }}>
+          <ExamplePreviewProvider {...{ adapterId, pluginId, exampleId }}>
             <ExamplePreviewWindow />
-          </ExamplePreview.Provider>
+          </ExamplePreviewProvider>
         </div>
       </Panel>
     </Group>
