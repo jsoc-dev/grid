@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 type Breadcrumb = {
@@ -12,25 +10,27 @@ type BreadcrumbProps = {
   isLast: boolean;
 };
 
-type BreadcrumbsProps = {
-  path: string[];
-  basePath?: string;
+export type BreadcrumbSegment = {
+  slug: string;
+  label: string;
 };
 
-export function Breadcrumbs({
-  path,
-  basePath = "/examples",
-}: BreadcrumbsProps) {
-  const base = basePath.endsWith("/") ? basePath.slice(0, -1) : basePath;
+type BreadcrumbsProps = {
+  segments: BreadcrumbSegment[];
+};
 
-  // Build up breadcrumbs data
-  const breadcrumbs = [
-    { label: "Examples", href: base },
-    ...path.map((seg, i) => ({
-      label: seg,
-      href: `${base}/${path.slice(0, i + 1).join("/")}`,
-    })),
-  ];
+export function Breadcrumbs({ segments }: BreadcrumbsProps) {
+  const getHref = (i: number) =>
+    "/" +
+    segments
+      .slice(0, i + 1)
+      .map((s) => s.slug)
+      .join("/");
+
+  const breadcrumbs = segments.map((seg, i) => ({
+    label: seg.label,
+    href: getHref(i),
+  }));
 
   return (
     <nav className="flex justify-center items-center px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-[#0c0c0c]/80 backdrop-blur-md">

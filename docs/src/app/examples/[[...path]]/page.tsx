@@ -1,13 +1,18 @@
-import { Breadcrumbs } from "@/components/examples/Breadcrumbs";
+import { Breadcrumbs, type BreadcrumbSegment } from "@/components/Breadcrumbs";
 import { ChooseAdapter } from "@/components/examples/ChooseAdapter";
 import { ChooseExample } from "@/components/examples/ChooseExample";
 import { ChoosePlugin } from "@/components/examples/ChoosePlugin";
-import { ExampleViewer } from "@/components/examples/example/ExampleViewer";
+import { ExamplePage } from "@/components/examples/ExamplePage";
 import {
+  getAdapterMetadata,
   getExampleMetadata,
+  getPluginMetadata,
   isValidAdapterId,
   isValidExampleId,
   isValidPluginId,
+  type AdapterId,
+  type ExampleId,
+  type PluginId,
 } from "@jsoc/grid-docs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -27,12 +32,39 @@ export async function generateMetadata(
 export default async function Page(props: PageProps<"/examples/[[...path]]">) {
   const { path = [] } = await props.params;
 
+  const adapterId = path[0] as AdapterId | undefined;
+  const pluginId = path[1] as PluginId<AdapterId> | undefined;
+  const exampleId = path[2] as ExampleId<AdapterId, PluginId> | undefined;
+
+  const segments: BreadcrumbSegment[] = [
+    { slug: "examples", label: "Examples" },
+  ];
+
+  if (adapterId) {
+    segments.push({
+      slug: adapterId,
+      label: getAdapterMetadata(adapterId).frameworkName,
+    });
+  }
+
+  if (adapterId && pluginId) {
+    segments.push({
+      slug: pluginId,
+      label: getPluginMetadata(adapterId, pluginId).name,
+    });
+  }
+
+  if (adapterId && pluginId && exampleId) {
+    segments.push({
+      slug: exampleId,
+      label: getExampleMetadata(adapterId, pluginId, exampleId).name,
+    });
+  }
+
   return (
-    <div className="flex flex-1 flex-col h-fill-page w-full max-w-full">
-      <Breadcrumbs path={path} />
-      <main className="flex flex-1 flex-col px-6 min-w-0 min-h-0 max-w-full w-full">
-        <Content path={path} />
-      </main>
+    <div className="flex flex-1 flex-col min-h-fill-page w-full max-w-full">
+      <Breadcrumbs segments={segments} />
+      <Content path={path} />
     </div>
   );
 }
@@ -48,18 +80,5 @@ function Content({ path }: { path: string[] }) {
   if (!exampleId) return <ChooseExample {...{ adapterId, pluginId }} />;
   if (!isValidExampleId(adapterId, pluginId, exampleId)) notFound();
 
-  const metadata = getExampleMetadata(adapterId, pluginId, exampleId);
-
-  return (
-    <div className="flex flex-col gap-8 flex-1 pb-10 min-w-0 min-h-0 w-full max-w-(--nextra-content-width) mx-auto">
-      <div className="shrink-0 pt-6">
-        <h1 className="text-2xl font-bold">{metadata.name}</h1>
-        <p className="text-neutral-600 dark:text-neutral-400">
-          {metadata.description}
-        </p>
-      </div>
-
-      <ExampleViewer {...{ adapterId, pluginId, exampleId }} />
-    </div>
-  );
+  return <ExamplePage {...{ adapterId, pluginId, exampleId }} />;
 }
