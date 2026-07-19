@@ -3,7 +3,7 @@ title: "Plugins"
 asIndexPage: true
 ---
 
-import { PluginGrid } from "@/components/PluginGrid";
+import { PluginCards } from "@/components/PluginCards";
 
 # UI Plugins
 
@@ -19,19 +19,19 @@ Click any card to read its documentation, or use the GitHub and npm icons at the
 
 Plugins are available for the following React DataGrid/DataTable libraries:
 
-<PluginGrid adapterId="react-grid" />
+<PluginCards adapterId="react-grid" mainLink={(id) => `/docs/plugins/react-grid-${id}`} />
 
 ### Vanilla
 
 Plugins are available for the following Vanilla DataGrid/DataTable libraries:
 
-<PluginGrid adapterId="vanilla-grid" />
+<PluginCards adapterId="vanilla-grid" mainLink={(id) => `/docs/plugins/vanilla-grid-${id}`} />
 
 ### Vue
 
 Plugins are available for the following Vue DataGrid/DataTable libraries:
 
-<PluginGrid adapterId="vue-grid" />
+<PluginCards adapterId="vue-grid" mainLink={(id) => `/docs/plugins/vue-grid-${id}`} />
 
 ## Custom Plugin
 

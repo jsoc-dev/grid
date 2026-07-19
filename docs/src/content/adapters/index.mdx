@@ -4,7 +4,7 @@ asIndexPage: true
 ---
 
 import { Overview } from "@/components/Overview";
-import { FrameworkGrid } from "@/components/FrameworkGrid";
+import { AdapterCards } from "@/components/AdapterCards";
 
 # Framework Adapters
 
@@ -19,7 +19,7 @@ Currently adapters are available for the following frameworks.
 
 Click any card to read its documentation, or use the GitHub and npm icons at the top of the card to view its source code and package.
 
-<FrameworkGrid />
+<AdapterCards mainLink={(id) => `/docs/adapters/${id}`} />
 
 ## Custom Adapter
 
