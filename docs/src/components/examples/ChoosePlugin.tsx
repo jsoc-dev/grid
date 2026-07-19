@@ -1,38 +1,19 @@
-"use client";
-
-import {
-  getPluginIds,
-  getPluginMetadata,
-  type AdapterId,
-} from "@jsoc/grid-docs";
-import CardGrid from "@/components/CardGrid";
-import { getPluginIcon } from "@/icons/plugins";
-import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
+import { type AdapterId } from "@jsoc/grid-docs";
+import { PluginCards } from "@/components/PluginCards";
+import { ExamplePageLayout } from "./ExamplePageLayout";
 
 type Props<A extends AdapterId> = {
   adapterId: A;
 };
 
 export function ChoosePlugin<A extends AdapterId>({ adapterId }: Props<A>) {
-  const navigate = useExamplesNavigator();
-  const pluginIds = getPluginIds(adapterId);
-
   return (
-    <div className="flex flex-col py-6 gap-6 w-full items-center">
-      <h1 className="text-2xl font-semibold">Choose a plugin</h1>
-      <CardGrid
-        cards={pluginIds.map((pluginId) => {
-          const { name } = getPluginMetadata(adapterId, pluginId);
-          const PluginIcon = getPluginIcon(adapterId, pluginId);
-
-          return {
-            id: pluginId,
-            label: name,
-            icon: <PluginIcon className="w-12 h-12" />,
-            onClick: () => navigate([adapterId, pluginId]),
-          };
-        })}
+    <ExamplePageLayout title="Choose your UI component">
+      <PluginCards
+        adapterId={adapterId}
+        hideMetadata
+        mainLink={(pluginId) => `/examples/${adapterId}/${pluginId}`}
       />
-    </div>
+    </ExamplePageLayout>
   );
 }

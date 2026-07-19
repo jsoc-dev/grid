@@ -1,8 +1,6 @@
-"use client";
-
 import { getPluginIcon } from "@/icons/plugins";
-import CardGrid from "@/components/CardGrid";
-import { useExamplesNavigator } from "@/hooks/useExamplesNavigator";
+import { Cards } from "@/components/Cards";
+import { ExamplePageLayout } from "./ExamplePageLayout";
 import {
   getExampleIds,
   getExampleMetadata,
@@ -19,14 +17,12 @@ export function ChooseExample<A extends AdapterId>({
   adapterId,
   pluginId,
 }: Props<A>) {
-  const navigateToExample = useExamplesNavigator();
   const exampleIds = getExampleIds(adapterId, pluginId);
 
   return (
-    <div className="flex flex-col py-6 gap-6 w-full items-center">
-      <h1 className="text-2xl font-semibold">Choose an example</h1>
-      <CardGrid
-        cards={exampleIds.map((exampleId) => {
+    <ExamplePageLayout title="Choose an example">
+      <Cards>
+        {exampleIds.map((exampleId) => {
           const exampleMetadata = getExampleMetadata(
             adapterId,
             pluginId,
@@ -34,14 +30,16 @@ export function ChooseExample<A extends AdapterId>({
           );
           const PluginIcon = getPluginIcon(adapterId, pluginId);
 
-          return {
-            id: exampleId,
-            label: exampleMetadata.name,
-            icon: <PluginIcon className="w-12 h-12" />,
-            onClick: () => navigateToExample([adapterId, pluginId, exampleId]),
-          };
+          return (
+            <Cards.Card
+              key={exampleId}
+              title={exampleMetadata.name}
+              icon={<PluginIcon className="w-12 h-12" />}
+              mainLink={`/examples/${adapterId}/${pluginId}/${exampleId}`}
+            />
+          );
         })}
-      />
-    </div>
+      </Cards>
+    </ExamplePageLayout>
   );
 }
