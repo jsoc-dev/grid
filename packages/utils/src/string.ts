@@ -4,6 +4,25 @@ export function isString(arg: unknown): arg is string {
   return typeof arg === "string";
 }
 
+/**
+ * Checks if the provided argument is a non-empty string.
+ *
+ * @example
+ * ```ts
+ * isNonEmptyString(""); // false
+ * isNonEmptyString(" "); // true
+ * isNonEmptyString("hello"); // true
+ * isNonEmptyString(undefined); // false for all non string values
+ * ```
+ */
+export function isNonEmptyString(arg: unknown): arg is string {
+  return isString(arg) && arg.length > 0;
+}
+
+export function joinNonEmptyStrings(values: unknown[], separator: string) {
+  return values.filter(isNonEmptyString).join(separator);
+}
+
 export function ensureString(arg: unknown): string {
   return isNullOrUndefined(arg) ? "" : toStringSafe(arg);
 }
