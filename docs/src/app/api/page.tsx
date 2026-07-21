@@ -1,11 +1,9 @@
 import { Cards } from "nextra/components";
 import { getMDXComponents } from "@/mdx-components";
-import { getApiExports } from "@/utils/api/get-api-exports";
 import type { Metadata } from "next";
-import { Node } from "ts-morph";
-import type { ApiExport } from "@/utils/api/api-reference-types";
+import { API_PACKAGES, withPackageScope } from "@/utils/api/api-package-name";
 
-export const metadata: Metadata = { title: "API" };
+export const metadata: Metadata = { title: "API Reference" };
 
 const mdxComponents = getMDXComponents();
 const Wrapper = mdxComponents.wrapper;
@@ -13,33 +11,29 @@ const H1 = mdxComponents.h1;
 const H2 = mdxComponents.h2;
 
 export default function ApiIndexPage() {
-  const apiExports = getApiExports();
   const pageMeta = { title: "API", filePath: "" };
-
-  const filteredExportsList = (filterFn: (exp: ApiExport) => boolean) => (
-    <Cards>
-      {apiExports.filter(filterFn).map((exp) => (
-        <Cards.Card key={exp.name} title={exp.name} href={`/api/${exp.name}`} />
-      ))}
-    </Cards>
-  );
 
   return (
     <Wrapper metadata={pageMeta} toc={[]} sourceCode="">
-      <H1>API</H1>
+      <H1>API Reference</H1>
+      <p className="mt-6 leading-7 first:mt-0">
+        Welcome to the JSOC Grid API Reference. Here you will find detailed
+        documentation for all the classes, functions, and types exported across
+        the JSOC Grid packages. Select a package below to explore its API
+        exports.
+      </p>
 
-      <H2>Classes</H2>
-      {filteredExportsList((e) => Node.isClassDeclaration(e.declaration))}
+      <H2>Packages</H2>
 
-      <H2>Functions</H2>
-      {filteredExportsList((e) => Node.isFunctionDeclaration(e.declaration))}
-
-      <H2>Types</H2>
-      {filteredExportsList(
-        (e) =>
-          Node.isTypeAliasDeclaration(e.declaration) ||
-          Node.isInterfaceDeclaration(e.declaration),
-      )}
+      <Cards>
+        {API_PACKAGES.map((pkg) => (
+          <Cards.Card
+            key={pkg}
+            title={withPackageScope(pkg)}
+            href={`/api/${pkg}`}
+          />
+        ))}
+      </Cards>
     </Wrapper>
   );
 }

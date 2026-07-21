@@ -1,16 +1,12 @@
-import type {
-  ApiExport,
-  ApiPackageName,
-} from "@/utils/api/api-reference-types";
+import type { ApiPackageName } from "@/utils/api/api-package-name";
+import type { ApiExport } from "@/utils/api/api-reference-types";
 import path from "node:path";
 import { Project } from "ts-morph";
 
 // Simple memory cache so we don't re-parse across multiple Next.js static generations
 const apiExportsCache: Partial<Record<ApiPackageName, ApiExport[]>> = {};
 
-export function getApiExports(
-  packageName: ApiPackageName = "grid-core",
-): ApiExport[] {
+export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   if (apiExportsCache[packageName]) return apiExportsCache[packageName];
 
   const project = new Project({
@@ -26,7 +22,7 @@ export function getApiExports(
 
   for (const [name, declarations] of exportedDeclarations) {
     const declaration = declarations[0];
-    apiExports.push({ name, declaration });
+    apiExports.push({ name, declaration, packageName });
   }
 
   // Sort exports alphabetically to keep the sidebar predictable

@@ -1,24 +1,28 @@
+import { cache } from "react";
+import { getMDXComponents } from "@/mdx-components";
+import type { ApiPackageName } from "@/utils/api/api-package-name";
 import type { GenerateDefinitionResult } from "@/utils/api/api-reference-types";
+import { createRawMdxForApi } from "@/utils/api/create-raw-mdx-for-api";
 import { getApiExports } from "@/utils/api/get-api-exports";
+import { notFound } from "next/navigation";
+import { compileMdx } from "nextra/compile";
+import { evaluate } from "nextra/evaluate";
+import { generateDefinition } from "nextra/tsdoc";
+import path from "node:path";
 import {
   Node,
   type InterfaceDeclaration,
   type TypeAliasDeclaration,
 } from "ts-morph";
-import { getMDXComponents } from "@/mdx-components";
-import { notFound } from "next/navigation";
-import { generateDefinition, type Tags } from "nextra/tsdoc";
-import { compileMdx } from "nextra/compile";
-import { evaluate } from "nextra/evaluate";
-import path from "node:path";
-import { createRawMdxForApi } from "@/utils/api/create-raw-mdx-for-api";
+import { isPlainObject, isString, type StringKeyedObject } from "@jsoc/utils";
 
 const mdxComponents = getMDXComponents();
 
-export async function generateApiPage(props: PageProps<"/api/[name]">) {
-  // TODO: currently the first segment is apiName, refactor to api/packageName/apiName
-  const { name: apiName } = await props.params;
-  const apiExport = getApiExports().find((e) => e.name === apiName);
+export const generateApiPage = cache(async function generateApiPage(
+  packageName: ApiPackageName,
+  apiName: string,
+) {
+  const apiExport = getApiExports(packageName).find((e) => e.name === apiName);
 
   if (!apiExport) return notFound();
 
@@ -64,7 +68,7 @@ export async function generateApiPage(props: PageProps<"/api/[name]">) {
   page.metadata.filePath = `https://github.com/jsoc-dev/grid/tree/main/${githubFilePath}`;
 
   return page;
-}
+});
 
 function typeHasCustomProperties(
   decl: TypeAliasDeclaration | InterfaceDeclaration,
@@ -101,18 +105,41 @@ function formatLinksInDefinitionParts(
   const trimLinkTrailingSpaces = (text: string): string =>
     text.replace(/\{@link ([^}]+)\}/g, (_, p1: string) => `\`${p1.trim()}\``);
 
-  let tags: Tags | undefined;
+  const escapeGenerics = (text: string): string => {
+    // Split by backticks so that we don't accidently escape anything inside inline code blocks.
+    return text
+      .split(/(`[^`]*`)/)
+      .map((part, i) => {
+        if (i % 2 === 1) return part; // Inside backticks, keep as is
+        // Escape < and > to prevent MDX from treating generics as HTML/JSX tags
+        return part.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      })
+      .join("");
+  };
 
-  if (definition.tags) {
-    tags = {};
-    for (const key in definition.tags) {
-      tags[key] = trimLinkTrailingSpaces(definition.tags[key]);
+  const processValue = <T>(value: T, key: string | null): T => {
+    if (isString(value)) {
+      // skip "type" and "name" as they are rendered directly as code/text elements by React
+      if (key === "type" || key === "name") return value;
+      // process other keys
+      return escapeGenerics(trimLinkTrailingSpaces(value)) as T;
     }
-  }
 
-  const description = definition.description
-    ? trimLinkTrailingSpaces(definition.description)
-    : undefined;
+    if (Array.isArray(value)) {
+      return value.map((v) => processValue(v, key)) as T;
+    }
 
-  return { ...definition, description, tags };
+    if (isPlainObject(value)) {
+      const newObj: StringKeyedObject = {};
+      for (const k in value) {
+        newObj[k] = processValue(value[k], k);
+      }
+      return newObj as T;
+    }
+
+    // return other values as it is
+    return value;
+  };
+
+  return processValue(definition, null);
 }
