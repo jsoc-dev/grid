@@ -11,5 +11,6 @@ export * from "./number.ts";
 export * from "./object/index.ts";
 export * from "./string.ts";
 export * from "./symbol.ts";
+export * from "./types.ts";
 export * from "./ujson.ts";
 export * from "./uuid.ts";
