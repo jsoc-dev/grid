@@ -1,9 +1,11 @@
+import { ApiDoc } from "@/components/api/api-doc";
 import { wrapDynamicContentComponent } from "@/utils/dynamicContent";
 import { useMDXComponents as getThemeComponents } from "nextra-theme-docs";
 import type { MDXComponents } from "nextra/mdx-components";
 import type { ComponentType } from "react";
 
-export const themeComponents = getThemeComponents();
+const themeComponents = getThemeComponents();
+const customComponents = { ApiDoc };
 
 /**
  * This function is automatically picked up by Nextra and invoked during MDX rendering
@@ -13,7 +15,7 @@ export const themeComponents = getThemeComponents();
  *                     usually `undefined` in Nextra apps.
  */
 export function useMDXComponents(components?: MDXComponents) {
-  const mdxComps = { ...themeComponents, ...components };
+  const mdxComps = { ...themeComponents, ...customComponents, ...components };
   const mdxCompEntries = Object.entries(mdxComps);
 
   const wrappedCompEntries = mdxCompEntries.map(([key, val]) =>
@@ -26,3 +28,5 @@ export function useMDXComponents(components?: MDXComponents) {
 
   return wrappedComps as typeof mdxComps;
 }
+
+export const getMDXComponents = useMDXComponents;

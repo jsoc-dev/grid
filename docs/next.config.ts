@@ -14,6 +14,9 @@ export default withNextra({
         as: "*.js",
       },
     },
+    resolveAlias: {
+      "next-mdx-import-source-file": "./src/mdx-components.tsx",
+    },
   },
 
   // mirror turbopack configs for webpack, so that next dev --webpack works too
@@ -22,6 +25,13 @@ export default withNextra({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      // Suppress missing module warnings from ts-morph's internal typescript compiler
+      "source-map-support": false,
+    };
+
     return config;
   },
 });

@@ -8,7 +8,7 @@ import { QueryProvider } from "@/components/root/QueryProvider";
 import { ThemeProvider } from "@/components/root/ThemeProvider";
 import { Head } from "nextra/components";
 import { Layout } from "nextra-theme-docs";
-import { getPageMap } from "nextra/page-map";
+import { getPageMap } from "@/utils/get-page-map";
 
 export const metadata: Metadata = {
   title: {

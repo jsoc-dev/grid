@@ -9,7 +9,7 @@ const meta: MetaRecord = {
 
   docs: {
     type: "page",
-    title: "Documentation",
+    title: "Docs",
     // @ts-expect-error - items property errors when used along with type: "page" but it is supported
     items: {
       // index item must be first property in this object otherwise index page link doesn't become a clickable link in breadcrumbs
@@ -60,6 +60,11 @@ const meta: MetaRecord = {
         },
       },
     },
+  },
+
+  api: {
+    type: "page",
+    title: "API",
   },
 
   examples: {
