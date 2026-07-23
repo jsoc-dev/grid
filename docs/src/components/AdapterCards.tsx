@@ -8,12 +8,14 @@ import { PackageCards } from "@/components/PackageCards";
 import { toPascalCase } from "@jsoc/utils";
 
 type AdapterCardsProps = {
+  centered?: boolean;
   showUpcoming?: boolean;
   mainLink: string | ((adapterId: AdapterId) => string);
   hideMetadata?: boolean;
 };
 
 export function AdapterCards({
+  centered,
   showUpcoming,
   mainLink,
   hideMetadata,
@@ -22,7 +24,7 @@ export function AdapterCards({
   const upcomingIds = showUpcoming ? getUpcomingAdapterIds() : [];
 
   return (
-    <PackageCards>
+    <PackageCards centered={centered}>
       {adapters.map(({ id, frameworkName, packageName }) => {
         const Icon = getAdapterIcon(id);
 

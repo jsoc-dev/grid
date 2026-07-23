@@ -6,6 +6,7 @@ export function ChooseAdapter() {
     <ExamplePageLayout title="Choose your framework">
       <AdapterCards
         showUpcoming
+        centered
         hideMetadata
         mainLink={(id) => `/examples/${id}`}
       />

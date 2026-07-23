@@ -8,19 +8,21 @@ import { PackageCards } from "@/components/PackageCards";
 
 type Props<A extends AdapterId> = {
   adapterId: A;
+  centered?: boolean;
   mainLink: string | ((pluginId: PluginId<A>) => string);
   hideMetadata?: boolean;
 };
 
 export function PluginCards<A extends AdapterId>({
   adapterId,
+  centered,
   mainLink,
   hideMetadata,
 }: Props<A>) {
   const plugins = getAllPluginMetadata(adapterId);
 
   return (
-    <PackageCards>
+    <PackageCards centered={centered}>
       {plugins.map(({ id, name, packageName }) => {
         const Icon = getPluginIcon(adapterId, id);
 

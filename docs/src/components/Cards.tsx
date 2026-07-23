@@ -3,27 +3,20 @@ import Link from "next/link";
 import clsx from "clsx";
 
 export type CardsProps = {
+  /** Centers the cards when they don't fill the row */
+  centered?: boolean;
   children: ReactNode;
   className?: string;
 };
 
-export function Cards({ children, className }: CardsProps) {
-  const count = React.Children.toArray(children).filter(Boolean).length;
-  let colsClass = "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-5xl";
-
-  if (count === 1) {
-    colsClass = "max-w-sm";
-  } else if (count === 2) {
-    colsClass = "sm:grid-cols-2 max-w-2xl";
-  } else if (count === 3) {
-    colsClass = "sm:grid-cols-2 lg:grid-cols-3 max-w-4xl";
-  }
-
+export function Cards({ centered, children, className }: CardsProps) {
   return (
     <section
       className={clsx(
-        "grid grid-cols-1 gap-6 mt-8 w-full mx-auto",
-        colsClass,
+        "gap-6 mt-8 w-full mx-auto max-w-5xl",
+        centered
+          ? "flex flex-wrap justify-center *:w-full sm:*:w-[calc(50%-12px)] lg:*:w-[calc(33.333%-16px)]"
+          : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
         className,
       )}
     >

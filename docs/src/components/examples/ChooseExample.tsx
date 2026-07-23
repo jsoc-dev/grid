@@ -21,7 +21,7 @@ export function ChooseExample<A extends AdapterId>({
 
   return (
     <ExamplePageLayout title="Choose an example">
-      <Cards>
+      <Cards centered>
         {exampleIds.map((exampleId) => {
           const exampleMetadata = getExampleMetadata(
             adapterId,

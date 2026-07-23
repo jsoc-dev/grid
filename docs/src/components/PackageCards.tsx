@@ -6,13 +6,19 @@ import clsx from "clsx";
 import { Cards } from "@/components/Cards";
 
 export function PackageCards({
+  centered,
   children,
   className,
 }: {
+  centered?: boolean;
   children: ReactNode;
   className?: string;
 }) {
-  return <Cards className={className}>{children}</Cards>;
+  return (
+    <Cards centered={centered} className={className}>
+      {children}
+    </Cards>
+  );
 }
 
 PackageCards.Card = PackageCard;

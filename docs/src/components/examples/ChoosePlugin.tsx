@@ -11,6 +11,7 @@ export function ChoosePlugin<A extends AdapterId>({ adapterId }: Props<A>) {
     <ExamplePageLayout title="Choose your UI component">
       <PluginCards
         adapterId={adapterId}
+        centered
         hideMetadata
         mainLink={(pluginId) => `/examples/${adapterId}/${pluginId}`}
       />
