@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/root/ThemeProvider";
 import { Head } from "nextra/components";
 import { Layout } from "nextra-theme-docs";
 import { getPageMap } from "@/utils/get-page-map";
+import { DOCS_GITHUB_BASE_URL } from "@jsoc/grid-docs";
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +30,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               sidebar={{ defaultMenuCollapseLevel: 1 }}
               navbar={<Navbar />}
               pageMap={await getPageMap()}
-              docsRepositoryBase="https://github.com/jsoc-dev/grid/tree/main/docs"
+              docsRepositoryBase={DOCS_GITHUB_BASE_URL}
               footer={<Footer />}
             >
               {children}

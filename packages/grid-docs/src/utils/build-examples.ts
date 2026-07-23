@@ -1,6 +1,7 @@
 import type { ExampleId } from "#metadata/examples-metadata.ts";
 import type { ExampleSourceFile } from "#types/example-source-files.ts";
 import type { AdapterId, PluginId } from "#types/plugins.ts";
+import { GITHUB_REPO_MAIN_BRANCH_URL } from "#utils/github-repo.ts";
 
 export type ExamplesRelativePath<A extends AdapterId = AdapterId> =
   A extends AdapterId ? `examples/${A}/${PluginId<A>}` : never;
@@ -21,9 +22,8 @@ export function getExampleAppGitHubUrl<
   A extends AdapterId,
   P extends PluginId<A>,
 >(adapterId: A, pluginId: P) {
-  const repo = "https://github.com/jsoc-dev/grid/tree/main";
   const examplesPath = getExamplesRelativePath(adapterId, pluginId);
-  return `${repo}/${examplesPath}`;
+  return `${GITHUB_REPO_MAIN_BRANCH_URL}/${examplesPath}`;
 }
 
 /** Returns the url of a specific example html file present in the public/ folder of docs. */

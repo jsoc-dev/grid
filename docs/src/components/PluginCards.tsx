@@ -1,5 +1,6 @@
 import {
   getAllPluginMetadata,
+  withPackageGithubBaseUrl,
   type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
@@ -37,7 +38,9 @@ export function PluginCards<A extends AdapterId>({
             githubLink={
               hideMetadata
                 ? undefined
-                : `https://github.com/jsoc-dev/grid/tree/main/packages/${adapterId}-plugins/${adapterId}-${id}`
+                : withPackageGithubBaseUrl(
+                    `${adapterId}-plugins/${adapterId}-${id}`,
+                  )
             }
           />
         );

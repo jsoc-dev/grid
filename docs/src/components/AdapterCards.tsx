@@ -1,6 +1,7 @@
 import {
   getAllAdapterMetadata,
   getUpcomingAdapterIds,
+  withPackageGithubBaseUrl,
   type AdapterId,
 } from "@jsoc/grid-docs";
 import { getAdapterIcon } from "@/icons/adapters";
@@ -36,11 +37,7 @@ export function AdapterCards({
             packageName={hideMetadata ? undefined : packageName}
             icon={<Icon />}
             mainLink={mainLink}
-            githubLink={
-              hideMetadata
-                ? undefined
-                : `https://github.com/jsoc-dev/grid/tree/main/packages/${id}`
-            }
+            githubLink={hideMetadata ? undefined : withPackageGithubBaseUrl(id)}
           />
         );
       })}
