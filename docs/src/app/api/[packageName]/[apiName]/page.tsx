@@ -1,6 +1,6 @@
 import { getMDXComponents } from "@/mdx-components";
+import { getApiExports } from "@/utils/api/api-exports";
 import { generateApiPage } from "@/utils/api/generate-api-page";
-import { getApiExports } from "@/utils/api/get-api-exports";
 import {
   API_PACKAGES,
   isValidApiPackageName,

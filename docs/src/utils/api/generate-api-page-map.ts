@@ -1,4 +1,4 @@
-import { getApiExports } from "@/utils/api/get-api-exports";
+import { getApiExports } from "@/utils/api/api-exports";
 import {
   API_PACKAGES,
   type ApiPackageName,

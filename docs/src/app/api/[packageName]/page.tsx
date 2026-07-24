@@ -1,5 +1,5 @@
 import { getMDXComponents } from "@/mdx-components";
-import { getApiExports } from "@/utils/api/get-api-exports";
+import { getApiExports } from "@/utils/api/api-exports";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import {
   API_PACKAGES,
