@@ -1,5 +1,5 @@
 import { getMDXComponents } from "@/mdx-components";
-import { getApiExports } from "@/utils/api/api-exports";
+import { getGroupedApiExports } from "@/utils/api/api-exports";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import {
   API_PACKAGES,
@@ -10,7 +10,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Heading } from "nextra";
 import { Cards } from "nextra/components";
-import { Node } from "ts-morph";
 
 export const generateStaticParams = () => {
   return API_PACKAGES.map((packageName) => ({ packageName }));
@@ -35,18 +34,8 @@ export default async function PackageApiIndexPage(
   const { packageName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
 
-  const apiExports = getApiExports(packageName);
-  const classExports = apiExports.filter((e) =>
-    Node.isClassDeclaration(e.declaration),
-  );
-  const functionExports = apiExports.filter((e) =>
-    Node.isFunctionDeclaration(e.declaration),
-  );
-  const typeExports = apiExports.filter(
-    (e) =>
-      Node.isTypeAliasDeclaration(e.declaration) ||
-      Node.isInterfaceDeclaration(e.declaration),
-  );
+  const { classExports, functionExports, typeExports, otherExports } =
+    getGroupedApiExports(packageName);
 
   const toc: Heading[] = [];
 
@@ -58,6 +47,9 @@ export default async function PackageApiIndexPage(
 
   if (typeExports.length > 0)
     toc.push({ depth: 2, value: "Types", id: "types" });
+
+  if (otherExports.length > 0)
+    toc.push({ depth: 2, value: "Others", id: "others" });
 
   const packageNameWithScope = withPackageScope(packageName);
   const metadata = { title: packageNameWithScope, filePath: "" };
@@ -71,6 +63,7 @@ export default async function PackageApiIndexPage(
       <ExportSection title="Classes" apiExports={classExports} />
       <ExportSection title="Functions" apiExports={functionExports} />
       <ExportSection title="Types" apiExports={typeExports} />
+      <ExportSection title="Others" apiExports={otherExports} />
     </Wrapper>
   );
 }

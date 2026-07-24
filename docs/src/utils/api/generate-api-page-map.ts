@@ -1,9 +1,10 @@
-import { getApiExports } from "@/utils/api/api-exports";
+import { getGroupedApiExports } from "@/utils/api/api-exports";
 import {
   API_PACKAGES,
   type ApiPackageName,
-  getPackageDisplayName
+  getPackageDisplayName,
 } from "@/utils/api/api-package-name";
+import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
   Folder,
   MdxFile,
@@ -12,7 +13,6 @@ import type {
   PageMapItem,
   SeparatorItem,
 } from "nextra";
-import { Node } from "ts-morph";
 
 type MdxFileExtended = MdxFile & { title?: string };
 type SeparatorMeta = SeparatorItem & { name: string; title: string };
@@ -49,51 +49,36 @@ export function generateApiPageMap(): PageMapItem[] {
 }
 
 function generateFolderForPackage(packageName: ApiPackageName): Folder {
-  const apiExports = getApiExports(packageName);
-  const classExports = apiExports.filter((e) =>
-    Node.isClassDeclaration(e.declaration),
-  );
-  const functionExports = apiExports.filter((e) =>
-    Node.isFunctionDeclaration(e.declaration),
-  );
-  const typeExports = apiExports.filter(
-    (e) =>
-      Node.isTypeAliasDeclaration(e.declaration) ||
-      Node.isInterfaceDeclaration(e.declaration),
-  );
+  const { classExports, functionExports, typeExports, otherExports } =
+    getGroupedApiExports(packageName);
 
   const pageMapItem: ApiPageMapItem[] = [];
 
   if (classExports.length > 0) {
     pageMapItem.push({ type: "separator", title: "Classes", name: "_classes" });
     classExports.forEach((e) => {
-      pageMapItem.push({
-        name: e.name,
-        route: `/api/${packageName}/${e.name}`,
-        title: e.name,
-      });
+      pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
   if (functionExports.length > 0) {
     pageMapItem.push({ type: "separator", title: "Functions", name: "_funcs" });
     functionExports.forEach((e) => {
-      pageMapItem.push({
-        name: e.name,
-        route: `/api/${packageName}/${e.name}`,
-        title: e.name,
-      });
+      pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
   if (typeExports.length > 0) {
     pageMapItem.push({ type: "separator", title: "Types", name: "_types" });
     typeExports.forEach((e) => {
-      pageMapItem.push({
-        name: e.name,
-        route: `/api/${packageName}/${e.name}`,
-        title: e.name,
-      });
+      pageMapItem.push(createApiPageMapItem(e));
+    });
+  }
+
+  if (otherExports.length > 0) {
+    pageMapItem.push({ type: "separator", title: "Others", name: "_others" });
+    otherExports.forEach((e) => {
+      pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
@@ -119,5 +104,13 @@ function generateFolderForPackage(packageName: ApiPackageName): Folder {
     // @ts-expect-error - Nextra uses title/frontMatter dynamically at runtime even though they aren't strictly on the base Folder interface
     title: getPackageDisplayName(packageName),
     frontMatter: { asIndexPage: true },
+  };
+}
+
+function createApiPageMapItem(e: ApiExport): ApiPageMapItem {
+  return {
+    name: e.name,
+    route: `/api/${e.packageName}/${e.name}`,
+    title: e.name,
   };
 }

@@ -1,7 +1,8 @@
 import type { ApiPackageName } from "@/utils/api/api-package-name";
 import type { ApiExport } from "@/utils/api/api-reference-types";
+import { type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";
-import { Project } from "ts-morph";
+import { Node, Project, type ExportedDeclarations } from "ts-morph";
 
 // Simple memory cache so we don't re-parse across multiple Next.js static generations
 const apiExportsCache: Partial<Record<ApiPackageName, ApiExport[]>> = {};
@@ -33,4 +34,70 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
 
 function resolveFilePath(packageName: ApiPackageName, fileName: string) {
   return path.resolve(process.cwd(), `../packages/${packageName}/${fileName}`);
+}
+
+type ApiExportsGroup =
+  | "allExports"
+  | "classExports"
+  | "functionExports"
+  | "typeExports"
+  | "otherExports";
+
+export function getGroupedApiExports(packageName: ApiPackageName): {
+  [K in ApiExportsGroup]: ApiExport[];
+} {
+  const allExports = getApiExports(packageName);
+
+  const map: Record<ApiExportsGroup, ApiExport[]> = {
+    allExports,
+    classExports: [],
+    functionExports: [],
+    typeExports: [],
+    otherExports: [],
+  };
+
+  for (const apiExport of allExports) {
+    const { declaration } = apiExport;
+    const { isClass, isFunction, isType, isOther } =
+      checkDeclarationKind(declaration);
+
+    if (isClass) {
+      map.classExports.push(apiExport);
+    } else if (isFunction) {
+      map.functionExports.push(apiExport);
+    } else if (isType) {
+      map.typeExports.push(apiExport);
+    } else if (isOther) {
+      map.otherExports.push(apiExport);
+    }
+  }
+
+  return map;
+}
+
+export type CheckDeclarationKindResult = ExactlyOneTrue<
+  "isClass" | "isFunction" | "isType" | "isOther"
+>;
+
+const baseCheckDeclarationKindResult = {
+  isClass: false,
+  isFunction: false,
+  isType: false,
+  isOther: false,
+} as const;
+
+export function checkDeclarationKind(
+  declaration: ExportedDeclarations | undefined,
+): CheckDeclarationKindResult {
+  if (Node.isClassDeclaration(declaration)) {
+    return { ...baseCheckDeclarationKindResult, isClass: true };
+  } else if (Node.isFunctionDeclaration(declaration)) {
+    return { ...baseCheckDeclarationKindResult, isFunction: true };
+  } else if (
+    Node.isTypeAliasDeclaration(declaration) ||
+    Node.isInterfaceDeclaration(declaration)
+  ) {
+    return { ...baseCheckDeclarationKindResult, isType: true };
+  }
+  return { ...baseCheckDeclarationKindResult, isOther: true };
 }
