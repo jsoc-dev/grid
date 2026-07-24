@@ -1,4 +1,8 @@
-import type { AdapterId, UpcomingAdapterId } from "#types/plugins.ts";
+import type {
+  AdapterId,
+  AdapterIdList,
+  UpcomingAdapterId,
+} from "#types/plugins.ts";
 
 export type AdapterMetadata<id extends AdapterId> = {
   id: id;
@@ -30,9 +34,8 @@ const ADAPTER_METADATA_MAP: AdapterMetadataMap = {
   },
 };
 
-export function getAdapterIds(): AdapterId[] {
-  return Object.keys(ADAPTER_METADATA_MAP) as AdapterId[];
-}
+export const ADAPTER_IDS = Object.keys(ADAPTER_METADATA_MAP) as AdapterIdList;
+export const getAdapterIds = () => ADAPTER_IDS;
 
 export function getUpcomingAdapterIds(): UpcomingAdapterId[] {
   return ["angular-grid"];

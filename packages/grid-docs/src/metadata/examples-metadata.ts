@@ -31,14 +31,14 @@ export type VueGridExampleIds<P extends VueGridPluginId> =
   keyof (typeof VUE_GRID_EXAMPLES_METADATA_MAP)[P];
 
 type ExamplesMetadata = typeof EXAMPLES_METADATA_BY_ADAPTER;
-type ExampleIdsForAdapter<A extends keyof ExamplesMetadata & AdapterId> = {
+type ExampleIdsForAdapter<A extends keyof ExamplesMetadata> = {
   [P in keyof ExamplesMetadata[A]]: Extract<
     keyof ExamplesMetadata[A][P],
     string
   >;
 };
 type ExampleIdsLookup = {
-  [A in keyof ExamplesMetadata & AdapterId]: ExampleIdsForAdapter<A>;
+  [A in keyof ExamplesMetadata]: ExampleIdsForAdapter<A>;
 };
 
 export type ExampleId<A extends AdapterId, P extends PluginId<A>> = {
