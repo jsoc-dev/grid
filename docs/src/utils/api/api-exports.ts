@@ -1,6 +1,6 @@
 import type { ApiPackageName } from "@/utils/api/api-package-name";
 import type { ApiExport } from "@/utils/api/api-reference-types";
-import { type ExactlyOneTrue } from "@jsoc/utils";
+import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";
 import { Node, Project, type ExportedDeclarations } from "ts-morph";
 
@@ -22,7 +22,11 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   const apiExports: ApiExport[] = [];
 
   for (const [name, declarations] of exportedDeclarations) {
-    const declaration = declarations[0];
+    // we assert `ExportedDeclarations | undefined` as ts-morth detects the exports but can't parse declarations in .vue files
+    const declaration = declarations.find(isDefined) as
+      | ExportedDeclarations
+      | undefined;
+
     apiExports.push({ name, declaration, packageName });
   }
 
@@ -100,4 +104,22 @@ export function checkDeclarationKind(
     return { ...baseCheckDeclarationKindResult, isType: true };
   }
   return { ...baseCheckDeclarationKindResult, isOther: true };
+}
+
+export function getModuleSpecifierRelativeToDocs(
+  declaration: ExportedDeclarations,
+) {
+  const declarationSourceFilePath = declaration.getSourceFile().getFilePath();
+
+  const exportedModuleSpecifier = path
+    .relative(process.cwd(), declarationSourceFilePath) // returns path relative to `docs`, example: "..\packages\grid-core\src\index.ts"
+    .replace(/\\/g, "/"); // module specifiers must use forward slash
+
+  return exportedModuleSpecifier;
+}
+
+export function getModuleSpecifierRelativeToRoot(
+  declaration: ExportedDeclarations,
+) {
+  return getModuleSpecifierRelativeToDocs(declaration).replace(/^\.\.\//, ""); // removes leading "..", example: "../packages/xyz" => "packages/xyz" (makes it relative to repo's root instead of `docs`)
 }

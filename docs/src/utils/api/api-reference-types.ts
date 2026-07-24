@@ -1,3 +1,4 @@
+import type { ApiPackageName } from "@/utils/api/api-package-name";
 import type {
   GeneratedDefinition,
   GeneratedFunction,
@@ -8,11 +9,22 @@ import type { ExportedDeclarations } from "ts-morph";
 export type GenerateDefinitionResult = GeneratedDefinition &
   (GeneratedFunction | GeneratedType);
 
+/**
+ * Represents an exported member (a class, function, type, primitive
+ * value, or a re-export of one of them) from a package.
+ */
 export type ApiExport = {
-  // name of the export
+  /** The name of the export. */
   name: string;
-  // first declaration of this export
-  declaration: ExportedDeclarations;
-  // name of the package this export belongs to
-  packageName: string;
+
+  /**
+   * The first resolved declaration of this export.
+   *
+   * This can be `undefined` if TS-morph is unable to resolve the export
+   * (e.g., when re-exporting a component from a `.vue` file).
+   */
+  declaration: ExportedDeclarations | undefined;
+
+  /** The name of the package this export belongs to. */
+  packageName: ApiPackageName;
 };

@@ -3,38 +3,35 @@ import { getMDXComponents } from "@/mdx-components";
 import type { ApiPackageName } from "@/utils/api/api-package-name";
 import type { GenerateDefinitionResult } from "@/utils/api/api-reference-types";
 import { createRawMdxForApi } from "@/utils/api/create-raw-mdx-for-api";
-import { getApiExports } from "@/utils/api/get-api-exports";
+import {
+  getApiExports,
+  getModuleSpecifierRelativeToDocs,
+} from "@/utils/api/api-exports";
 import { notFound } from "next/navigation";
 import { compileMdx } from "nextra/compile";
 import { evaluate } from "nextra/evaluate";
 import { generateDefinition } from "nextra/tsdoc";
-import path from "node:path";
 import {
   Node,
   type InterfaceDeclaration,
   type TypeAliasDeclaration,
 } from "ts-morph";
 import { isPlainObject, isString, type StringKeyedObject } from "@jsoc/utils";
+import type { EvaluateResult } from "nextra";
 
 const mdxComponents = getMDXComponents();
 
+// FIXME: Props param for components is named as _0 (http://localhost:3000/api/react-grid/ChildGridToggle)
+// FIXME: Sidebar overscrolls on clicking Core menu
 export const generateApiPage = cache(async function generateApiPage(
   packageName: ApiPackageName,
   apiName: string,
-) {
+): Promise<EvaluateResult> {
   const apiExport = getApiExports(packageName).find((e) => e.name === apiName);
 
   if (!apiExport) return notFound();
 
   const { declaration } = apiExport;
-  const declarationSourceFilePath = declaration.getSourceFile().getFilePath();
-
-  // We want the relative path from the monorepo root to properly instruct ts-morph downstream.
-  // However, Nextra's TS morph instance in generate-api-reference uses CWD=docs.
-  // So the path should be relative to `docs`.
-  const exportedModuleSpecifier = path
-    .relative(process.cwd(), declarationSourceFilePath) // returns path relative to `docs`, example: "..\packages\grid-core\src\index.ts"
-    .replace(/\\/g, "/"); // module specifiers must use forward slash
 
   const shouldGenerateDefinition =
     Node.isTypeAliasDeclaration(declaration) ||
@@ -43,17 +40,22 @@ export const generateApiPage = cache(async function generateApiPage(
       : true;
 
   let definition: GenerateDefinitionResult | undefined = undefined;
-  if (shouldGenerateDefinition) {
+  if (declaration && shouldGenerateDefinition) {
     try {
+      // We want the relative path from the monorepo root to properly instruct ts-morph downstream.
+      // However, Nextra's TS morph instance in generate-api-reference uses CWD=docs.
+      // So the path should be relative to `docs`.
+      const moduleSpecifier = getModuleSpecifierRelativeToDocs(declaration);
       const generatedDefinition = generateDefinition({
-        code: `export { ${apiExport.name} as default } from '${exportedModuleSpecifier}';`,
+        code: `export { ${apiExport.name} as default } from '${moduleSpecifier}';`,
       });
       definition = formatLinksInDefinitionParts(generatedDefinition);
     } catch (err) {
       if (err instanceof Error && err.message.includes("No properties found")) {
         // nextra throws an Error with message 'No properties found...' when no props are found on a declaration type
         // See https://github.com/shuding/nextra/blob/main/packages/nextra/src/server/tsdoc/base.ts#L126
-        // we are ignoring this error for now
+        // In most cases, `typeHasCustomProperties` guard would make sure that this never reaches to this point,
+        // but in case it fails to do so, we catch the error and ignore it.
       } else {
         throw err;
       }
@@ -63,9 +65,7 @@ export const generateApiPage = cache(async function generateApiPage(
   const rawMdx = createRawMdxForApi(apiExport, definition);
   const rawJs = await compileMdx(rawMdx);
   const page = evaluate(rawJs, mdxComponents, { definition });
-
-  const githubFilePath = exportedModuleSpecifier.replace(/^\.\.\//, ""); // removes leading "..", example: "../packages/xyz" => "packages/xyz" (relative path to repo's root instead of `docs`)
-  page.metadata.filePath = `https://github.com/jsoc-dev/grid/tree/main/${githubFilePath}`;
+  page.metadata.filePath = ""; // keeping this empty string since this is auto-generated, no file exists for it.
 
   return page;
 });
