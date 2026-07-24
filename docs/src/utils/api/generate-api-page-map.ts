@@ -1,8 +1,8 @@
 import { getGroupedApiExports } from "@/utils/api/api-exports";
 import {
-  API_PACKAGES,
   type ApiPackageName,
   getPackageDisplayName,
+  GROUPED_API_PACKAGE_NAMES,
 } from "@/utils/api/api-packages";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
@@ -15,16 +15,34 @@ import type {
 } from "nextra";
 
 type MdxFileExtended = MdxFile & { title?: string };
-type SeparatorMeta = SeparatorItem & { name: string; title: string };
+type SeparatorMeta = SeparatorItem & {
+  name: string;
+  title: string;
+};
 type ApiPageMapItem = SeparatorMeta | MdxFileExtended;
 
 export function generateApiPageMap(): PageMapItem[] {
+  const { corePackage, adapterPackages, pluginPackages } =
+    GROUPED_API_PACKAGE_NAMES;
+
+  const coreSeparator = createSeparatorItem("Core");
+  const adapterSeparator = createSeparatorItem("Adapters");
+  const pluginSeparator = createSeparatorItem("Plugins");
+
   // faking _meta.json file (which tells Nextra what order to put things in the sidebar and what their display titles are).
   const metaJsonFile: MetaJsonFile = {
     // This acts exactly like a _meta.json file. Nextra uses this object strictly for sorting and labeling. By putting index: "Overview" first, we guarantee that the "Overview" link will always be pinned to the absolute top of the sidebar, above all the API packages.
     data: {
       index: "Overview",
-      // ...Object.fromEntries(API_PACKAGES.map((pkg) => [pkg, pkg])),
+
+      [coreSeparator.name]: coreSeparator,
+      [corePackage]: "Core",
+
+      [adapterSeparator.name]: adapterSeparator,
+      ...Object.fromEntries(adapterPackages.map((pkg) => [pkg, pkg])),
+
+      [pluginSeparator.name]: pluginSeparator,
+      ...Object.fromEntries(pluginPackages.map((pkg) => [pkg, pkg])),
     },
   };
 
@@ -40,12 +58,19 @@ export function generateApiPageMap(): PageMapItem[] {
     title: "Overview",
   };
 
-  // dynamically generate folder for each package. This acts exactly like a folder containing mdx files and _meta.json.
-  const folders: Folder[] = API_PACKAGES.map((p) =>
-    generateFolderForPackage(p),
-  );
+  return [
+    metaJsonFile,
+    indexMdxFile,
 
-  return [metaJsonFile, indexMdxFile, ...folders];
+    coreSeparator as unknown as PageMapItem,
+    generateFolderForPackage(corePackage),
+
+    adapterSeparator as unknown as PageMapItem,
+    ...adapterPackages.map(generateFolderForPackage),
+
+    pluginSeparator as unknown as PageMapItem,
+    ...pluginPackages.map(generateFolderForPackage),
+  ];
 }
 
 function generateFolderForPackage(packageName: ApiPackageName): Folder {
@@ -55,28 +80,28 @@ function generateFolderForPackage(packageName: ApiPackageName): Folder {
   const pageMapItem: ApiPageMapItem[] = [];
 
   if (classExports.length > 0) {
-    pageMapItem.push({ type: "separator", title: "Classes", name: "_classes" });
+    pageMapItem.push(createSeparatorItem("Classes"));
     classExports.forEach((e) => {
       pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
   if (functionExports.length > 0) {
-    pageMapItem.push({ type: "separator", title: "Functions", name: "_funcs" });
+    pageMapItem.push(createSeparatorItem("Functions"));
     functionExports.forEach((e) => {
       pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
   if (typeExports.length > 0) {
-    pageMapItem.push({ type: "separator", title: "Types", name: "_types" });
+    pageMapItem.push(createSeparatorItem("Types"));
     typeExports.forEach((e) => {
       pageMapItem.push(createApiPageMapItem(e));
     });
   }
 
   if (otherExports.length > 0) {
-    pageMapItem.push({ type: "separator", title: "Others", name: "_others" });
+    pageMapItem.push(createSeparatorItem("Others"));
     otherExports.forEach((e) => {
       pageMapItem.push(createApiPageMapItem(e));
     });
@@ -104,6 +129,14 @@ function generateFolderForPackage(packageName: ApiPackageName): Folder {
     // @ts-expect-error - Nextra uses title/frontMatter dynamically at runtime even though they aren't strictly on the base Folder interface
     title: getPackageDisplayName(packageName),
     frontMatter: { asIndexPage: true },
+  };
+}
+
+function createSeparatorItem(title: string) {
+  return {
+    type: "separator" as const,
+    title,
+    name: `_${title.toLowerCase()}`,
   };
 }
 

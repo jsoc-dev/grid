@@ -1,4 +1,7 @@
-import type { ApiPackageName } from "@/utils/api/api-packages";
+import {
+  resolvePackageFilePath,
+  type ApiPackageName,
+} from "@/utils/api/api-packages";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";
@@ -11,11 +14,11 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   if (apiExportsCache[packageName]) return apiExportsCache[packageName];
 
   const project = new Project({
-    tsConfigFilePath: resolveFilePath(packageName, "tsconfig.json"),
+    tsConfigFilePath: resolvePackageFilePath(packageName, "tsconfig.json"),
   });
 
   const sourceFile = project.getSourceFileOrThrow(
-    resolveFilePath(packageName, "src/index.ts"),
+    resolvePackageFilePath(packageName, "src/index.ts"),
   );
 
   const exportedDeclarations = sourceFile.getExportedDeclarations();
@@ -34,10 +37,6 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   apiExports.sort((a, b) => a.name.localeCompare(b.name));
 
   return (apiExportsCache[packageName] = apiExports);
-}
-
-function resolveFilePath(packageName: ApiPackageName, fileName: string) {
-  return path.resolve(process.cwd(), `../packages/${packageName}/${fileName}`);
 }
 
 type ApiExportsGroup =
