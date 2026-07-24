@@ -3,14 +3,22 @@ title: React Grid Adapter
 sidebarTitle: React
 ---
 
-# React Grid Adapter
+import { FrameworkIntegration } from "@/components/FrameworkIntegration";
 
-The React framework adapter contains the following:
+# React Grid Adapter
+The official React adapter providing idiomatic hooks and components for seamless usage of Grid Core API in a React application.
+
+<FrameworkIntegration adapterId="react-grid"/>
+
+## API
+Here are some of the key exports provided by the adapter:
 
 - Hooks: 
-  - [`useGridStoreMemo`](/api/react-grid/hooks/useGridStoreMemo)
-  - [`useGridStoreSelector`](/api/react-grid/hooks/useGridStoreSelector)
+  - [`useGridStoreMemo`](/api/react-grid/useGridStoreMemo)
+  - [`useGridStoreSelector`](/api/react-grid/useGridStoreSelector)
   
 - Components:
-  - [`ChildGridToggle`](/api/react-grid/components/ChildGridToggle)
-  - [`SimpleNavigator`](/api/react-grid/components/SimpleNavigator)
+  - [`ChildGridToggle`](/api/react-grid/ChildGridToggle)
+  - [`SimpleNavigator`](/api/react-grid/SimpleNavigator)
+
+You can find the complete API reference at [React Adapter API](/api/react-grid).
