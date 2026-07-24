@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { getMDXComponents } from "@/mdx-components";
-import type { ApiPackageName } from "@/utils/api/api-package-name";
+import type { ApiPackageName } from "@/utils/api/api-packages";
 import type { GenerateDefinitionResult } from "@/utils/api/api-reference-types";
 import { createRawMdxForApi } from "@/utils/api/create-raw-mdx-for-api";
 import {

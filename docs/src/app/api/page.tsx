@@ -1,7 +1,7 @@
 import { Cards } from "nextra/components";
 import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
-import { API_PACKAGES, withPackageScope } from "@/utils/api/api-package-name";
+import { API_PACKAGES, withPackageScope } from "@/utils/api/api-packages";
 
 export const metadata: Metadata = { title: "API Reference" };
 

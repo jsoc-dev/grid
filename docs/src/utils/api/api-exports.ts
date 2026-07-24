@@ -1,4 +1,4 @@
-import type { ApiPackageName } from "@/utils/api/api-package-name";
+import type { ApiPackageName } from "@/utils/api/api-packages";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";

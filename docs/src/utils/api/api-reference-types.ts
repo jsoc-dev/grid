@@ -1,4 +1,4 @@
-import type { ApiPackageName } from "@/utils/api/api-package-name";
+import type { ApiPackageName } from "@/utils/api/api-packages";
 import type {
   GeneratedDefinition,
   GeneratedFunction,

@@ -3,7 +3,7 @@ import {
   API_PACKAGES,
   type ApiPackageName,
   getPackageDisplayName,
-} from "@/utils/api/api-package-name";
+} from "@/utils/api/api-packages";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
   Folder,

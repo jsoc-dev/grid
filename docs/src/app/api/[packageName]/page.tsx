@@ -5,7 +5,7 @@ import {
   API_PACKAGES,
   isValidApiPackageName,
   withPackageScope,
-} from "@/utils/api/api-package-name";
+} from "@/utils/api/api-packages";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Heading } from "nextra";
