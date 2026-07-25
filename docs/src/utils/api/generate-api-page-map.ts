@@ -3,6 +3,7 @@ import {
   type ApiPackageName,
   getPackageDisplayName,
   GROUPED_API_PACKAGE_NAMES,
+  isValidPluginPackageForAdapter,
 } from "@/utils/api/api-packages";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
@@ -27,7 +28,16 @@ export function generateApiPageMap(): PageMapItem[] {
 
   const coreSeparator = createSeparatorItem("Core");
   const adapterSeparator = createSeparatorItem("Adapters");
-  const pluginSeparator = createSeparatorItem("Plugins");
+
+  const pluginPackageGroups = adapterPackages.map((adapterPackage) => ({
+    adapterPackage,
+    separator: createSeparatorItem(
+      `${getPackageDisplayName(adapterPackage)} Plugins`,
+    ),
+    plugins: pluginPackages.filter((pluginPackage) =>
+      isValidPluginPackageForAdapter(pluginPackage, adapterPackage),
+    ),
+  }));
 
   // faking _meta.json file (which tells Nextra what order to put things in the sidebar and what their display titles are).
   const metaJsonFile: MetaJsonFile = {
@@ -41,8 +51,12 @@ export function generateApiPageMap(): PageMapItem[] {
       [adapterSeparator.name]: adapterSeparator,
       ...Object.fromEntries(adapterPackages.map((pkg) => [pkg, pkg])),
 
-      [pluginSeparator.name]: pluginSeparator,
-      ...Object.fromEntries(pluginPackages.map((pkg) => [pkg, pkg])),
+      ...Object.fromEntries(
+        pluginPackageGroups.flatMap(({ separator, plugins }) => [
+          [separator.name, separator],
+          ...plugins.map((pkg) => [pkg, pkg]),
+        ]),
+      ),
     },
   };
 
@@ -62,14 +76,16 @@ export function generateApiPageMap(): PageMapItem[] {
     metaJsonFile,
     indexMdxFile,
 
-    coreSeparator as unknown as PageMapItem,
+    coreSeparator,
     generateFolderForPackage(corePackage),
 
-    adapterSeparator as unknown as PageMapItem,
+    adapterSeparator,
     ...adapterPackages.map(generateFolderForPackage),
 
-    pluginSeparator as unknown as PageMapItem,
-    ...pluginPackages.map(generateFolderForPackage),
+    ...pluginPackageGroups.flatMap(({ separator, plugins }) => [
+      separator,
+      ...plugins.map(generateFolderForPackage),
+    ]),
   ];
 }
 
@@ -137,6 +153,7 @@ function createSeparatorItem(title: string) {
     type: "separator" as const,
     title,
     name: `_${title.toLowerCase()}`,
+    route: "", // dummy value to satisfy the `PageMapItem` type
   };
 }
 

@@ -12,9 +12,11 @@ import path from "path";
 
 export type CorePackageName = "grid-core";
 export type AdapterPackageName = AdapterId;
-export type PluginPackageName = {
-  [A in AdapterId]: `${A}-${PluginId<A>}`;
-}[AdapterId];
+export type PluginPackageByAdapterId<A extends AdapterId> = A extends AdapterId
+  ? `${A}-${PluginId<A>}`
+  : never;
+
+export type PluginPackageName = PluginPackageByAdapterId<AdapterId>;
 
 export type ApiPackageName =
   | CorePackageName
@@ -93,6 +95,16 @@ export function isPluginPackageName(
   packageName: ApiPackageName,
 ): packageName is PluginPackageName {
   return !!extractPackageNameParts(packageName).pluginId;
+}
+
+export function isValidPluginPackageForAdapter<A extends AdapterId>(
+  pluginPackageName: PluginPackageName,
+  adapterId: A,
+): pluginPackageName is PluginPackageByAdapterId<A> {
+  const { adapterId: extractedAdapterId } =
+    extractPackageNameParts(pluginPackageName);
+
+  return extractedAdapterId === adapterId;
 }
 
 export function isValidApiPackageName(name: string): name is ApiPackageName {
