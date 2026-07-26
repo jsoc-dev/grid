@@ -1,6 +1,7 @@
 import { getMDXComponents } from "@/mdx-components";
 import { getApiExports } from "@/utils/api/api-exports";
 import { generateApiPage } from "@/utils/api/generate-api-page";
+import { generateApiDefinition } from "@/utils/api/generate-api-definition";
 import { API_PACKAGES, isValidApiPackageName } from "@/utils/api/api-packages";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -21,8 +22,7 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const { packageName, apiName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
-  const page = await generateApiPage(packageName, apiName);
-  return page.metadata;
+  return { title: `${apiName} - API Reference` };
 };
 
 const Wrapper = getMDXComponents().wrapper;
@@ -33,7 +33,11 @@ export default async function Page(
   const { packageName, apiName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
 
-  const page = await generateApiPage(packageName, apiName);
+  const apiExport = getApiExports(packageName).find((e) => e.name === apiName);
+  if (!apiExport) return notFound();
+
+  const definition = await generateApiDefinition(apiExport);
+  const page = await generateApiPage(apiExport, definition);
   const { default: MDXContent, toc, metadata, sourceCode } = page;
 
   return (
