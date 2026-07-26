@@ -37,6 +37,13 @@ const {
 /**
  * (experimental) React components based API page generator introduced to replace
  * the [raw mdx to page generator](../../utils/api/generate-api-page.ts).
+ *
+ * There are several downsides of using this:
+ * 1. Markdown formatting symbols will render as it is. For example: If the
+ *    description contains text like \`foo\`, it will render exactly as \`foo\`
+ *    instead of `foo` (with a monospace font and styled like code).
+ * 2. Copy as Markdown option will not be available.
+ * 3. Table of contents needs to be built manually.
  */
 export function generateApiPage(
   apiExport: ApiExport,
