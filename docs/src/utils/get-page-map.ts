@@ -2,6 +2,16 @@ import type { PageMapItem } from "nextra";
 import { getPageMap as $getPageMap } from "nextra/page-map";
 import { generateApiPageMap } from "./api/generate-api-page-map";
 
+/**
+ * Eagerly computed at module scope — the result is static (derived from the
+ * package structure) and reused on every `getPageMap` call (i.e. every page
+ * render for sidebar construction).
+ * It's consumed on every request — getPageMap is called for every page render
+ * (it provides the sidebar structure). Eagerly computing the page map once
+ * avoids redundant object construction on each call.
+ */
+const apiPageMap = generateApiPageMap();
+
 export const getPageMap: typeof $getPageMap = async (...args) => {
   const rootPageMap = await $getPageMap(...args);
 
@@ -10,7 +20,7 @@ export const getPageMap: typeof $getPageMap = async (...args) => {
       if (item.route === "/api") {
         return {
           ...item,
-          children: generateApiPageMap(),
+          children: apiPageMap,
         };
       }
     }

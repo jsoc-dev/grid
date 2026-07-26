@@ -7,19 +7,32 @@ import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";
 import { Node, Project, type ExportedDeclarations } from "ts-morph";
 
+/**
+ * Singleton ts-morph `Project` shared across all `getApiExports()` calls.
+ *
+ * `new Project()` is expensive — it bootstraps a full TypeScript compiler
+ * instance (ts.Program, CompilerHost, language service, type checker) and sets
+ * up an in-memory virtual file system with lib.d.ts / module resolution.
+ *
+ * By creating it once at module level, we ensure:
+ * - The compiler initializes **once** instead of N times (one per package).
+ * - Source files parsed for one package are already cached for the next.
+ * - The type checker reuses its internal caches across packages.
+ */
+const project = new Project({
+  skipAddingFilesFromTsConfig: true,
+  compilerOptions: { strictNullChecks: true },
+});
+
 // Simple memory cache so we don't re-parse across multiple Next.js static generations
 const apiExportsCache: Partial<Record<ApiPackageName, ApiExport[]>> = {};
 
 export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   if (apiExportsCache[packageName]) return apiExportsCache[packageName];
 
-  const project = new Project({
-    tsConfigFilePath: resolvePackageFilePath(packageName, "tsconfig.json"),
-  });
-
-  const sourceFile = project.getSourceFileOrThrow(
-    resolvePackageFilePath(packageName, "src/index.ts"),
-  );
+  const indexPath = resolvePackageFilePath(packageName, "src/index.ts");
+  const sourceFile =
+    project.getSourceFile(indexPath) || project.addSourceFileAtPath(indexPath);
 
   const exportedDeclarations = sourceFile.getExportedDeclarations();
   const apiExports: ApiExport[] = [];
