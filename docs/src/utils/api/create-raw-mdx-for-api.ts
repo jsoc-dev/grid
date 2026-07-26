@@ -3,31 +3,18 @@ import {
   type CheckDeclarationKindResult,
 } from "@/utils/api/api-exports";
 import type {
-  ApiExport,
+  ResolvedApiExport,
   GenerateDefinitionResult,
 } from "@/utils/api/api-reference-types";
-import {
-  withGithubMainBranchUrl,
-  withPackageGithubBaseUrl,
-} from "@jsoc/grid-docs";
+import { withGithubMainBranchUrl } from "@jsoc/grid-docs";
 import { joinNonEmptyStrings } from "@jsoc/utils";
 
 export function createRawMdxForApi(
-  apiExport: ApiExport,
+  apiExport: ResolvedApiExport,
   definition?: GenerateDefinitionResult,
 ) {
-  const { name: exportName, packageName, declaration } = apiExport;
+  const { name: exportName, declaration } = apiExport;
   const title = `# \`${exportName}\`` as const;
-
-  if (!declaration) {
-    const sourceCodeUrl = withPackageGithubBaseUrl(packageName);
-
-    return (
-      title +
-      `\n\nWe're still working on this page. Please check back later.` +
-      `\n\nIn the meantime, you can explore the [source code](${sourceCodeUrl}) of its package.`
-    );
-  }
 
   const definitionTags = definition?.tags;
   const declarationKind = apiExport.declarationKind;

@@ -32,3 +32,11 @@ export type ApiExport = {
   /** Precomputed declaration kind flags (isClass, isFunction, isType, isOther). */
   declarationKind: CheckDeclarationKindResult;
 };
+
+/**
+ * A refinement of {@link ApiExport} that guarantees the source declaration
+ * was successfully resolved by the compiler.
+ */
+export type ResolvedApiExport = ApiExport & {
+  declaration: ExportedDeclarations;
+};
