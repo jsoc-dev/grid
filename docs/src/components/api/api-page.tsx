@@ -1,10 +1,7 @@
 import { CodeBlock } from "@/components/CodeBlock";
 import { ApiDoc } from "@/components/api/api-doc";
 import { getMDXComponents } from "@/mdx-components";
-import {
-  checkDeclarationKind,
-  getModuleSpecifierRelativeToRoot,
-} from "@/utils/api/api-exports";
+import { getModuleSpecifierRelativeToRoot } from "@/utils/api/api-exports";
 import { withPackageScope } from "@/utils/api/api-packages";
 import type {
   ApiExport,
@@ -72,8 +69,7 @@ export function generateApiPage(
   const toc: Heading[] = [];
   const sections: ReactNode[] = [];
 
-  const { isClass, isFunction, isType, isOther } =
-    checkDeclarationKind(declaration);
+  const { isClass, isFunction, isType, isOther } = apiExport.declarationKind;
 
   // Declaration (only for type aliases/interfaces)
   if (isType) {
@@ -187,7 +183,7 @@ export function generateApiPage(
 
 function Title({ apiExport }: { apiExport: ApiExport }) {
   const { name: exportName, declaration } = apiExport;
-  const { isClass, isFunction, isType } = checkDeclarationKind(declaration);
+  const { isClass, isFunction, isType } = apiExport.declarationKind;
 
   const suffix = isClass
     ? "class"

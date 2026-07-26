@@ -42,8 +42,14 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
     const declaration = declarations.find(isDefined) as
       | ExportedDeclarations
       | undefined;
+    const declarationKind = checkDeclarationKind(declaration);
 
-    apiExports.push({ name, declaration, packageName });
+    apiExports.push({
+      name,
+      declaration,
+      packageName,
+      declarationKind,
+    });
   }
 
   // Sort exports alphabetically to keep the sidebar predictable
@@ -73,9 +79,7 @@ export function getGroupedApiExports(packageName: ApiPackageName): {
   };
 
   for (const apiExport of allExports) {
-    const { declaration } = apiExport;
-    const { isClass, isFunction, isType, isOther } =
-      checkDeclarationKind(declaration);
+    const { isClass, isFunction, isType, isOther } = apiExport.declarationKind;
 
     if (isClass) {
       map.classExports.push(apiExport);

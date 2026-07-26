@@ -1,4 +1,5 @@
 import type { ApiPackageName } from "@/utils/api/api-packages";
+import type { CheckDeclarationKindResult } from "@/utils/api/api-exports";
 import type {
   GeneratedDefinition,
   GeneratedFunction,
@@ -27,4 +28,7 @@ export type ApiExport = {
 
   /** The name of the package this export belongs to. */
   packageName: ApiPackageName;
+
+  /** Precomputed declaration kind flags (isClass, isFunction, isType, isOther). */
+  declarationKind: CheckDeclarationKindResult;
 };

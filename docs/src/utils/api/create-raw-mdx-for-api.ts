@@ -1,5 +1,4 @@
 import {
-  checkDeclarationKind,
   getModuleSpecifierRelativeToRoot,
   type CheckDeclarationKindResult,
 } from "@/utils/api/api-exports";
@@ -31,7 +30,7 @@ export function createRawMdxForApi(
   }
 
   const definitionTags = definition?.tags;
-  const declarationKind = checkDeclarationKind(declaration);
+  const declarationKind = apiExport.declarationKind;
 
   const titleSuffix = getPageTitleSuffix(declarationKind);
   const specTitle = getSpecificationTitle(declarationKind, definition);
