@@ -1,6 +1,6 @@
 import { getMDXComponents } from "@/mdx-components";
 import { getApiExports } from "@/utils/api/api-exports";
-import { generateApiPage } from "@/utils/api/generate-api-page";
+import { generateApiPage } from "@/components/api/api-page";
 import { generateApiDefinition } from "@/utils/api/generate-api-definition";
 import { API_PACKAGES, isValidApiPackageName } from "@/utils/api/api-packages";
 import { notFound } from "next/navigation";
@@ -37,12 +37,12 @@ export default async function Page(
   if (!apiExport) return notFound();
 
   const definition = await generateApiDefinition(apiExport);
-  const page = await generateApiPage(apiExport, definition);
-  const { default: MDXContent, toc, metadata, sourceCode } = page;
+  const { toc, content } = generateApiPage(apiExport, definition);
+  const metadata = { title: apiName, filePath: "" };
 
   return (
-    <Wrapper toc={toc} metadata={metadata} sourceCode={sourceCode}>
-      <MDXContent />
+    <Wrapper toc={toc} metadata={metadata} sourceCode={""}>
+      {content}
     </Wrapper>
   );
 }
