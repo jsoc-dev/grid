@@ -3,13 +3,12 @@ import type {
   GenerateDefinitionResult,
 } from "@/utils/api/api-reference-types";
 import { getModuleSpecifierRelativeToDocs } from "@/utils/api/api-exports";
-import { generateDefinition } from "nextra/tsdoc";
+import { generateDefinition, type Tags, type TypeField } from "nextra/tsdoc";
 import {
   Node,
   type InterfaceDeclaration,
   type TypeAliasDeclaration,
 } from "ts-morph";
-import { isPlainObject, isString, type StringKeyedObject } from "@jsoc/utils";
 
 const cache = new Map<string, GenerateDefinitionResult | undefined>();
 
@@ -104,29 +103,50 @@ function formatLinksInDefinitionParts(
       .join("");
   };
 
-  const processValue = <T>(value: T, key: string | null): T => {
-    if (isString(value)) {
-      // skip "type" and "name" as they are rendered directly as code/text elements by React
-      if (key === "type" || key === "name") return value;
-      // process other keys
-      return escapeGenerics(trimLinkTrailingSpaces(value)) as T;
-    }
-
-    if (Array.isArray(value)) {
-      return value.map((v) => processValue(v, key)) as T;
-    }
-
-    if (isPlainObject(value)) {
-      const newObj: StringKeyedObject = {};
-      for (const k in value) {
-        newObj[k] = processValue(value[k], k);
-      }
-      return newObj as T;
-    }
-
-    // return other values as it is
-    return value;
+  const formatText = (text: string): string => {
+    return escapeGenerics(trimLinkTrailingSpaces(text));
   };
 
-  return processValue(definition, null);
+  const formatTags = (tags: Tags | undefined) => {
+    if (!tags) return;
+    for (const tag in tags) {
+      tags[tag] = formatText(tags[tag]);
+    }
+  };
+
+  // Mutate the root definition
+  if (definition.description) {
+    definition.description = formatText(definition.description);
+  }
+  formatTags(definition.tags);
+
+  const formatTypeField = (field: TypeField) => {
+    if (field.description) field.description = formatText(field.description);
+    formatTags(field.tags);
+  };
+
+  // Mutate entries (classes/interfaces)
+  if ("entries" in definition && Array.isArray(definition.entries)) {
+    for (const entry of definition.entries) {
+      formatTypeField(entry);
+    }
+  }
+
+  // Mutate signatures (functions)
+  if ("signatures" in definition && Array.isArray(definition.signatures)) {
+    for (const signature of definition.signatures) {
+      if (Array.isArray(signature.params)) {
+        for (const param of signature.params) {
+          formatTypeField(param);
+        }
+      }
+      if (Array.isArray(signature.returns)) {
+        for (const ret of signature.returns) {
+          formatTypeField(ret as TypeField);
+        }
+      }
+    }
+  }
+
+  return definition;
 }
