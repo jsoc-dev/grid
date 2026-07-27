@@ -1,11 +1,13 @@
 import { getMDXComponents } from "@/mdx-components";
-import { getGroupedApiExports } from "@/utils/api/api-exports";
-import type { ApiExport } from "@/utils/api/api-reference-types";
+import { DeclarationKind } from "@/utils/api/api-declaration";
+import { groupApiExportsByDeclarationKind } from "@/utils/api/api-exports";
+import { getExportSectionTitle } from "@/utils/api/api-package-index-page";
 import {
   API_PACKAGES,
   isValidApiPackageName,
   withPackageScope,
 } from "@/utils/api/api-packages";
+import type { ApiExport } from "@/utils/api/api-reference-types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Heading } from "nextra";
@@ -34,30 +36,21 @@ export default async function PackageApiIndexPage(
   const { packageName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
 
-  const {
-    classExports,
-    functionExports,
-    typeExports,
-    otherExports,
-    unresolvedExports,
-  } = getGroupedApiExports(packageName);
+  const exportsByKind = groupApiExportsByDeclarationKind(packageName);
+  const exportsByKindEntries = Object.values(DeclarationKind)
+    .filter((kind) => exportsByKind[kind].length > 0)
+    .map((kind) => {
+      const title = getExportSectionTitle(kind);
+      return {
+        id: title.toLowerCase().replace(/ /g, "-"),
+        title,
+        apiExports: exportsByKind[kind],
+      };
+    });
 
   const toc: Heading[] = [];
-
-  if (classExports.length > 0)
-    toc.push({ depth: 2, value: "Classes", id: "classes" });
-
-  if (functionExports.length > 0)
-    toc.push({ depth: 2, value: "Functions", id: "functions" });
-
-  if (typeExports.length > 0)
-    toc.push({ depth: 2, value: "Types", id: "types" });
-
-  if (otherExports.length > 0)
-    toc.push({ depth: 2, value: "Others", id: "others" });
-
-  if (unresolvedExports.length > 0) {
-    toc.push({ depth: 2, value: "In Progress", id: "in-progress" });
+  for (const { id, title } of exportsByKindEntries) {
+    toc.push({ id, depth: 2, value: title });
   }
 
   const packageNameWithScope = withPackageScope(packageName);
@@ -69,19 +62,19 @@ export default async function PackageApiIndexPage(
         <Code>{packageNameWithScope}</Code> package
       </H1>
 
-      <ExportSection title="Classes" apiExports={classExports} />
-      <ExportSection title="Functions" apiExports={functionExports} />
-      <ExportSection title="Types" apiExports={typeExports} />
-      <ExportSection title="Others" apiExports={otherExports} />
-      <ExportSection title="In Progress" apiExports={unresolvedExports} />
+      {exportsByKindEntries.map((entry) => (
+        <ExportSection key={entry.id} {...entry} />
+      ))}
     </Wrapper>
   );
 }
 
 function ExportSection({
+  id,
   title,
   apiExports,
 }: {
+  id: string;
   title: string;
   apiExports: ApiExport[];
 }) {
@@ -89,7 +82,7 @@ function ExportSection({
 
   return (
     <>
-      <H2 id={title.toLowerCase()}>{title}</H2>
+      <H2 id={id}>{title}</H2>
       <Cards>
         {apiExports.map((exp) => (
           <Cards.Card

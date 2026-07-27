@@ -128,6 +128,12 @@ export function resolvePackageFilePath(
   return path.join(packageDir, filePath);
 }
 
+const PACKAGE_SCOPE = "@jsoc";
+
 export function withPackageScope(packageName: ApiPackageName): string {
-  return `@jsoc/${packageName}`;
+  return `${PACKAGE_SCOPE}/${packageName}`;
+}
+
+export function withPackageLink(packageName: ApiPackageName) {
+  return `https://www.npmjs.com/package/${withPackageScope(packageName)}`;
 }

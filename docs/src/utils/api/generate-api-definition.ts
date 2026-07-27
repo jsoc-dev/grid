@@ -2,7 +2,10 @@ import type {
   ApiExport,
   GenerateDefinitionResult,
 } from "@/utils/api/api-reference-types";
-import { getModuleSpecifierRelativeToDocs } from "@/utils/api/api-exports";
+import {
+  getModuleSpecifierRelativeToDocs,
+  isResolvedApiExport,
+} from "@/utils/api/api-exports";
 import { generateDefinition, type Tags, type TypeField } from "nextra/tsdoc";
 import {
   Node,
@@ -20,6 +23,8 @@ export async function generateApiDefinition(
 
   if (cache.has(cacheKey)) return cache.get(cacheKey);
 
+  if (!isResolvedApiExport(apiExport)) return updateCache(cacheKey, undefined);
+
   const { declaration } = apiExport;
 
   const shouldGenerateDefinition =
@@ -30,7 +35,7 @@ export async function generateApiDefinition(
 
   let definition: GenerateDefinitionResult | undefined = undefined;
 
-  if (declaration && shouldGenerateDefinition) {
+  if (shouldGenerateDefinition) {
     try {
       // We want the relative path from the monorepo root to properly instruct ts-morph downstream.
       // However, Nextra's TS morph instance in generate-api-reference uses CWD=docs.
@@ -52,8 +57,12 @@ export async function generateApiDefinition(
     }
   }
 
-  cache.set(cacheKey, definition);
-  return definition;
+  return updateCache(cacheKey, definition);
+}
+
+function updateCache(key: string, value: GenerateDefinitionResult | undefined) {
+  cache.set(key, value);
+  return value;
 }
 
 function typeHasCustomProperties(

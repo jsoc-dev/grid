@@ -1,11 +1,16 @@
 import { CodeBlock } from "@/components/CodeBlock";
 import { ApiDoc } from "@/components/api/api-doc";
 import { getMDXComponents } from "@/mdx-components";
-import { getModuleSpecifierRelativeToRoot } from "@/utils/api/api-exports";
-import { withPackageScope } from "@/utils/api/api-packages";
+import { DeclarationKind } from "@/utils/api/api-declaration";
+import {
+  isResolvedApiExport,
+  getModuleSpecifierRelativeToRoot,
+} from "@/utils/api/api-exports";
+import { withPackageLink, withPackageScope } from "@/utils/api/api-packages";
 import type {
   ApiExport,
   GenerateDefinitionResult,
+  ResolvedApiExport,
 } from "@/utils/api/api-reference-types";
 import {
   getPageTitleSuffix,
@@ -18,7 +23,6 @@ import {
 import type { Heading } from "nextra";
 import { Callout } from "nextra/components";
 import type { ReactNode } from "react";
-import type { ExportedDeclarations } from "ts-morph";
 
 export type GenerateApiPageResult = {
   toc: Heading[];
@@ -47,34 +51,15 @@ const {
  * 3. Table of contents needs to be built manually.
  */
 export function generateApiPage(
-  apiExport: ApiExport,
+  apiExport: ResolvedApiExport,
   definition: GenerateDefinitionResult | undefined,
 ): GenerateApiPageResult {
-  const { packageName, declaration } = apiExport;
-
-  if (!declaration) {
-    const sourceCodeUrl = withPackageGithubBaseUrl(packageName);
-
-    return {
-      toc: [],
-      content: (
-        <>
-          <Title apiExport={apiExport} />
-          <Paragraph>
-            We are still working on this page. Please check back later. In the
-            meantime, you can explore the{" "}
-            <Anchor href={sourceCodeUrl}>source code</Anchor> of its package.
-          </Paragraph>{" "}
-        </>
-      ),
-    };
-  }
-
+  const { declaration } = apiExport;
   const toc: Heading[] = [];
   const sections: ReactNode[] = [];
 
   // Declaration section (only for type aliases/interfaces)
-  if (declaration.isType) {
+  if (declaration.kind === DeclarationKind.Type) {
     const declarationCode = (
       <CodeBlock code={declaration.getText()} lang="typescript" />
     );
@@ -166,7 +151,7 @@ export function generateApiPage(
         {definition?.description && (
           <Paragraph>{definition.description}</Paragraph>
         )}
-        <SourceCodeCallout apiExport={apiExport} declaration={declaration} />
+        <SourceCodeCallout apiExport={apiExport} />
         {sections}
       </>
     ),
@@ -180,25 +165,19 @@ function Title({ apiExport }: { apiExport: ApiExport }) {
   return (
     <H1>
       <Code>{exportName}</Code>
-      {declaration && " " + suffix}
+      {isResolvedApiExport(apiExport) && " " + suffix}
     </H1>
   );
 }
 
-function SourceCodeCallout({
-  apiExport,
-  declaration,
-}: {
-  apiExport: ApiExport;
-  declaration: ExportedDeclarations;
-}) {
-  const { packageName } = apiExport;
+function SourceCodeCallout({ apiExport }: { apiExport: ResolvedApiExport }) {
+  const { packageName, declaration } = apiExport;
   const sourceCodeUrl = withGithubMainBranchUrl(
     getModuleSpecifierRelativeToRoot(declaration),
   );
 
   const packageNameWithScope = withPackageScope(packageName);
-  const packageLink = `https://www.npmjs.com/package/${packageNameWithScope}`;
+  const packageLink = withPackageLink(packageName);
 
   return (
     <Callout type="default">
@@ -208,3 +187,22 @@ function SourceCodeCallout({
     </Callout>
   );
 }
+
+export function UnresolvedApiPage({ apiExport }: { apiExport: ApiExport }) {
+  const sourceCodeUrl = withPackageGithubBaseUrl(apiExport.packageName);
+
+  return (
+    <>
+      <Title apiExport={apiExport} />
+      <Paragraph>
+        We are still working on this page. Please check back later. In the
+        meantime, you can explore the{" "}
+        <Anchor href={sourceCodeUrl}>source code</Anchor> of its package.
+      </Paragraph>
+    </>
+  );
+}
+
+export const renderUnresolvedApiPage = (apiExport: ApiExport) => (
+  <UnresolvedApiPage apiExport={apiExport} />
+);

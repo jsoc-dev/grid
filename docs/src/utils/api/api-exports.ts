@@ -1,14 +1,19 @@
 import {
+  resolveDeclarationKind,
+  DeclarationKind,
+} from "@/utils/api/api-declaration";
+import {
   resolvePackageFilePath,
   type ApiPackageName,
 } from "@/utils/api/api-packages";
 import type {
   ApiExport,
   ExportedDeclarationsWithKind,
+  ResolvedApiExport,
 } from "@/utils/api/api-reference-types";
-import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
+import { isDefined } from "@jsoc/utils";
 import path from "node:path";
-import { Node, Project, type ExportedDeclarations } from "ts-morph";
+import { Project, type ExportedDeclarations } from "ts-morph";
 
 /**
  * Singleton ts-morph `Project` shared across all `getApiExports()` calls.
@@ -45,17 +50,12 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
     const declaration = declarations.find(isDefined) as
       | ExportedDeclarations
       | undefined;
-    const declarationKind = checkDeclarationKind(declaration);
-    const declarationWithKind = declaration
-      ? (Object.assign(
-          declaration,
-          declarationKind,
-        ) as ExportedDeclarationsWithKind)
-      : undefined;
+    const kind = resolveDeclarationKind(name, packageName, declaration);
+    const declarationWithKind = Object.assign(declaration ?? {}, { kind });
 
     apiExports.push({
       name,
-      declaration: declarationWithKind,
+      declaration: declarationWithKind as ExportedDeclarationsWithKind,
       packageName,
     });
   }
@@ -66,73 +66,23 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
   return (apiExportsCache[packageName] = apiExports);
 }
 
-type ApiExportsGroup =
-  | "allExports"
-  | "classExports"
-  | "functionExports"
-  | "typeExports"
-  | "otherExports"
-  | "unresolvedExports";
+export type ApiExportsGroup = Record<DeclarationKind, ApiExport[]>;
 
-export function getGroupedApiExports(packageName: ApiPackageName): {
-  [K in ApiExportsGroup]: ApiExport[];
-} {
-  const allExports = getApiExports(packageName);
+export function groupApiExportsByDeclarationKind(
+  input: ApiPackageName | ApiExport[],
+): ApiExportsGroup {
+  const allExports = Array.isArray(input) ? input : getApiExports(input);
 
-  const map: Record<ApiExportsGroup, ApiExport[]> = {
-    allExports,
-    classExports: [],
-    functionExports: [],
-    typeExports: [],
-    otherExports: [],
-    unresolvedExports: [],
-  };
+  const map = Object.values(DeclarationKind).reduce((acc, kind) => {
+    acc[kind] = [];
+    return acc;
+  }, {} as ApiExportsGroup);
 
   for (const apiExport of allExports) {
-    const { isClass, isFunction, isType, isOther } =
-      apiExport.declaration ?? {};
-
-    if (isClass) {
-      map.classExports.push(apiExport);
-    } else if (isFunction) {
-      map.functionExports.push(apiExport);
-    } else if (isType) {
-      map.typeExports.push(apiExport);
-    } else if (isOther) {
-      map.otherExports.push(apiExport);
-    } else {
-      map.unresolvedExports.push(apiExport);
-    }
+    map[apiExport.declaration.kind].push(apiExport);
   }
 
   return map;
-}
-
-export type CheckDeclarationKindResult = ExactlyOneTrue<
-  "isClass" | "isFunction" | "isType" | "isOther"
->;
-
-const baseCheckDeclarationKindResult = {
-  isClass: false,
-  isFunction: false,
-  isType: false,
-  isOther: false,
-} as const;
-
-export function checkDeclarationKind(
-  declaration: ExportedDeclarations | undefined,
-): CheckDeclarationKindResult {
-  if (Node.isClassDeclaration(declaration)) {
-    return { ...baseCheckDeclarationKindResult, isClass: true };
-  } else if (Node.isFunctionDeclaration(declaration)) {
-    return { ...baseCheckDeclarationKindResult, isFunction: true };
-  } else if (
-    Node.isTypeAliasDeclaration(declaration) ||
-    Node.isInterfaceDeclaration(declaration)
-  ) {
-    return { ...baseCheckDeclarationKindResult, isType: true };
-  }
-  return { ...baseCheckDeclarationKindResult, isOther: true };
 }
 
 export function getModuleSpecifierRelativeToDocs(
@@ -151,4 +101,10 @@ export function getModuleSpecifierRelativeToRoot(
   declaration: ExportedDeclarations,
 ) {
   return getModuleSpecifierRelativeToDocs(declaration).replace(/^\.\.\//, ""); // removes leading "..", example: "../packages/xyz" => "packages/xyz" (makes it relative to repo's root instead of `docs`)
+}
+
+export function isResolvedApiExport(
+  apiExport: ApiExport,
+): apiExport is ResolvedApiExport {
+  return apiExport.declaration.kind !== DeclarationKind.Unresolved;
 }

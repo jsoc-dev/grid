@@ -1,7 +1,8 @@
+import { getModuleSpecifierRelativeToRoot } from "@/utils/api/api-exports";
 import {
-  getModuleSpecifierRelativeToRoot,
-  type CheckDeclarationKindResult,
-} from "@/utils/api/api-exports";
+  DeclarationKind,
+  resolveDeclarationKindText,
+} from "@/utils/api/api-declaration";
 import type {
   ResolvedApiExport,
   GenerateDefinitionResult,
@@ -9,12 +10,13 @@ import type {
 } from "@/utils/api/api-reference-types";
 import { withGithubMainBranchUrl } from "@jsoc/grid-docs";
 import { joinNonEmptyStrings } from "@jsoc/utils";
+import { withPackageLink, withPackageScope } from "@/utils/api/api-packages";
 
 export function createRawMdxForApi(
   apiExport: ResolvedApiExport,
   definition?: GenerateDefinitionResult,
 ) {
-  const { name: exportName, declaration } = apiExport;
+  const { name: exportName, packageName, declaration } = apiExport;
   const title = `# \`${exportName}\`` as const;
 
   const definitionTags = definition?.tags;
@@ -28,6 +30,9 @@ export function createRawMdxForApi(
     getModuleSpecifierRelativeToRoot(declaration),
   );
 
+  const scopedPackageName = withPackageScope(packageName);
+  const packageLink = withPackageLink(packageName);
+
   const blocks = [
     // title
     joinNonEmptyStrings([title, titleSuffix], " "),
@@ -35,8 +40,11 @@ export function createRawMdxForApi(
     // description
     definition && definition.description,
 
+    // source code link
+    `> [!TIP]\n>\n> This API reference is automatically generated from the [source code](${declarationSourceUrl}) of the [${scopedPackageName}](${packageLink}) package.`,
+
     // declaration (for type aliases/interfaces only)
-    declaration.isType
+    declaration.kind === DeclarationKind.Type
       ? definition
         ? `<details>\n<summary>View Declaration</summary>\n\n${declarationCode}\n\n</details>` // when definition is also available, we show declaration inside a collapsed details element
         : `## Declaration\n\n${declarationCode}`
@@ -50,34 +58,23 @@ export function createRawMdxForApi(
       `> [!WARNING]\n>\n> Throws ${definitionTags.throws}`,
 
     // see
-    definitionTags?.see && `**See**\n\n${definitionTags.see}`,
+    definitionTags?.see && `## See also\n\n${definitionTags.see}`,
 
     // example
     definitionTags?.example && `## Example\n\n${definitionTags.example}`,
 
     // usage
     definitionTags?.usage && `## Usage\n\n${definitionTags.usage}`,
-
-    // source code link
-    `---\n\n_This API reference is automatically generated from the [source code](${declarationSourceUrl})._`,
   ];
 
   return joinNonEmptyStrings(blocks, "\n\n");
 }
 
-export function getPageTitleSuffix(declaration?: ExportedDeclarationsWithKind) {
-  const { isClass, isFunction, isType, isOther } = declaration || {};
-
-  const suffix = isClass
-    ? "class"
-    : isFunction
-      ? "function"
-      : isType
-        ? "type"
-        : isOther
-          ? "" // can be a primitive or a re-export of a class/function/type.
-          : ""; // unresolved exports
-  return suffix;
+export function getPageTitleSuffix(declaration: ExportedDeclarationsWithKind) {
+  return resolveDeclarationKindText(declaration.kind, {
+    other: "",
+    unresolved: "",
+  }).toLowerCase();
 }
 
 const SPEC_TITLE_BY_DECLARATION_KIND = {
@@ -91,15 +88,17 @@ export function getSpecificationTitle(
   declaration: ExportedDeclarationsWithKind,
   definition?: GenerateDefinitionResult,
 ) {
-  const { isClass, isFunction, isType, isOther } = declaration;
+  const kind = declaration.kind;
 
-  return isClass
+  return kind === DeclarationKind.Class
     ? SPEC_TITLE_BY_DECLARATION_KIND.class
-    : isFunction
+    : kind === DeclarationKind.Function ||
+        kind === DeclarationKind.Composable ||
+        kind === DeclarationKind.Hook
       ? SPEC_TITLE_BY_DECLARATION_KIND.function
-      : isType
+      : kind === DeclarationKind.Type
         ? SPEC_TITLE_BY_DECLARATION_KIND.type
-        : isOther && definition // can be a primitive or a re-export of a class/function/type.
+        : kind === DeclarationKind.Other && definition // can be a primitive or a re-export of a class/function/type.
           ? getSpecificationTitleByDefinition(definition)
           : SPEC_TITLE_BY_DECLARATION_KIND.other;
 }

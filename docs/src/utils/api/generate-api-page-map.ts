@@ -1,10 +1,12 @@
-import { getGroupedApiExports } from "@/utils/api/api-exports";
+import { groupApiExportsByDeclarationKind } from "@/utils/api/api-exports";
+import { DeclarationKind } from "@/utils/api/api-declaration";
 import {
   type ApiPackageName,
   getPackageDisplayName,
   GROUPED_API_PACKAGE_NAMES,
   isValidPluginPackageForAdapter,
 } from "@/utils/api/api-packages";
+import { getExportSectionTitle } from "@/utils/api/api-package-index-page";
 import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
   Folder,
@@ -89,50 +91,24 @@ export function generateApiPageMap(): PageMapItem[] {
   ];
 }
 
+/** generates folder for index page of an api package and its api export pages */
 function generateFolderForPackage(packageName: ApiPackageName): Folder {
-  const {
-    classExports,
-    functionExports,
-    typeExports,
-    otherExports,
-    unresolvedExports,
-  } = getGroupedApiExports(packageName);
+  const exportsByKind = groupApiExportsByDeclarationKind(packageName);
 
   const pageMapItem: ApiPageMapItem[] = [];
 
-  if (classExports.length > 0) {
-    pageMapItem.push(createSeparatorItem("Classes"));
-    classExports.forEach((e) => {
-      pageMapItem.push(createApiPageMapItem(e));
-    });
-  }
+  const exportGroups = Object.values(DeclarationKind).map((kind) => {
+    const title = getExportSectionTitle(kind);
+    return { title, exports: exportsByKind[kind] };
+  });
 
-  if (functionExports.length > 0) {
-    pageMapItem.push(createSeparatorItem("Functions"));
-    functionExports.forEach((e) => {
-      pageMapItem.push(createApiPageMapItem(e));
-    });
-  }
-
-  if (typeExports.length > 0) {
-    pageMapItem.push(createSeparatorItem("Types"));
-    typeExports.forEach((e) => {
-      pageMapItem.push(createApiPageMapItem(e));
-    });
-  }
-
-  if (otherExports.length > 0) {
-    pageMapItem.push(createSeparatorItem("Others"));
-    otherExports.forEach((e) => {
-      pageMapItem.push(createApiPageMapItem(e));
-    });
-  }
-
-  if (unresolvedExports.length > 0) {
-    pageMapItem.push(createSeparatorItem("In Progress"));
-    unresolvedExports.forEach((e) => {
-      pageMapItem.push(createApiPageMapItem(e));
-    });
+  for (const { title, exports } of exportGroups) {
+    if (exports.length > 0) {
+      pageMapItem.push(createSeparatorItem(title));
+      exports.forEach((e) => {
+        pageMapItem.push(createApiPageMapItem(e));
+      });
+    }
   }
 
   const pageMapItemMetaTuples: Array<[string, MetaRecord | string]> =
