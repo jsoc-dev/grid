@@ -5,6 +5,7 @@ import {
 import type {
   ResolvedApiExport,
   GenerateDefinitionResult,
+  ExportedDeclarationsWithKind,
 } from "@/utils/api/api-reference-types";
 import { withGithubMainBranchUrl } from "@jsoc/grid-docs";
 import { joinNonEmptyStrings } from "@jsoc/utils";
@@ -17,10 +18,9 @@ export function createRawMdxForApi(
   const title = `# \`${exportName}\`` as const;
 
   const definitionTags = definition?.tags;
-  const declarationKind = apiExport.declarationKind;
 
-  const titleSuffix = getPageTitleSuffix(declarationKind);
-  const specTitle = getSpecificationTitle(declarationKind, definition);
+  const titleSuffix = getPageTitleSuffix(declaration);
+  const specTitle = getSpecificationTitle(declaration, definition);
 
   const declarationCode = `\`\`\`ts\n${declaration.getText()}\n\`\`\``;
 
@@ -36,7 +36,7 @@ export function createRawMdxForApi(
     definition && definition.description,
 
     // declaration (for type aliases/interfaces only)
-    declarationKind.isType
+    declaration.isType
       ? definition
         ? `<details>\n<summary>View Declaration</summary>\n\n${declarationCode}\n\n</details>` // when definition is also available, we show declaration inside a collapsed details element
         : `## Declaration\n\n${declarationCode}`
@@ -65,8 +65,8 @@ export function createRawMdxForApi(
   return joinNonEmptyStrings(blocks, "\n\n");
 }
 
-function getPageTitleSuffix(declarationKindResult: CheckDeclarationKindResult) {
-  const { isClass, isFunction, isType } = declarationKindResult;
+export function getPageTitleSuffix(declaration?: ExportedDeclarationsWithKind) {
+  const { isClass, isFunction, isType, isOther } = declaration || {};
 
   const suffix = isClass
     ? "class"
@@ -74,8 +74,9 @@ function getPageTitleSuffix(declarationKindResult: CheckDeclarationKindResult) {
       ? "function"
       : isType
         ? "type"
-        : ""; // can be a primitive or a re-export of a class/function/type.
-
+        : isOther
+          ? "" // can be a primitive or a re-export of a class/function/type.
+          : ""; // unresolved exports
   return suffix;
 }
 
@@ -86,11 +87,11 @@ const SPEC_TITLE_BY_DECLARATION_KIND = {
   other: "Properties",
 } as const;
 
-function getSpecificationTitle(
-  declarationKindResult: CheckDeclarationKindResult,
+export function getSpecificationTitle(
+  declaration: ExportedDeclarationsWithKind,
   definition?: GenerateDefinitionResult,
 ) {
-  const { isClass, isFunction, isType, isOther } = declarationKindResult;
+  const { isClass, isFunction, isType, isOther } = declaration;
 
   return isClass
     ? SPEC_TITLE_BY_DECLARATION_KIND.class

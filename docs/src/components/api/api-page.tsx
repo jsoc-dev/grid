@@ -8,6 +8,10 @@ import type {
   GenerateDefinitionResult,
 } from "@/utils/api/api-reference-types";
 import {
+  getPageTitleSuffix,
+  getSpecificationTitle,
+} from "@/utils/api/create-raw-mdx-for-api";
+import {
   withGithubMainBranchUrl,
   withPackageGithubBaseUrl,
 } from "@jsoc/grid-docs";
@@ -69,10 +73,8 @@ export function generateApiPage(
   const toc: Heading[] = [];
   const sections: ReactNode[] = [];
 
-  const { isClass, isFunction, isType, isOther } = apiExport.declarationKind;
-
-  // Declaration (only for type aliases/interfaces)
-  if (isType) {
+  // Declaration section (only for type aliases/interfaces)
+  if (declaration.isType) {
     const declarationCode = (
       <CodeBlock code={declaration.getText()} lang="typescript" />
     );
@@ -100,17 +102,7 @@ export function generateApiPage(
 
   if (definition) {
     // Specification
-    const specTitle = isClass
-      ? "Members"
-      : isFunction
-        ? "Signature"
-        : isType
-          ? "Fields"
-          : isOther && definition
-            ? "signatures" in definition
-              ? "Signature"
-              : "Properties"
-            : "Properties";
+    const specTitle = getSpecificationTitle(declaration, definition);
     const specId = specTitle.toLowerCase();
 
     toc.push({ depth: 2, value: specTitle, id: specId });
@@ -183,15 +175,7 @@ export function generateApiPage(
 
 function Title({ apiExport }: { apiExport: ApiExport }) {
   const { name: exportName, declaration } = apiExport;
-  const { isClass, isFunction, isType } = apiExport.declarationKind;
-
-  const suffix = isClass
-    ? "class"
-    : isFunction
-      ? "function"
-      : isType
-        ? "type"
-        : ""; // can be a primitive or a re-export of a class/function/type.
+  const suffix = getPageTitleSuffix(declaration);
 
   return (
     <H1>

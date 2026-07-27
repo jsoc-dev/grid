@@ -2,7 +2,10 @@ import {
   resolvePackageFilePath,
   type ApiPackageName,
 } from "@/utils/api/api-packages";
-import type { ApiExport } from "@/utils/api/api-reference-types";
+import type {
+  ApiExport,
+  ExportedDeclarationsWithKind,
+} from "@/utils/api/api-reference-types";
 import { isDefined, type ExactlyOneTrue } from "@jsoc/utils";
 import path from "node:path";
 import { Node, Project, type ExportedDeclarations } from "ts-morph";
@@ -43,12 +46,17 @@ export function getApiExports(packageName: ApiPackageName): ApiExport[] {
       | ExportedDeclarations
       | undefined;
     const declarationKind = checkDeclarationKind(declaration);
+    const declarationWithKind = declaration
+      ? (Object.assign(
+          declaration,
+          declarationKind,
+        ) as ExportedDeclarationsWithKind)
+      : undefined;
 
     apiExports.push({
       name,
-      declaration,
+      declaration: declarationWithKind,
       packageName,
-      declarationKind,
     });
   }
 
@@ -63,7 +71,8 @@ type ApiExportsGroup =
   | "classExports"
   | "functionExports"
   | "typeExports"
-  | "otherExports";
+  | "otherExports"
+  | "unresolvedExports";
 
 export function getGroupedApiExports(packageName: ApiPackageName): {
   [K in ApiExportsGroup]: ApiExport[];
@@ -76,10 +85,12 @@ export function getGroupedApiExports(packageName: ApiPackageName): {
     functionExports: [],
     typeExports: [],
     otherExports: [],
+    unresolvedExports: [],
   };
 
   for (const apiExport of allExports) {
-    const { isClass, isFunction, isType, isOther } = apiExport.declarationKind;
+    const { isClass, isFunction, isType, isOther } =
+      apiExport.declaration ?? {};
 
     if (isClass) {
       map.classExports.push(apiExport);
@@ -89,6 +100,8 @@ export function getGroupedApiExports(packageName: ApiPackageName): {
       map.typeExports.push(apiExport);
     } else if (isOther) {
       map.otherExports.push(apiExport);
+    } else {
+      map.unresolvedExports.push(apiExport);
     }
   }
 

@@ -90,8 +90,13 @@ export function generateApiPageMap(): PageMapItem[] {
 }
 
 function generateFolderForPackage(packageName: ApiPackageName): Folder {
-  const { classExports, functionExports, typeExports, otherExports } =
-    getGroupedApiExports(packageName);
+  const {
+    classExports,
+    functionExports,
+    typeExports,
+    otherExports,
+    unresolvedExports,
+  } = getGroupedApiExports(packageName);
 
   const pageMapItem: ApiPageMapItem[] = [];
 
@@ -119,6 +124,13 @@ function generateFolderForPackage(packageName: ApiPackageName): Folder {
   if (otherExports.length > 0) {
     pageMapItem.push(createSeparatorItem("Others"));
     otherExports.forEach((e) => {
+      pageMapItem.push(createApiPageMapItem(e));
+    });
+  }
+
+  if (unresolvedExports.length > 0) {
+    pageMapItem.push(createSeparatorItem("In Progress"));
+    unresolvedExports.forEach((e) => {
       pageMapItem.push(createApiPageMapItem(e));
     });
   }

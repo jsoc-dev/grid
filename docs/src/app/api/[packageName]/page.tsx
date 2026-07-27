@@ -34,8 +34,13 @@ export default async function PackageApiIndexPage(
   const { packageName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
 
-  const { classExports, functionExports, typeExports, otherExports } =
-    getGroupedApiExports(packageName);
+  const {
+    classExports,
+    functionExports,
+    typeExports,
+    otherExports,
+    unresolvedExports,
+  } = getGroupedApiExports(packageName);
 
   const toc: Heading[] = [];
 
@@ -51,6 +56,10 @@ export default async function PackageApiIndexPage(
   if (otherExports.length > 0)
     toc.push({ depth: 2, value: "Others", id: "others" });
 
+  if (unresolvedExports.length > 0) {
+    toc.push({ depth: 2, value: "In Progress", id: "in-progress" });
+  }
+
   const packageNameWithScope = withPackageScope(packageName);
   const metadata = { title: packageNameWithScope, filePath: "" };
 
@@ -64,6 +73,7 @@ export default async function PackageApiIndexPage(
       <ExportSection title="Functions" apiExports={functionExports} />
       <ExportSection title="Types" apiExports={typeExports} />
       <ExportSection title="Others" apiExports={otherExports} />
+      <ExportSection title="In Progress" apiExports={unresolvedExports} />
     </Wrapper>
   );
 }
