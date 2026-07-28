@@ -7,9 +7,10 @@ import { PluginCards } from "@/components/PluginCards";
 
 # UI Plugins
 
-**UI Plugins** (or simply **Plugins**) contains the logic for transforming the intermediate [configuration object](/docs/guides/grid-schema#configuration-object)
-into native configurations for a UI component.
-
+**UI Plugins** (or simply **Plugins**) provide a [`ConfigGenerator`](/api/grid-core/ConfigGenerator) that is used when instantiating the [`GridStore`](/api/grid-core/GridStore). 
+This generator leverages core utilities (like [`generateColumns`](/api/grid-core/generateColumns)) alongside schema properties (such as [`rows`](/api/grid-core/GridSchema) and 
+[`primaryColumnKey`](/api/grid-core/GridSchema)) to directly construct the native configuration required by your chosen UI component.
+  
 ## Available plugins
 Plugins are available for various DataGrid and DataTable libraries, organized below by framework.
 

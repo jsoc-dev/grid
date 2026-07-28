@@ -3,26 +3,27 @@ title: Introduction
 ---
 
 # Introduction
-JSOC Grid library help you generate runtime configurations for your favorite DataGrid/DataTable components.
+JSOC Grid helps you generate runtime configurations for your favorite DataGrid/DataTable components.
 
 ## What is JSOC?
-JSOC stands for **JSON Structure Oriented Components**. It is an approach to build dynamic UI components which are suitable for representing JSON type of data.
-These components self configure based on the JSON data and don't need to manually reconfigured every time the JSON data changes.
+JSOC stands for **JSON Structure Oriented Components**—an approach to building dynamic UI components
+ (such as DataGrids, DataTables, Trees, and Charts) that adapt automatically to JSON data.
 
-There are several types of components suitable for representing JSON data depending on the shape/structure such as DataGrid/DataTable, Tree, Chart, etc. 
-These components need manual configuration and you need to know the exact shape of the data beforehand to generate those configurations.
-JSOC is an approach to build dynamic configurations for these components so that they can be self configured based on the JSON data.
+Typically, data-driven UI components require static, upfront setup based on a fixed data schema. 
+JSOC eliminates manual configuration by dynamically generating runtime definitions that adapt whenever
+the underlying JSON data shape changes.
 
 ## JSOC Grid
-JSOC Grid core package `@jsoc/grid-core` is framework and plugin agnostic. 
-It provides the core logic for creating runtime configurations for DataGrid/DataTable components.
+The `@jsoc/grid-core` package is framework-agnostic and provides the core engine for generating runtime
+DataGrid/DataTable configurations.
 
-This library is **NOT** a UI library and does not provide DataGrid/DataTable components. You will need to use a UI library to render the DataGrid/DataTable.
-And this library will help you to generate automatic configurations for those UI components.
+It is **NOT** a UI library and does not render components directly. Instead, it pairs with your existing
+DataGrid/DataTable UI library to dynamically generate its configuration.
 
 ## Before you start
 
-Some documentation content such as installation steps and code examples are tailored to the **framework** and **UI component** selected in the sidebar.
+Some documentation content such as installation steps and code examples are tailored to the **framework**
+and **UI component** selected in the sidebar.
 
 Your current selection:
 

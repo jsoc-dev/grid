@@ -1,7 +1,11 @@
 # Grid Schema
 
-## Main Properties
+The `GridSchema` is a fundamental concept in JSOC Grid. It represents a single instance of a grid's configuration and data. In scenarios where you have nested grids (master-detail views), each level of nesting is represented by its own distinct `GridSchema`.
 
-### Rows 
+The `BaseGridSchema` class in `@jsoc/grid-core` provides the core implementation for a schema.
 
-### Configuration Object
+It holds the generated runtime configuration object specific to your UI plugin, the data rows, and context about where the schema originated (useful for nested child grids).
+
+## API
+
+You can find the complete API reference at [BaseGridSchema API](/api/grid-core/BaseGridSchema).

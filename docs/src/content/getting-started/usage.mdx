@@ -16,17 +16,17 @@ Below are the steps for creating a basic **%%plugin.name%%** component dynamical
 First, we need to import some essential utilities as below:
 
 <If adapterId="react-grid">
-- `useGridStore` - Hook that creates a store for managing dynamic configurations.
-- `useGridStoreSelector` - Hook that lets you react to store state changes.
+- [`useGridStore`](/api/react-grid-%%plugin.id%%/useGridStore) - Hook that creates a store for managing dynamic configurations.
+- [`useGridStoreSelector`](/api/react-grid/useGridStoreSelector) - Hook that lets you react to store state changes.
 - **%%plugin.name%%** component - UI component that renders the grid.
 </If>
 <If adapterId="vanilla-grid">
-- `createGridStore` - Function that creates a store containing dynamic configurations for the grid component.
+- [`createGridStore`](/api/vanilla-grid-%%plugin.id%%/createGridStore) - Function that creates a store containing dynamic configurations for the grid component.
 - **%%plugin.name%%** element creator - Function that creates HTML element for rendering the grid.
 </If>
 <If adapterId="vue-grid">
-- `useGridStore` - Composable to create a store containing dynamic configurations for the grid component.
-- `useGridStoreSelector` - Composable that lets you react to store state changes.
+- [`useGridStore`](/api/vue-grid-%%plugin.id%%/useGridStore) - Composable to create a store containing dynamic configurations for the grid component.
+- [`useGridStoreSelector`](/api/vue-grid/useGridStoreSelector) - Composable that lets you react to store state changes.
 - **%%plugin.name%%** component - UI component that renders the grid.
 </If>
 

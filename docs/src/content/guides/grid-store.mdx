@@ -1,1 +1,25 @@
 # Grid Store
+
+The `GridStore` is the central state management system for your JSOC Grid. Its primary responsibility is managing the lifecycle and state of one or more `GridSchema` instances. 
+
+While simple grids might only ever have a single "root" schema, the `GridStore` is designed to seamlessly handle complex, multi-level nested grids (like expanding a row to reveal a sub-grid) by managing an array of interrelated schemas.
+
+The `BaseGridStore` class in `@jsoc/grid-core` provides the core implementation.
+
+## Initialization
+
+When a `GridStore` is instantiated, it takes a `GridStoreOptions` object. During initialization, it automatically creates the initial "root" schema and sets it as the active schema in its state.
+
+You can intercept the initialization process by overriding the protected `beforeInit()` method in a subclass.
+
+## State Management
+
+The store maintains a simple, immutable internal state (`GridStoreState`):
+- `schemas`: An array of all currently active `GridSchema` instances.
+- `activeIndex`: The index of the currently "active" schema within the array.
+
+The store provides a set of methods to access schemas, add or remove child schemas (essential for master-detail nested grids), and subscribe to state changes.
+
+## API
+
+You can find the complete API reference at [BaseGridStore API](/api/grid-core/BaseGridStore).
