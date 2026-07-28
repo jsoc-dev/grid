@@ -38,7 +38,7 @@
     "@types/node": "^25.5.0",
     "ag-grid-community": "^35.0.0",
     "ag-grid-vue3": "^35.0.0",
-    "typescript": "catalog:",
+    "typescript": "^6.0.3",
     "vue": "^3.5.13",
     "vue-tsc": "~3.2.0"
   },

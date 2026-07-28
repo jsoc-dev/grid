@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
 
+    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,

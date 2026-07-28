@@ -5,10 +5,10 @@
   "editor.tabSize": 2,
 
   // settings for the latest VSCode version
-  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/.pnpm/@typescript+typescript6@6.0.2/node_modules/@typescript/old/lib",
   "js/ts.preferences.importModuleSpecifier": "non-relative",
 
   // settings for the older VSCode versions
-  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.tsdk": "node_modules/.pnpm/@typescript+typescript6@6.0.2/node_modules/@typescript/old/lib",
   "typescript.preferences.importModuleSpecifier": "non-relative"
 }

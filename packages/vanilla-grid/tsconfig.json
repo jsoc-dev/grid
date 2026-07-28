@@ -7,6 +7,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-dom",
 
+    "rootDir": "./src",
     "allowImportingTsExtensions": true, // subpath imports require file extensions
 
     // type checking

@@ -4,6 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
+    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,

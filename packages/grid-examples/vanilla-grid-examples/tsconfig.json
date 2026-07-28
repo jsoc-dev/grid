@@ -5,6 +5,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-dom",
+    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "strict": true,

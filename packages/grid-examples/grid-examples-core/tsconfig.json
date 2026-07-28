@@ -3,6 +3,7 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "rootDir": "./src",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

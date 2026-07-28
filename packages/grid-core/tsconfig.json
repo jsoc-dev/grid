@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "lib": ["ES2024", "DOM"],
 
+    "rootDir": "./src",
     "allowImportingTsExtensions": true, // subpath imports require file extensions
 
     // type checking

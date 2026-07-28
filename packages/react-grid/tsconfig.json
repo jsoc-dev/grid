@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
 
+    "rootDir": "./src",
     "allowImportingTsExtensions": true, // subpath imports require file extensions
 
     // type checking
