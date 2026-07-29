@@ -10,6 +10,9 @@ import { Head } from "nextra/components";
 import { Layout } from "nextra-theme-docs";
 import { getPageMap } from "@/utils/get-page-map";
 import { DOCS_GITHUB_BASE_URL } from "@jsoc/grid-docs";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -22,7 +25,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
       <Head />
-      <body>
+      <body className={inter.className}>
         <ThemeProvider>
           <QueryProvider>
             <Layout
