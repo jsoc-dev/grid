@@ -15,12 +15,12 @@ export default function Page() {
         <div className="flex w-full flex-1 flex-col overflow-hidden rounded-xl border border-zinc-100 bg-white shadow-2xl shadow-zinc-200/50 dark:border-zinc-800/50 dark:bg-zinc-900 dark:shadow-none">
           <PlaygroundHeader />
 
-          <div className="dot-pattern flex min-h-0 flex-1 flex-col gap-4 overflow-hidden p-4 md:h-[400px] md:flex-row md:gap-8 md:p-8">
-            <div className="order-2 flex h-[300px] shrink-0 flex-col min-w-0 md:order-1 md:h-auto md:min-h-0 md:flex-1">
+          <div className="dot-pattern flex min-h-0 flex-1 flex-col gap-4 overflow-hidden p-4 md:h-100 md:flex-row md:gap-8 md:p-8">
+            <div className="order-2 flex h-75 shrink-0 flex-col min-w-0 md:order-1 md:h-auto md:min-h-0 md:flex-1">
               <InputPanel />
             </div>
 
-            <div className="order-1 flex h-[260px] shrink-0 flex-col min-w-0 md:order-2 md:h-auto md:min-h-0 md:flex-[1.6]">
+            <div className="order-1 flex h-65 shrink-0 flex-col min-w-0 md:order-2 md:h-auto md:min-h-0 md:flex-[1.6]">
               <OutputPanel />
             </div>
           </div>

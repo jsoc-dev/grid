@@ -27,7 +27,7 @@ export function DocsSelectors() {
         <SelectPlugin disabled={disabled} />
         {disabled && (
           <div className="flex items-center gap-1.5 pl-2 text-xs text-blue-500">
-            <Info className="mt-0.25 size-3.5 shrink-0" />
+            <Info className="mt-px size-3.5 shrink-0" />
             <span>
               These options can only be changed on documentation pages.
             </span>
