@@ -1,4 +1,5 @@
 {
+  "name": "example-vanilla-grid-ag",
   "private": true,
   "type": "module",
   "imports": {

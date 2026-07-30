@@ -1,4 +1,5 @@
 {
+  "name": "example-react-grid-prime",
   "private": true,
   "type": "module",
   "scripts": {

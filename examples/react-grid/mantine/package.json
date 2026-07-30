@@ -1,4 +1,5 @@
 {
+  "name": "example-react-grid-mantine",
   "private": true,
   "type": "module",
   "scripts": {
