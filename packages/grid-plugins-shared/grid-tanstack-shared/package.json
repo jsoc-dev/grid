@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/grid-tanstack-shared",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Shared TanStack Table column definitions (host-agnostic)",
   "license": "MIT",
   "type": "module",

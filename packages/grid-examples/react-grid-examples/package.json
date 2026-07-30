@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/react-grid-examples",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared utilities for JSOC Grid React documentation examples.",
   "license": "MIT",
   "repository": {
