@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/vanilla-grid-ag",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Dynamic columns/rows generator for ag Vanilla(JS/TS) grid component",
   "license": "MIT",
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/vanilla-grid",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Adapter for using JSOC Grid with Vanilla(JS/TS)",
   "keywords": [
     "datagrid",

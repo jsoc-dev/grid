@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/grid-examples-core",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Core utilities for JSOC Grid documentation examples across frameworks.",
   "license": "MIT",
   "repository": {

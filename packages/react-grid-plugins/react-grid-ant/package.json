@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/react-grid-ant",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Dynamic columns/rows generator for ant React grid component",
   "license": "MIT",
   "type": "module",

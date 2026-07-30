@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/grid-core",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Framework agnostic config generator for grid components.",
   "keywords": [
     "grid",

@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/vue-grid-ag",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Dynamic columns/rows generator for AG Grid Vue component",
   "license": "MIT",
   "type": "module",

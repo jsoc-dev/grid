@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/react-grid-tanstack",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Dynamic columns/rows generator for tanstack React grid component",
   "license": "MIT",
   "type": "module",

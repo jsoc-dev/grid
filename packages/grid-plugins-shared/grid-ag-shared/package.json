@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/grid-ag-shared",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "Shared AG Grid column definitions (host-agnostic)",
   "license": "MIT",
   "type": "module",

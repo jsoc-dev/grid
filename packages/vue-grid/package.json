@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/vue-grid",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Adapter for using JSOC Grid with Vue",
   "keywords": [
     "datagrid",

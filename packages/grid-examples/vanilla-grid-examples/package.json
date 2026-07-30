@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/vanilla-grid-examples",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Shared utilities for JSOC Grid vanilla documentation examples.",
   "license": "MIT",
   "repository": {

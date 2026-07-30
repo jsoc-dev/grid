@@ -1,6 +1,6 @@
 {
   "name": "@jsoc/grid-docs",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Utilities for the JSOC Grid documentation website.",
   "keywords": [
     "jsoc",
