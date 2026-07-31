@@ -8,6 +8,10 @@
     "url": "https://github.com/jsoc-dev/grid.git",
     "directory": "packages/grid-examples/grid-examples-core"
   },
+  "bugs": {
+    "url": "https://github.com/jsoc-dev/grid/issues"
+  },
+  "homepage": "https://github.com/jsoc-dev/grid/tree/main/packages/grid-examples/grid-examples-core#readme",
   "type": "module",
   "imports": {
     "#*": "./src/*"
@@ -16,8 +20,21 @@
     ".": "./src/index.ts",
     "./css/*": "./src/css/*"
   },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      },
+      "./css/*": "./src/css/*"
+    }
+  },
   "files": [
-    "src"
+    "dist",
+    "src/css"
   ],
   "scripts": {
     "build": "pnpm -w build-packages",

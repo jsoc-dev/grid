@@ -8,6 +8,10 @@
     "url": "https://github.com/jsoc-dev/grid.git",
     "directory": "packages/grid-examples/vanilla-grid-examples"
   },
+  "bugs": {
+    "url": "https://github.com/jsoc-dev/grid/issues"
+  },
+  "homepage": "https://github.com/jsoc-dev/grid/tree/main/packages/grid-examples/vanilla-grid-examples#readme",
   "type": "module",
   "sideEffects": [
     "**/*.css"
@@ -18,8 +22,19 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "types": "./dist/index.d.mts"
+      }
+    }
+  },
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "pnpm -w build-packages",
