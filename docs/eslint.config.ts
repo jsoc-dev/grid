@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Ignore statically built examples
     "public/examples/**",
+    // Ignore generated docs artifacts
+    "src/artifacts/generated/**",
     // Ignore postcss config
     "postcss.config.mjs",
   ]),

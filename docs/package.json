@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate-artifacts": "tsx scripts/generate-artifacts.ts",
+    "predev": "pnpm generate-artifacts",
     "dev": "next dev --webpack",
+    "prebuild": "pnpm generate-artifacts",
     "build": "next build",
+    "build-full": "pnpm --dir .. build-examples && pnpm build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
@@ -43,6 +47,7 @@
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "ts-morph": "^28.0.0",
+    "tsx": "^4.21.0",
     "typescript": "catalog:"
   }
 }

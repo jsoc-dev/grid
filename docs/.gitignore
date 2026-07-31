@@ -42,3 +42,6 @@ next-env.d.ts
 
 # others
 public/examples
+
+# generated at build time (see src/artifacts/README.md)
+src/artifacts/generated
