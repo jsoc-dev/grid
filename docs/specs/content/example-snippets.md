@@ -28,7 +28,7 @@
 
 2. Read example app files again or use source manfiest?
 
-- Since source manifest is already generated, we can skip the files reading and just use the manifest. It is faster and ensures consistency. Will it be possible to read the manfiest file?
+- **Resolved:** server-side snippet extraction uses the bundled `example-manifests.json` artifact (see [build-artifacts.md](../build-artifacts.md)). Per-plugin `source-manifest.json` files under `docs/public/examples/` are still used by the client Code Explorer via `fetch`.
 
 3. region id format
 

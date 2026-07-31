@@ -1,6 +1,6 @@
 import { CodeBlock } from "@/components/CodeBlock";
 import { getDynamicContentScope } from "@/utils/dynamicContentScope";
-import { getPackageJson } from "@/utils/getPackageJson";
+import { getPackageMetadata } from "@/artifacts/get-package-metadata";
 
 type Props = {
   of?: "adapter" | "plugin";
@@ -13,14 +13,11 @@ export function PeerDepsBlock({ of = "plugin" }: Props) {
 
   const { plugin, adapter } = scope;
 
-  let packageJson;
-  if (of === "plugin") {
-    packageJson = getPackageJson(adapter.id, plugin.id);
-  } else {
-    packageJson = getPackageJson(adapter.id);
-  }
-
-  const peerDeps = JSON.stringify(packageJson?.peerDependencies || {}, null, 2);
+  const packageMeta = getPackageMetadata(
+    adapter.id,
+    of === "plugin" ? plugin.id : undefined,
+  );
+  const peerDeps = JSON.stringify(packageMeta.peerDependencies, null, 2);
   const code = `"peerDependencies": ` + peerDeps;
 
   return <CodeBlock code={code} lang="json" />;

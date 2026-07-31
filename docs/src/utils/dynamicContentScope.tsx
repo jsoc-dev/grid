@@ -11,7 +11,7 @@ import {
   type PluginMetadata,
   type SnippetMapByExampleId,
 } from "@jsoc/grid-docs";
-import { getCachedExampleManifest } from "@/utils/getCachedExampleManifest";
+import { getExampleManifest } from "@/artifacts/get-example-manifest";
 import { getCachedSnippetMap } from "@/utils/getCachedSnippetMap";
 import { hasDynamicContentTokens } from "@/utils/dynamicContent";
 import { resolveDocsParams } from "@/utils/docsParams";
@@ -66,7 +66,7 @@ export async function createDynamicContentScope(
   const adapter = getAdapterMetadata(docsParams.adapterId);
   const plugin = getPluginMetadata(docsParams.adapterId, docsParams.pluginId);
 
-  const manifest = getCachedExampleManifest(
+  const manifest = getExampleManifest(
     docsParams.adapterId,
     docsParams.pluginId,
   );

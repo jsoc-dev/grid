@@ -8,6 +8,7 @@ import {
   type AdapterId,
   type PluginId,
 } from "@jsoc/grid-docs";
+import { isString } from "@jsoc/utils";
 import path from "path";
 
 export type CorePackageName = "grid-core";
@@ -66,6 +67,22 @@ export function extractPackageNameParts(
   return { adapterId, pluginId };
 }
 
+export function resolvePackageName<A extends AdapterId>(
+  adapterId: A,
+): AdapterPackageName;
+export function resolvePackageName<A extends AdapterId, P extends PluginId<A>>(
+  adapterId: A,
+  pluginId: P,
+): PluginPackageName;
+export function resolvePackageName<A extends AdapterId, P extends PluginId<A>>(
+  adapterId: A,
+  pluginId?: P,
+): AdapterPackageName | PluginPackageName {
+  return pluginId
+    ? (`${adapterId}-${pluginId}` as PluginPackageName)
+    : adapterId;
+}
+
 export function getPackageDisplayName(packageName: ApiPackageName): string {
   if (isCorePackageName(packageName)) return "Grid Core";
 
@@ -111,8 +128,12 @@ export function isValidApiPackageName(name: string): name is ApiPackageName {
   return API_PACKAGES.includes(name as ApiPackageName);
 }
 
-export function resolvePackageDirectoryPath(packageName: ApiPackageName) {
-  const { adapterId, pluginId } = extractPackageNameParts(packageName);
+export function resolvePackageDirectoryPath(
+  packageName: ApiPackageName | PackageNameParts,
+) {
+  const { adapterId, pluginId } = isString(packageName)
+    ? extractPackageNameParts(packageName)
+    : packageName;
 
   const relativePath =
     adapterId && pluginId ? `${adapterId}-plugins/${packageName}` : packageName;
@@ -121,7 +142,7 @@ export function resolvePackageDirectoryPath(packageName: ApiPackageName) {
 }
 
 export function resolvePackageFilePath(
-  packageName: ApiPackageName,
+  packageName: ApiPackageName | PackageNameParts,
   filePath: string,
 ) {
   const packageDir = resolvePackageDirectoryPath(packageName);
