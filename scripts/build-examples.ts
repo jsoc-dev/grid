@@ -29,6 +29,8 @@ async function main() {
       ? await askAdapterIdsToBuild()
       : getAdapterIds();
 
+    const buildTasks: BuildTask[] = [];
+
     for (const adapterId of adapterIdsToBuild) {
       const allPluginIds = getPluginIds(adapterId);
       let buildPluginIds = allPluginIds;
@@ -42,56 +44,86 @@ async function main() {
         continue;
       }
 
-      // Sequential build (not parallelized to keep it simple)
       for (const pluginId of buildPluginIds) {
-        const packageId = `${adapterId}/${pluginId}`;
-        const sourceDir = getExamplesSourceDir(adapterId, pluginId);
-        const outputDir = getExamplesOutputDir(adapterId, pluginId);
-
-        const buildUpToDate = await isBuildUpToDate(
-          sourceDir,
-          outputDir,
-          dryRunMode,
-        );
-        const manifestUpToDate = await isSourceManifestUpToDate(
-          sourceDir,
-          outputDir,
-        );
-
-        const doRebuild = forceMode || !buildUpToDate;
-        const doEmitManifest = forceMode || doRebuild || !manifestUpToDate;
-
-        if (dryRunMode) {
-          console.info(`\n📊 Status for "${packageId}":`);
-          console.info(
-            `  - Rebuild required:          ${doRebuild ? "⚠️ Yes" : "✅ No"}`,
-          );
-          console.info(
-            `  - Re-emit manifest required: ${doEmitManifest ? "⚠️ Yes" : "✅ No"}`,
-          );
-          continue;
-        }
-
-        if (!doRebuild && !doEmitManifest) {
-          console.info(`\n⏭️ Skipping "${packageId}" (already up to date)`);
-          continue;
-        }
-
-        if (doRebuild) {
-          logMilestone(`📦 Build started for "${packageId}"`, "start");
-          await buildExamples(sourceDir, outputDir);
-          logMilestone(`✅ Build completed for "${packageId}"`, "end");
-        }
-
-        if (doEmitManifest) {
-          console.log(`\nEmitting manifest for "${packageId}"...`);
-          await emitExampleSourceManifest(sourceDir, outputDir);
-        }
+        buildTasks.push({
+          adapterId,
+          pluginId,
+          packageId: `${adapterId}/${pluginId}`,
+          sourceDir: getExamplesSourceDir(adapterId, pluginId),
+          outputDir: getExamplesOutputDir(adapterId, pluginId),
+        });
       }
     }
+
+    if (dryRunMode) {
+      for (const task of buildTasks) {
+        await reportBuildTaskStatus(task, { forceMode });
+      }
+      return;
+    }
+
+    await Promise.all(
+      buildTasks.map((task) => buildPluginExample(task, { forceMode })),
+    );
   } catch (err) {
     console.error("\n❌ Build failed", err);
     process.exit(1);
+  }
+}
+
+type BuildTask<A extends AdapterId = AdapterId> = {
+  adapterId: A;
+  pluginId: PluginId<A>;
+  packageId: string;
+  sourceDir: string;
+  outputDir: string;
+};
+
+async function reportBuildTaskStatus(
+  task: BuildTask,
+  options: { forceMode: boolean },
+) {
+  const { packageId, sourceDir, outputDir } = task;
+  const buildUpToDate = await isBuildUpToDate(sourceDir, outputDir, true);
+  const manifestUpToDate = await isSourceManifestUpToDate(sourceDir, outputDir);
+  const doRebuild = options.forceMode || !buildUpToDate;
+  const doEmitManifest = options.forceMode || doRebuild || !manifestUpToDate;
+
+  console.info(`\n📊 Status for "${packageId}":`);
+  console.info(
+    `  - Rebuild required:          ${doRebuild ? "⚠️ Yes" : "✅ No"}`,
+  );
+  console.info(
+    `  - Re-emit manifest required: ${doEmitManifest ? "⚠️ Yes" : "✅ No"}`,
+  );
+}
+
+async function buildPluginExample(
+  task: BuildTask,
+  options: { forceMode: boolean },
+) {
+  const { packageId, sourceDir, outputDir } = task;
+
+  const buildUpToDate = await isBuildUpToDate(sourceDir, outputDir, false);
+  const manifestUpToDate = await isSourceManifestUpToDate(sourceDir, outputDir);
+
+  const doRebuild = options.forceMode || !buildUpToDate;
+  const doEmitManifest = options.forceMode || doRebuild || !manifestUpToDate;
+
+  if (!doRebuild && !doEmitManifest) {
+    console.info(`\n⏭️ Skipping "${packageId}" (already up to date)`);
+    return;
+  }
+
+  if (doRebuild) {
+    logMilestone(`📦 Build started for "${packageId}"`, "start");
+    await buildExamples(sourceDir, outputDir);
+    logMilestone(`✅ Build completed for "${packageId}"`, "end");
+  }
+
+  if (doEmitManifest) {
+    console.log(`\nEmitting manifest for "${packageId}"...`);
+    await emitExampleSourceManifest(sourceDir, outputDir);
   }
 }
 
