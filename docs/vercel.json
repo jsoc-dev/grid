@@ -1,0 +1,5 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd .. && HUSKY=0 pnpm install",
+  "buildCommand": "pnpm build-full"
+}
