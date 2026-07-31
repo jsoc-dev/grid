@@ -6,6 +6,9 @@ import { API_PACKAGES, isValidApiPackageName } from "@/utils/api/api-packages";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams
+export const dynamicParams = false;
+
 // https://nextjs.org/docs/app/api-reference/functions/generate-static-params
 export const generateStaticParams = () => {
   return API_PACKAGES.map((packageName) =>

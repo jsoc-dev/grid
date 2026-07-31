@@ -1,17 +1,19 @@
 import { getMDXComponents } from "@/mdx-components";
+import type { SerializedApiExport } from "@/artifacts/artifacts-types";
+import { getSerializedApiExports } from "@/artifacts/get-serialized-api-exports";
 import { DeclarationKind } from "@/utils/api/api-declaration";
-import { groupApiExportsByDeclarationKind } from "@/utils/api/api-exports";
 import { getExportSectionTitle } from "@/utils/api/api-package-index-page";
 import {
   API_PACKAGES,
   isValidApiPackageName,
   withPackageScope,
 } from "@/utils/api/api-packages";
-import type { ApiExport } from "@/utils/api/api-reference-types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Heading } from "nextra";
 import { Cards } from "nextra/components";
+
+export const dynamicParams = false;
 
 export const generateStaticParams = () => {
   return API_PACKAGES.map((packageName) => ({ packageName }));
@@ -36,15 +38,15 @@ export default async function PackageApiIndexPage(
   const { packageName } = await props.params;
   if (!isValidApiPackageName(packageName)) return notFound();
 
-  const exportsByKind = groupApiExportsByDeclarationKind(packageName);
+  const apiExportsByKind = getSerializedApiExports(packageName);
   const exportsByKindEntries = Object.values(DeclarationKind)
-    .filter((kind) => exportsByKind[kind].length > 0)
+    .filter((kind) => (apiExportsByKind[kind]?.length ?? 0) > 0)
     .map((kind) => {
       const title = getExportSectionTitle(kind);
       return {
         id: title.toLowerCase().replace(/ /g, "-"),
         title,
-        apiExports: exportsByKind[kind],
+        apiExports: apiExportsByKind[kind]!,
       };
     });
 
@@ -76,7 +78,7 @@ function ExportSection({
 }: {
   id: string;
   title: string;
-  apiExports: ApiExport[];
+  apiExports: SerializedApiExport[];
 }) {
   if (apiExports.length === 0) return null;
 

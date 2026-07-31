@@ -1,4 +1,7 @@
-import { groupApiExportsByDeclarationKind } from "@/utils/api/api-exports";
+import type {
+  SerializedApiExport,
+  SerializedApiExportsByKind,
+} from "@/artifacts/artifacts-types";
 import { DeclarationKind } from "@/utils/api/api-declaration";
 import {
   type ApiPackageName,
@@ -7,7 +10,6 @@ import {
   isValidPluginPackageForAdapter,
 } from "@/utils/api/api-packages";
 import { getExportSectionTitle } from "@/utils/api/api-package-index-page";
-import type { ApiExport } from "@/utils/api/api-reference-types";
 import type {
   Folder,
   MdxFile,
@@ -16,6 +18,7 @@ import type {
   PageMapItem,
   SeparatorItem,
 } from "nextra";
+import { getSerializedApiExports } from "@/artifacts/get-serialized-api-exports";
 
 type MdxFileExtended = MdxFile & { title?: string };
 type SeparatorMeta = SeparatorItem & {
@@ -24,7 +27,7 @@ type SeparatorMeta = SeparatorItem & {
 };
 type ApiPageMapItem = SeparatorMeta | MdxFileExtended;
 
-export function generateApiPageMap(): PageMapItem[] {
+function generateApiPageMap(): PageMapItem[] {
   const { corePackage, adapterPackages, pluginPackages } =
     GROUPED_API_PACKAGE_NAMES;
 
@@ -79,36 +82,38 @@ export function generateApiPageMap(): PageMapItem[] {
     indexMdxFile,
 
     coreSeparator,
-    generateFolderForPackage(corePackage),
+    generateFolderMeta(corePackage, getSerializedApiExports(corePackage)),
 
     adapterSeparator,
-    ...adapterPackages.map(generateFolderForPackage),
+    ...adapterPackages.map((packageName) =>
+      generateFolderMeta(packageName, getSerializedApiExports(packageName)),
+    ),
 
     ...pluginPackageGroups.flatMap(({ separator, plugins }) => [
       separator,
-      ...plugins.map(generateFolderForPackage),
+      ...plugins.map((packageName) =>
+        generateFolderMeta(packageName, getSerializedApiExports(packageName)),
+      ),
     ]),
   ];
 }
 
 /** generates folder for index page of an api package and its api export pages */
-function generateFolderForPackage(packageName: ApiPackageName): Folder {
-  const exportsByKind = groupApiExportsByDeclarationKind(packageName);
-
+function generateFolderMeta(
+  packageName: ApiPackageName,
+  apiExportsByKind: SerializedApiExportsByKind,
+): Folder {
   const pageMapItem: ApiPageMapItem[] = [];
 
-  const exportGroups = Object.values(DeclarationKind).map((kind) => {
-    const title = getExportSectionTitle(kind);
-    return { title, exports: exportsByKind[kind] };
-  });
+  for (const kind of Object.values(DeclarationKind)) {
+    const exports = apiExportsByKind[kind];
+    if (!exports || exports.length === 0) continue;
 
-  for (const { title, exports } of exportGroups) {
-    if (exports.length > 0) {
-      pageMapItem.push(createSeparatorItem(title));
-      exports.forEach((e) => {
-        pageMapItem.push(createApiPageMapItem(e));
-      });
-    }
+    const title = getExportSectionTitle(kind);
+    pageMapItem.push(createSeparatorItem(title));
+    exports.forEach((e) => {
+      pageMapItem.push(createApiPageMapItem(e));
+    });
   }
 
   const pageMapItemMetaTuples: Array<[string, MetaRecord | string]> =
@@ -145,10 +150,13 @@ function createSeparatorItem(title: string) {
   };
 }
 
-function createApiPageMapItem(e: ApiExport): ApiPageMapItem {
+function createApiPageMapItem(e: SerializedApiExport): ApiPageMapItem {
   return {
     name: e.name,
     route: `/api/${e.packageName}/${e.name}`,
     title: e.name,
   };
 }
+
+/** Eagerly computed at module scope — reused on every `getPageMap` call. */
+export const apiPageMap = generateApiPageMap();
