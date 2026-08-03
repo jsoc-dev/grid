@@ -3,7 +3,12 @@ import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
 import { API_PACKAGES, withPackageScope } from "@/utils/api/api-packages";
 
-export const metadata: Metadata = { title: "API Reference" };
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "API Reference",
+    description: "Browse API references for all JSOC Grid packages.",
+  };
+}
 
 const mdxComponents = getMDXComponents();
 const Wrapper = mdxComponents.wrapper;
