@@ -5,6 +5,7 @@ import type { ApiPageProps, ApiStaticParamsList } from "@/types/api-routes";
 import { DeclarationKind } from "@/utils/api/api-declaration";
 import { getExportSectionTitle } from "@/utils/api/api-package-index-page";
 import { API_PACKAGES, withPackageScope } from "@/utils/api/api-packages";
+import { createPageMetadata } from "@/utils/og-metadata";
 import type { Metadata } from "next";
 import type { Heading } from "nextra";
 import { Cards } from "nextra/components";
@@ -22,7 +23,7 @@ export async function generateMetadata(
   const packageNameWithScope = withPackageScope(packageName);
   const title = `${packageNameWithScope} APIs`;
   const description = `Browse APIs exported from ${packageNameWithScope}.`;
-  return { title, description };
+  return createPageMetadata({ title, description });
 }
 
 const mdxComponents = getMDXComponents();

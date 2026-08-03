@@ -6,7 +6,7 @@ With support for multiple popular grid libraries, it enables a plug-and-play arc
 
 ## Documentation
 
-Coming soon!
+Visit [https://jsoc-grid.vercel.app/](https://jsoc-grid.vercel.app/) to view the full documentation.
 
 ---
 

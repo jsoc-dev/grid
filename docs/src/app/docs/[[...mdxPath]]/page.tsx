@@ -3,6 +3,7 @@ import {
   createDynamicContentScope,
   DynamicContentScopeBoundary,
 } from "@/utils/dynamicContentScope";
+import { createPageMetadata } from "@/utils/og-metadata";
 import type { Metadata } from "next";
 import { generateStaticParamsFor, importPage } from "nextra/pages";
 
@@ -13,7 +14,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const { metadata } = await importPage(params.mdxPath);
-  return metadata;
+  const { title, description } = metadata;
+
+  return createPageMetadata({
+    title,
+    description: description ?? "Documentation Page",
+  });
 }
 
 const Wrapper = getMDXComponents().wrapper;

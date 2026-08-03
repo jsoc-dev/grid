@@ -2,10 +2,15 @@ import { PlaygroundContextProvider } from "@/components/playground/PlaygroundCon
 import { PlaygroundHeader } from "@/components/playground/header/PlaygroundHeader";
 import { InputPanel } from "@/components/playground/panel/InputPanel";
 import { OutputPanel } from "@/components/playground/panel/OutputPanel";
+import { createPageMetadata } from "@/utils/og-metadata";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Playground" };
+  return createPageMetadata({
+    title: "Playground",
+    description:
+      "Paste JSON and preview how JSOC Grid renders it across frameworks and DataGrid libraries.",
+  });
 }
 
 export default function Page() {

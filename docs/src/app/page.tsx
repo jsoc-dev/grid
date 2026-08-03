@@ -1,5 +1,12 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
+import { createPageMetadata } from "@/utils/og-metadata";
 import Link from "next/link";
+
+export const metadata = createPageMetadata({
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+});
 
 const USE_CASES = [
   {
@@ -26,11 +33,10 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="space-y-6 max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            JSOC Grid
+            {SITE_NAME}
           </h1>
           <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
-            A headless engine that dynamically generates DataGrid configurations
-            at runtime. Built for dynamic and unknown JSON structures.
+            {SITE_DESCRIPTION}
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Link

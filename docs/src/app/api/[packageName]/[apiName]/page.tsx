@@ -4,6 +4,7 @@ import { getApiExports } from "@/utils/api/api-exports";
 import { generateApiPage } from "@/utils/api/generate-api-page";
 import { generateApiDefinition } from "@/utils/api/generate-api-definition";
 import { API_PACKAGES } from "@/utils/api/api-packages";
+import { createPageMetadata } from "@/utils/og-metadata";
 import type { Metadata } from "next";
 
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config/dynamicParams
@@ -27,7 +28,8 @@ export async function generateMetadata(
 
   const title = `${apiName} - API Reference`;
   const description = `View the complete reference for the "${apiName}" API of the "${packageName}" package.`;
-  return { title, description };
+
+  return createPageMetadata({ title, description });
 }
 
 const Wrapper = getMDXComponents().wrapper;

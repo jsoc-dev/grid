@@ -4,6 +4,7 @@ import type {
   ExamplesPageProps,
   ExamplesStaticParamsList,
 } from "@/types/examples-routes";
+import { createPageMetadata } from "@/utils/og-metadata";
 import {
   getAdapterIds,
   getAdapterMetadata,
@@ -42,7 +43,7 @@ export async function generateMetadata(
     example.description ??
     `View the ${example.name} example for ${plugin.name} in ${adapter.frameworkName}.`;
 
-  return { title, description };
+  return createPageMetadata({ title, description });
 }
 
 export default async function Page(

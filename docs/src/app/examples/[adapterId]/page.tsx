@@ -4,6 +4,7 @@ import type {
   ExamplesPageProps,
   ExamplesStaticParamsList,
 } from "@/types/examples-routes";
+import { createPageMetadata } from "@/utils/og-metadata";
 import { getAdapterIds, getAdapterMetadata } from "@jsoc/grid-docs";
 import type { Metadata } from "next";
 
@@ -22,7 +23,7 @@ export async function generateMetadata(
   const title = `Examples for ${adapter.frameworkName}`;
   const description = `Browse examples for ${adapter.frameworkName}.`;
 
-  return { title, description };
+  return createPageMetadata({ title, description });
 }
 
 /** Plugin selection page for a specific adapter. */

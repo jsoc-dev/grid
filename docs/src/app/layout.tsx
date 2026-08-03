@@ -6,6 +6,8 @@ import { Footer } from "@/components/root/Footer";
 import { Navbar } from "@/components/root/Navbar";
 import { QueryProvider } from "@/components/root/QueryProvider";
 import { ThemeProvider } from "@/components/root/ThemeProvider";
+import { SITE_NAME, SITE_URL } from "@/config";
+import { createPageMetadata } from "@/utils/og-metadata";
 import { Head } from "nextra/components";
 import { Layout } from "nextra-theme-docs";
 import { getPageMap } from "@/utils/get-page-map";
@@ -15,9 +17,11 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  ...createPageMetadata({ title: SITE_NAME }),
   title: {
-    default: "JSOC Grid",
-    template: "%s | JSOC Grid",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
 };
 

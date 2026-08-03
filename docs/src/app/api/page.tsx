@@ -1,13 +1,14 @@
 import { Cards } from "nextra/components";
 import { getMDXComponents } from "@/mdx-components";
+import { createPageMetadata } from "@/utils/og-metadata";
 import type { Metadata } from "next";
 import { API_PACKAGES, withPackageScope } from "@/utils/api/api-packages";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
+  return createPageMetadata({
     title: "API Reference",
     description: "Browse API references for all JSOC Grid packages.",
-  };
+  });
 }
 
 const mdxComponents = getMDXComponents();
