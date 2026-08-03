@@ -1,11 +1,10 @@
-import { ApiDoc } from "@/components/api/api-doc";
 import { wrapDynamicContentComponent } from "@/utils/dynamicContent";
 import { useMDXComponents as getThemeComponents } from "nextra-theme-docs";
 import type { MDXComponents } from "nextra/mdx-components";
 import type { ComponentType } from "react";
 
 const themeComponents = getThemeComponents();
-const customComponents = { ApiDoc };
+const customComponents = {};
 
 /**
  * This function is automatically picked up by Nextra and invoked during MDX rendering

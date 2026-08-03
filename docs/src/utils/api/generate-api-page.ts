@@ -1,3 +1,4 @@
+import { ApiDoc } from "@/components/api/api-doc";
 import { getMDXComponents } from "@/mdx-components";
 import { isResolvedApiExport } from "@/utils/api/api-exports";
 import type {
@@ -10,7 +11,7 @@ import { evaluate } from "nextra/evaluate";
 import type { EvaluateResult } from "nextra";
 import { renderUnresolvedApiPage } from "@/components/api/api-page";
 
-const mdxComponents = getMDXComponents();
+const mdxComponents = { ...getMDXComponents(), ApiDoc };
 const cache = new Map<string, EvaluateResult>();
 
 // FIXME: Sidebar overscrolls on clicking Core menu
