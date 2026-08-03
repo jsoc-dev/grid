@@ -19,6 +19,9 @@ export type ExamplesParamsByRoute = {
 
 export type ExamplesParams = ExamplesParamsByRoute[ExamplesRoutes];
 
+export type ExamplesStaticParamsList<Route extends ExamplesRoutes> =
+  ExamplesParamsByRoute[Route][];
+
 /**
  * Typed page props for examples routes.
  * Param validity is enforced by `generateStaticParams` with `dynamicParams = false`.

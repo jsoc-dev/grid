@@ -1,12 +1,15 @@
 import { ChoosePlugin } from "@/components/examples/ChoosePlugin";
 import { ExamplesPageShell } from "@/components/examples/ExamplesPageShell";
-import type { ExamplesPageProps } from "@/types/examples-routes";
+import type {
+  ExamplesPageProps,
+  ExamplesStaticParamsList,
+} from "@/types/examples-routes";
 import { getAdapterIds, getAdapterMetadata } from "@jsoc/grid-docs";
 import type { Metadata } from "next";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export function generateStaticParams(): ExamplesStaticParamsList<"/examples/[adapterId]"> {
   return getAdapterIds().map((adapterId) => ({ adapterId }));
 }
 

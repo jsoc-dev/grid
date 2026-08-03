@@ -1,6 +1,9 @@
 import { ChooseExample } from "@/components/examples/ChooseExample";
 import { ExamplesPageShell } from "@/components/examples/ExamplesPageShell";
-import type { ExamplesPageProps } from "@/types/examples-routes";
+import type {
+  ExamplesPageProps,
+  ExamplesStaticParamsList,
+} from "@/types/examples-routes";
 import {
   getAdapterIds,
   getAdapterMetadata,
@@ -11,7 +14,7 @@ import type { Metadata } from "next";
 
 export const dynamicParams = false;
 
-export function generateStaticParams() {
+export function generateStaticParams(): ExamplesStaticParamsList<"/examples/[adapterId]/[pluginId]"> {
   return getAdapterIds().flatMap((adapterId) =>
     getPluginIds(adapterId).map((pluginId) => ({ adapterId, pluginId })),
   );
