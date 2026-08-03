@@ -11,7 +11,7 @@ export const dynamicParams = false;
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-static-params
 export const generateStaticParams = () => {
-  return API_PACKAGES.map((packageName) =>
+  return API_PACKAGES.flatMap((packageName) =>
     getApiExports(packageName).map(({ name: apiName }) => ({
       packageName,
       apiName,
