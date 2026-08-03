@@ -25,8 +25,9 @@
 - Please follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
 - Commit messages are validated in CI with [commitlint](https://commitlint.js.org/) on pull requests and pushes to `main` (see [.github/workflows/commitlint.yml](.github/workflows/commitlint.yml)).
+- If commitlint fails on your pull request, fix the message on your branch with `git commit --amend` or `git history reword` (available in Git 2.54), then push again.
+- To check a message locally before pushing, pipe it to commitlint or validate the last commit: `pnpm commitlint -- --last` (see [AGENTS.md](AGENTS.md)).
 - Locally, [Husky](https://typicode.github.io/husky/) runs `pre-commit` only: lint and format staged files via [lint-staged](https://github.com/lint-staged/lint-staged) (using [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/)).
-
 
 ### Commit Types
 
@@ -61,4 +62,3 @@ Use the repository path for internal apps and examples:
 - `examples`
 - `examples/react-grid/ant`
 - `examples/vue/basic`
-

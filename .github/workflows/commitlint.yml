@@ -37,9 +37,26 @@ jobs:
             from="${{ github.event.pull_request.base.sha }}"
             to="${{ github.event.pull_request.head.sha }}"
           else
+            # Push to main (typically maintainer-only). github.event.before is the pre-push
+            # tip and github.event.after is the new tip. After a force push that rewrites
+            # history (e.g. amend/rebase to fix commit messages), before is often not an
+            # ancestor of after, so commitlint's --from/--to range is invalid and git
+            # errors with "Invalid revision range". Fetch before when possible, then lint
+            # from merge-base(before, after)..after so rewritten commits are still checked.
             from="${{ github.event.before }}"
             to="${{ github.event.after }}"
             if [ "$from" = "0000000000000000000000000000000000000000" ]; then
+              from="origin/main"
+            else
+              # before may no longer be on main after a force push, but GitHub often
+              # still has the object; fetch it so merge-base can run.
+              git fetch --depth=1 origin "$from" 2>/dev/null || true
+            fi
+            if git cat-file -e "$from^{commit}" 2>/dev/null \
+              && ! git merge-base --is-ancestor "$from" "$to" 2>/dev/null; then
+              from="$(git merge-base "$from" "$to")"
+            fi
+            if ! git cat-file -e "$from^{commit}" 2>/dev/null; then
               from="origin/main"
             fi
           fi
