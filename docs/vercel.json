@@ -2,5 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd .. && HUSKY=0 pnpm install",
   "buildCommand": "pnpm build-full",
-  "ignoreCommand": "bash -c 'if [ -z \"$VERCEL_GIT_PREVIOUS_SHA\" ]; then exit 1; fi; git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" \"$VERCEL_GIT_COMMIT_SHA\" -- docs packages examples scripts package.json pnpm-lock.yaml pnpm-workspace.yaml'"
+  "ignoreCommand": "bash -c 'cd .. && if [ -z \"$VERCEL_GIT_PREVIOUS_SHA\" ]; then exit 1; fi; git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" \"$VERCEL_GIT_COMMIT_SHA\" -- docs packages examples scripts package.json pnpm-lock.yaml pnpm-workspace.yaml'"
 }
