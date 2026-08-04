@@ -41,23 +41,39 @@ jobs:
             # tip and github.event.after is the new tip. After a force push that rewrites
             # history (e.g. amend/rebase to fix commit messages), before is often not an
             # ancestor of after, so commitlint's --from/--to range is invalid and git
-            # errors with "Invalid revision range". Fetch before when possible, then lint
-            # from merge-base(before, after)..after so rewritten commits are still checked.
+            # errors with "Invalid revision range". Fetch the pre-push tip when possible,
+            # then lint from merge-base(before, after)..after so rewritten commits are
+            # still checked.
             from="${{ github.event.before }}"
             to="${{ github.event.after }}"
             if [ "$from" = "0000000000000000000000000000000000000000" ]; then
               from="origin/main"
             else
               # before may no longer be on main after a force push, but GitHub often
-              # still has the object; fetch it so merge-base can run.
-              git fetch --depth=1 origin "$from" 2>/dev/null || true
-            fi
-            if git cat-file -e "$from^{commit}" 2>/dev/null \
-              && ! git merge-base --is-ancestor "$from" "$to" 2>/dev/null; then
-              from="$(git merge-base "$from" "$to")"
-            fi
-            if ! git cat-file -e "$from^{commit}" 2>/dev/null; then
-              from="origin/main"
+              # still has the object. Fetch with full history (not --depth=1): a shallow
+              # fetch leaves before disconnected and merge-base fails; with set -e that
+              # aborts the step before the origin/main fallback runs.
+              if ! git cat-file -e "$from^{commit}" 2>/dev/null; then
+                git fetch origin "$from" 2>/dev/null || true
+              fi
+              if git cat-file -e "$from^{commit}" 2>/dev/null \
+                && ! git merge-base --is-ancestor "$from" "$to" 2>/dev/null; then
+                fork_point="$(git merge-base "$from" "$to" 2>/dev/null || true)"
+                if [ -n "$fork_point" ] && git cat-file -e "$fork_point^{commit}" 2>/dev/null; then
+                  from="$fork_point"
+                else
+                  git fetch origin "$from" 2>/dev/null || true
+                  fork_point="$(git merge-base "$from" "$to" 2>/dev/null || true)"
+                  if [ -n "$fork_point" ] && git cat-file -e "$fork_point^{commit}" 2>/dev/null; then
+                    from="$fork_point"
+                  else
+                    from="origin/main"
+                  fi
+                fi
+              fi
+              if ! git cat-file -e "$from^{commit}" 2>/dev/null; then
+                from="origin/main"
+              fi
             fi
           fi
           pnpm exec commitlint --from "$from" --to "$to"
