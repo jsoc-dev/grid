@@ -6,6 +6,7 @@
 - Before committing changes, verify that the commit message and body adhere to [commitlint](commitlint.config.ts) rules:
   - Draft message: `pnpm commitlint` (pipe the message on stdin)
   - Last commit: `pnpm commitlint -- --last`
+- Husky `pre-push` also runs commitlint on the commits being pushed (same rules as CI).
 
 ---
 

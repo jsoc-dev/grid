@@ -1,0 +1,91 @@
+#!/bin/sh
+
+# Validate commit messages for refs being pushed.
+#
+# stdin lines:
+#   <local_ref> <local_sha> <remote_ref> <remote_sha>
+#
+# Uses commitlint's --from/--to range API (similar to CI). For a new branch
+# that stacks on another already-pushed branch, this may re-lint commits that
+# already exist on another remote branch.
+
+set -e
+
+zero=0000000000000000000000000000000000000000
+
+# Determine the repository's default branch.
+get_default_branch() {
+  if branch=$(git symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null); then
+    printf '%s\n' "$branch"
+    return 0
+  fi
+
+  for branch in origin/main origin/master main master; do
+    if git rev-parse --verify "$branch" >/dev/null 2>&1; then
+      printf '%s\n' "$branch"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+default_branch=$(get_default_branch || true)
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Skip non-branch refs (tags, notes, etc.).
+  case "$local_ref" in
+    refs/heads/*) ;;
+    *) continue ;;
+  esac
+
+  # Deleting a remote ref — nothing to lint.
+  if [ "$local_sha" = "$zero" ]; then
+    continue
+  fi
+
+  if [ "$remote_sha" = "$zero" ]; then
+    # New remote branch: lint commits from the branch's fork point with the
+    # repository's default branch.
+    if [ -z "$default_branch" ]; then
+      echo "pre-push: unable to determine default branch; skipping commitlint for $local_ref"
+      continue
+    fi
+
+    if ! from=$(git merge-base "$default_branch" "$local_sha"); then
+      echo "pre-push: unable to determine merge base for $local_ref"
+      exit 1
+    fi
+  else
+    from="$remote_sha"
+
+    # Force-push / rewritten history: remote tip may not be an ancestor.
+    if ! git merge-base --is-ancestor "$from" "$local_sha" 2>/dev/null; then
+      if fork_point=$(git merge-base "$from" "$local_sha" 2>/dev/null); then
+        from="$fork_point"
+      elif [ -n "$default_branch" ]; then
+        if ! from=$(git merge-base "$default_branch" "$local_sha"); then
+          echo "pre-push: unable to determine merge base for $local_ref"
+          exit 1
+        fi
+      else
+        echo "pre-push: unable to determine commit range for $local_ref; skipping commitlint"
+        continue
+      fi
+    fi
+  fi
+
+  # Nothing to lint.
+  if [ "$from" = "$local_sha" ]; then
+    continue
+  fi
+
+  if ! pnpm exec commitlint \
+    --from "$from" \
+    --to "$local_sha" \
+    --verbose; then
+    exit 1
+  fi
+done
+
+exit 0
