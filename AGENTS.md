@@ -4,9 +4,15 @@
 
 - This project uses `pnpm` as the package manager. Use `pnpm` commands whenever possible.
 - Before committing changes, verify that the commit message and body adhere to [commitlint](commitlint.config.ts) rules:
-  - Draft message: `pnpm commitlint` (pipe the message on stdin)
-  - Last commit: `pnpm commitlint -- --last`
+  - Prefer writing the draft to repo-root [`commit-msg.txt`](commit-msg.txt) (gitignored on purpose — create it locally; do not `git add` it), then `pnpm commitlint:test`
+  - Or pipe a draft on stdin: `pnpm commitlint`
+  - After committing: `pnpm commitlint -- --last`
 - Husky `pre-push` also runs commitlint on the commits being pushed (same rules as CI).
+- Commit with the **same** wrapped body you linted. `body-max-line-length` is 100 chars per line; newlines in the lint input do not carry over if you pass one long `-m` string.
+  - Do **not** put the whole body in a single `-m "..."` argument.
+  - Write `commit-msg.txt`, lint it, then run `git commit -F commit-msg.txt` in a **separate** shell call (message text must not live in the same shell command as the commit — Cursor may inject a `Co-authored-by` `--trailer` into that command; if the text contains `git commit`, the trailer can land in the body and break line length).
+  - If workspace file tools cannot create/read `commit-msg.txt` (gitignored / isolated env), write it via the shell instead, or use a path under `.git/` with the same two-step flow.
+  - Re-check with `pnpm commitlint -- --last`.
 
 ---
 
