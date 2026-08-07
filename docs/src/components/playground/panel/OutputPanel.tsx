@@ -8,6 +8,7 @@ import {
   ExamplePreviewProvider,
   useExamplePreviewContext,
 } from "@/components/example-preview/ExamplePreviewContext";
+import { withLocalDataEditorHidden } from "@jsoc/grid-examples-core";
 
 export function OutputPanel() {
   const { selectedAdapterId, selectedPluginId } = usePlaygroundContext();
@@ -18,6 +19,7 @@ export function OutputPanel() {
         adapterId={selectedAdapterId}
         pluginId={selectedPluginId}
         exampleId="localData"
+        transformPreviewUrl={withLocalDataEditorHidden}
       >
         <PreviewWithControls />
       </ExamplePreviewProvider>

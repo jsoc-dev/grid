@@ -3,16 +3,24 @@ import {
   type PersistentBroadcastMessage,
   subscribeBroadcastChannel,
 } from "@jsoc/grid-examples-core";
-import { onMounted, onUnmounted, type Ref, ref, watch } from "vue";
+import {
+  type MaybeRefOrGetter,
+  onMounted,
+  onUnmounted,
+  type Ref,
+  ref,
+  toValue,
+  watch,
+} from "vue";
 
 export function useBroadcast(
   channelName: string,
-  message: PersistentBroadcastMessage,
+  message: MaybeRefOrGetter<PersistentBroadcastMessage>,
 ) {
   const channelRef = ref(new PersistentBroadcastChannel(channelName));
 
   watch(
-    () => message,
+    () => toValue(message),
     (value) => {
       if (channelRef.value.isClosed()) {
         const newChannel = new PersistentBroadcastChannel(channelName);

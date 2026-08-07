@@ -27,6 +27,8 @@ export type ExamplePreviewProviderProps<
   P extends PluginId<A>,
 > = ExampleLocator<A, P> & {
   children?: ReactNode;
+  /** Transforms the iframe preview url. Does not affect "open in new tab". */
+  transformPreviewUrl?: (url: string) => string;
 };
 
 /** Provides {@link ExamplePreviewContext} to the children components. */
@@ -37,10 +39,13 @@ export function ExamplePreviewProvider<
   adapterId,
   pluginId,
   exampleId,
+  transformPreviewUrl = (url) => url,
   children,
 }: ExamplePreviewProviderProps<A, P>) {
   const previewRef = useRef<HTMLIFrameElement>(null);
-  const url = getExampleUrl(adapterId, pluginId, exampleId);
+  const url = transformPreviewUrl(
+    getExampleUrl(adapterId, pluginId, exampleId),
+  );
   const githubUrl = getExampleAppGitHubUrl(adapterId, pluginId);
 
   const ctx: ExamplePreviewContextValue = {
