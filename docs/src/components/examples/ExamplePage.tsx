@@ -22,7 +22,7 @@ export function ExamplePage<A extends AdapterId, P extends PluginId<A>>({
       title={metadata.name}
       titleCls={clsx(commonCls, "text-left")}
     >
-      <div className={clsx(commonCls, "flex flex-1 flex-col gap-6")}>
+      <div className={clsx(commonCls, "flex flex-1 flex-col min-h-0 gap-6")}>
         {metadata.description}
         <ExampleViewer {...{ adapterId, pluginId, exampleId }} />
       </div>

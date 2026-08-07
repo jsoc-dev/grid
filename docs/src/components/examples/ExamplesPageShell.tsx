@@ -5,6 +5,7 @@ import {
   getExampleMetadata,
   getPluginMetadata,
 } from "@jsoc/grid-docs";
+import clsx from "clsx";
 import type { ReactNode } from "react";
 
 type ExamplesPageShellProps = {
@@ -18,6 +19,7 @@ export function ExamplesPageShell({
 }: ExamplesPageShellProps) {
   const segments = [{ slug: "examples", label: "Examples" }];
 
+  let isViewerPage = false;
   if ("adapterId" in params) {
     const { adapterId } = params;
     segments.push({
@@ -33,6 +35,7 @@ export function ExamplesPageShell({
       });
 
       if ("exampleId" in params) {
+        isViewerPage = true;
         const { exampleId } = params;
         segments.push({
           slug: exampleId,
@@ -43,7 +46,12 @@ export function ExamplesPageShell({
   }
 
   return (
-    <div className="flex flex-1 flex-col min-h-fill-page w-full max-w-full">
+    <div
+      className={clsx(
+        "flex flex-1 flex-col w-full max-w-full",
+        isViewerPage ? "h-fill-page overflow-hidden" : "min-h-fill-page", // chooser pages can't have fixed height otherwise they will overflow out of the page in small screens, viewer page must have fixed height otherwise it will grow on opening long content files
+      )}
+    >
       <Breadcrumbs segments={segments} />
       {children}
     </div>
