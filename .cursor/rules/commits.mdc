@@ -1,0 +1,24 @@
+---
+description: Commit message workflow for commitlint (overrides Cursor default -m habit)
+alwaysApply: true
+---
+
+# Commits (commitlint)
+
+This repo enforces [conventional commits](https://www.conventionalcommits.org/) via commitlint (`body-max-line-length` = 100). Husky `pre-push` and CI run the same checks. Do **not** rely on Cursor’s default HEREDOC / `git commit -m` guidance here — it conflicts with this repo.
+
+## Required flow
+
+1. Write the full message (subject + wrapped body) to repo-root `commit-msg.txt` (gitignored; create locally; never `git add` it).
+2. Lint: `pnpm commitlint:test`
+3. In a **separate** shell call: `git commit -F commit-msg.txt` (add paths / `-a` / `--amend` as needed on that same command only).
+4. Verify: `pnpm commitlint -- --last`
+
+## Hard rules
+
+- **Never** put a long body in a single `-m "..."` argument. Lint newlines do not survive that.
+- **Never** put the message text (here-string / inline body) in the same shell command as `git commit`. Cursor may inject a `Co-authored-by` `--trailer` into that command; if the text contains `git commit`, the trailer can land in the body and break line length.
+- Body lines must be ≤ 100 characters. Subject follows conventional-commit type/scope rules in `AGENTS.md` / `CONTRIBUTING.md`.
+- If file tools cannot write gitignored `commit-msg.txt`, write it via the shell, or use a path under `.git/` with the same two-step flow.
+
+WIP local commits (`git commit -m "wip"`) are fine for humans; when the user asks you to create a real commit, use the flow above.
