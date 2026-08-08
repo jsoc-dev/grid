@@ -7,6 +7,22 @@
 
 ---
 
+## Repository structure
+
+This is a pnpm workspace. Packages are declared in [pnpm-workspace.yaml](pnpm-workspace.yaml).
+
+| Path        | Purpose                                                                                   |
+| :---------- | :---------------------------------------------------------------------------------------- |
+| `docs/`     | Documentation site (Nextra)                                                               |
+| `examples/` | Runnable example apps, grouped by framework (`react-grid/`, `vue-grid/`, `vanilla-grid/`) |
+| `packages/` | Published libraries and shared example code                                               |
+
+**Grouped folders** (e.g. `packages/react-grid-plugins/`, `examples/react-grid/`) are organizational only — they must **not** contain a `package.json`. Actual packages live one level below (e.g. `packages/react-grid-plugins/react-grid-ag/`).
+
+When you add a new example framework or package group, add a matching glob to `pnpm-workspace.yaml` (see existing entries for `examples/*/*` and `packages/*/*`).
+
+---
+
 ## Development
 
 1. Install dependencies
@@ -62,4 +78,4 @@ Use the repository path for internal apps and examples:
 - `docs`
 - `examples`
 - `examples/react-grid/ant`
-- `examples/vue/basic`
+- `examples/vue-grid/ag`

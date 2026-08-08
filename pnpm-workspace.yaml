@@ -1,7 +1,17 @@
+# Workspace globs use explicit patterns (not **) for future compatibility with Turborepo.
+# Group folders (e.g. examples/react-grid/) have no package.json; examples live one level below.
+# https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages
 packages:
   - docs
-  - examples/**
-  - packages/**
+  - examples/react-grid/*
+  - examples/vue-grid/*
+  - examples/vanilla-grid/*
+  - packages/*
+  - packages/grid-examples/*
+  - packages/grid-plugins-shared/*
+  - packages/react-grid-plugins/*
+  - packages/vanilla-grid-plugins/*
+  - packages/vue-grid-plugins/*
 
 allowBuilds:
   esbuild: true
