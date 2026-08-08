@@ -3,4 +3,7 @@ import type { GridRow, PluginConfig } from "@jsoc/grid-core";
 import type { GridOptions } from "ag-grid-community";
 
 export type PluginConfigAg = PluginConfig<ColDefAg> &
-  Pick<GridOptions<GridRow>, "rowData" | "columnDefs" | "getRowId">;
+  Pick<
+    GridOptions<GridRow>,
+    "rowData" | "columnDefs" | "getRowId" | "suppressFieldDotNotation"
+  >;

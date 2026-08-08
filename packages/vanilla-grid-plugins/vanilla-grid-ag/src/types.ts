@@ -9,7 +9,10 @@ import type {
 import type { GridOptions } from "ag-grid-community";
 
 export type PluginConfigAg = PluginConfig<ColDefAg> &
-  Pick<GridOptions<GridRow>, "rowData" | "columnDefs" | "getRowId">;
+  Pick<
+    GridOptions<GridRow>,
+    "rowData" | "columnDefs" | "getRowId" | "suppressFieldDotNotation"
+  >;
 export type ConfigGeneratorAg = PluginConfigGenerator<PluginConfigAg>;
 export type GridStoreAg = GridStore<PluginConfigAg>;
 export type GridStoreOptionsAg = PluginGridStoreOptions<PluginConfigAg>;

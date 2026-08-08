@@ -28,7 +28,10 @@ export function extendBaseColumn<
 
   return {
     id: columnKey,
-    accessorKey: columnKey,
+    // Use accessorFn instead of accessorKey so keys that contain "." (e.g.
+    // ".{json,md,css}") are treated as literal property names, not nested paths.
+    // https://tanstack.com/table/latest/docs/guide/column-defs#accessor-functions
+    accessorFn: (originalRow) => originalRow[columnKey],
     header: toReadableString(columnKey),
     // For reference only; has no bearing on the column definition.
     meta: { type: columnDataType },

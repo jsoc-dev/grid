@@ -23,5 +23,8 @@ const configGenerator: ConfigGeneratorAg = (gridSchema, options) => {
     rowData: gridSchema.rows,
     columnDefs,
     getRowId: ({ data }) => getRowIdString(data, gridSchema.primaryColumnKey),
+    // Column keys are literal object property names (including those with ".").
+    // https://www.ag-grid.com/javascript-data-grid/grid-options/#reference-data-suppressFieldDotNotation
+    suppressFieldDotNotation: true,
   };
 };
