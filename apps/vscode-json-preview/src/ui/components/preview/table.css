@@ -1,0 +1,28 @@
+.table-wrapper {
+  height: 100%;
+  overflow: auto;
+  border: 1px solid var(--vscode-panel-border);
+}
+
+.table-wrapper > table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrapper tr {
+  border-bottom: 1px solid var(--vscode-panel-border);
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.message {
+  padding: 8px;
+}
+
+.message--error {
+  color: var(--vscode-errorForeground);
+}

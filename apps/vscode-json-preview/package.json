@@ -1,0 +1,95 @@
+{
+  "name": "json-preview",
+  "displayName": "JSON Preview",
+  "description": "Preview JSON files as a table",
+  "version": "0.0.0",
+  "publisher": "jsoc",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsoc-dev/grid.git",
+    "directory": "apps/vscode-json-preview"
+  },
+  "bugs": {
+    "url": "https://github.com/jsoc-dev/grid/issues"
+  },
+  "homepage": "https://github.com/jsoc-dev/grid/tree/main/apps/vscode-json-preview#readme",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "keywords": [
+    "json",
+    "preview",
+    "table",
+    "jsonc",
+    "viewer"
+  ],
+  "categories": [
+    "Visualization"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./dist/extension.cjs",
+  "contributes": {
+    "commands": [
+      {
+        "command": "json-preview.openPreviewToSide",
+        "title": "Open Preview to the Side",
+        "category": "JSON Preview",
+        "icon": "$(open-preview)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "json-preview.openPreviewToSide",
+          "when": "editorLangId =~ /^json(c)?$/",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "json-preview.openPreviewToSide",
+          "when": "editorLangId =~ /^json(c)?$/"
+        }
+      ]
+    }
+  },
+  "type": "module",
+  "private": true,
+  "imports": {
+    "#package.json": "./package.json",
+    "#*": "./src/*"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts --production",
+    "watch": "tsx scripts/build.ts --watch",
+    "typecheck": "tsc -b --noEmit",
+    "package": "vsce package --no-dependencies",
+    "install-local": "tsx scripts/install-local.ts",
+    "vscode:prepublish": "pnpm run build"
+  },
+  "dependencies": {
+    "@jsoc/grid-core": "workspace:*",
+    "@jsoc/react-grid": "workspace:*",
+    "@jsoc/react-grid-tanstack": "workspace:*",
+    "@tanstack/react-table": "^8.21.3",
+    "clsx": "^2.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/vscode": "^1.90.0",
+    "@types/vscode-webview": "^1.57.5",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.21.0",
+    "typescript": "catalog:"
+  }
+}

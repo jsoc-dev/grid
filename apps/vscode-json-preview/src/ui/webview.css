@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  padding: 16px;
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

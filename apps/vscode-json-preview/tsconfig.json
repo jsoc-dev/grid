@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./scripts" },
+    { "path": "./src/ext" },
+    { "path": "./src/ui" }
+  ]
+}

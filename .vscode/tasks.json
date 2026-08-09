@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "vscode-json-preview: watch",
+      "type": "npm",
+      "script": "watch",
+      "path": "apps/vscode-json-preview",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "esbuild",
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "\\[watch\\] esbuild started",
+          "endsPattern": "\\[watch\\] esbuild started"
+        }
+      }
+    }
+  ]
+}

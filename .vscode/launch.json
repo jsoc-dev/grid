@@ -1,0 +1,21 @@
+// debug configuration; launches an Extension Development Host (a second VS Code window with your extension loaded).
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "vscode-json-preview",
+      // launches a child VS Code window for extension development
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        // the path to the extension development directory
+        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode-json-preview"
+      ],
+      // maps breakpoints to built output in apps/vscode-json-preview/dist/
+      "outFiles": [
+        "${workspaceFolder}/apps/vscode-json-preview/dist/**/*.{js,cjs}"
+      ],
+      "preLaunchTask": "vscode-json-preview: watch"
+    }
+  ]
+}

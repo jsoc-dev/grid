@@ -3,6 +3,7 @@
 # https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages
 packages:
   - docs
+  - apps/**
   - examples/react-grid/*
   - examples/vue-grid/*
   - examples/vanilla-grid/*
@@ -14,7 +15,9 @@ packages:
   - packages/vue-grid-plugins/*
 
 allowBuilds:
+  '@vscode/vsce-sign': false
   esbuild: true
+  keytar: false
   sharp: true # for nextra-theme-docs
   unrs-resolver: true # for nextra-theme-docs
 

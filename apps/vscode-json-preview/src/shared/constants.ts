@@ -1,0 +1,1 @@
+export const INITIAL_JSON_FILE_GLOBAL = "__INITIAL_JSON_FILE__";

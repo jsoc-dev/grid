@@ -34,6 +34,7 @@ export default defineConfig([
   globalIgnores([
     "**/dist/**",
     "**/node_modules/**",
+    "apps/**", // vscode extension has its own build setup
     "docs/", // docs has its own eslint.config
     "examples/**", // examples have their own eslint.config
   ]),
