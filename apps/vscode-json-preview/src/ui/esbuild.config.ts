@@ -24,7 +24,7 @@ export function getWebviewConfig({ production }: ConfigOptions): BuildOptions {
     platform: "browser",
     format: "iife",
     jsx: "automatic",
-    loader: { ".css": "css" },
+    loader: { ".css": "css", ".svg": "text" },
     alias: {
       react: reactRoot,
       "react-dom": reactDomRoot,

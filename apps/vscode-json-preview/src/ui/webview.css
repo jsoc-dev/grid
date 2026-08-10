@@ -12,3 +12,26 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+
+.child-grid-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-inline: auto;
+  border-radius: 50%;
+  transition: background 0.1s ease;
+}
+
+.child-grid-toggle-btn:hover {
+  background: var(--vscode-list-hoverBackground, rgba(90, 93, 94, 0.31));
+  color: var(
+    --vscode-breadcrumb-focusForeground,
+    var(--vscode-foreground, #fff)
+  );
+}
