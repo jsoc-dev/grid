@@ -10,12 +10,15 @@ const qualify = <T extends string>(name: T): `${typeof EXTENSION_NAME}.${T}` =>
 export const CommandId = {
   OpenPreviewToSide: qualify("openPreviewToSide"),
   ShowSource: qualify("showSource"),
+  ReopenAsPreview: qualify("reopenAsPreview"),
+  ReopenAsSource: qualify("reopenAsSource"),
 } as const;
 
 export type CommandId = (typeof CommandId)[keyof typeof CommandId];
 
 export const ViewType = {
   PreviewPanel: qualify("previewPanel"),
+  PreviewEditor: qualify("previewEditor"),
 } as const;
 
 export type ViewType = (typeof ViewType)[keyof typeof ViewType];

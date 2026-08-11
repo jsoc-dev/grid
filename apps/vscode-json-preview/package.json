@@ -42,10 +42,40 @@
         "icon": "$(open-preview)"
       },
       {
+        "command": "json-preview.reopenAsPreview",
+        "title": "Reopen as Preview",
+        "category": "JSON Preview",
+        "icon": {
+          "light": "media/preview-light.svg",
+          "dark": "media/preview-dark.svg"
+        }
+      },
+      {
+        "command": "json-preview.reopenAsSource",
+        "title": "Reopen as Source",
+        "category": "JSON Preview",
+        "icon": "$(go-to-file)"
+      },
+      {
         "command": "json-preview.showSource",
         "title": "Show Source",
         "category": "JSON Preview",
         "icon": "$(go-to-file)"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "json-preview.previewEditor",
+        "displayName": "JSON Preview",
+        "selector": [
+          {
+            "filenamePattern": "*.json"
+          },
+          {
+            "filenamePattern": "*.jsonc"
+          }
+        ],
+        "priority": "option"
       }
     ],
     "menus": {
@@ -53,18 +83,36 @@
         {
           "command": "json-preview.openPreviewToSide",
           "when": "editorLangId =~ /^json(c)?$/",
-          "group": "navigation"
+          "group": "navigation@1"
+        },
+        {
+          "command": "json-preview.reopenAsPreview",
+          "when": "editorLangId =~ /^json(c)?$/ && activeCustomEditorId != 'json-preview.previewEditor'",
+          "group": "navigation@2"
+        },
+        {
+          "command": "json-preview.reopenAsSource",
+          "when": "activeCustomEditorId == 'json-preview.previewEditor'",
+          "group": "navigation@2"
         },
         {
           "command": "json-preview.showSource",
           "when": "activeWebviewPanelId == 'json-preview.previewPanel'",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ],
       "commandPalette": [
         {
           "command": "json-preview.openPreviewToSide",
           "when": "editorLangId =~ /^json(c)?$/"
+        },
+        {
+          "command": "json-preview.reopenAsPreview",
+          "when": "editorLangId =~ /^json(c)?$/ && activeCustomEditorId != 'json-preview.previewEditor'"
+        },
+        {
+          "command": "json-preview.reopenAsSource",
+          "when": "activeCustomEditorId == 'json-preview.previewEditor'"
         },
         {
           "command": "json-preview.showSource",
