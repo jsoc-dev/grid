@@ -57,7 +57,7 @@
         },
         {
           "command": "json-preview.showSource",
-          "when": "activeWebviewPanelId == 'json-preview'",
+          "when": "activeWebviewPanelId == 'json-preview.previewPanel'",
           "group": "navigation"
         }
       ],
@@ -68,7 +68,7 @@
         },
         {
           "command": "json-preview.showSource",
-          "when": "activeWebviewPanelId == 'json-preview'"
+          "when": "activeWebviewPanelId == 'json-preview.previewPanel'"
         }
       ]
     }

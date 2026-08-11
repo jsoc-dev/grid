@@ -1,4 +1,4 @@
-import { EXTENSION_NAME } from "#ext/constants.ts";
+import { ViewType } from "#ext/constants.ts";
 import { getWebviewHtml } from "#ext/utils/webview.ts";
 import { toJsonFile, type JSONDocument } from "#ext/utils/document.ts";
 import { uriToFileName, isEqualUri } from "#ext/utils/uri.ts";
@@ -15,7 +15,7 @@ export class PreviewPanel {
     sourceViewColumn?: vscode.ViewColumn,
   ) {
     const panel = vscode.window.createWebviewPanel(
-      EXTENSION_NAME,
+      ViewType.PreviewPanel,
       getPanelTitle(document),
       viewColumn,
       {
