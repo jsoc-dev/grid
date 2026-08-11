@@ -12,6 +12,7 @@ export class PreviewPanel {
     document: JSONDocument,
     extensionUri: vscode.Uri,
     viewColumn: vscode.ViewColumn,
+    sourceViewColumn?: vscode.ViewColumn,
   ) {
     const panel = vscode.window.createWebviewPanel(
       EXTENSION_NAME,
@@ -25,12 +26,13 @@ export class PreviewPanel {
     );
     panel.iconPath = getPanelIconPath(extensionUri);
 
-    return new PreviewPanel(panel, document, extensionUri);
+    return new PreviewPanel(panel, document, extensionUri, sourceViewColumn);
   }
 
   public readonly panel: vscode.WebviewPanel;
   public readonly document: JSONDocument;
-  public readonly document: vscode.TextDocument;
+  public readonly sourceViewColumn?: vscode.ViewColumn;
+
   readonly #extensionUri: vscode.Uri;
   #workspaceSubscription: vscode.Disposable;
   #pendingUpdate: NodeJS.Timeout | undefined;
@@ -39,9 +41,11 @@ export class PreviewPanel {
     panel: vscode.WebviewPanel,
     document: JSONDocument,
     extensionUri: vscode.Uri,
+    sourceViewColumn?: vscode.ViewColumn,
   ) {
     this.panel = panel;
     this.document = document;
+    this.sourceViewColumn = sourceViewColumn;
     this.#extensionUri = extensionUri;
 
     this.panel.webview.html = getWebviewHtml(

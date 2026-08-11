@@ -10,6 +10,7 @@ const cid = (name: string) => `${EXTENSION_NAME}.${name}`;
 
 export const CommandId = {
   OpenPreviewToSide: cid("openPreviewToSide"),
+  ShowSource: cid("showSource"),
 } as const;
 
 export type CommandId = (typeof CommandId)[keyof typeof CommandId];

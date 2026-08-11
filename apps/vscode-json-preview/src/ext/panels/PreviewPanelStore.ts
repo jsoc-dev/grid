@@ -29,7 +29,12 @@ export class PreviewPanelStore {
       return;
     }
 
-    const preview = PreviewPanel.create(document, extensionUri, viewColumn);
+    const preview = PreviewPanel.create(
+      document,
+      extensionUri,
+      viewColumn,
+      editorColumn,
+    );
     this.#panels.add(preview);
 
     preview.panel.onDidDispose(() => {
@@ -49,6 +54,15 @@ export class PreviewPanelStore {
         isEqualUri(preview.document.uri, documentUri) &&
         (!viewColumn || preview.panel.viewColumn === viewColumn)
       ) {
+        return preview;
+      }
+    }
+    return undefined;
+  }
+
+  findActive() {
+    for (const preview of this.#panels) {
+      if (preview.panel.active) {
         return preview;
       }
     }

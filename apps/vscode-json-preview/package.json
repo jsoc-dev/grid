@@ -40,6 +40,12 @@
         "title": "Open Preview to the Side",
         "category": "JSON Preview",
         "icon": "$(open-preview)"
+      },
+      {
+        "command": "json-preview.showSource",
+        "title": "Show Source",
+        "category": "JSON Preview",
+        "icon": "$(go-to-file)"
       }
     ],
     "menus": {
@@ -48,12 +54,21 @@
           "command": "json-preview.openPreviewToSide",
           "when": "editorLangId =~ /^json(c)?$/",
           "group": "navigation"
+        },
+        {
+          "command": "json-preview.showSource",
+          "when": "activeWebviewPanelId == 'json-preview'",
+          "group": "navigation"
         }
       ],
       "commandPalette": [
         {
           "command": "json-preview.openPreviewToSide",
           "when": "editorLangId =~ /^json(c)?$/"
+        },
+        {
+          "command": "json-preview.showSource",
+          "when": "activeWebviewPanelId == 'json-preview'"
         }
       ]
     }
