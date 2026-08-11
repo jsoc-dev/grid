@@ -6,14 +6,11 @@ export function Table({ table }: { table: Table<GridRow> }) {
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;
 
-  const hasRows = rows.length > 0;
   const hasHeaders = headerGroups.some((group) => group.headers.length > 0);
-
-  if (!hasRows) return <p className="message">No rows</p>;
-  if (!hasHeaders) return <p className="message">No columns</p>;
 
   return (
     <div className="table-wrapper">
+      {!hasHeaders && <div className="no-columns">No columns</div>}
       <table>
         <thead>
           {headerGroups.map((headerGroup) => (

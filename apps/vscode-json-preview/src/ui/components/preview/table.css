@@ -19,10 +19,9 @@
   text-align: center;
 }
 
-.message {
-  padding: 8px;
-}
-
-.message--error {
-  color: var(--vscode-errorForeground);
+.table-wrapper .no-columns {
+  width: 100%;
+  padding-block: 64px;
+  font-style: italic;
+  text-align: center;
 }

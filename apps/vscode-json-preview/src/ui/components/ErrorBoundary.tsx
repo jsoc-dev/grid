@@ -1,4 +1,6 @@
+import { Placeholder } from "#ui/components/Placeholder.tsx";
 import { Component, type ReactNode } from "react";
+import { isError } from "@jsoc/utils";
 
 type ErrorBoundaryProps = {
   children: ReactNode;
@@ -29,19 +31,14 @@ export class ErrorBoundary extends Component<
   }
 
   render() {
-    if (this.state.error) {
-      const cause =
-        this.state.error.cause instanceof Error
-          ? this.state.error.cause.message
-          : String(this.state.error.cause);
-      return (
-        <>
-          <p className="message message--error">{this.state.error.message}</p>
-          {cause && <p>Cause: {cause}</p>}
-        </>
-      );
-    }
+    const error = this.state.error;
+    if (!error) return this.props.children;
 
-    return this.props.children;
+    const details =
+      isError(error.cause) && error.cause.message ? error.cause.message : null;
+
+    return (
+      <Placeholder type="error" title={error.message} description={details} />
+    );
   }
 }
