@@ -78,6 +78,16 @@
         "priority": "option"
       }
     ],
+    "configuration": {
+      "title": "JSON Preview",
+      "properties": {
+        "json-preview.doubleClickToSwitchToEditor": {
+          "type": "boolean",
+          "default": true,
+          "description": "Double-click in the JSON Preview to switch to the editor. Note: Double clicks inside table cells and interactive elements will be ignored."
+        }
+      }
+    },
     "menus": {
       "editor/title": [
         {

@@ -1,7 +1,7 @@
 import { Navigator } from "#ui/components/preview/Navigator.tsx";
 import { Table } from "#ui/components/preview/Table.tsx";
 import { customColumnGenerator } from "#ui/utils/columns.tsx";
-import type { JSONFile } from "#shared/types.ts";
+import type { JSONFile } from "#shared/host-message.ts";
 
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";

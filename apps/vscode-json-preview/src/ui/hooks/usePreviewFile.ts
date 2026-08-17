@@ -1,28 +1,23 @@
-import type { HostMessage } from "#shared/types.ts";
-import { getInitialJsonFile } from "#ui/utils/json.ts";
-import { useEffect, useState } from "react";
+import type { HostMessage } from "#shared/host-message.ts";
+import { HostMessageType } from "#shared/host-message.ts";
+import { useCallback, useState } from "react";
+import { useHostMessage } from "#ui/hooks/useHostMessage.ts";
+import { initialJsonFile } from "#ui/utils/globals.ts";
 
 /**
  * Manages the state of the JSON file being previewed by listening
- * to "update" messages from the extension host.
+ * to "document-update" messages from the extension host.
  */
 export function usePreviewFile() {
-  const [file, setFile] = useState(getInitialJsonFile);
+  const [file, setFile] = useState(initialJsonFile);
 
-  useEffect(() => {
-    const onMessage = (event: MessageEvent<HostMessage>) => {
-      const message = event.data;
-      if (message.type === "update") {
+  useHostMessage(
+    useCallback((message: HostMessage) => {
+      if (message.type === HostMessageType.DocumentUpdate) {
         setFile(message.file);
       }
-    };
-
-    window.addEventListener("message", onMessage);
-
-    return () => {
-      window.removeEventListener("message", onMessage);
-    };
-  }, []);
+    }, []),
+  );
 
   return file;
 }

@@ -1,8 +1,15 @@
-import { ViewType } from "#ext/constants.ts";
-import { getWebviewHtml } from "#ext/utils/webview.ts";
+import { CommandId, EXTENSION_NAME, ViewType } from "#ext/constants.ts";
+import { ExtensionSettingId } from "#shared/extension-settings.ts";
+import { HostMessageType, type HostMessage } from "#shared/host-message.ts";
+import {
+  WebviewMessageType,
+  WebviewEvent,
+  type WebviewMessage,
+} from "#shared/webview-message.ts";
+import { getExtensionSettings } from "#ext/utils/settings.ts";
+import { getWebviewHtml, getWebviewIconPath } from "#ext/utils/webview.ts";
 import { toJsonFile, type JSONDocument } from "#ext/utils/document.ts";
 import { uriToFileName, isEqualUri } from "#ext/utils/uri.ts";
-import type { HostMessage } from "#shared/types.ts";
 import * as vscode from "vscode";
 
 const DEBOUNCE_MS = 200;
@@ -24,7 +31,7 @@ export class PreviewPanel {
         localResourceRoots: [extensionUri],
       },
     );
-    panel.iconPath = getPanelIconPath(extensionUri);
+    panel.iconPath = getWebviewIconPath(extensionUri);
 
     return new PreviewPanel(panel, document, extensionUri, sourceViewColumn);
   }
@@ -33,9 +40,23 @@ export class PreviewPanel {
   public readonly document: JSONDocument;
   public readonly sourceViewColumn?: vscode.ViewColumn;
 
+  /**
+   * The URI of the directory containing the extension.
+   * Used to resolve paths to webview resources (scripts, styles, media).
+   */
   readonly #extensionUri: vscode.Uri;
-  #workspaceSubscription: vscode.Disposable;
-  #pendingUpdate: NodeJS.Timeout | undefined;
+
+  /**
+   * A collection of disposables (e.g., event listeners for workspace and configuration changes).
+   * These are cleaned up automatically when the panel is disposed.
+   */
+  #disposables: vscode.Disposable[] = [];
+
+  /**
+   * Stores the active timeout reference used to debounce "document-update" messages
+   * sent to the webview. Prevents flooding the webview with messages during rapid typing.
+   */
+  #debouncedUpdateMessageTimeout: NodeJS.Timeout | undefined;
 
   constructor(
     panel: vscode.WebviewPanel,
@@ -54,11 +75,21 @@ export class PreviewPanel {
       toJsonFile(document),
     );
 
-    // subsribe to workspace document changes
-    this.#workspaceSubscription = vscode.workspace.onDidChangeTextDocument(
-      (e) => this.#onWorkspaceDocumentChanged(e),
+    // react when the webview sends a message
+    this.panel.webview.onDidReceiveMessage((e) => this.#onMessage(e));
+
+    this.#disposables.push(
+      // react when any document changes in the workspace
+      vscode.workspace.onDidChangeTextDocument((e) =>
+        this.#onWorkspaceDocumentChanged(e),
+      ),
+      // react when any configuration changes in the workspace
+      vscode.workspace.onDidChangeConfiguration((e) =>
+        this.#onWorkspaceConfigurationChanged(e),
+      ),
     );
 
+    // react when the panel is disposed
     this.panel.onDidDispose(() => this.#cleanup());
   }
 
@@ -68,9 +99,22 @@ export class PreviewPanel {
 
   sendUpdateMessage() {
     this.sendMessage({
-      type: "update",
+      type: HostMessageType.DocumentUpdate,
       file: toJsonFile(this.document),
     });
+  }
+
+  sendUpdateSettingsMessage() {
+    this.sendMessage({
+      type: HostMessageType.SettingsUpdate,
+      settings: getExtensionSettings(),
+    });
+  }
+
+  #onWorkspaceConfigurationChanged(e: vscode.ConfigurationChangeEvent) {
+    if (e.affectsConfiguration(EXTENSION_NAME)) {
+      this.sendUpdateSettingsMessage();
+    }
   }
 
   #onWorkspaceDocumentChanged(e: vscode.TextDocumentChangeEvent) {
@@ -80,32 +124,47 @@ export class PreviewPanel {
   }
 
   #onDocumentChanged() {
-    // discard previous pending update
-    this.#pendingUpdate?.close();
+    // discard previous debounced message timeout
+    this.#debouncedUpdateMessageTimeout?.close();
 
-    // schedule a new update
-    this.#pendingUpdate = setTimeout(
-      () => this.sendUpdateMessage(),
+    // schedule a new message to notify the webview
+    this.#debouncedUpdateMessageTimeout = setTimeout(
+      () =>
+        this.sendMessage({
+          type: HostMessageType.DocumentUpdate,
+          file: toJsonFile(this.document),
+        }),
       DEBOUNCE_MS,
     );
   }
 
-  #cleanup() {
-    // stop listening to workspace changes
-    this.#workspaceSubscription.dispose();
+  #onMessage(message: WebviewMessage) {
+    if (message.type === WebviewMessageType.Event) {
+      if (message.event === WebviewEvent.DoubleClick) {
+        if (
+          getExtensionSettings()[ExtensionSettingId.DoubleClickToSwitchToEditor]
+        ) {
+          const command =
+            this.panel.viewType === ViewType.PreviewEditor
+              ? CommandId.ReopenAsSource
+              : CommandId.ShowSource; // safer fallback
 
-    // discard pending update
-    this.#pendingUpdate?.close();
+          vscode.commands.executeCommand(command);
+        }
+      }
+    }
+  }
+
+  #cleanup() {
+    for (const d of this.#disposables) {
+      d.dispose();
+    }
+
+    // discard pending debounced message
+    this.#debouncedUpdateMessageTimeout?.close();
   }
 }
 
 function getPanelTitle(document: vscode.TextDocument) {
   return `Preview ${uriToFileName(document.uri)}`;
-}
-
-function getPanelIconPath(extensionUri: vscode.Uri) {
-  return {
-    light: vscode.Uri.joinPath(extensionUri, "media", "preview-light.svg"),
-    dark: vscode.Uri.joinPath(extensionUri, "media", "preview-dark.svg"),
-  };
 }

@@ -1,16 +1,3 @@
-import { INITIAL_JSON_FILE_GLOBAL } from "#shared/constants.ts";
-import type { JSONFile } from "#shared/types.ts";
-
-declare global {
-  interface Window {
-    [INITIAL_JSON_FILE_GLOBAL]: JSONFile;
-  }
-}
-
-export function getInitialJsonFile(): JSONFile {
-  return window[INITIAL_JSON_FILE_GLOBAL];
-}
-
 export function fileNameWithoutExtension(fileName: string) {
   return fileName.replace(/\.jsonc?$/i, "");
 }

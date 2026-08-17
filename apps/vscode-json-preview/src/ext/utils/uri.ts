@@ -1,6 +1,16 @@
 import { DEFAULT_FILE_NAME } from "#ext/constants.ts";
 import * as vscode from "vscode";
 
+export type MediaFileName = "preview-dark.svg" | "preview-light.svg";
+
+export function getUri(extensionUri: vscode.Uri, pathList: string[]) {
+  return vscode.Uri.joinPath(extensionUri, ...pathList);
+}
+
+export function getMediaUri(extensionUri: vscode.Uri, fileName: MediaFileName) {
+  return getUri(extensionUri, ["media", fileName]);
+}
+
 /**
  * A helper function which will get the webview URI of a given file or resource.
  *
@@ -13,12 +23,12 @@ import * as vscode from "vscode";
  * @param pathList An array of strings representing the path to a file/resource
  * @returns A URI pointing to the file/resource
  */
-export function getUri(
+export function getWebviewUri(
   webview: vscode.Webview,
   extensionUri: vscode.Uri,
   pathList: string[],
 ) {
-  return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, ...pathList));
+  return webview.asWebviewUri(getUri(extensionUri, pathList));
 }
 
 export function uriToFileName(uri: vscode.Uri, useDefault?: true): string;

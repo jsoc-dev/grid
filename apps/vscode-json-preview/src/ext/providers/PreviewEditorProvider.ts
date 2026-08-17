@@ -1,6 +1,7 @@
 import { ViewType } from "#ext/constants.ts";
 import { PreviewPanel } from "#ext/panels/PreviewPanel.ts";
 import type { JSONDocument } from "#ext/utils/document.ts";
+import { getWebviewIconPath } from "#ext/utils/webview.ts";
 import * as vscode from "vscode";
 
 export class PreviewEditorProvider implements vscode.CustomTextEditorProvider {
@@ -22,18 +23,7 @@ export class PreviewEditorProvider implements vscode.CustomTextEditorProvider {
       localResourceRoots: [this.#extensionUri],
     };
 
-    webviewPanel.iconPath = {
-      light: vscode.Uri.joinPath(
-        this.#extensionUri,
-        "media",
-        "preview-light.svg",
-      ),
-      dark: vscode.Uri.joinPath(
-        this.#extensionUri,
-        "media",
-        "preview-dark.svg",
-      ),
-    };
+    webviewPanel.iconPath = getWebviewIconPath(this.#extensionUri);
 
     new PreviewPanel(webviewPanel, document, this.#extensionUri);
   }
