@@ -141,7 +141,7 @@
     "build": "tsx scripts/build.ts --production",
     "watch": "tsx scripts/build.ts --watch",
     "typecheck": "tsc -b --noEmit",
-    "package": "vsce package --no-dependencies",
+    "package": "vsce package --no-dependencies --baseContentUrl https://github.com/jsoc-dev/grid/blob/main/apps/vscode-json-preview --baseImagesUrl https://github.com/jsoc-dev/grid/raw/main/apps/vscode-json-preview",
     "install-local": "tsx scripts/install-local.ts",
     "vscode:prepublish": "pnpm run build"
   },
