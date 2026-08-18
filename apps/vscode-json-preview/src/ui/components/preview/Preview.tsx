@@ -1,5 +1,7 @@
 import { Navigator } from "#ui/components/preview/Navigator.tsx";
 import { Table } from "#ui/components/preview/Table.tsx";
+import { ZoomControls } from "#ui/components/preview/ZoomControls.tsx";
+import { useZoom } from "#ui/hooks/useZoom.ts";
 import { customColumnGenerator } from "#ui/utils/columns.tsx";
 import type { JSONFile } from "#shared/host-message.ts";
 
@@ -19,6 +21,7 @@ const customColumnGeneratorOptions = {
 };
 
 export function Preview({ file }: PreviewProps) {
+  const zoom = useZoom();
   const gridStore = useGridStore(file.json, customColumnGeneratorOptions);
   const activeSchema = useGridStoreSelector(gridStore, (store) =>
     store.getActiveSchema(),
@@ -31,8 +34,13 @@ export function Preview({ file }: PreviewProps) {
 
   return (
     <div className="preview">
-      <Navigator gridStore={gridStore} fileName={file.fileName} />
-      <Table table={table} />
+      <div className="preview-header">
+        <Navigator gridStore={gridStore} fileName={file.fileName} />
+        <ZoomControls zoom={zoom} />
+      </div>
+      <div className="preview-content" style={{ zoom: zoom.level }}>
+        <Table table={table} />
+      </div>
     </div>
   );
 }

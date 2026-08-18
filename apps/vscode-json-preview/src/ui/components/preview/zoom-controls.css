@@ -1,0 +1,35 @@
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  background-color: var(
+    --vscode-editorWidget-background,
+    var(--vscode-editor-background)
+  );
+  border: 1px solid var(--vscode-widget-border, var(--vscode-panel-border));
+  border-radius: 4px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.zoom-controls button {
+  background: transparent;
+  border: none;
+  color: var(--vscode-editor-foreground);
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  transition: background-color 0.1s ease;
+  min-width: 24px;
+}
+
+.zoom-controls button:hover {
+  background-color: var(--vscode-list-hoverBackground, rgba(90, 93, 94, 0.31));
+}
+
+.zoom-controls button:active {
+  background-color: var(
+    --vscode-list-activeSelectionBackground,
+    rgba(90, 93, 94, 0.5)
+  );
+}
