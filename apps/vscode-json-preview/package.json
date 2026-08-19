@@ -2,7 +2,7 @@
   "name": "json-preview",
   "displayName": "JSON Preview",
   "description": "Preview JSON files as a table",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "publisher": "jsoc",
   "license": "MIT",
   "repository": {
