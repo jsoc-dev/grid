@@ -1,0 +1,44 @@
+.navigator {
+  display: flex;
+  align-items: center;
+}
+
+.navigator_separator {
+  color: var(
+    --preview-breadcrumb-foreground,
+    var(--preview-description-foreground, #888)
+  );
+  margin: 0 2px;
+  display: flex;
+  align-items: center;
+  padding-top: 3px;
+}
+
+.navigator_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(
+    --preview-breadcrumb-foreground,
+    var(--preview-description-foreground, #888)
+  );
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  padding: 3px 4px;
+  border-radius: 5px;
+}
+
+.navigator_button--active {
+  font-weight: 600;
+  color: var(--preview-breadcrumb-focus-foreground);
+  cursor: default;
+}
+
+.navigator_button:not(.navigator_button--active):hover {
+  background: var(--preview-list-hover-background, rgba(90, 93, 94, 0.31));
+  color: var(--preview-breadcrumb-focus-foreground);
+}
