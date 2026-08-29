@@ -24,7 +24,7 @@ const packageImportRules = {
     },
     {
       selector:
-        "ImportDeclaration[source.value=/^#(?!.*\\.(tsx?|vue|json|css|html|svg)$).*/]",
+        "ImportDeclaration[source.value=/^#(?!.*\\.(tsx?|vue|json|css|html|svg)(\\?.*)?$).*/]",
       message:
         "Subpath imports (starting with #) must include a valid file extension (e.g. .ts, .tsx, .vue, .json, .css, .html) to ensure proper module resolution.",
     },
