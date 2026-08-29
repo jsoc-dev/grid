@@ -150,7 +150,16 @@ export default defineConfig([
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
-        project: ["**/tsconfig.json", "**/tsconfig.node.json"],
+        // Explicitly list packages, scripts, and apps instead of a global `**/tsconfig*.json`
+        // to avoid loading tsconfigs from `examples/` and `docs/`, which can cause Node.js out-of-memory errors.
+        project: [
+          "tsconfig.json",
+          "packages/**/tsconfig.json",
+          "packages/**/tsconfig.node.json",
+          "scripts/**/tsconfig.json",
+          "apps/**/tsconfig.json",
+          "apps/**/tsconfig.*.json",
+        ],
         tsconfigRootDir: __dirname,
       },
     },
