@@ -1,8 +1,8 @@
 import "#components/Placeholder.css";
 
-import errorIconSvg from "@vscode/codicons/src/icons/error.svg";
-import infoIconSvg from "@vscode/codicons/src/icons/info.svg";
-import warningIconSvg from "@vscode/codicons/src/icons/warning.svg";
+import errorIconSvg from "#assets/error.svg?raw";
+import infoIconSvg from "#assets/info.svg?raw";
+import warningIconSvg from "#assets/warning.svg?raw";
 
 export type PlaceholderType = "info" | "warning" | "error";
 
