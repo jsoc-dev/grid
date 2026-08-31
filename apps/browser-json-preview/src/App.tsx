@@ -1,23 +1,41 @@
-import { ErrorBoundary } from "#components/ErrorBoundary.tsx";
-import { Placeholder } from "#components/Placeholder.tsx";
-import { Preview } from "#components/preview/Preview.tsx";
-import { parseJsonFromText } from "#utils/json.ts";
+// Imported with ?inline to scope styles directly inside the Shadow DOM and prevent leaks into the host page
+import css from "#app.css?inline";
+import { PreviewContent } from "#components/PreviewContent.tsx";
+import { PreviewToggle } from "#components/PreviewToggle.tsx";
 
-export function App() {
-  const text = document.body.getElementsByTagName("pre")[0]?.textContent;
-  const json = parseJsonFromText(text);
+import { Activity, useEffect, useState } from "react";
 
-  if (json === undefined)
-    return <Placeholder type="error" title="Invalid JSON" description={text} />;
+type AppProps = {
+  host: HTMLElement;
+};
 
-  if (json.trim() === "")
-    return <Placeholder type="info" title="JSON is empty." />;
+export function App({ host }: AppProps) {
+  const [showPreview, setShowPreview] = useState(false);
 
-  const fileName = window.location.pathname.split("/").pop() || "document.json";
+  useEffect(() => {
+    const browserPreviewElements = Array.from(document.body.children).filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el !== host,
+    );
+
+    browserPreviewElements.forEach((el) => {
+      el.style.display = showPreview ? "none" : "";
+    });
+  }, [showPreview]);
 
   return (
-    <ErrorBoundary resetKey={json}>
-      <Preview file={{ fileName, json }} />
-    </ErrorBoundary>
+    <>
+      <style>{css}</style>
+
+      <PreviewToggle
+        showPreview={showPreview}
+        setShowPreview={setShowPreview}
+      />
+
+      <Activity mode={showPreview ? "visible" : "hidden"}>
+        <div className="absolute top-0 h-dvh w-full z-40 bg-canvas text-canvastext">
+          <PreviewContent />
+        </div>
+      </Activity>
+    </>
   );
 }

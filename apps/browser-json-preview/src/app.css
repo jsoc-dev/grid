@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: canvas;
+  --color-canvastext: canvastext;
+  --color-breadcrumb: var(--preview-breadcrumb);
+  --color-focus: var(--preview-focus);
+  --color-hover: var(--preview-hover);
+  --color-border: var(--preview-border);
+  --color-error: var(--preview-error);
+  --color-warning: var(--preview-warning);
+  --color-info: var(--preview-info);
+}
+
+:host {
+  --preview-breadcrumb: #5f6368;
+  --preview-focus: #1a73e8;
+  --preview-hover: #f1f3f4;
+  --preview-border: #cacaca;
+  --preview-error: #d93025;
+  --preview-warning: #f29900;
+  --preview-info: #1a73e8;
+
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --preview-breadcrumb: #9aa0a6;
+    --preview-focus: #8ab4f8;
+    --preview-hover: #3c4043;
+    --preview-border: #494c50;
+    --preview-error: #f28b82;
+    --preview-warning: #fdd663;
+    --preview-info: #8ab4f8;
+  }
+}
+
+/* Tailwind v4 uses CSS `@property` rules to set default initial values (e.g. `--tw-border-style: solid`).
+   Browsers do not evaluate `@property` declarations inside Shadow DOM stylesheets, leaving `--tw-border-style`
+   undefined and causing border utilities (`border`, `border-b`, etc.) to fail. This fallback ensures borders render correctly.
+   https://github.com/tailwindlabs/tailwindcss/issues/15005
+*/
+*,
+::before,
+::after {
+  --tw-border-style: solid;
+}

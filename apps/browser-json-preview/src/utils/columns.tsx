@@ -22,7 +22,7 @@ export const customColumnGenerator: CustomColumnGenerator<
             type="button"
             title={title}
             onClick={toggle}
-            className="child-grid-toggle-btn"
+            className="cursor-pointer p-1.5 flex items-center justify-center h-full mx-auto rounded-full transition-colors hover:bg-hover"
             style={{ color }}
             dangerouslySetInnerHTML={{ __html: iconSvg }}
           />

@@ -1,54 +1,21 @@
-import "#content.css";
-
 import { App } from "#App.tsx";
 import { isJsonContentType } from "#utils/json.ts";
 
-import { StrictMode, useEffect, useState } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-function init() {
+(function () {
   if (!isJsonContentType(document.contentType)) return;
 
-  const root = document.createElement("div");
-  root.id = "json-preview-root";
-  document.body.appendChild(root);
+  const host = document.createElement("div");
+  host.id = "json-preview-host";
+  document.body.appendChild(host);
 
-  createRoot(root).render(
+  const shadowRoot = host.attachShadow({ mode: "open" });
+
+  createRoot(shadowRoot).render(
     <StrictMode>
-      <PreviewToggle />
+      <App host={host} />
     </StrictMode>,
   );
-}
-
-function PreviewToggle() {
-  const [showTable, setShowTable] = useState(false);
-
-  useEffect(() => {
-    const browserPreviewNodes = Array.from(document.body.children).filter(
-      (node) => node instanceof HTMLElement && node.id !== "json-preview-root",
-    ) as HTMLElement[];
-
-    browserPreviewNodes.forEach((node) => {
-      node.style.display = showTable ? "none" : "";
-    });
-  }, [showTable]);
-
-  return (
-    <>
-      <label
-        className={`json-preview-toggle ${showTable ? "docked" : "floating"}`}
-      >
-        Table Preview
-        <input
-          type="checkbox"
-          checked={showTable}
-          onChange={(e) => setShowTable(e.target.checked)}
-        />
-      </label>
-
-      {showTable && <App />}
-    </>
-  );
-}
-
-init();
+})();

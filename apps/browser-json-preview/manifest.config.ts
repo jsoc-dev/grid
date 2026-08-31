@@ -14,7 +14,6 @@ export default defineManifest({
     {
       matches: ["<all_urls>"],
       js: ["src/content.tsx"],
-      css: ["src/content.css"],
       run_at: "document_end",
     },
   ],

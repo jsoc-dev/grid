@@ -1,5 +1,3 @@
-import "#components/preview/navigator.css";
-
 import { fileNameWithoutExtension } from "#utils/json.ts";
 
 import type { GridSchemaWithConfig, GridStore } from "@jsoc/grid-core";
@@ -20,7 +18,7 @@ export function Navigator({ gridStore, fileName }: Props) {
   );
 
   return (
-    <nav className="navigator" aria-label="Table location">
+    <nav className="flex items-center" aria-label="Table location">
       {schemas.map((schema, index) => (
         <Fragment key={schema.id}>
           {index > 0 && <Separator />}
@@ -80,8 +78,10 @@ function NavigatorSegment({
     <button
       type="button"
       className={clsx(
-        "navigator_button",
-        isActive && "navigator_button--active",
+        "inline-flex items-center px-1.5 py-0.5 rounded text-left",
+        isActive
+          ? "font-semibold text-focus cursor-default"
+          : "text-breadcrumb cursor-pointer hover:bg-hover hover:text-focus",
       )}
       disabled={isActive}
       onClick={handleSegmentClick}
@@ -93,7 +93,10 @@ function NavigatorSegment({
 
 function Separator() {
   return (
-    <span aria-hidden className="navigator_separator">
+    <span
+      aria-hidden
+      className="text-breadcrumb mx-0.5 flex items-center pt-0.5"
+    >
       <svg
         width="12"
         height="12"
