@@ -1,0 +1,3 @@
+[data-json-preview-view="table"] body > :not(#json-preview-host) {
+  display: none !important;
+}

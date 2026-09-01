@@ -3,7 +3,7 @@ import { Placeholder } from "#components/Placeholder.tsx";
 import { Preview } from "#components/preview/Preview.tsx";
 import { parseJsonFromText } from "#utils/json.ts";
 
-export function PreviewContent() {
+export function TableView() {
   const text =
     document.body.querySelector("pre")?.textContent ??
     document.body.textContent ??

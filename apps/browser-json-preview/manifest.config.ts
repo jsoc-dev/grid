@@ -13,8 +13,9 @@ export default defineManifest({
   content_scripts: [
     {
       matches: ["<all_urls>"],
+      css: ["src/content.css"],
       js: ["src/content.tsx"],
-      run_at: "document_end",
+      run_at: "document_start",
     },
   ],
 });

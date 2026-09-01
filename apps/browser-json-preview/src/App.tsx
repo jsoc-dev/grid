@@ -1,39 +1,30 @@
 // Imported with ?inline to scope styles directly inside the Shadow DOM and prevent leaks into the host page
 import css from "#app.css?inline";
-import { PreviewContent } from "#components/PreviewContent.tsx";
-import { PreviewToggle } from "#components/PreviewToggle.tsx";
+import { TableView } from "#components/TableView.tsx";
+import { ViewToggle } from "#components/ViewToggle.tsx";
+import { useDefaultViewSetting } from "#hooks/useDefaultViewSetting.ts";
+import { useView } from "#hooks/useView.ts";
 
-import { Activity, useEffect, useState } from "react";
+import { Activity } from "react";
 
-type AppProps = {
-  host: HTMLElement;
-};
-
-export function App({ host }: AppProps) {
-  const [showPreview, setShowPreview] = useState(false);
-
-  useEffect(() => {
-    const browserPreviewElements = Array.from(document.body.children).filter(
-      (el): el is HTMLElement => el instanceof HTMLElement && el !== host,
-    );
-
-    browserPreviewElements.forEach((el) => {
-      el.style.display = showPreview ? "none" : "";
-    });
-  }, [showPreview]);
+export function App() {
+  const [view, setView] = useView();
+  const [defaultView, setDefaultView] = useDefaultViewSetting();
 
   return (
     <>
       <style>{css}</style>
 
-      <PreviewToggle
-        showPreview={showPreview}
-        setShowPreview={setShowPreview}
+      <ViewToggle
+        view={view}
+        onViewChange={setView}
+        defaultView={defaultView}
+        onDefaultChange={setDefaultView}
       />
 
-      <Activity mode={showPreview ? "visible" : "hidden"}>
+      <Activity mode={view === "table" ? "visible" : "hidden"}>
         <div className="absolute top-0 h-dvh w-full z-40 bg-canvas text-canvastext">
-          <PreviewContent />
+          <TableView />
         </div>
       </Activity>
     </>

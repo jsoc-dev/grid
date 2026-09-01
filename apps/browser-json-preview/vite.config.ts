@@ -7,6 +7,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), react(), crx({ manifest })],
+  build: {
+    emptyOutDir: true,
+  },
   resolve: {
     dedupe: ["react", "react-dom"],
   },
