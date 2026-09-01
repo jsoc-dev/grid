@@ -7,6 +7,7 @@ import { handleShowSource } from "#ext/commands/showSource.ts";
 import { CommandId } from "#ext/constants.ts";
 import { previewPanelStore } from "#ext/panels/PreviewPanelStore.ts";
 import { PreviewEditorProvider } from "#ext/providers/PreviewEditorProvider.ts";
+
 import * as vscode from "vscode";
 
 export function activate(ctx: vscode.ExtensionContext) {

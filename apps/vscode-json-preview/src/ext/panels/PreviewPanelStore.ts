@@ -1,6 +1,7 @@
 import { PreviewPanel } from "#ext/panels/PreviewPanel.ts";
-import { type JSONEditor } from "#ext/utils/editor.ts";
+import type { JSONEditor } from "#ext/utils/editor.ts";
 import { isEqualUri } from "#ext/utils/uri.ts";
+
 import * as vscode from "vscode";
 
 export class PreviewPanelStore {

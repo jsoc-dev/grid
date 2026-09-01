@@ -1,4 +1,5 @@
 import { previewPanelStore } from "#ext/panels/PreviewPanelStore.ts";
+
 import * as vscode from "vscode";
 
 export function handleShowSource() {

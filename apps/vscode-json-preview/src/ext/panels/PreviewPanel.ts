@@ -1,15 +1,16 @@
 import { CommandId, EXTENSION_NAME, ViewType } from "#ext/constants.ts";
+import { type JSONDocument, toJsonFile } from "#ext/utils/document.ts";
+import { getExtensionSettings } from "#ext/utils/settings.ts";
+import { isEqualUri, uriToFileName } from "#ext/utils/uri.ts";
+import { getWebviewHtml, getWebviewIconPath } from "#ext/utils/webview.ts";
 import { ExtensionSettingId } from "#shared/extension-settings.ts";
-import { HostMessageType, type HostMessage } from "#shared/host-message.ts";
+import { type HostMessage, HostMessageType } from "#shared/host-message.ts";
 import {
-  WebviewMessageType,
   WebviewEvent,
   type WebviewMessage,
+  WebviewMessageType,
 } from "#shared/webview-message.ts";
-import { getExtensionSettings } from "#ext/utils/settings.ts";
-import { getWebviewHtml, getWebviewIconPath } from "#ext/utils/webview.ts";
-import { toJsonFile, type JSONDocument } from "#ext/utils/document.ts";
-import { uriToFileName, isEqualUri } from "#ext/utils/uri.ts";
+
 import * as vscode from "vscode";
 
 const DEBOUNCE_MS = 200;
@@ -76,7 +77,9 @@ export class PreviewPanel {
     );
 
     // react when the webview sends a message
-    this.panel.webview.onDidReceiveMessage((e) => this.#onMessage(e));
+    this.panel.webview.onDidReceiveMessage((e: unknown) =>
+      this.#onMessage(e as WebviewMessage),
+    );
 
     this.#disposables.push(
       // react when any document changes in the workspace

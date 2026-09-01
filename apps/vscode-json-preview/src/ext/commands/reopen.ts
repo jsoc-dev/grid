@@ -1,4 +1,5 @@
 import { PreviewEditorProvider } from "#ext/providers/PreviewEditorProvider.ts";
+
 import * as vscode from "vscode";
 
 export async function handleReopenAsPreview() {

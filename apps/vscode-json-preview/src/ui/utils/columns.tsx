@@ -1,8 +1,8 @@
 import type { CustomColumnGenerator } from "@jsoc/grid-core";
 import { ChildGridToggle } from "@jsoc/react-grid";
-import { type PluginConfigTanstack } from "@jsoc/react-grid-tanstack";
-import arrayIconSvg from "@vscode/codicons/src/icons/symbol-array.svg";
+import type { PluginConfigTanstack } from "@jsoc/react-grid-tanstack";
 import objectIconSvg from "@vscode/codicons/src/icons/json.svg";
+import arrayIconSvg from "@vscode/codicons/src/icons/symbol-array.svg";
 
 export const customColumnGenerator: CustomColumnGenerator<
   PluginConfigTanstack,

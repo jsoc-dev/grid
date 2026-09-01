@@ -1,7 +1,8 @@
-import { getWebviewApi } from "#ui/utils/webview-api.ts";
-import { useExtensionSettings } from "#ui/hooks/useExtensionSettings.ts";
 import { ExtensionSettingId } from "#shared/extension-settings.ts";
-import { WebviewMessageType, WebviewEvent } from "#shared/webview-message.ts";
+import { WebviewEvent, WebviewMessageType } from "#shared/webview-message.ts";
+import { useExtensionSettings } from "#ui/hooks/useExtensionSettings.ts";
+import { getWebviewApi } from "#ui/utils/webview-api.ts";
+
 import { useEffect } from "react";
 
 export function useDoubleClickToSwitchToEditor() {

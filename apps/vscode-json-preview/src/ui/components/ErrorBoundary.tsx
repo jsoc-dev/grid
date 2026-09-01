@@ -1,6 +1,7 @@
 import { Placeholder } from "#ui/components/Placeholder.tsx";
-import { Component, type ReactNode } from "react";
+
 import { isError } from "@jsoc/utils";
+import { Component, type ReactNode } from "react";
 
 type ErrorBoundaryProps = {
   children: ReactNode;

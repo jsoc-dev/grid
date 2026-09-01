@@ -1,14 +1,15 @@
 import { EXTENSION_DISPLAY_NAME } from "#ext/constants.ts";
 import { getNonce } from "#ext/utils/nonce.ts";
-import { getWebviewUri, getMediaUri } from "#ext/utils/uri.ts";
 import { getExtensionSettings } from "#ext/utils/settings.ts";
+import { getMediaUri, getWebviewUri } from "#ext/utils/uri.ts";
 import {
-  INITIAL_JSON_FILE_GLOBAL,
   INITIAL_EXTENSION_SETTINGS_GLOBAL,
+  INITIAL_JSON_FILE_GLOBAL,
 } from "#shared/constants.ts";
 import type { JSONFile } from "#shared/host-message.ts";
 import webviewHtml from "#ui/webview.html";
-import * as vscode from "vscode";
+
+import type * as vscode from "vscode";
 
 const getUri = getWebviewUri;
 

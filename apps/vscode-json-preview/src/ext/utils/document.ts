@@ -1,6 +1,7 @@
 import { uriToFileName } from "#ext/utils/uri.ts";
 import type { JSONFile } from "#shared/host-message.ts";
-import * as vscode from "vscode";
+
+import type * as vscode from "vscode";
 
 export type JSONDocument = vscode.TextDocument & {
   type: "json" | "jsonc";

@@ -1,9 +1,9 @@
+import type { JSONFile } from "#shared/host-message.ts";
 import { Navigator } from "#ui/components/preview/Navigator.tsx";
 import { Table } from "#ui/components/preview/Table.tsx";
 import { ZoomControls } from "#ui/components/preview/ZoomControls.tsx";
 import { useZoom } from "#ui/hooks/useZoom.ts";
 import { customColumnGenerator } from "#ui/utils/columns.tsx";
-import type { JSONFile } from "#shared/host-message.ts";
 
 import { useGridStoreSelector } from "@jsoc/react-grid";
 import { useGridStore } from "@jsoc/react-grid-tanstack";

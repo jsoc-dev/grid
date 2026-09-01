@@ -1,4 +1,5 @@
 import { DEFAULT_FILE_NAME } from "#ext/constants.ts";
+
 import * as vscode from "vscode";
 
 export type MediaFileName = "preview-dark.svg" | "preview-light.svg";

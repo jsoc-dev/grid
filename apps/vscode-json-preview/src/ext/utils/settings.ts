@@ -3,6 +3,7 @@ import {
   ExtensionSettingId,
   type ExtensionSettings,
 } from "#shared/extension-settings.ts";
+
 import * as vscode from "vscode";
 
 export function getExtensionSettings(): ExtensionSettings {

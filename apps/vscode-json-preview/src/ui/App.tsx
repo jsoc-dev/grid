@@ -1,9 +1,9 @@
 import { ErrorBoundary } from "#ui/components/ErrorBoundary.tsx";
 import { Placeholder } from "#ui/components/Placeholder.tsx";
 import { Preview } from "#ui/components/preview/Preview.tsx";
-import { removeComments, removeTrailingCommas } from "#ui/utils/json.ts";
 import { useDoubleClickToSwitchToEditor } from "#ui/hooks/useDoubleClickToSwitchToEditor.ts";
 import { usePreviewFile } from "#ui/hooks/usePreviewFile.ts";
+import { removeComments, removeTrailingCommas } from "#ui/utils/json.ts";
 
 export function App() {
   const file = usePreviewFile();

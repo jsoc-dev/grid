@@ -1,4 +1,5 @@
 import type { HostMessage } from "#shared/host-message.ts";
+
 import { useEffect } from "react";
 
 /**

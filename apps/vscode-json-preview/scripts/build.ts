@@ -1,5 +1,6 @@
 import { getExtensionConfig } from "#ext/esbuild.config.ts";
 import { getWebviewConfig } from "#ui/esbuild.config.ts";
+
 import { context } from "esbuild";
 
 const production = process.argv.includes("--production");

@@ -1,5 +1,6 @@
 import { previewPanelStore } from "#ext/panels/PreviewPanelStore.ts";
 import { getJsonEditorOrWarn } from "#ext/utils/editor.ts";
+
 import * as vscode from "vscode";
 
 export function handleOpenPreviewToSide(context: vscode.ExtensionContext) {

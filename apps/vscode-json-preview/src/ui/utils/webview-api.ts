@@ -1,4 +1,5 @@
 import type { WebviewMessage } from "#shared/webview-message.ts";
+
 import type { WebviewApi as _WebviewApi } from "vscode-webview";
 
 export interface WebviewApi extends _WebviewApi<unknown> {

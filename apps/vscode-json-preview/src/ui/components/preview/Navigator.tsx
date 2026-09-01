@@ -1,9 +1,10 @@
 import "#ui/components/preview/navigator.css";
+
 import { fileNameWithoutExtension } from "#ui/utils/json.ts";
 
 import type { GridSchemaWithConfig, GridStore } from "@jsoc/grid-core";
 import { useGridStoreSelector } from "@jsoc/react-grid";
-import { type PluginConfigTanstack } from "@jsoc/react-grid-tanstack";
+import type { PluginConfigTanstack } from "@jsoc/react-grid-tanstack";
 import { joinNonEmptyStrings, toPascalCase } from "@jsoc/utils";
 import clsx from "clsx";
 import { Fragment } from "react";

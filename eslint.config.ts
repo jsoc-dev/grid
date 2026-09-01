@@ -23,9 +23,10 @@ const packageImportRules = {
         "Use absolute paths (starting with #) instead of relative paths.",
     },
     {
-      selector: "ImportDeclaration[source.value=/^#(?!.*\\.(tsx?|vue)$).*/]",
+      selector:
+        "ImportDeclaration[source.value=/^#(?!.*\\.(tsx?|vue|json|css|html|svg)$).*/]",
       message:
-        "Subpath imports (starting with #) must include the .ts, .tsx, or .vue extension to ensure proper module resolution.",
+        "Subpath imports (starting with #) must include a valid file extension (e.g. .ts, .tsx, .vue, .json, .css, .html) to ensure proper module resolution.",
     },
   ],
 } satisfies Linter.RulesRecord;
@@ -34,7 +35,6 @@ export default defineConfig([
   globalIgnores([
     "**/dist/**",
     "**/node_modules/**",
-    "apps/**", // vscode extension has its own build setup
     "docs/", // docs has its own eslint.config
     "examples/**", // examples have their own eslint.config
   ]),
@@ -74,6 +74,14 @@ export default defineConfig([
         },
       ],
       "@typescript-eslint/no-import-type-side-effects": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
 
       // ------------IMPORT SORTING-----------
       "import/order": "off",
@@ -111,6 +119,7 @@ export default defineConfig([
       "packages/react-grid/**/*.{ts,tsx}",
       "packages/react-grid-plugins/**/*.{ts,tsx}",
       "packages/grid-examples/react-grid-examples/**/*.{ts,tsx}",
+      "apps/vscode-json-preview/src/ui/**/*.{ts,tsx}",
     ],
 
     plugins: {
@@ -131,9 +140,13 @@ export default defineConfig([
     },
   },
 
-  // Type-aware linting for packages and scripts
+  // Type-aware linting for packages, scripts, and apps
   {
-    files: ["packages/**/*.{ts,tsx}", "scripts/**/*.{ts,tsx}"],
+    files: [
+      "packages/**/*.{ts,tsx}",
+      "scripts/**/*.{ts,tsx}",
+      "apps/**/*.{ts,tsx}",
+    ],
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {

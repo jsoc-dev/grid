@@ -1,4 +1,5 @@
 import "#ui/components/preview/table.css";
+
 import type { GridRow } from "@jsoc/grid-core";
 import { flexRender, type Table } from "@tanstack/react-table";
 

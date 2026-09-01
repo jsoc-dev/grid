@@ -1,6 +1,7 @@
-import type { BuildOptions } from "esbuild";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import type { BuildOptions } from "esbuild";
 
 const packageRoot = path.join(
   path.dirname(fileURLToPath(import.meta.url)),

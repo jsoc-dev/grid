@@ -1,4 +1,5 @@
 import { isJsonDocument, type JSONDocument } from "#ext/utils/document.ts";
+
 import * as vscode from "vscode";
 
 export type JSONEditor = vscode.TextEditor & {

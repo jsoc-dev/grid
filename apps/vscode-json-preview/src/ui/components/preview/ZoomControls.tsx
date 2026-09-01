@@ -1,4 +1,5 @@
 import "#ui/components/preview/zoom-controls.css";
+
 import type { Zoom } from "#ui/hooks/useZoom.ts";
 
 type ZoomControlsProps = {
