@@ -12,14 +12,14 @@ export function Table({ table }: { table: ReactTable<GridRow> }) {
       {!hasHeaders && (
         <div className="w-full py-16 italic text-center">No columns</div>
       )}
-      <table className="w-max border-collapse">
+      <table className="w-max border-separate border-spacing-0">
         <thead>
           {headerGroups.map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-b border-border">
+            <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="px-1 py-1.5 text-center font-semibold"
+                  className="sticky top-0 z-10 bg-canvas px-1 py-1.5 text-center font-semibold border-b border-border"
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -32,9 +32,12 @@ export function Table({ table }: { table: ReactTable<GridRow> }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id} className="border-b border-border">
+            <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-1 py-1.5 text-center">
+                <td
+                  key={cell.id}
+                  className="px-1 py-1.5 text-center border-b border-border"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

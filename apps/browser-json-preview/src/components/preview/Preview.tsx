@@ -30,11 +30,11 @@ export function Preview({ file }: PreviewProps) {
   });
 
   return (
-    <div className="flex flex-col gap-2 p-4">
+    <div className="flex flex-col gap-2 p-4 pb-16 h-full">
       <div className="flex justify-between items-center gap-4">
         <Navigator gridStore={gridStore} fileName={file.fileName} />
       </div>
-      <div>
+      <div className="flex-1 min-h-0">
         <Table table={table} />
       </div>
     </div>

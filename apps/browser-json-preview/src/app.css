@@ -38,13 +38,22 @@
   }
 }
 
-/* Tailwind v4 uses CSS `@property` rules to set default initial values (e.g. `--tw-border-style: solid`).
-   Browsers do not evaluate `@property` declarations inside Shadow DOM stylesheets, leaving `--tw-border-style`
-   undefined and causing border utilities (`border`, `border-b`, etc.) to fail. This fallback ensures borders render correctly.
+/* Tailwind v4 uses CSS `@property` rules to set default initial values (e.g. `--tw-border-style: solid`, `--tw-shadow: 0 0 #0000`).
+   Browsers do not evaluate `@property` declarations inside Shadow DOM stylesheets, leaving these properties
+   undefined and causing border, shadow, and ring utilities to fail. This fallback ensures they render correctly.
    https://github.com/tailwindlabs/tailwindcss/issues/15005
 */
-*,
-::before,
-::after {
-  --tw-border-style: solid;
+@layer properties {
+  *,
+  ::before,
+  ::after {
+    --tw-border-style: solid;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    --tw-inset-shadow: 0 0 #0000;
+    --tw-inset-shadow-colored: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-inset-ring-shadow: 0 0 #0000;
+    --tw-ring-offset-shadow: 0 0 #0000;
+  }
 }
