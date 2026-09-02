@@ -37,6 +37,8 @@ build
 dist
 dist-ssr
 out
+*.zip
+release
 
 # ---------------TEST---------------
 /coverage
