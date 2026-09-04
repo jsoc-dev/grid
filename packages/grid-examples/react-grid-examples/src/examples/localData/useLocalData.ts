@@ -4,21 +4,24 @@ import {
 } from "#examples/localData/useBroadcast.ts";
 
 import {
-  LOCAL_DATA_EXAMPLE_CHANNEL,
+  getLocalDataChannelName,
   type PersistentBroadcastMessage,
 } from "@jsoc/grid-examples-core";
 
 /**
- * Returns the data broadcasted in the local broadcast channel named {@link LOCAL_DATA_EXAMPLE_CHANNEL}.
+ * Returns the data broadcasted to the local broadcast channel.
  * Returns undefined if no data has been broadcasted yet or explicitly broadcasted undefined.
  */
 export function useGetLocalData(): PersistentBroadcastMessage {
-  return useGetBroadcastMessage(LOCAL_DATA_EXAMPLE_CHANNEL);
+  return useGetBroadcastMessage(getLocalDataChannelName());
 }
 
 /**
- * Broadcasts the given data to the local broadcast channel named {@link LOCAL_DATA_EXAMPLE_CHANNEL}.
+ * Broadcasts the given data to the local broadcast channel.
  */
-export function useSetLocalData(data: PersistentBroadcastMessage) {
-  useBroadcast(LOCAL_DATA_EXAMPLE_CHANNEL, data);
+export function useSetLocalData(
+  data: PersistentBroadcastMessage,
+  channelName?: string,
+) {
+  useBroadcast(channelName ?? getLocalDataChannelName(), data);
 }

@@ -5,6 +5,17 @@ export type PersistentBroadcastMessage = string | undefined;
 export class PersistentBroadcastChannel extends BroadcastChannel {
   #closed = false;
 
+  static get storage(): Storage | undefined {
+    try {
+      if (typeof localStorage !== "undefined") {
+        return localStorage;
+      }
+    } catch {
+      // Access to localStorage may be restricted (e.g. sandboxed iframe or disabled cookies)
+    }
+    return undefined;
+  }
+
   constructor(channelName: string) {
     super(channelName);
   }
@@ -25,16 +36,22 @@ export class PersistentBroadcastChannel extends BroadcastChannel {
   public static getLastMessage(
     channelName: string,
   ): PersistentBroadcastMessage {
-    return localStorage.getItem(channelName) ?? undefined;
+    return (
+      PersistentBroadcastChannel.storage?.getItem(channelName) ?? undefined
+    );
   }
 
   public override postMessage(message: PersistentBroadcastMessage): void {
     super.postMessage(message);
 
-    if (isString(message)) {
-      localStorage.setItem(this.name, message);
-    } else {
-      localStorage.removeItem(this.name);
+    try {
+      if (isString(message)) {
+        PersistentBroadcastChannel.storage?.setItem(this.name, message);
+      } else {
+        PersistentBroadcastChannel.storage?.removeItem(this.name);
+      }
+    } catch {
+      // Ignore storage errors (e.g. quota exceeded or storage disabled)
     }
   }
 }

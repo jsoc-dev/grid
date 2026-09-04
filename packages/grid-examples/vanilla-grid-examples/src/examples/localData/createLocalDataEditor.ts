@@ -1,5 +1,5 @@
 import {
-  LOCAL_DATA_EXAMPLE_CHANNEL,
+  getLocalDataChannelName,
   PersistentBroadcastChannel,
 } from "@jsoc/grid-examples-core";
 
@@ -8,11 +8,10 @@ import {
  * @returns A function that removes the editor from the DOM and closes the broadcast channel.
  */
 export function createLocalDataEditor(): () => void {
-  const channel = new PersistentBroadcastChannel(LOCAL_DATA_EXAMPLE_CHANNEL);
+  const channelName = getLocalDataChannelName();
+  const channel = new PersistentBroadcastChannel(channelName);
 
-  const persistedData = PersistentBroadcastChannel.getLastMessage(
-    LOCAL_DATA_EXAMPLE_CHANNEL,
-  );
+  const persistedData = PersistentBroadcastChannel.getLastMessage(channelName);
 
   let isOpen = false;
 
