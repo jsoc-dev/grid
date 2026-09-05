@@ -2,6 +2,7 @@ import "@jsoc/grid-examples-core/css/tanstack-table.css";
 
 import type { GridRow } from "@jsoc/grid-core";
 import { flexRender, type Table } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 
 export function TanstackTable({ table }: { table: Table<GridRow> }) {
   const headerGroups = table.getHeaderGroups();
@@ -10,13 +11,13 @@ export function TanstackTable({ table }: { table: Table<GridRow> }) {
   const hasRows = rows.length > 0;
   const hasHeaders = headerGroups.some((group) => group.headers.length > 0);
 
-  if (!hasRows) return <p>No rows</p>;
-  if (!hasHeaders) return <p>No columns</p>;
+  if (!hasRows) return <TableWrapper>No rows</TableWrapper>;
+  if (!hasHeaders) return <TableWrapper>No columns</TableWrapper>;
 
   return (
     // wrapping in <div> with overflow: auto to handle horizontal scrolling,
     // because standard HTML tables do not support overflow properties directly
-    <div className="table-wrapper">
+    <TableWrapper>
       <table>
         <thead>
           {headerGroups.map((hg) => (
@@ -44,6 +45,10 @@ export function TanstackTable({ table }: { table: Table<GridRow> }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </TableWrapper>
   );
+}
+
+function TableWrapper({ children }: { children: ReactNode }) {
+  return <div className="table-wrapper">{children}</div>;
 }

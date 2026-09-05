@@ -15,20 +15,17 @@ export function renderTanstackTable(table: Table<GridRow>): HTMLElement {
   const hasRows = rows.length > 0;
   const hasHeaders = headerGroups.some((group) => group.headers.length > 0);
 
-  if (!hasRows) return createMessageBox("No rows");
-  if (!hasHeaders) return createMessageBox("No columns");
+  if (!hasRows) return createTableWrapper("No rows");
+  if (!hasHeaders) return createTableWrapper("No columns");
 
-  const wrapper = document.createElement("div");
   const tableElement = document.createElement("table");
   const theadElement = document.createElement("thead");
   const tbodyElement = document.createElement("tbody");
   const tfootElement = document.createElement("tfoot");
 
-  wrapper.className = "table-wrapper";
   tableElement.appendChild(theadElement);
   tableElement.appendChild(tbodyElement);
   tableElement.appendChild(tfootElement);
-  wrapper.appendChild(tableElement);
 
   for (const headerGroup of headerGroups) {
     const trElement = document.createElement("tr");
@@ -60,7 +57,7 @@ export function renderTanstackTable(table: Table<GridRow>): HTMLElement {
     tbodyElement.appendChild(trElement);
   }
 
-  return wrapper;
+  return createTableWrapper(tableElement);
 }
 
 /**
@@ -91,11 +88,18 @@ function renderElement(el: HTMLElement, content: unknown) {
 }
 
 /**
- * Creates a message box element with given message.
- * @param message - The message to display in the message box.
+ * Wraps content in a <div> with overflow: auto to handle horizontal scrolling,
+ * because standard HTML tables do not support overflow properties directly.
  */
-function createMessageBox(message: string) {
-  const div = document.createElement("div");
-  div.textContent = message;
-  return div;
+function createTableWrapper(content: Node | string): HTMLDivElement {
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-wrapper";
+
+  if (typeof content === "string") {
+    wrapper.textContent = content;
+  } else {
+    wrapper.appendChild(content);
+  }
+
+  return wrapper;
 }

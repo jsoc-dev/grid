@@ -23,12 +23,12 @@ const hasHeaders = computed(() =>
 </script>
 
 <template>
-  <p v-if="!hasRows">No rows</p>
-  <p v-else-if="!hasHeaders">No columns</p>
   <!-- wrapping in div with overflow: auto to handle horizontal scrolling,
        because standard HTML tables do not support overflow properties directly -->
-  <div v-else class="table-wrapper">
-    <table>
+  <div class="table-wrapper">
+    <template v-if="!hasRows">No rows</template>
+    <template v-else-if="!hasHeaders">No columns</template>
+    <table v-else>
       <thead>
         <tr v-for="headerGroup in headerGroups" :key="headerGroup.id">
           <th v-for="header in headerGroup.headers" :key="header.id">

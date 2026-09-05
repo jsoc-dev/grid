@@ -1,11 +1,17 @@
 .table-wrapper {
-  background-color: canvas;
-  color: canvastext;
+  --border-color: lightgray;
   font-family: sans-serif;
   font-size: 14px;
   height: 100%;
   overflow: auto;
-  border: 1px solid lightgray;
+  border: 1px solid var(--border-color);
+}
+
+.table-wrapper:not(:has(table)) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
 }
 
 .table-wrapper > table {
@@ -14,7 +20,7 @@
 }
 
 .table-wrapper tr {
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .table-wrapper th,
@@ -24,8 +30,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .table-wrapper,
-  .table-wrapper tr {
-    border-color: #333;
+  .table-wrapper {
+    --border-color: #333;
   }
 }
