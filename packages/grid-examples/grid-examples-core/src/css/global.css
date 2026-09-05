@@ -20,3 +20,13 @@ body,
 #root {
   height: 100%;
 }
+
+.message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-style: italic;
+  color: #71717a;
+  user-select: none;
+}

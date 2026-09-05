@@ -16,7 +16,13 @@ export function LocalDataExampleRenderer({
   const showEditor = getLocalDataEditorEnabled();
   const editorEl = showEditor ? <LocalDataEditor /> : null;
 
-  if (!data) return <>No data{editorEl}</>;
+  if (!data)
+    return (
+      <>
+        <div className="message">No data</div>
+        {editorEl}
+      </>
+    );
 
   return (
     <>

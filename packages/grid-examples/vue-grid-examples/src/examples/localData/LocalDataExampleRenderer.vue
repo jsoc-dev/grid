@@ -19,7 +19,7 @@ const showEditor = getLocalDataEditorEnabled();
 </script>
 
 <template>
-  <p v-if="!data">No data</p>
+  <div v-if="!data" class="message">No data</div>
   <ErrorMessage v-else-if="error" :error="error" />
   <component v-else-if="data" :is="component" :key="data" :data="data" />
   <LocalDataEditor v-if="showEditor" />

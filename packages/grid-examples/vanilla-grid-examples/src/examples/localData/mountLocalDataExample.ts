@@ -20,7 +20,10 @@ export function mountLocalDataExample(
 
   const unsubscribe = subscribeLocalData((data) => {
     if (!data) {
-      root.replaceChildren("No data");
+      const messageElement = document.createElement("div");
+      messageElement.className = "message";
+      messageElement.textContent = "No data";
+      root.replaceChildren(messageElement);
       return;
     }
 
