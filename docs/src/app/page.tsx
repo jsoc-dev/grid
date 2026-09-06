@@ -1,7 +1,11 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
 import { Demo } from "@/components/home/demo/Demo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
+import ChromeIcon from "@/icons/chrome.svg";
+import VscodeIcon from "@/icons/vscode.svg";
 import { createPageMetadata } from "@/utils/og-metadata";
+import clsx from "clsx";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = createPageMetadata({
@@ -26,6 +30,34 @@ const USE_CASES = [
       "The perfect underlying engine for building JSON file viewers, database inspection tools, or API response explorers.",
   },
 ];
+
+const APPLICATIONS = [
+  {
+    title: "JSON Preview for VS Code",
+    platform: "VS Code",
+    description:
+      "Open JSON and JSONC files as a read-only table beside your editor, with nested navigation and live updates as you edit.",
+    previewSrcLight: "/applications/vscode-json-preview-light.gif",
+    previewSrcDark: "/applications/vscode-json-preview-dark.gif",
+    previewAlt:
+      "VS Code JSON Preview showing a JSON file beside a generated table preview.",
+    href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/vscode-json-preview`,
+  },
+  {
+    title: "JSON Preview for Browser",
+    platform: "Browser",
+    description:
+      "Turn JSON URLs and API responses into a table view directly in Chrome or any Chromium browser, while keeping raw JSON one click away.",
+    previewSrcLight: "/applications/browser-json-preview-light.gif",
+    previewSrcDark: "/applications/browser-json-preview-dark.gif",
+    previewAlt:
+      "Browser JSON Preview toggling between raw JSON and a generated table preview.",
+    href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/browser-json-preview`,
+  },
+];
+
+const PREVIEW_IMAGE_CLASS_NAME =
+  "h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]";
 
 export default function HomePage() {
   return (
@@ -85,6 +117,110 @@ export default function HomePage() {
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Applications Section */}
+        <section className="space-y-8 border-t border-neutral-200 pt-16 dark:border-neutral-800">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="max-w-2xl space-y-4">
+              <h2 className="text-2xl font-semibold">Built with JSOC Grid</h2>
+              <p className="leading-relaxed text-neutral-600 dark:text-neutral-400">
+                These extensions use JSOC Grid to turn unknown JSON structures
+                into practical table previews in the tools developers already
+                use.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+            {APPLICATIONS.map((application) => {
+              const PlatformIcon =
+                application.platform === "VS Code" ? VscodeIcon : ChromeIcon;
+              return (
+                <article
+                  key={application.title}
+                  className="group overflow-hidden rounded-md border border-neutral-200 bg-panel-surface transition-[border-color,box-shadow,transform] duration-300 hover:border-neutral-300 hover:shadow-sm dark:border-neutral-800 dark:hover:border-neutral-700"
+                >
+                  <a
+                    href={application.href}
+                    className="block"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="relative aspect-16/10 overflow-hidden border-b border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
+                      {/* Platform Badge - Bottom Left */}
+                      <div className="absolute bottom-4 left-4 z-10 h-12 w-12 overflow-hidden rounded-[12px] border border-neutral-200 bg-neutral-100 p-1 shadow-[0_4px_12px_rgba(0,0,0,0.2)] dark:border-white dark:bg-white">
+                        <PlatformIcon
+                          className="h-full w-full"
+                          role="img"
+                          aria-label={application.platform}
+                        />
+                      </div>
+
+                      <Image
+                        className={clsx(
+                          PREVIEW_IMAGE_CLASS_NAME,
+                          "dark:hidden",
+                        )}
+                        src={application.previewSrcLight}
+                        alt={application.previewAlt}
+                        fill
+                        unoptimized
+                      />
+                      <Image
+                        className={clsx(
+                          PREVIEW_IMAGE_CLASS_NAME,
+                          "hidden dark:block",
+                        )}
+                        src={application.previewSrcDark}
+                        alt=""
+                        aria-hidden="true"
+                        fill
+                        unoptimized
+                      />
+                    </div>
+                    <div className="space-y-4 p-6">
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-semibold tracking-tight">
+                          {application.title}
+                        </h3>
+                        <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                          {application.description}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="mx-auto max-w-3xl rounded-md border border-neutral-200 bg-panel-surface p-8 text-center sm:p-10 dark:border-neutral-800">
+            <h3 className="text-xl font-semibold tracking-tight">
+              Want to see or build a tool powered by JSOC Grid?
+            </h3>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-neutral-600 sm:text-base dark:text-neutral-400">
+              JSOC Grid turns unknown JSON structures into practical table
+              previews. Get started in minutes, or head to the repo to talk
+              through your use case.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/docs/getting-started"
+                className="bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-700 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
+              >
+                Get Started
+              </Link>
+              <a
+                href={`${GITHUB_REPO_BASE_URL}/discussions`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-neutral-300 px-5 py-2.5 text-sm font-medium transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-800"
+              >
+                Share your idea
+              </a>
+            </div>
           </div>
         </section>
       </div>
