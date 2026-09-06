@@ -11,6 +11,10 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Map the secret to env up front: the `secrets` context is not allowed in
+    # `if` expressions, but the `env` context is.
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,9 +39,9 @@ jobs:
       - name: Publish to Visual Studio Marketplace
         # Requires a Marketplace Personal Access Token stored as VSCE_PAT secret.
         # See https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
-        if: secrets.VSCE_PAT != ''
+        if: env.VSCE_PAT != ''
         working-directory: apps/vscode-json-preview
-        run: pnpm exec vsce publish --packagePath *.vsix -p $VSCE_PAT
+        run: pnpm exec vsce publish --packagePath *.vsix -p "$VSCE_PAT"
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
