@@ -27,7 +27,7 @@ export type ExamplePreviewProviderProps<
   P extends PluginId<A>,
 > = ExampleLocator<A, P> & {
   children?: ReactNode;
-  /** Transforms the iframe preview url. Does not affect "open in new tab". */
+  /** Transforms the iframe preview url. */
   transformPreviewUrl?: (url: string) => string;
 };
 

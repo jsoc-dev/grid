@@ -2,25 +2,48 @@
 
 import { useExamplePreviewContext } from "@/components/example-preview/ExamplePreviewContext";
 import { useValidateExampleUrl } from "@/components/example-preview/useValidateExampleUrl";
+import { clsx } from "clsx";
 import type { ReactNode } from "react";
 
+export type ExamplePreviewProps = {
+  iframeCls?: string;
+  viewportCls?: string;
+};
+
 /** Example preview component. Must be wrapped in an `ExamplePreviewProvider` */
-export function ExamplePreview() {
+export function ExamplePreview({
+  iframeCls,
+  viewportCls,
+}: ExamplePreviewProps) {
   const { url, previewRef } = useExamplePreviewContext();
   const { isPending, isError } = useValidateExampleUrl(url);
 
-  if (isPending) return <Viewport />; // render nothing - similar to browsers when page is being fetched
-  if (isError) return <Viewport>Something went wrong</Viewport>;
+  const render = (children: ReactNode) => (
+    <Viewport className={viewportCls}>{children}</Viewport>
+  );
 
-  return (
-    <Viewport>
-      <iframe ref={previewRef} className="h-full w-full" src={url} />
-    </Viewport>
+  if (isPending) return render(null); // render nothing - similar to browsers when page is being fetched
+  if (isError) return render("Something went wrong");
+
+  return render(
+    <iframe
+      ref={previewRef}
+      className={clsx("h-full w-full", iframeCls)}
+      src={url}
+    />,
   );
 }
 
-function Viewport({ children }: { children?: ReactNode }) {
-  return <div className="bg-mono h-full w-full">{children}</div>;
+function Viewport({
+  children,
+  className,
+}: {
+  children?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={clsx("bg-mono h-full w-full", className)}>{children}</div>
+  );
 }
 
 // In Next.js, when a Server Component (like Example.tsx) imports a Client Component (like ExamplePreview.tsx),
