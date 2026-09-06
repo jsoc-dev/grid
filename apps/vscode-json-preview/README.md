@@ -2,6 +2,32 @@
 
 VS Code extension that previews JSON and JSONC files as a read-only table, powered by [JSOC Grid](https://github.com/jsoc-dev/grid).
 
+## Installation
+
+### From the Marketplace (recommended)
+
+Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=jsoc.json-preview):
+
+1. Open the **Extensions** view (`Ctrl+Shift+X` / `Cmd+Shift+X`).
+2. Search for **JSON Preview** by **jsoc** and click **Install**.
+
+Or install from the command line:
+
+```bash
+code --install-extension jsoc.json-preview
+```
+
+### Manual install via `.vsix`
+
+1. Download the `.vsix` file from [GitHub Releases](https://github.com/jsoc-dev/grid/releases?q=vscode-json-preview).
+2. Install it:
+
+```bash
+code --install-extension json-preview-<version>.vsix
+```
+
+Or in VS Code: **Extensions** view (`...` menu) → **Install from VSIX...** → select the downloaded file.
+
 ## Usage
 
 1. Open a JSON or JSONC file.
@@ -13,12 +39,15 @@ VS Code extension that previews JSON and JSONC files as a read-only table, power
 - **Tabular View:** View JSON/JSONC arrays and objects as clean, read-only tables.
 
   ![Side preview](img/side-preview.gif)
+
 - **Nested Navigation:** Easily navigate into nested objects and arrays using interactive breadcrumbs.
 
   ![Nested JSON Navigation](img/nested-json-navigation.gif)
+
 - **Zoom Controls:** Zoom in and out of the table independently of your workspace font size via dedicated UI controls or using mouse wheel with CTRL pressed.
 
   ![Table Zoom](img/table-zoom.gif)
+
 - **Inherited Theming:** The preview inherits the theme from the VS Code editor. Seamlessly matches your currently active color theme.
 
   ![Inherited Theming](img/color-scheme.gif)
