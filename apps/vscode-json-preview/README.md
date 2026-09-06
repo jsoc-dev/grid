@@ -19,7 +19,7 @@ code --install-extension jsoc.json-preview
 
 ### Manual install via `.vsix`
 
-1. Download the `.vsix` file from [GitHub Releases](https://github.com/jsoc-dev/grid/releases?q=vscode-json-preview).
+1. Download the `.vsix` file from [GitHub Releases](https://github.com/jsoc-dev/grid/releases?q=json-preview).
 2. Install it:
 
 ```bash
