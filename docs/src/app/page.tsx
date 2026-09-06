@@ -1,4 +1,5 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
+import { Demo } from "@/components/home/demo/Demo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
 import { createPageMetadata } from "@/utils/og-metadata";
 import Link from "next/link";
@@ -29,30 +30,36 @@ const USE_CASES = [
 export default function HomePage() {
   return (
     <main className="flex min-h-fill-page flex-col items-center py-20 px-6">
-      <div className="max-w-4xl w-full space-y-20">
+      <div className="max-w-(--nextra-content-width) w-full space-y-20">
         {/* Hero Section */}
-        <section className="space-y-6 max-w-2xl">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            {SITE_NAME}
-          </h1>
-          <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
-            {SITE_DESCRIPTION}
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Link
-              href="/docs/getting-started"
-              className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-2.5 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors"
-            >
-              Get Started
-            </Link>
-            <a
-              href={GITHUB_REPO_BASE_URL}
-              className="border border-neutral-300 dark:border-neutral-700 px-6 py-2.5 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
+        <section className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
+          <div className="flex w-full min-w-0 flex-1 flex-col gap-6">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              {SITE_NAME}
+            </h1>
+            <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {SITE_DESCRIPTION}
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              <Link
+                href="/docs/getting-started"
+                className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-2.5 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors"
+              >
+                Get Started
+              </Link>
+              <a
+                href={GITHUB_REPO_BASE_URL}
+                className="border border-neutral-300 dark:border-neutral-700 px-6 py-2.5 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full min-w-0 flex-1">
+            <Demo />
           </div>
         </section>
 
