@@ -1,0 +1,49 @@
+name: Release VS Code Extension
+
+on:
+  push:
+    tags:
+      - 'json-preview@*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and package extension
+        run: |
+          rm -f apps/vscode-json-preview/*.vsix
+          pnpm --filter json-preview package
+
+      - name: Publish to Visual Studio Marketplace
+        # Requires a Marketplace Personal Access Token stored as VSCE_PAT secret.
+        # See https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token
+        if: secrets.VSCE_PAT != ''
+        working-directory: apps/vscode-json-preview
+        run: pnpm exec vsce publish --packagePath *.vsix -p $VSCE_PAT
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: apps/vscode-json-preview/*.vsix
+          generate_release_notes: true
