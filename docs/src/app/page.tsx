@@ -1,11 +1,11 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
+import { ApplicationPreview } from "@/components/home/ApplicationPreview";
 import { Demo } from "@/components/home/demo/Demo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
 import ChromeIcon from "@/icons/chrome.svg";
 import VscodeIcon from "@/icons/vscode.svg";
 import { createPageMetadata } from "@/utils/og-metadata";
-import clsx from "clsx";
-import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = createPageMetadata({
@@ -37,8 +37,8 @@ const APPLICATIONS = [
     platform: "VS Code",
     description:
       "Open JSON and JSONC files as a read-only table beside your editor, with nested navigation and live updates as you edit.",
-    previewSrcLight: "/applications/vscode-json-preview-light.gif",
-    previewSrcDark: "/applications/vscode-json-preview-dark.gif",
+    previewSrcLight: "/applications/vscode-json-preview-light.mp4",
+    previewSrcDark: "/applications/vscode-json-preview-dark.mp4",
     previewAlt:
       "VS Code JSON Preview showing a JSON file beside a generated table preview.",
     href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/vscode-json-preview`,
@@ -48,8 +48,8 @@ const APPLICATIONS = [
     platform: "Browser",
     description:
       "Turn JSON URLs and API responses into a table view directly in Chrome or any Chromium browser, while keeping raw JSON one click away.",
-    previewSrcLight: "/applications/browser-json-preview-light.gif",
-    previewSrcDark: "/applications/browser-json-preview-dark.gif",
+    previewSrcLight: "/applications/browser-json-preview-light.mp4",
+    previewSrcDark: "/applications/browser-json-preview-dark.mp4",
     previewAlt:
       "Browser JSON Preview toggling between raw JSON and a generated table preview.",
     href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/browser-json-preview`,
@@ -142,53 +142,38 @@ export default function HomePage() {
                   key={application.title}
                   className="group overflow-hidden rounded-md border border-neutral-200 bg-panel-surface transition-[border-color,box-shadow,transform] duration-300 hover:border-neutral-300 hover:shadow-sm dark:border-neutral-800 dark:hover:border-neutral-700"
                 >
+                  <div className="relative aspect-16/10 overflow-hidden border-b border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
+                    <ApplicationPreview
+                      className={PREVIEW_IMAGE_CLASS_NAME}
+                      srcLight={application.previewSrcLight}
+                      srcDark={application.previewSrcDark}
+                      alt={application.previewAlt}
+                    />
+                  </div>
                   <a
                     href={application.href}
-                    className="block"
+                    className="flex items-center gap-6 p-6"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <div className="relative aspect-16/10 overflow-hidden border-b border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
-                      {/* Platform Badge - Bottom Left */}
-                      <div className="absolute bottom-4 left-4 z-10 h-12 w-12 overflow-hidden rounded-[12px] border border-neutral-200 bg-neutral-100 p-1 shadow-[0_4px_12px_rgba(0,0,0,0.2)] dark:border-white dark:bg-white">
-                        <PlatformIcon
-                          className="h-full w-full"
-                          role="img"
-                          aria-label={application.platform}
-                        />
-                      </div>
-
-                      <Image
-                        className={clsx(
-                          PREVIEW_IMAGE_CLASS_NAME,
-                          "dark:hidden",
-                        )}
-                        src={application.previewSrcLight}
-                        alt={application.previewAlt}
-                        fill
-                        unoptimized
-                      />
-                      <Image
-                        className={clsx(
-                          PREVIEW_IMAGE_CLASS_NAME,
-                          "hidden dark:block",
-                        )}
-                        src={application.previewSrcDark}
-                        alt=""
-                        aria-hidden="true"
-                        fill
-                        unoptimized
+                    <div className="pointer-events-none hidden h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 p-1 shadow-[0_4px_12px_rgba(0,0,0,0.12)] sm:block dark:border-white dark:bg-white">
+                      <PlatformIcon
+                        className="h-full w-full"
+                        role="img"
+                        aria-label={application.platform}
                       />
                     </div>
-                    <div className="space-y-4 p-6">
-                      <div className="space-y-3">
-                        <h3 className="text-xl font-semibold tracking-tight">
-                          {application.title}
-                        </h3>
-                        <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-                          {application.description}
-                        </p>
-                      </div>
+                    <div className="min-w-0 space-y-3">
+                      <h3 className="text-xl font-semibold tracking-tight">
+                        {application.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                        {application.description}
+                      </p>
+                      <span className="inline-flex items-center gap-1.5 pt-1 text-sm font-medium text-neutral-900 group-hover:text-accent-700 dark:text-neutral-100 dark:group-hover:text-accent-300">
+                        Learn more
+                        <ArrowUpRight className="size-4" aria-hidden="true" />
+                      </span>
                     </div>
                   </a>
                 </article>
