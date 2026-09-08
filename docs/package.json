@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "generate-artifacts": "tsx scripts/generate-artifacts.ts",
-    "predev": "pnpm generate-artifacts",
     "dev": "next dev --webpack",
+    "dev-full": "pnpm generate-artifacts && pnpm dev",
     "prebuild": "pnpm generate-artifacts",
     "build": "next build",
     "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
