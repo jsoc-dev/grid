@@ -1,6 +1,7 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
 import { ApplicationPreview } from "@/components/home/ApplicationPreview";
 import { Demo } from "@/components/home/demo/Demo";
+import { JsonGlyphPattern } from "@/components/home/JsonGlyphPattern";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
 import ChromeIcon from "@/icons/chrome.svg";
 import VscodeIcon from "@/icons/vscode.svg";
@@ -61,40 +62,60 @@ const PREVIEW_IMAGE_CLASS_NAME =
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-fill-page flex-col items-center py-20 px-6">
-      <div className="max-w-(--nextra-content-width) w-full space-y-20">
-        {/* Hero Section */}
-        <section className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
-          <div className="flex w-full min-w-0 flex-1 flex-col gap-6">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              {SITE_NAME}
-            </h1>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              {SITE_DESCRIPTION}
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link
-                href="/docs/getting-started"
-                className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-2.5 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors"
-              >
-                Get Started
-              </Link>
-              <a
-                href={GITHUB_REPO_BASE_URL}
-                className="border border-neutral-300 dark:border-neutral-700 px-6 py-2.5 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on GitHub
-              </a>
+    <main className="flex min-h-fill-page flex-col items-center">
+      <div className="relative flex w-full justify-center overflow-hidden">
+        <JsonGlyphPattern />
+        <div className="relative max-w-(--nextra-content-width) w-full px-6 py-20 lg:py-28">
+          <section className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
+            <div className="flex w-full min-w-0 flex-1 flex-col gap-6">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                {SITE_NAME}
+              </h1>
+              <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                {SITE_DESCRIPTION}
+              </p>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <Link
+                  href="/docs/getting-started"
+                  className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-2.5 text-sm font-medium hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-colors"
+                >
+                  Get Started
+                </Link>
+                <a
+                  href={GITHUB_REPO_BASE_URL}
+                  className="border border-neutral-300 dark:border-neutral-700 px-6 py-2.5 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on GitHub
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div className="w-full min-w-0 flex-1">
-            <Demo />
-          </div>
-        </section>
+            <div className="relative w-full min-w-0 flex-1">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-5 -z-10 hidden rounded-2xl opacity-60 blur-2xl dark:block"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 35%, transparent 70%)",
+                }}
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-5 -z-10 hidden rounded-2xl opacity-40 blur-2xl dark:block"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16,185,129,0.10) 0%, transparent 65%)",
+                }}
+              />
+              <Demo />
+            </div>
+          </section>
+        </div>
+      </div>
 
+      <div className="max-w-(--nextra-content-width) w-full space-y-20 px-6 pt-0 pb-20">
         {/* Use Cases Section */}
         <section className="space-y-8 border-t border-neutral-200 dark:border-neutral-800 pt-16">
           <div className="max-w-2xl space-y-4">
