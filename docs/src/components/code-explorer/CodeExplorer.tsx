@@ -70,9 +70,9 @@ export function CodeExplorer<A extends AdapterId, P extends PluginId<A>>({
 
   return (
     <CodeExplorerContext.Provider value={context}>
-      <div className="bg-panel-surface border border-panel-outline flex h-full overflow-hidden rounded-md">
+      <div className="bg-panel-surface border border-panel-outline flex flex-1 min-h-0 min-w-0 w-full overflow-hidden rounded-md h-full">
         <CE_ActivityBar />
-        <Group className="flex flex-1" orientation="horizontal">
+        <Group className="flex flex-1 min-h-0 min-w-0" orientation="horizontal">
           <CE_SidebarPanel />
           <CE_ContentPanel />
         </Group>
