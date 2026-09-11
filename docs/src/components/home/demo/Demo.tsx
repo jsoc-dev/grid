@@ -1,4 +1,5 @@
 "use client";
+import type { ReactGridPluginId } from "@/components/home/demo/DemoPluginSelect";
 import { ExamplePreviewProvider } from "@/components/example-preview/ExamplePreviewContext";
 import { DemoWindow } from "@/components/home/demo/DemoWindow";
 import {
@@ -25,6 +26,7 @@ const transformPreviewUrl = (url: string) =>
   withLocalDataEditorHidden(withCustomLocalDataChannelName(url, CHANNEL));
 
 export function Demo() {
+  const [pluginId, setPluginId] = useState<ReactGridPluginId>("tanstack");
   const [payloadIndex, setPayloadIndex] = useState(0);
   const [broadcastedData, setBroadcastedData] =
     useState<PersistentBroadcastMessage>(undefined);
@@ -87,7 +89,7 @@ export function Demo() {
   return (
     <ExamplePreviewProvider
       adapterId="react-grid"
-      pluginId="tanstack"
+      pluginId={pluginId}
       exampleId="localData"
       transformPreviewUrl={transformPreviewUrl}
     >
@@ -100,6 +102,8 @@ export function Demo() {
         isStepComplete={isStepComplete}
         waitMs={PAUSE_AFTER_COMPLETE_MS}
         typeSpeedMs={TYPE_SPEED_MS}
+        pluginId={pluginId}
+        onSelectPlugin={setPluginId}
         onTogglePause={() => setIsUserPaused((prev) => !prev)}
         onSelectStep={setPayloadIndex}
         onTypeComplete={handleTypeComplete}

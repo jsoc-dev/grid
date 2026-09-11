@@ -1,3 +1,7 @@
+import {
+  DemoPluginSelect,
+  type ReactGridPluginId,
+} from "@/components/home/demo/DemoPluginSelect";
 import { ExamplePreview } from "@/components/example-preview/ExamplePreview";
 import { StepDots } from "@/components/home/demo/StepDots";
 import { TypeWriter } from "@/components/TypeWriter";
@@ -15,6 +19,8 @@ export type DemoWindowProps = {
   isStepComplete: boolean;
   waitMs: number;
   typeSpeedMs: number;
+  pluginId: ReactGridPluginId;
+  onSelectPlugin: (plugin: ReactGridPluginId) => void;
   onTogglePause: () => void;
   onSelectStep: (index: number) => void;
   onTypeComplete: () => void;
@@ -33,6 +39,8 @@ export function DemoWindow({
   isStepComplete,
   waitMs,
   typeSpeedMs,
+  pluginId,
+  onSelectPlugin,
   onTogglePause,
   onSelectStep,
   onTypeComplete,
@@ -50,7 +58,9 @@ export function DemoWindow({
         {/* body */}
         <div className="flex flex-col gap-5 p-7">
           <div className="flex flex-col gap-1">
-            <SectionLabel>JSON</SectionLabel>
+            <div className="flex h-6 items-center">
+              <SectionLabel>JSON</SectionLabel>
+            </div>
             <TypeWriter
               key={data}
               className="bg-mono min-h-9 border border-panel-outline px-2 py-2 font-mono text-[13px]"
@@ -63,9 +73,12 @@ export function DemoWindow({
           </div>
 
           <div className="flex flex-col gap-1">
-            <SectionLabel>Grid</SectionLabel>
+            <div className="flex h-6 items-center justify-between">
+              <SectionLabel>Grid</SectionLabel>
+              <DemoPluginSelect value={pluginId} onChange={onSelectPlugin} />
+            </div>
             <div className="h-44 overflow-hidden">
-              <MemoizedExamplePreview />
+              <MemoizedExamplePreview key={pluginId} />
             </div>
           </div>
         </div>
