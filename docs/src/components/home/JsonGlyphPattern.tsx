@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 const TILE_W = 380;
 const TILE_H = 280;
 
@@ -67,11 +69,18 @@ function generateGlyphs(): Glyph[] {
 
 const GLYPHS = generateGlyphs();
 
-export function JsonGlyphPattern() {
+export type JsonGlyphPatternProps = {
+  className?: string;
+};
+
+export function JsonGlyphPattern({ className }: JsonGlyphPatternProps) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 select-none overflow-hidden"
+      className={clsx(
+        "pointer-events-none absolute inset-0 -z-10 select-none overflow-hidden",
+        className,
+      )}
       style={{
         maskImage:
           "linear-gradient(to bottom, black 0%, black 72%, transparent 100%)",

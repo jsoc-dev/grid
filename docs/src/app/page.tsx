@@ -42,7 +42,7 @@ const APPLICATIONS = [
     previewSrcDark: "/applications/vscode-json-preview-dark.mp4",
     previewAlt:
       "VS Code JSON Preview showing a JSON file beside a generated table preview.",
-    href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/vscode-json-preview`,
+    href: `${GITHUB_REPO_BASE_URL}/blob/main/apps/vscode-json-preview/README.md`,
   },
   {
     title: "JSON Preview for Browser",
@@ -53,7 +53,7 @@ const APPLICATIONS = [
     previewSrcDark: "/applications/browser-json-preview-dark.mp4",
     previewAlt:
       "Browser JSON Preview toggling between raw JSON and a generated table preview.",
-    href: `${GITHUB_REPO_BASE_URL}/tree/main/apps/browser-json-preview`,
+    href: `${GITHUB_REPO_BASE_URL}/blob/main/apps/browser-json-preview/README.md`,
   },
 ];
 
@@ -64,7 +64,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-fill-page flex-col items-center">
       <div className="relative flex w-full justify-center overflow-hidden">
-        <JsonGlyphPattern />
+        <JsonGlyphPattern className="hidden lg:dark:block" />
         <div className="relative max-w-(--nextra-content-width) w-full px-6 py-20 lg:py-28">
           <section className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
             <div className="flex w-full min-w-0 flex-1 flex-col gap-6">
@@ -92,23 +92,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative w-full min-w-0 flex-1">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-5 -z-10 hidden rounded-2xl opacity-60 blur-2xl dark:block"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 35%, transparent 70%)",
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-5 -z-10 hidden rounded-2xl opacity-40 blur-2xl dark:block"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16,185,129,0.10) 0%, transparent 65%)",
-                }}
-              />
+            <div className="w-full min-w-0 flex-1">
               <Demo />
             </div>
           </section>

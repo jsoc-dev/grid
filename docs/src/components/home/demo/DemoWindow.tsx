@@ -46,7 +46,7 @@ export function DemoWindow({
 
   return (
     <div className="flex w-full flex-col">
-      <div className="w-full overflow-hidden border border-neutral-200 bg-panel-surface/50 backdrop-blur-[1px] shadow-sm dark:bg-neutral-900/70 dark:border-white/8">
+      <div className="w-full overflow-hidden border border-neutral-200 bg-panel-surface dark:border-neutral-800">
         {/* body */}
         <div className="flex flex-col gap-5 p-7">
           <div className="flex flex-col gap-1">
