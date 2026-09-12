@@ -1,6 +1,8 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
 import { ApplicationPreview } from "@/components/home/ApplicationPreview";
 import { Demo } from "@/components/home/demo/Demo";
+import { FrameworkAgnosticSection } from "@/components/home/framework-agnostic/FrameworkAgnosticSection";
+import { HeadlessUiSection } from "@/components/home/headless-ui/HeadlessUiSection";
 import { JsonGalaxyInteraction } from "@/components/home/JsonGalaxyInteraction";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
 import ChromeIcon from "@/icons/chrome.svg";
@@ -100,6 +102,9 @@ export default function HomePage() {
       </div>
 
       <div className="max-w-(--nextra-content-width) w-full space-y-20 px-6 pt-0 pb-20">
+        <FrameworkAgnosticSection />
+        <HeadlessUiSection />
+
         {/* Use Cases Section */}
         <section className="space-y-8 border-t border-neutral-200 dark:border-neutral-800 pt-16">
           <div className="max-w-2xl space-y-4">

@@ -44,13 +44,13 @@ function ScrollArea({ children }: { children: ReactNode }) {
       </Viewport>
       <Scrollbar
         orientation="vertical"
-        className="flex touch-none select-none bg-transparent p-0 transition-colors duration-150 ease-out data-[orientation=vertical]:w-[8px]"
+        className="flex touch-none select-none bg-transparent p-0 transition-colors duration-150 ease-out data-[orientation=vertical]:w-2"
       >
         <Thumb className="relative flex-1 rounded-none bg-transparent transition-colors group-hover/scroll:bg-black/20 dark:group-hover/scroll:bg-white/20" />
       </Scrollbar>
       <Scrollbar
         orientation="horizontal"
-        className="flex touch-none select-none bg-transparent p-0 transition-colors duration-150 ease-out data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-[8px]"
+        className="flex touch-none select-none bg-transparent p-0 transition-colors duration-150 ease-out data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2"
       >
         <Thumb className="relative flex-1 rounded-none bg-transparent transition-colors group-hover/scroll:bg-black/20 dark:group-hover/scroll:bg-white/20" />
       </Scrollbar>

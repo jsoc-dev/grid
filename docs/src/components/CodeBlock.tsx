@@ -2,6 +2,7 @@
 
 import { useCodeHighlighter } from "@/hooks/useCodeHighlighter";
 import type { CodeLanguage } from "@jsoc/grid-docs";
+import clsx from "clsx";
 import { Pre } from "nextra/components";
 
 export function CodeBlock({
@@ -19,7 +20,8 @@ export function CodeBlock({
 
   return (
     <Pre
-      className={className}
+      // set solid bg on copy/wrap buttons, to prevent khichdi when there is text behind them
+      className={clsx("[&>div>button]:bg-[canvas]", className)}
       data-language={lang}
       data-copy={showCopyCode ? "" : undefined}
       data-word-wrap=""

@@ -26,7 +26,7 @@ const transformPreviewUrl = (url: string) =>
   withLocalDataEditorHidden(withCustomLocalDataChannelName(url, CHANNEL));
 
 export function Demo() {
-  const [pluginId, setPluginId] = useState<ReactGridPluginId>("tanstack");
+  const [pluginId, setPluginId] = useState<ReactGridPluginId>("ag");
   const [payloadIndex, setPayloadIndex] = useState(0);
   const [broadcastedData, setBroadcastedData] =
     useState<PersistentBroadcastMessage>(undefined);
