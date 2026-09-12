@@ -61,6 +61,39 @@
     @apply bg-clip-text text-transparent bg-linear-to-r from-accent-500 to-cyan-500;
   }
 
+  .json-galaxy-glow {
+    text-shadow:
+      0 0 3px rgba(255, 255, 255, 0.9),
+      0 0 10px currentColor;
+  }
+
+  .json-galaxy-fade {
+    transition: opacity 500ms ease;
+  }
+
+  .json-galaxy-twinkle {
+    --twinkle-dim: #a1a1aa;
+    --twinkle-peak: #09090b;
+    animation: json-galaxy-twinkle var(--twinkle-duration, 5s) ease-in-out
+      var(--twinkle-delay, 0s) infinite alternate;
+    will-change: opacity;
+  }
+
+  :where(.dark) .json-galaxy-twinkle {
+    --twinkle-dim: #334155;
+    --twinkle-peak: #eaf6ff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .json-galaxy-twinkle {
+      animation: none;
+      opacity: var(--galaxy-opacity, 0.15);
+    }
+    .json-galaxy-fade {
+      transition: none;
+    }
+  }
+
   .checkerboard {
     background-size: 20px 20px;
     background-position:
@@ -100,6 +133,17 @@
   50%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes json-galaxy-twinkle {
+  from {
+    opacity: calc(var(--galaxy-opacity, 0.15) * 0.15);
+    color: var(--twinkle-dim, currentColor);
+  }
+  to {
+    opacity: 0.95;
+    color: var(--twinkle-peak, currentColor);
   }
 }
 

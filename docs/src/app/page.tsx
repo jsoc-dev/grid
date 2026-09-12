@@ -1,7 +1,7 @@
 import { GITHUB_REPO_BASE_URL } from "@jsoc/grid-docs";
 import { ApplicationPreview } from "@/components/home/ApplicationPreview";
 import { Demo } from "@/components/home/demo/Demo";
-import { JsonGlyphPattern } from "@/components/home/JsonGlyphPattern";
+import { JsonGalaxyInteraction } from "@/components/home/JsonGalaxyInteraction";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/config";
 import ChromeIcon from "@/icons/chrome.svg";
 import VscodeIcon from "@/icons/vscode.svg";
@@ -64,7 +64,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-fill-page flex-col items-center">
       <div className="relative flex w-full justify-center overflow-hidden">
-        <JsonGlyphPattern className="hidden lg:dark:block" />
+        <JsonGalaxyInteraction />
         <div className="relative max-w-(--nextra-content-width) w-full px-6 py-20 lg:py-28">
           <section className="flex flex-col items-center gap-10 lg:flex-row lg:gap-12">
             <div className="flex w-full min-w-0 flex-1 flex-col gap-6">

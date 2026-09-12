@@ -12,6 +12,7 @@ import { Head } from "nextra/components";
 import { Layout } from "nextra-theme-docs";
 import { getPageMap } from "@/utils/get-page-map";
 import { DOCS_GITHUB_BASE_URL } from "@jsoc/grid-docs";
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -44,6 +45,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             </Layout>
           </QueryProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
